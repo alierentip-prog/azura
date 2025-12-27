@@ -3,112 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura | Sinematik Deneyim</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Inter:wght@300;500&display=swap" rel="stylesheet">
+    <title>Azura | The Zenith</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Mono:wght@400;700&family=Inter:wght@900&display=swap" rel="stylesheet">
     <style>
+        /* --- KÜRESEL DEĞİŞKENLER VE SIFIRLAMA --- */
         :root {
-            --accent-glow: #00f2ff; /* Parlak Cam Göbeği Mavi */
-            --accent-secondary: #7b42f6; /* Derin Mor */
-            --bg-dark: #0a0a0a; /* Çok koyu antrasit/siyah */
-            --text-light: #ffffff;
-        }
-        body, html { margin: 0; padding: 0; height: 100%; background: var(--bg-dark); overflow: hidden; font-family: 'Inter', sans-serif; }
-        
-        /* --- ARKA PLAN ATMOSFERİ (Ambient Aurora) --- */
-        .ambient-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 1; }
-        /* Yavaşça hareket eden devasa ışık topları */
-        .light-orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.4; animation: moveOrb 20s infinite alternate ease-in-out; }
-        .orb-1 { top: -10%; left: -10%; width: 60vw; height: 60vw; background: var(--accent-glow); animation-delay: 0s; }
-        .orb-2 { bottom: -20%; right: -20%; width: 70vw; height: 70vw; background: var(--accent-secondary); animation-delay: -5s; }
-        .orb-3 { top: 30%; left: 40%; width: 50vw; height: 50vw; background: rgba(0, 242, 255, 0.3); animation-delay: -10s; animation-duration: 25s; }
-
-        /* Hafif Grenli Doku (Premium his için) */
-        .noise-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://grainy-gradients.vercel.app/noise.svg'); opacity: 0.03; z-index: 2; pointer-events: none; mix-blend-mode: overlay;}
-
-        /* --- ANA SAHNE --- */
-        .main-stage { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; color: var(--text-light); }
-
-        /* --- ANA LOGO --- */
-        .logo-container { overflow: hidden; margin-bottom: 20px; }
-        .logo {
-            font-family: 'Montserrat', sans-serif;
-            font-size: clamp(4rem, 15vw, 10rem);
-            line-height: 0.9;
-            text-transform: uppercase;
-            letter-spacing: -3px;
-            opacity: 0;
-            filter: blur(15px);
-            transform: scale(0.95) translateY(40px);
-            /* Hafif bir iç parlama efekti */
-            text-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
-            animation: logoReveal 2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.3s;
+            --primary: #00f2ff;
+            --secondary: #7000ff;
+            --bg: #050505;
+            --text: #ffffff;
+            --glitch-offset: 5px;
         }
 
-        /* --- DEĞİŞEN METİNLER (Düzeltilmiş Scramble) --- */
-        .scramble-text {
-            font-size: 0.85rem;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            font-weight: 500;
-            color: rgba(255,255,255,0.6); /* Daha şık bir beyaz */
-            min-height: 25px;
-            margin-top: 30px;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html { 
+            height: 100%; width: 100%; 
+            background: var(--bg); 
+            color: var(--text); 
+            font-family: 'Space Mono', monospace; 
+            overflow: hidden; 
         }
-        /* Scramble içindeki vurgulu harfler */
-        .highlight { color: var(--accent-glow); font-weight: 700; text-shadow: 0 0 10px var(--accent-glow); }
 
-        /* --- YÜKLENME ÇUBUĞU --- */
-        .loader-bar {
-            width: 180px; height: 2px; background: rgba(255,255,255,0.1); margin-top: 50px; position: relative; overflow: hidden; border-radius: 10px;
+        /* --- ARKA PLAN KATMANLARI --- */
+        #canvas-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
         }
-        .progress {
+
+        /* CRT Tarama Çizgileri */
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            z-index: 5; pointer-events: none;
+        }
+
+        /* Dijital Kumlanma */
+        .noise {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+            opacity: 0.05; z-index: 6; pointer-events: none;
+        }
+
+        /* --- HUD ELEMENTLERİ --- */
+        .hud-element {
+            position: fixed; z-index: 10; padding: 20px;
+            color: var(--primary); font-size: 10px; letter-spacing: 2px;
+            text-transform: uppercase; font-weight: 700;
+        }
+        .top-left { top: 0; left: 0; border-left: 2px solid var(--primary); border-top: 2px solid var(--primary); margin: 20px; }
+        .top-right { top: 0; right: 0; border-right: 2px solid var(--primary); border-top: 2px solid var(--primary); margin: 20px; text-align: right; }
+        .bottom-left { bottom: 0; left: 0; border-left: 2px solid var(--primary); border-bottom: 2px solid var(--primary); margin: 20px; }
+        .bottom-right { bottom: 0; right: 0; border-right: 2px solid var(--primary); border-bottom: 2px solid var(--primary); margin: 20px; text-align: right; }
+
+        /* --- ANA MERKEZ --- */
+        .center-stage {
+            position: relative; z-index: 20;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100vh; width: 100%;
+        }
+
+        /* GLITCH LOGO */
+        .azura-logo {
+            font-family: 'Syncopate', sans-serif;
+            font-size: clamp(3rem, 15vw, 9rem);
+            font-weight: 700;
+            letter-spacing: -5px;
+            color: #fff;
+            position: relative;
+            text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.025em -0.05em 0 rgba(0,255,0,0.75), 0.025em 0.05em 0 rgba(0,0,255,0.75);
+            animation: logoFloat 4s ease-in-out infinite, glitch 1s infinite alternate-reverse;
+        }
+
+        /* ALT YAZI SİSTEMİ */
+        .scramble-box {
+            margin-top: 20px; font-size: 0.8rem; letter-spacing: 10px;
+            color: var(--primary); text-transform: uppercase;
+            min-height: 20px; opacity: 0.8;
+        }
+
+        /* İLERLEME SİSTEMİ */
+        .loader-wrap {
+            width: 300px; height: 1px; background: rgba(255,255,255,0.05);
+            margin-top: 50px; position: relative; overflow: hidden;
+        }
+        .progress-line {
             position: absolute; left: 0; top: 0; height: 100%; width: 0%;
-            background: linear-gradient(90deg, var(--accent-glow), var(--accent-secondary)); /* Gradient çubuk */
-            box-shadow: 0 0 15px var(--accent-glow);
-            animation: progressMove 8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            background: var(--primary); box-shadow: 0 0 20px var(--primary);
+            animation: masterLoad 8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
         }
 
         /* --- ANİMASYONLAR --- */
-        @keyframes moveOrb {
-            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
-            100% { transform: translate(10%, 10%) rotate(5deg) scale(1.1); }
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
-        @keyframes logoReveal { to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); } }
-        @keyframes progressMove { to { width: 100%; } }
 
-        /* Çıkış Efekti (Daha dramatik) */
-        .exit-scene { animation: exitAnim 1.5s cubic-bezier(0.6, 0, 0.4, 1) forwards; }
-        @keyframes exitAnim { to { opacity: 0; filter: blur(40px) brightness(1.5); transform: scale(1.05); } }
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.05em -0.025em 0 rgba(0,255,0,0.75), -0.025em 0.05em 0 rgba(0,0,255,0.75); }
+            14% { text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.05em -0.025em 0 rgba(0,255,0,0.75), -0.025em 0.05em 0 rgba(0,0,255,0.75); }
+            15% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,0.75), 0.025em 0.025em 0 rgba(0,255,0,0.75), -0.05em -0.05em 0 rgba(0,0,255,0.75); }
+            49% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,0.75), 0.025em 0.025em 0 rgba(0,255,0,0.75), -0.05em -0.05em 0 rgba(0,0,255,0.75); }
+            50% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,0.75), 0.05em 0 0 rgba(0,255,0,0.75), 0 -0.05em 0 rgba(0,0,255,0.75); }
+            99% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,0.75), 0.05em 0 0 rgba(0,255,0,0.75), 0 -0.05em 0 rgba(0,0,255,0.75); }
+            100% { text-shadow: -0.025em 0 0 rgba(255,0,0,0.75), -0.025em -0.025em 0 rgba(0,255,0,0.75), -0.025em -0.05em 0 rgba(0,0,255,0.75); }
+        }
+
+        @keyframes masterLoad { to { width: 100%; } }
+
+        /* EXIT SEQUENCE */
+        .zenith-exit { animation: cinematicExit 1.5s cubic-bezier(0.7, 0, 0.3, 1) forwards; }
+        @keyframes cinematicExit {
+            to { opacity: 0; filter: blur(100px) contrast(2); transform: scale(1.2); }
+        }
     </style>
 </head>
 <body>
 
-    <div class="ambient-container">
-        <div class="light-orb orb-1"></div>
-        <div class="light-orb orb-2"></div>
-        <div class="light-orb orb-3"></div>
-    </div>
-    <div class="noise-overlay"></div>
+    <canvas id="canvas-bg"></canvas>
+    <div class="scanlines"></div>
+    <div class="noise"></div>
 
-    <div class="main-stage" id="stage">
-        <div class="logo-container">
-            <h1 class="logo">AZURA</h1>
-        </div>
-        <div class="scramble-text" id="scramble">Hoş Geldiniz</div>
-        <div class="loader-bar">
-            <div class="progress"></div>
-        </div>
+    <div class="hud-element top-left">
+        System: Active<br>
+        Source: alierentip-prog<br>
+        ID: 0x2A7F
     </div>
+    <div class="hud-element top-right" id="clock">00:00:00</div>
+    <div class="hud-element bottom-left">
+        Lat: 37.0662 N<br>
+        Lon: 37.3833 E<br>
+        Loc: Gaziantep
+    </div>
+    <div class="hud-element bottom-right">
+        Status: Scanning Core...<br>
+        Protocol: 4.0.4-AZ
+    </div>
+
+    <main class="center-stage" id="master-container">
+        <h1 class="azura-logo">AZURA</h1>
+        <div class="scramble-box" id="scramble">Initialization...</div>
+        <div class="loader-wrap">
+            <div class="progress-line"></div>
+        </div>
+    </main>
 
     <script>
-        // --- GÜNCELLENMİŞ SCRAMBLE EFEKTİ (Türkçe Destekli ve Vurgulu) ---
+        // --- PARÇACIK FİZİK MOTORU ---
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 150 };
+
+        window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
+        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; initParticles(); });
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor(x, y, directionX, directionY, size, color) {
+                this.x = x; this.y = y; this.directionX = directionX; this.directionY = directionY;
+                this.size = size; this.color = color;
+            }
+            draw() {
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                ctx.fillStyle = '#00f2ff'; ctx.fill();
+            }
+            update() {
+                if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
+                if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
+                
+                // Mouse etkileşimi (İtme kuvveti)
+                let dx = mouse.x - this.x; let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx*dx + dy*dy);
+                if (distance < mouse.radius) {
+                    if (mouse.x < this.x && this.x < canvas.width - this.size * 10) this.x += 10;
+                    if (mouse.x > this.x && this.x > this.size * 10) this.x -= 10;
+                    if (mouse.y < this.y && this.y < canvas.height - this.size * 10) this.y += 10;
+                    if (mouse.y > this.y && this.y > this.size * 10) this.y -= 10;
+                }
+                this.x += this.directionX; this.y += this.directionY;
+                this.draw();
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 9000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                let size = (Math.random() * 2) + 1;
+                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+                let directionX = (Math.random() * 2) - 1;
+                let directionY = (Math.random() * 2) - 1;
+                particles.push(new Particle(x, y, directionX, directionY, size));
+            }
+        }
+
+        function connect() {
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a; b < particles.length; b++) {
+                    let distance = ((particles[a].x - particles[b].x) * (particles[a].x - particles[b].x)) + ((particles[a].y - particles[b].y) * (particles[a].y - particles[b].y));
+                    if (distance < (canvas.width/7) * (canvas.height/7)) {
+                        let opacity = 1 - (distance/20000);
+                        ctx.strokeStyle = `rgba(0, 242, 255, ${opacity})`;
+                        ctx.lineWidth = 1; ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y); ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, innerWidth, innerHeight);
+            for (let i = 0; i < particles.length; i++) particles[i].update();
+            connect();
+        }
+        initParticles(); animate();
+
+        // --- SCRAMBLE TEXT ENGINE ---
         class TextScramble {
-            constructor(el) { this.el = el; this.chars = 'AZURA_<>[]{}—=+*^?#_şığüöçİĞÜÖÇ'; this.update = this.update.bind(this); }
+            constructor(el) { this.el = el; this.chars = '!<>-_\\/[]{}—=+*^?#________ığüşöçİĞÜŞÖÇ'; this.update = this.update.bind(this); }
             setText(newText) {
                 const oldText = this.el.innerText; const length = Math.max(oldText.length, newText.length);
                 const promise = new Promise((resolve) => this.resolve = resolve); this.queue = [];
                 for (let i = 0; i < length; i++) {
-                    const from = oldText[i] || ''; const to = newText[i] || ''; const start = Math.floor(Math.random() * 45); const end = start + Math.floor(Math.random() * 45);
+                    const from = oldText[i] || ''; const to = newText[i] || ''; const start = Math.floor(Math.random() * 40); const end = start + Math.floor(Math.random() * 40);
                     this.queue.push({ from, to, start, end });
                 }
                 cancelAnimationFrame(this.frameRequest); this.frame = 0; this.update(); return promise;
@@ -118,11 +242,7 @@
                 for (let i = 0, n = this.queue.length; i < n; i++) {
                     let { from, to, start, end, char } = this.queue[i];
                     if (this.frame >= end) { complete++; output += to; }
-                    else if (this.frame >= start) { 
-                        if (!char || Math.random() < 0.28) { char = this.chars[Math.floor(Math.random() * this.chars.length)]; this.queue[i].char = char; } 
-                        // Karışık harfleri vurgulu yap
-                        output += `<span class="highlight">${char}</span>`; 
-                    }
+                    else if (this.frame >= start) { if (!char || Math.random() < 0.28) { char = this.chars[Math.floor(Math.random() * this.chars.length)]; this.queue[i].char = char; } output += `<span style="color:#00f2ff">${char}</span>`; }
                     else { output += from; }
                 }
                 this.el.innerHTML = output;
@@ -130,15 +250,21 @@
             }
         }
 
-        const phrases = ['Hoş Geldiniz', 'Dijital Lüksü Keşfedin', 'Zihninizi Özgür Bırakın', 'Azura Başlıyor...'];
+        const phrases = ['Initializing Matrix', 'Accessing Azura Core', 'Synchronizing Soul', 'Welcome Rafık'];
         const el = document.getElementById('scramble');
         const fx = new TextScramble(el);
         let counter = 0;
         const next = () => { fx.setText(phrases[counter]).then(() => { setTimeout(next, 2000); }); counter = (counter + 1) % phrases.length; };
         next();
 
-        // Yönlendirme
-        setTimeout(() => { document.getElementById('stage').classList.add('exit-scene'); setTimeout(() => { window.location.href = "menu.html"; }, 1500); }, 8500);
+        // HUD Saat Güncelleme
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
+
+        // Final Yönlendirme (8 saniye sonra)
+        setTimeout(() => {
+            document.getElementById('master-container').classList.add('zenith-exit');
+            setTimeout(() => { window.location.href = "menu.html"; }, 1500);
+        }, 8000);
     </script>
 </body>
 </html>
