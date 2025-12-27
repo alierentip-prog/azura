@@ -3,140 +3,325 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura | Kozmoloji: Evrenin Gizemi</title>
+    <title>Azura | Kozmoloji: 500 Cümlelik Dev Arşiv</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <style>
-        :root { --bg: #f8fafc; --text: #0f172a; --primary: #8b5cf6; }
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; line-height: 1.8; }
+        :root { --bg: #f8fafc; --text: #0f172a; --primary: #8b5cf6; --accent: #0ea5e9; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background: var(--bg); color: var(--text); 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            line-height: 2.5; 
+            overflow-x: hidden; 
+        }
 
-        /* --- DINAMIK ARKA PLAN --- */
-        .bg-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.25; animation: float 20s infinite alternate; }
-        .orb-1 { top: -5%; right: -5%; width: 500px; height: 500px; background: rgba(139, 92, 246, 0.4); }
-        .orb-2 { bottom: -10%; left: -5%; width: 450px; height: 450px; background: rgba(14, 165, 233, 0.3); animation-delay: -7s; }
-        @keyframes float { 0% { transform: translate(0,0); } 100% { transform: translate(-40px, 40px); } }
+        /* ARKA PLAN - Pointer events: none ile linkleri asla engellemez */
+        .bg-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.2; animation: float 25s infinite alternate; }
+        .orb-1 { top: -10%; right: -5%; width: 600px; height: 600px; background: var(--primary); }
+        .orb-2 { bottom: -15%; left: -5%; width: 500px; height: 500px; background: var(--accent); }
+        @keyframes float { 0% { transform: translate(0,0); } 100% { transform: translate(-60px, 60px); } }
         #dust-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
-        /* --- ICERIK --- */
-        .container { max-width: 1200px; margin: 0 auto; padding: 50px 20px; position: relative; z-index: 10; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 60px 20px; position: relative; z-index: 10; }
         
-        .back-nav {
-            display: inline-flex; align-items: center; gap: 10px; margin-bottom: 40px;
-            text-decoration: none; color: var(--primary); font-family: 'JetBrains Mono';
-            font-weight: bold; font-size: 0.8rem; background: rgba(255,255,255,0.7);
-            padding: 12px 25px; border-radius: 50px; backdrop-filter: blur(10px);
-            border: 1px solid rgba(139, 92, 246, 0.2); transition: 0.3s;
+        .back-nav { 
+            display: inline-flex; align-items: center; gap: 10px; margin-bottom: 50px; 
+            text-decoration: none; color: var(--primary); font-family: 'JetBrains Mono'; 
+            font-weight: bold; background: rgba(255,255,255,0.9); padding: 18px 35px; 
+            border-radius: 60px; backdrop-filter: blur(15px); border: 2px solid rgba(139, 92, 246, 0.2); 
+            transition: 0.3s; font-size: 1.2rem;
         }
-        .back-nav:hover { background: var(--primary); color: #fff; transform: translateX(-5px); }
+        .back-nav:hover { background: var(--primary); color: #fff; transform: scale(1.05); }
 
-        header { margin-bottom: 50px; border-bottom: 1px solid rgba(139, 92, 246, 0.2); padding-bottom: 30px; }
-        .title { font-size: clamp(2.2rem, 6vw, 3.5rem); font-weight: 800; letter-spacing: -2px; line-height: 1.2; margin-bottom: 15px; }
+        header { margin-bottom: 80px; padding-bottom: 50px; border-bottom: 3px solid rgba(139, 92, 246, 0.1); }
+        .article-title { font-size: clamp(3rem, 10vw, 5rem); font-weight: 800; letter-spacing: -4px; line-height: 1.1; margin-bottom: 30px; }
+
+        .content-panel { 
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(50px); 
+            padding: 100px 80px; border-radius: 80px; border: 1px solid rgba(255,255,255,0.6); 
+            box-shadow: 0 50px 150px rgba(0,0,0,0.06); 
+        }
+
+        section { margin-bottom: 120px; }
+        h2 { font-size: 3.5rem; font-weight: 800; color: var(--primary); margin-bottom: 40px; border-left: 15px solid var(--primary); padding-left: 35px; }
         
-        /* MAKALE GÖVDESİ */
-        .article-card {
-            display: grid; grid-template-columns: 1fr 320px; gap: 40px;
-            background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(30px);
-            padding: 50px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.5);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.03);
+        /* BÜYÜK YAZI BOYUTU */
+        p { font-size: 1.6rem; color: #1e293b; margin-bottom: 45px; text-align: justify; font-weight: 400; }
+
+        .math-hero { 
+            background: #0f172a; color: #38bdf8; padding: 60px; border-radius: 50px; 
+            margin: 60px 0; font-family: 'JetBrains Mono'; font-size: 2.2rem; text-align: center;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.25); border: 2px solid rgba(56, 189, 248, 0.3);
         }
 
-        .main-text h2 { font-size: 1.8rem; font-weight: 800; margin: 40px 0 20px 0; color: var(--primary); }
-        .main-text p { font-size: 1.1rem; color: #334155; margin-bottom: 25px; }
+        .visual-block { margin: 80px 0; }
+        .visual-block img { width: 100%; border-radius: 60px; box-shadow: 0 50px 100px rgba(139, 92, 246, 0.3); border: 3px solid #fff; }
+        .visual-block figcaption { text-align: center; font-size: 1.2rem; color: #64748b; margin-top: 30px; font-style: italic; font-weight: 600; }
 
-        /* GÖRSELLER */
-        .article-img { margin: 40px 0; }
-        .article-img img {
-            width: 100%; border-radius: 25px; box-shadow: 0 15px 40px rgba(139, 92, 246, 0.2);
-            border: 1px solid rgba(255,255,255,0.5);
-        }
-        .article-img figcaption { text-align: center; font-size: 0.9rem; color: #64748b; margin-top: 15px; font-style: italic; }
+        .sidebar { position: sticky; top: 40px; height: fit-content; }
+        .stat-card { background: #1e293b; color: white; padding: 50px; border-radius: 60px; margin-bottom: 50px; }
+        .stat-card h3 { font-size: 1.8rem; margin-bottom: 30px; color: var(--accent); }
+        .stat-card ul li { font-size: 1.2rem; margin-bottom: 25px; list-style: none; display: flex; align-items: flex-start; gap: 20px; }
 
-        /* SIDEBAR (BİLGİ KUTUSU) */
-        .sidebar {
-            background: rgba(139, 92, 246, 0.05); padding: 30px; border-radius: 30px;
-            border: 1px solid rgba(139, 92, 246, 0.15); height: fit-content; position: sticky; top: 30px;
-        }
-        .sidebar h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 20px; color: var(--primary); }
-        .sidebar ul { list-style: none; }
-        .sidebar li { font-size: 0.9rem; margin-bottom: 15px; display: flex; gap: 10px; color: #475569; }
-        .sidebar li i { color: var(--primary); margin-top: 5px; }
+        footer { margin-top: 150px; text-align: center; font-size: 1.2rem; opacity: 0.5; letter-spacing: 12px; padding-bottom: 100px; }
 
-        footer { margin-top: 100px; text-align: center; font-family: 'JetBrains Mono'; font-size: 0.7rem; opacity: 0.4; letter-spacing: 4px; padding-bottom: 40px; }
-
-        @media (max-width: 968px) { .article-card { grid-template-columns: 1fr; padding: 30px; } }
+        @media (max-width: 1200px) { .content-body { padding: 60px 40px; } h2 { font-size: 2.5rem; } }
     </style>
 </head>
 <body>
 
-    <div class="bg-layer">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <canvas id="dust-canvas"></canvas>
-    </div>
+    <div class="bg-layer"><div class="orb orb-1"></div><div class="orb orb-2"></div><canvas id="dust-canvas"></canvas></div>
 
     <div class="container">
-        <a href="physic.html" class="back-nav"><i class="fa-solid fa-arrow-left"></i> FİZİK ARŞİVİNE DÖN</a>
+        <a href="physic.html" class="back-nav"><i class="fa-solid fa-arrow-left"></i> FİZİK ARŞİVİ</a>
         
         <header>
-            <h1 class="title">Kozmoloji: Evrenin Doğuşu ve Kaderi 🌌</h1>
-            <p style="font-family: 'JetBrains Mono'; color: var(--primary); font-size: 0.8rem; font-weight: bold;">SECTOR: PHYSICS_AND_UNIVERSE // MODULE_03</p>
+            <h1 class="article-title">Kozmoloji: 500 Cümlelik Dev Külliyat</h1>
+            <p style="font-family: 'JetBrains Mono'; color: var(--primary); font-size: 1.4rem; font-weight: 800; letter-spacing: 5px;">[AZURA_ENCYCLOPEDIA_v1.0]</p>
         </header>
 
-        <article class="article-card">
-            <div class="main-text">
-                <h2>Büyük Patlama (Big Bang)</h2>
-                <p>Kozmoloji, evrenin bir bütün olarak incelenmesidir. Her şey, yaklaşık 13.8 milyar yıl önce aşırı sıcak ve yoğun bir noktadan (tekillik) saniyeler içinde devasa bir boyuta genişleyerek başladı. Bu sürece <strong>Big Bang</strong> diyoruz.</p>
-                
-                <figure class="article-img">
-                    <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=1200" alt="Evrenin Genişlemesi">
-                    <figcaption>Kozmik genişlemenin ve galaksi oluşumlarının sanatsal bir tasviri.</figcaption>
-                </figure>
+        <main class="content-panel">
+            
+            <section>
+                <h2>1. Başlangıç Noktası: Tekillik</h2>
+                <p>1. Evrenin hikayesi, günümüzden yaklaşık 13.82 milyar yıl önce hayal edilemez bir enerji yoğunluğuyla başlar. 2. Bu başlangıç anında evrenin tüm kütlesi ve enerjisi "tekillik" adı verilen sonsuz küçük bir noktaya hapsolmuştur. 3. Tekillik, matematiksel olarak sıfır hacme sahip ama sonsuz yoğunlukta olan bir bölgeyi ifade eder. 4. Bu noktada bilinen tüm fizik yasaları, genel görelilik ve kuantum mekaniği gibi devasa teoriler bile geçerliliğini yitirir. 5. Henüz zaman diye bir kavram yoktur çünkü zaman ancak genişleme başladığında akmaya başlayacaktır. 6. Uzay diye bir kavram yoktur çünkü uzay bu noktanın genişlemesiyle birlikte yaratılacaktır. 7. Tekillik hali, evrenin sessizce beklediği en büyük doğum sancısıdır. 8. Bu dönemde sıcaklık Planck sıcaklığı olarak bilinen 10 üzeri 32 Kelvin seviyesindedir. 9. Madde henüz atomlardan veya parçacıklardan oluşmamıştır; sadece saf ve kontrol edilemez bir enerji alanıdır. 10. Evrenin bu ilk halini gözümüzde canlandırmak imkansızdır çünkü zihnimiz her zaman bir "boşluk" içinde bir nokta arar.</p>
+                <p>11. Oysa bu tekilliğin "dışında" bir boşluk yoktur; boşluğun kendisi de bu noktanın içindedir. 12. Evrenin patlaması bir bomba gibi dışarı doğru değildir, kendi içindeki uzayın esnemesidir. 13. Bu genişleme başladığı an, saniyenin milyarlarca kat küçüklüğünde bir zaman dilimi geçmiştir. 14. Bu andan itibaren dört temel kuvvet (kütleçekimi, elektromanyetizma, güçlü ve zayıf nükleer kuvvetler) tek bir süper kuvvet olarak hareket etmektedir. 15. Ancak evren soğumaya başladığı an kütleçekimi bu birlikten ayrılan ilk kuvvet olur. 16. Kütleçekiminin ayrılması, uzay-zamanın dokusunun kalıcı olarak şekillenmesini sağlar. 17. Hemen ardından güçlü nükleer kuvvetin ayrılmasıyla muazzam bir enerji açığa çıkar. 18. Bu enerji, evreni saniyenin çok küçük bir kesrinde ışık hızından kat kat hızlı genişletir. 19. Biz bu sürece kozmik enflasyon diyoruz ve bu olay evrenin kaderini mühürlemiştir. 20. Enflasyon olmasaydı, bugün gördüğümüz devasa yıldız sistemleri ve galaksiler asla oluşamazdı.</p>
+                <div class="visual-block">
+                    [attachment_0](attachment)
+                    <figcaption>Şekil 1: Kozmik Doğum: Her şeyin başladığı o sonsuz yoğunluktaki tekillik noktası.</figcaption>
+                </div>
+            </section>
 
-                <h2>Karanlık Madde ve Enerji</h2>
-                <p>Evrenin sadece %5'i bildiğimiz atomlardan oluşur. Geri kalan devasa kısım, göremediğimiz ama çekim gücüyle galaksileri bir arada tutan <strong>Karanlık Madde</strong> ve evrenin hızla genişlemesini sağlayan <strong>Karanlık Enerji</strong>'dir.</p>
+            <section>
+                <h2>2. Enflasyon: Işık Hızının Ötesinde</h2>
+                <p>21. Kozmik enflasyon, evrenin tarihindeki en şiddetli büyüme evresidir. 22. Saniyenin 10 üzeri eksi 36'sı ile 10 üzeri eksi 32'si arasında gerçekleşen bu olay evrenin hacmini trilyonlarca kat artırmıştır. 23. Bu genişleme sırasında uzay-zamanın dokusu sanki bir kumaşın hızla gerilmesi gibi esnemiştir. 24. Enflasyon teorisi, evrenin neden her yönde bu kadar homojen ve düzgün olduğunu açıklayan tek mantıklı yoldur. 25. Eğer enflasyon olmasaydı, evrenin bir köşesiyle diğer köşesi arasında devasa sıcaklık farkları olurdu. 26. Enflasyon sayesinde evrenin her yerindeki madde ve enerji dağılımı neredeyse eşitlenmiştir. 27. Bu süreçte kuantum seviyesindeki küçük dalgalanmalar devasa boyutlara ulaşmıştır. 28. İşte bu devasa kuantum dalgalanmaları, ileride galaksilerin oluşacağı "tohumları" meydana getirmiştir. 29. Enflasyon bittiğinde evren artık çok daha büyük ama hala inanılmaz derecede sıcaktır. 30. Bu evre sona erdiğinde evren saf radyasyon ve temel parçacıklarla dolu bir çorba halindedir.</p>
+                <div class="math-hero">
+                    $$\Delta E \cdot \Delta t \geq \frac{\hbar}{2}$$
+                </div>
+                <p>31. Heisenberg'in belirsizlik ilkesi, enflasyon dönemindeki kuantum dalgalanmalarının temelini oluşturur. 32. Enerji ve zamandaki bu küçük belirsizlikler, evrenin pürüzsüz yapısındaki ilk "kusurları" yaratmıştır. 33. Bu kusurlar olmasaydı kütleçekimi maddeyi bir araya toplayamazdı. 34. Yani mükemmel bir simetri olsaydı, yıldızlar ve gezegenler asla doğamazdı. 35. Bizler, evrenin başlangıcındaki o küçük ve asimetrik "hataların" birer sonucuyuz. 36. Enflasyon bittiğinde evrenin genişleme hızı yavaşlamış ama genişleme asla durmamıştır. 37. Artık evren temel kuvvetlerin kontrolü altında bir madde fabrikasına dönüşmeye hazırdır. 38. Bu dönemde fotonlar, kuarklar ve gluonlar serbestçe birbirine çarparak hareket etmektedir. 39. Henüz protonlar ve nötronlar bile oluşmamıştır çünkü sıcaklık çok yüksektir. 40. Evren bu haliyle devasa ve parlak bir plazma küresi gibidir.</p>
+                <div class="visual-block">
+                    [attachment_1](attachment)
+                    <figcaption>Şekil 2: Enflasyon Süreci: Uzayın saniyeden çok daha kısa sürede devasa büyümesi.</figcaption>
+                </div>
+            </section>
 
-                <figure class="article-img">
-                    <img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80&w=1200" alt="Derin Uzay">
-                    <figcaption>Hubble Uzay Teleskobu tarafından görüntülenen binlerce galaksi.</figcaption>
-                </figure>
-            </div>
+            <section>
+                <h2>3. Kuarklardan Protonlara: İlk Madde</h2>
+                <p>41. Büyük Patlama'dan sonraki saniyenin ilk milyonda birinde sıcaklık yeterince düşmüştür. 42. Artık kuarklar serbestçe gezemez ve gluonlar yardımıyla birbirlerine bağlanmaya başlar. 43. Üçerli gruplar halinde birleşen kuarklar, ilk protonları ve nötronları oluşturur. 44. Bu sürece hadron dönemi denir ve madde dünyasının ilk tuğlaları burada atılır. 45. Ancak bu dönemde madde ve antimadde arasında korkunç bir savaş yaşanmaktadır. 46. Her parçacık için bir karşı-parçacık üretilmiş ve bunlar birbirini yok ederek enerjiye dönüşmektedir. 47. Eğer her şey tam olarak eşit olsaydı evren sadece ışıktan ibaret kalacaktı. 48. Doğa bir şekilde madde lehine milyarda bir oranında küçük bir fark yaratmıştır. 49. Bu milyarda birlik "madde fazlası" bugün gördüğümüz tüm evreni inşa etmiştir. 50. Bizler ve gördüğümüz her şey, o büyük savaştan sağ çıkan şanslı parçacıklarız.</p>
+                <p>51. Madde savaşı kazandıktan sonra evren soğumaya devam eder. 52. Yaklaşık birinci saniyede evrenin sıcaklığı 10 milyar Kelvin civarına iner. 53. Bu sıcaklıkta nötronlar ve protonlar artık kararlı bir yapıya kavuşur. 54. Ancak elektronlar hala çok enerjiktir ve çekirdeklerin etrafında dolanamazlar. 55. Evren hala ışık geçirmeyen, yoğun ve parlak bir plazma halindedir. 56. Fotonlar sürekli serbest elektronlara çarparak yollarını değiştirmek zorunda kalır. 57. Bu yüzden ışık evrenin içinde hapsolmuş gibidir ve serbestçe ilerleyemez. 58. Bu döneme "foton hapishanesi" demek kozmolojik açıdan yanlış bir tanım olmaz. 59. Evrenin bu opak hali tam 380,000 yıl boyunca sürecektir. 60. Ancak bu süreçte kütleçekimi sessizce maddeyi kümeler haline getirmeye başlamıştır.</p>
+                <div class="visual-block">
+                    [attachment_2](attachment)
+                    <figcaption>Şekil 3: Madde-Antimadde Savaşı: Yok oluştan arta kalan küçük farkın zaferi.</figcaption>
+                </div>
+            </section>
 
-            <aside class="sidebar">
-                <h3><i class="fa-solid fa-bolt"></i> Kozmik Veriler</h3>
-                <ul>
-                    <li><i class="fa-solid fa-circle-check"></i> <strong>Yaş:</strong> 13.79 Milyar Yıl</li>
-                    <li><i class="fa-solid fa-circle-check"></i> <strong>İçerik:</strong> %68 Karanlık Enerji</li>
-                    <li><i class="fa-solid fa-circle-check"></i> <strong>İçerik:</strong> %27 Karanlık Madde</li>
-                    <li><i class="fa-solid fa-circle-check"></i> <strong>Durum:</strong> Hızlanarak Genişliyor</li>
-                </ul>
-            </aside>
-        </article>
+            <section>
+                <h2>4. İlk Mutfak: Nükleosentez</h2>
+                <p>61. Büyük Patlama'dan sonraki 3. ile 20. dakikalar arası evren dev bir mutfak gibidir. 62. Sıcaklık nükleer füzyonun gerçekleşebileceği o kritik seviyeye kadar inmiştir. 63. Protonlar ve nötronlar birleşerek evrendeki ilk atom çekirdeklerini oluşturmaya başlar. 64. Tek bir protondan oluşan Hidrojen, evrenin kütlesinin %75'ini kaplayacak şekilde oluşur. 65. Proton ve nötronların birleşmesiyle oluşan Helyum ise %24'lük bir pay alır. 66. Çok az miktarda Lityum ve Döteryum da bu kozmik mutfakta pişirilen yan ürünlerdir. 67. Bu süreç sadece yirmi dakika sürer çünkü evren hızla genişleyip soğumaktadır. 68. Yirmi dakika sonunda sıcaklık nükleer tepkimeler için yetersiz hale gelir. 69. Artık evrenin kimyasal bileşimi sonsuza dek (yıldızlar oluşana dek) mühürlenmiştir. 70. Bu "ilksel nükleosentez" modern kozmolojinin en büyük başarılarından biridir.</p>
+                <p>71. Eğer Büyük Patlama olmasaydı bu element oranlarını başka türlü açıklayamazdık. 72. Yıldızlar bu kadar çok helyumu bu kadar kısa sürede üretemezdi. 73. Bu yüzden hidrojen ve helyumun oranı, evrenin bir başlangıcı olduğunun kanıtıdır. 74. Artık evren milyarlarca ışık yılı genişliğinde dev bir gaz bulutu halindedir. 75. Ancak hala atomlar tam değildir çünkü elektronlar serbestçe uçuşmaktadır. 76. Çekirdekler pozitif, elektronlar negatif yüklü olduğu için evren elektriksel olarak dengededir. 77. Fakat fotonlar hala elektron engeline takıldığı için evren karanlık kalmaya devam eder. 78. Bu karanlık madde yokluğundan değil, ışığın kaçamamasından kaynaklanır. 79. Kozmik mutfak kapandıktan sonra evren uzun bir soğuma evresine girer. 80. Bu sessizlik, evren tarihinin en büyük olaylarından birine zemin hazırlamaktadır.</p>
+                <div class="math-hero">
+                    $$\text{He}^4 / \text{H} \approx 0.25$$
+                </div>
+            </section>
 
-        <footer>AZURA PROJECT // 2025 // THE ENCYCLOPEDIA OF THE FUTURE</footer>
+            <section>
+                <h2>5. Rekombinasyon: İlk Işık</h2>
+                <p>81. Takvimler Büyük Patlama'dan tam 380,000 yıl sonrasını gösterir. 82. Evrenin sıcaklığı nihayet 3000 Kelvin seviyesine, yani bir ampulün teli kadar soğukluğa düşer. 83. Bu sıcaklıkta elektronlar artık o kadar hızlı değildir ve çekirdeklerin çekim gücüne kapılırlar. 84. Elektronlar ve çekirdekler birleşerek evrendeki ilk tam nötr atomları oluşturur. 85. Bu muazzam olaya kozmolojide "Rekombinasyon" (Yeniden Birleşme) adı verilir. 86. Elektronlar atomların içine hapsolduğu an, fotonların önündeki tüm engeller kalkar. 87. Fotonlar tarihte ilk kez evrenin bir ucundan diğer ucuna serbestçe akmaya başlar. 88. Sis bulutu dağılmış, evren bir anda şeffaf ve berrak bir hale gelmiştir. 89. O an yola çıkan ışık parçacıkları 13.8 milyar yıl boyunca uzayda seyahat edecektir. 90. Bu ışık parçacıkları bugün bile her yönden bize ulaşmaya devam etmektedir.</p>
+                <p>91. Evren genişlediği için bu fotonların enerjisi düşmüş ve dalga boyları uzamıştır. 92. Biz bugün bu ışığı "Kozmik Mikrodalga Arka Plan Işıması" (CMB) olarak biliyoruz. 93. CMB, evrenin bebeklik dönemine ait çekilmiş en eski ve en net fotoğraftır. 94. Teleskoplarımızla bu radyasyonu ölçtüğümüzde evrenin 380,000 yaşındaki halini görürüz. 95. Bu radyasyon her yönde neredeyse aynı sıcaklıkta olduğu için evrenin homojenliğini kanıtlar. 96. Ancak bu haritadaki çok küçük sıcaklık farkları galaksilerin doğum yerlerini işaret eder. 97. Mavi noktalar biraz daha soğuk ve yoğun, kırmızı noktalar biraz daha sıcak bölgelerdir. 98. Bu küçük yoğunluk farkları, kütleçekiminin maddeyi toplamak için kullandığı dayanak noktalarıdır. 99. Eğer bu küçük pürüzler olmasaydı evren dümdüz ve bomboş bir yer olarak kalırdı. 100. Işığın serbest kalmasıyla birlikte evrenin "Karanlık Çağları" da başlamış olur.</p>
+                <div class="visual-block">
+                    [attachment_3](attachment)
+                    <figcaption>Şekil 4: Rekombinasyon: Fotonların hapishaneden kaçıp evrene yayıldığı o efsanevi an.</figcaption>
+                </div>
+            </section>
+
+        </main>
+
+        <footer>AZURA PROJECT // COSMOS_ARCHIVE_PART_1_2 // CONTINUING TO 500...</footer>
     </div>
 
     <script>
-        const canvas = document.getElementById('dust-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        let p = Array.from({length: 60}, () => ({
-            x: Math.random() * canvas.width, y: Math.random() * canvas.height,
-            s: Math.random() * 2, vx: Math.random() * 0.4 - 0.2, vy: Math.random() * 0.4 - 0.2
+        const canvas = document.getElementById('dust-canvas'); const ctx = canvas.getContext('2d');
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
+        let particles = Array.from({length: 120}, () => ({ 
+            x: Math.random() * canvas.width, y: Math.random() * canvas.height, 
+            s: Math.random() * 3, vx: Math.random() * 0.4 - 0.2, vy: Math.random() * 0.4 - 0.2 
         }));
-        function anim() {
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            p.forEach(i => {
-                i.x += i.vx; i.y += i.vy;
-                if(i.x<0 || i.x>canvas.width) i.vx*=-1; if(i.y<0 || i.y>canvas.height) i.vy*=-1;
-                ctx.fillStyle = 'rgba(139, 92, 246, 0.2)'; ctx.beginPath();
-                ctx.arc(i.x, i.y, i.s, 0, Math.PI*2); ctx.fill();
-            });
-            requestAnimationFrame(anim);
-        }
-        anim();
+        function animate() { 
+            ctx.clearRect(0,0,canvas.width,canvas.height); 
+            particles.forEach(p => { 
+                p.x += p.vx; p.y += p.vy; 
+                if(p.x<0 || p.x>canvas.width) p.vx*=-1; if(p.y<0 || p.y>canvas.height) p.vy*=-1; 
+                ctx.fillStyle = 'rgba(139, 92, 246, 0.25)'; ctx.beginPath(); ctx.arc(p.x,p.y,p.s,0,Math.PI*2); ctx.fill(); 
+            }); 
+            requestAnimationFrame(animate); 
+        } animate();
     </script>
 </body>
 </html>
+            <section>
+                <h2>6. Kozmik Karanlık Çağlar: İlk Işığın Sessizliği</h2>
+                <p>101. Rekombinasyon bittikten sonra evren şeffaf hale gelmiştir ancak hala zifiri karanlıktır. 102. Bu döneme kozmolojide "Kozmik Karanlık Çağlar" adı verilir. 103. İlk atomlar oluşmuştur ama evrende bu atomları aydınlatacak tek bir yıldız bile yoktur. 104. Evren sadece hidrojen bulutları, helyum gazı ve gizemli karanlık maddeden ibarettir. 105. Bu karanlık dönem yaklaşık olarak yüz elli milyon yıl boyunca devam edecektir. 106. Işık kaynağı olmamasına rağmen yerçekimi (kütleçekimi) sessizce en büyük işini yapmaktadır. 107. Karanlık madde, evrenin her yerine devasa bir örümcek ağı gibi yayılmıştır. 108. Hidrojen ve helyum gazları bu görünmez ağın düğüm noktalarında birikmeye başlar. 109. Gaz bulutları kümelendikçe kendi ağırlıkları altında sıkışmaya ve ısınmaya başlar. 110. Bu süreç o kadar yavaştır ki sanki evren derin bir kış uykusuna yatmış gibidir.</p>
+                <p>111. Karanlık çağlar boyunca evrenin sıcaklığı hızla düşmeye devam eder. 112. Artık evrenin her yeri mutlak sıfıra yakın bir soğuklukla kaplanmıştır. 113. Ancak bulutların merkezindeki basınç, hayal edilemez seviyelere ulaşmaktadır. 114. Bir gaz bulutu ne kadar çok madde toplarsa kütleçekimi o kadar güçlenir. 115. Bu güçlenme, bulutun merkezindeki atomların birbirine daha sıkı çarpmasını sağlar. 116. Bu çarpışmalar sırasında açığa çıkan enerji, ilk yıldızların kalplerini ısıtır. 117. Karanlık çağlar, evrenin en sakin ama en üretken hazırlık evresidir. 118. Işığın olmadığı bu dönemde, maddenin gelecekteki mimarisi gizlice çizilmektedir. 119. İlk yıldızların doğumu için gerekli olan tüm yakıt artık bu bulutlarda birikmiştir. 120. Evren, tarihin ilk şafağının sökmesini bekleyen bir sahra gibidir.</p>
+                <div class="visual-block">
+                    
+                    <figcaption>Şekil 5: Kozmik Karanlık Çağlar: Yıldızlar doğmadan önceki milyonlarca yıllık zifiri karanlık.</figcaption>
+                </div>
+                <p>121. Milyonlarca yıl geçtikçe bu bulutlar birer dev haline gelmiştir. 122. Yerçekimi, evrenin rastgele dağılmış gazlarını devasa küreler içine hapseder. 123. Bu kürelerin merkezindeki sıcaklık on milyon dereceye yaklaştığında bir mucize gerçekleşir. 124. Hidrojen çekirdekleri birbirine o kadar sert çarpar ki füzyon tepkimesi başlar. 125. Bu an, evrenin "Kozmik Şafak" (Cosmic Dawn) dediğimiz anıdır. 126. İlk yıldızlar parlamaya başladığında evrenin karanlık örtüsü yırtılır. 127. İlk fenerler, zifiri karanlığın içinde tek tek yanmaya başlar. 128. Işık, milyonlarca yıl aradan sonra evrende tekrar yolculuğa çıkar. 129. Bu ilk ışıklar, evrendeki gazları tekrar iyonlaştırmaya başlayacaktır. 130. Karanlık çağların sonu, evrenin modern döneminin başlangıcıdır.</p>
+                <p>131. İlk yıldızların doğuşuyla evren artık sadece gaz değil, ışık doludur. 132. Yerçekimi artık sadece bulutları değil, yeni doğan yıldızları da yönetir. 133. Yıldız kümeleri bir araya gelerek ilk galaksi taslaklarını oluşturur. 134. Kozmik ağın her bir düğümü, parlayan elmaslar gibi ışıldamaya başlar. 135. Evrenin bu dönemindeki her bir olay, bir zincirleme reaksiyon gibidir. 136. Bir yıldızın doğumu, çevresindeki diğer gazları da tetikler. 137. Karanlık çağların bitişiyle evrenin en heyecanlı dönemi başlamıştır. 138. Işığın ve maddenin bu dansı milyarlarca yıl sürecektir. 139. Bizler bugün o ilk şafağın uzak yankılarını teleskoplarımızla görebiliyoruz. 140. Karanlık çağlar bittiğinde evren artık bugünkü halinin iskeletini kurmuştur.</p>
+            </section>
+
+            <section>
+                <h2>7. Population III: Evrenin İlk Devleri</h2>
+                <p>141. Evrenin ilk yıldızları, bugün gördüğümüz yıldızlardan çok farklıydı. 142. Bilim insanları bu gizemli ilk nesil yıldızlara "Population III" adını verirler. 143. Bu yıldızlar tamamen hidrojen ve helyumdan oluşan devasa kütleli canavarlardır. 144. Bir Population III yıldızı, güneşimizden 1000 kat daha ağır olabilir. 145. Çok ağır oldukları için merkezlerindeki nükleer yakıtı inanılmaz bir hızla tüketirler. 146. Güneşimiz milyarlarca yıl yaşarken, bu ilk devler sadece birkaç milyon yıl yaşayabilmiştir. 147. Ömürleri kısa olsa da etkileri evren için hayati derecede büyüktür. 148. Bu yıldızlar inanılmaz derecede sıcak ve mavi-beyaz bir ışıkla parlarlar. 149. Yaydıkları yoğun ultraviyole radyasyon evreni tekrar dönüştürmeye başlar. 150. İlk yıldızlar, evrenin en büyük kimyasal laboratuvarlarıdır.</p>
+                <div class="visual-block">
+                    
+                    <figcaption>Şekil 6: Population III Yıldızları: Evrenin ilk ve en parlak kimyasal fabrikaları.</figcaption>
+                </div>
+                <p>151. Büyük Patlama'da sadece en hafif elementler olan hidrojen ve helyum üretilmiştir. 152. Ancak yaşam için gerekli olan karbon, oksijen ve demir henüz yoktur. 153. Bu ağır elementler ancak yıldızların o cehennem vari merkezlerinde pişirilebilir. 154. Population III yıldızları, evren tarihindeki ilk ağır elementleri sentezlerler. 155. Yıldızın kalbinde hidrojen helyuma, helyum ise karbona dönüşür. 156. Daha sonra oksijen, magnezyum ve silisyum gibi elementler sıra alır. 157. En sonunda yıldızın merkezinde demir oluşmaya başladığında yıldızın sonu gelir. 158. Demir enerjiyi emdiği için yıldızın iç basıncı aniden çöker. 159. Bu çöküş, evrendeki en görkemli patlama olan "Süpernova"yı tetikler. 160. Süpernova patlamalarıyla yıldızın içinde pişen tüm elementler uzaya saçılır.</p>
+                <p>161. Eğer o ilk yıldızlar patlamasaydı, biz bugün var olamazdık. 162. Kanımızdaki demir, kemiğimizdeki kalsiyum o ilk patlamalardan miras kalmıştır. 163. Population III yıldızları, evreni "kirleten" ilk saflık bozuculardır. 164. Onların saçtığı bu tozlar, ikinci nesil yıldızların ve gezegenlerin oluşmasını sağlar. 165. Toz ve gaz bulutları artık sadece hidrojen değil, minerallerle doludur. 166. İlk yıldızların ölümü, yaşamın doğumu için atılmış ilk tohumdur. 167. Bu yıldızlar çok parlak oldukları için galaksilerin oluşumunu da hızlandırırlar. 168. Yaydıkları şok dalgaları çevredeki gazları sıkıştırıp yeni yıldızları doğurur. 169. Evren artık kendi kendini inşa eden dev bir makine gibi çalışmaktadır. 170. İlk yıldız nesli bittiğinde evren artık daha ağır ve daha zengindir.</p>
+                <p>171. Bu devasa yıldızlardan geriye bazen sadece toz değil, kara delikler de kalır. 172. İlk kara delikler bu devasa yıldızların çökmüş kalplerinden doğmuştur. 173. Bu küçük kara delikler zamanla birleşerek devasa canavarlara dönüşecektir. 174. Yıldızlar ölürken bile evrenin geleceğini şekillendirmeye devam eder. 175. İlk yıldızların ışığı re-iyonizasyon dönemini başlatacak kadar güçlüdür. 176. Evrenin her köşesi bu ilk ışıklarla tekrar ısınır. 177. Gazlar tekrar iyonize olur ve evren daha karmaşık bir yapıya bürünür. 178. Population III yıldızları evrenin "isimsiz kahramanlarıdır". 179. Bugün o yıldızlardan hiçbirini göremiyoruz çünkü hepsi milyarlarca yıl önce öldü. 180. Ama onların bıraktığı miras, bugün senin ve benim atomlarımızda yaşıyor.</p>
+            </section>
+
+            <section>
+                <h2>8. Galaktik Meclis: İlk Galaksilerin Doğuşu</h2>
+                <p>181. İlk yıldızlar oluştuktan sonra, kütleçekimi bu yıldızları bir araya getirmeye başlar. 182. Binlerce yıldızın birleşmesiyle ilk "yıldız kümeleri" meydana gelir. 183. Bu kümeler, karanlık maddenin oluşturduğu o devasa çukurlara doğru sürüklenir. 184. Yerçekimi, bu küçük kümeleri birleştirerek "protogalaksileri" oluşturur. 185. İlk galaksiler bugün gördüğümüz Samanyolu gibi düzenli ve büyük değildir. 186. Onlar daha çok darmadağınık, küçük ve amorf (şekilsiz) yapılardır. 187. Ancak bu küçük yapılar, evrenin en büyük çarpışma sahalarıdır. 188. Galaksiler birbirine çarptıkça daha da büyür ve devleşirler. 189. Bu çarpışmalar sırasında yıldız oluşum hızı tavan yapar. 190. Galaksiler, evrenin maddeyi en verimli şekilde organize ettiği merkezlerdir.</p>
+                <div class="visual-block">
+                    
+                    <figcaption>Şekil 7: Galaktik Birleşme: Küçük ve düzensiz yapıların dev galaksilere dönüşümü.</figcaption>
+                </div>
+                <p>191. Bir galaksinin merkezinde madde biriktikçe orada devasa bir kütle oluşur. 192. Bu kütle çoğu zaman süper kütleli bir kara deliğe dönüşür. 193. Galaksi ve merkezindeki kara delik beraber büyüyen birer dost gibidir. 194. Kara delik çevredeki gazı yuttukça inanılmaz bir enerji yayar. 195. Bu parlak galaksi merkezlerine "aktif galaksi çekirdekleri" denir. 196. En parlak olanları ise kuasarlar olarak adlandırılır. 197. Bir kuasar, tüm galaksiden daha parlak olabilir ve evrenin öbür ucundan görülebilir. 198. Galaksiler büyüdükçe kendi etraflarında dönmeye başlarlar. 199. Bu dönme hareketi, galaksilerin o meşhur sarmal kollarını oluşturur. 200. Galaksilerin birleşmesi evrendeki en görkemli kütleçekimsel danstır.</p>
+                <p>201. Samanyolu galaksisi de milyarlarca yıl önce bu şekilde küçük parçalardan oluşmuştur. 202. Her galaksi, içinde milyarlarca yıldız, gezegen ve gaz barındıran bir "evren adası"dır. 203. Galaksiler arası uzay neredeyse bomboştur ama kütleçekimi ile birbirlerine bağlıdırlar. 204. Galaksiler, evrenin en büyük ölçekli düzenli yapılarıdır. 205. Bir galaksi kümesinde binlerce galaksi bir arada bulunabilir. 206. Yerçekimi, evreni bir bütün olarak tutan görünmez zincirdir. 207. Galaksilerin içindeki gaz, yeni yıldız nesillerini doğurmaya devam eder. 208. Her yeni nesil yıldız, bir önceki neslin küllerinden doğar. 209. Bu döngü evrenin yaşlanmasını ve zenginleşmesini sağlar. 210. Galaksiler, evrenin canlı laboratuvarları gibidir.</p>
+                <p>211. Galaksilerin birleşmesi bazen milyarlarca yıl süren bir süreçtir. 212. İki galaksi çarpıştığında yıldızlar aslında birbirine çarpmaz; uzay çok geniştir. 213. Sadece galaksilerin şekilleri değişir ve gaz bulutları sıkışarak yeni yıldızlar doğurur. 214. Bu sürece "yıldız patlaması" (starburst) galaksisi denir. 215. Galaksiler, evrenin enerji bütçesinin en görünür kısmıdır. 216. Ama unutmamak gerekir ki, galaksilerin büyük bir kısmı görünmez karanlık maddeden ibarettir. 217. Karanlık madde galaksileri bir kafes gibi sarıp sarmalar. 218. Bu görünmez kafes olmasa galaksiler kendi hızları yüzünden dağılırdı. 219. Galaksiler, madde ve karanlık maddenin mükemmel bir işbirliğidir. 220. Galaksilerin doğuşu, evrenin çocukluk döneminin bittiği andır.</p>
+            </section>
+
+            <section>
+                <h2>9. Kozmik Ağ: Görünmez İskelet</h2>
+                <p>221. Evrene en büyük ölçekte baktığımızda, galaksilerin rastgele dağılmadığını fark ederiz. 222. Galaksiler, devasa ve uzun "iplikçikler" boyunca dizilmişlerdir. 223. Bu devasa yapıya "Kozmik Ağ" (Cosmic Web) adı verilir. 224. Bu ağın ana bileşeni ne yıldızlar ne de gazdır; ana bileşen karanlık maddedir. 225. Karanlık madde, evrenin iskeletini oluşturan görünmez bir çeliktir. 226. Galaksiler bu görünmez iplikçiklerin üzerinde parlayan küçük ışık noktalarıdır. 227. Ağın iplikçiklerinin kesiştiği yerlerde devasa galaksi kümeleri bulunur. 228. Bu kesişim noktaları evrenin en kalabalık ve en sıcak yerleridir. 229. İplikçiklerin arasında ise "boşluklar" (voids) yer alır. 230. Boşluklar, içinde neredeyse hiçbir şeyin bulunmadığı devasa karanlık hacimlerdir.</p>
+                <div class="visual-block">
+                    
+                    <figcaption>Şekil 8: Kozmik Ağ: Evrenin milyarlarca ışık yılı uzunluğundaki görünmez iskeleti.</figcaption>
+                </div>
+                <p>231. Kozmik ağ, Büyük Patlama'dan hemen sonraki kuantum tohumlarından doğmuştur. 232. Küçük yoğunluk farkları, kütleçekimi ile milyonlarca yıl boyunca büyütülmüştür. 233. Bu iplikçikler galaksilerin hareketini ve büyümesini doğrudan etkiler. 234. Gazlar bu iplikçikler boyunca galaksilere doğru akar. 235. Kozmik ağ, evrenin en büyük ölçekli organizasyonudur. 236. Karanlık madde, ışıkla etkileşime girmediği için bu ağı doğrudan göremeyiz. 237. Ancak galaksilerin kütleçekimsel hareketlerinden bu ağı haritalandırabiliriz. 238. Karanlık madde, evrenin toplam kütlesinin yaklaşık %85'ini oluşturur. 239. Bizim bildiğimiz atomlar (baryonlar) ise bu büyük resmin sadece küçük bir ekidir. 240. Karanlık madde olmasa evrenin bugünkü yapısı asla var olamazdı.</p>
+                <p>241. Karanlık maddenin doğası hala modern fiziğin en büyük gizemidir. 242. O ne atomlardan ne de bilinen hiçbir parçacıktan oluşur. 243. Sadece yerçekimi uygular ve maddenin toplanmasını sağlar. 244. Kozmik ağın iplikçikleri evren genişledikçe daha da belirginleşir. 245. Ancak karanlık enerjinin itme gücü bu ağı zamanla yırtmaya çalışacaktır. 246. Şu an için kütleçekimi yerel bölgelerde bu savaşı kazanmaktadır. 247. Galaksiler bu ağ üzerinde milyarlarca yıl boyunca dans etmeye devam edecektir. 248. Bir galaksi kümesi, kozmik ağın kalbinin attığı yerdir. 249. Bu kümelerdeki binlerce galaksi dev bir "arıkovanı" gibi hareket eder. 250. Evren, makro ölçekte devasa ve karmaşık bir bağ dokusuna sahiptir.</p>
+                <p>251. Kozmik ağın yapısını anlamak, evrenin kaderini anlamak demektir. 252. Bu devasa yapı, Büyük Patlama'daki o ilk fısıltının eseridir. 253. Küçük bir pürüz, milyarlarca ışık yılı uzunluğunda bir iplikçiğe dönüşmüştür. 254. Kozmoloji, bu devasa haritayı okuma sanatıdır. 255. Her bir galaksi, bu büyük ağın içinde kendi hikayesini yazar. 256. Bizim Samanyolu galaksimiz de Laniakea Süper Kümesi'nin küçük bir parçasıdır. 257. Laniakea, "muazzam gökyüzü" anlamına gelir ve bizim kozmik mahallemizdir. 258. Evren o kadar büyüktür ki, bu süper kümeler bile sadece birer noktadır. 259. Kozmik ağ, evrenin sonsuzluğa uzanan parmak izidir. 260. Karanlık maddenin bu sessiz hükmü evren var oldukça sürecektir.</p>
+            </section>
+
+            <section>
+                <h2>10. Karanlık Enerji: Kaçışın İtici Gücü</h2>
+                <p>261. 1990'ların sonuna kadar bilim insanları evrenin genişlemesinin yavaşladığını sanıyordu. 262. Çünkü kütleçekimi her şeyi birbirine çekerek genişlemeyi durdurmaya çalışmalıydı. 263. Ancak süpernova gözlemleri herkesi şoke eden bir gerçeği ortaya çıkardı. 264. Evrenin genişlemesi yavaşlamıyor, tam tersine her geçen saniye hızlanıyor! 265. Bu hızlanan genişlemenin arkasındaki gizemli güce "Karanlık Enerji" diyoruz. 266. Karanlık enerji, uzay-zamanın bizzat kendisine ait olan bir vakum enerjisidir. 267. Uzay genişledikçe daha fazla uzay oluşur ve daha fazla uzay demek daha fazla karanlık enerji demektir. 268. Bu, kütleçekiminin tam tersi yönünde çalışan itici bir kuvvettir. 269. Karanlık enerji, evrenin toplam kütle-enerji bütçesinin %68'ini tek başına kaplar. 270. O, evrenin nihai hükümdarı ve kaderini belirleyen asıl güçtür.</p>
+                <div class="math-block">
+                    $$\Omega_\Lambda \approx 0.68$$
+                </div>
+                <p>271. Karanlık enerji olmasaydı evren belki de bir gün kendi üzerine çökebilirdi. 272. Ancak bu itici güç, evrenin kaderini "sonsuz genişleme" olarak mühürlemiştir. 273. Galaksiler birbirinden o kadar hızlı uzaklaşıyor ki ışık bile bu mesafeyi kapatmakta zorlanıyor. 274. Milyarlarca yıl sonra, komşu galaksiler görüş alanımızdan tamamen çıkacak. 275. Gökyüzüne bakan bir gözlemci sadece kendi galaksisini görecek, her yer karanlık olacak. 276. Karanlık enerji, uzayın dokusunu her geçen gün daha da fazla geriyor. 277. Bu gizemli enerjinin doğası hakkında neredeyse hiçbir şey bilmiyoruz. 278. O, Einstein'ın "Kozmolojik Sabit" (Lambda) dediği şeye çok benzemektedir. 279. Eğer karanlık enerjinin yoğunluğu sabit kalırsa, evren "Büyük Donma"ya gidecektir. 280. Ancak bu enerji zamanla güçlenirse "Büyük Yırtılma" senaryosu gerçekleşebilir.</p>
+                <div class="visual-block">
+                    
+                    <figcaption>Şekil 9: Karanlık Enerji: Evreni birbirinden ayıran ve genişlemeyi hızlandıran itici güç.</figcaption>
+                </div>
+                <p>281. Karanlık enerji, evrenin en büyük boşluklarında bile mevcuttur. 282. O, uzayın kendisinin bir parçası olduğu için ondan kaçış yoktur. 283. Kütleçekimi sadece galaksi kümeleri gibi yerel seviyelerde baskındır. 284. Evrenin geneline bakıldığında karanlık enerji savaşı kazanmaktadır. 285. Bu enerji, evrenin sonsuza dek seyreleceği ve soğuyacağı bir geleceği garantiler. 286. Madde seyreldikçe yıldız oluşumu duracak ve evren karanlığa gömülecektir. 287. Karanlık enerji, Büyük Patlama'dan milyarlarca yıl sonra baskın hale gelmiştir. 288. Evrenin gençlik yıllarında kütleçekimi daha güçlüydü. 289. Ancak yaklaşık 5 milyar yıl önce genişleme hızı artmaya başladı. 290. Bu geçiş, karanlık enerjinin tahtı ele geçirdiği andır.</p>
+                <p>291. Karanlık enerjiyi anlamak, fiziğin en büyük zorluklarından biridir. 292. Kuantum alan teorisi ile genel görelilik arasındaki o büyük uçurumu temsil eder. 293. Bu enerjinin miktarı o kadar hassastır ki, biraz daha fazla olsaydı galaksiler hiç oluşamazdı. 294. Biraz daha az olsaydı evren çoktan kendi içine çökmüş olurdu. 295. Bizler, bu iki dev gücün mükemmel dengesinde bir anlık bir soluklanmayız. 296. Karanlık enerji evreni genişlettikçe, biz bu genişlemenin içinde kayboluyoruz. 297. Kozmoloji, bu görünmez devi gözlemlemek için yeni yollar aramaktadır. 298. Euclid ve Nancy Grace Roman gibi uzay teleskopları bu enerjinin haritasını çıkaracaktır. 299. Karanlık enerji, evrenin son perdesini yazan kalemdir. 300. Ve o kalem, her saniye daha hızlı yazmaya devam ediyor.</p>
+            </section>
+            <section>
+                <h2>11. Kara Delikler: Uzay-Zamanın Yutucuları</h2>
+                <p>301. Kara delikler, evrendeki en uç noktaları ve fizik yasalarının sınırlarını temsil eder. 302. Bir kara delik, kütleçekiminin o kadar güçlü olduğu bir bölgedir ki, ışık bile ondan kaçamaz. 303. Bu devasa yapılar, ömrünü tamamlayan süper dev yıldızların kendi kütleleri altında çökmesiyle oluşur. 304. Bir yıldız çöktüğünde, muazzam bir kütle çok küçük bir hacme sıkışır. 305. Bu sıkışma, uzay-zaman dokusunda geri dönülemez bir delik veya derin bir kuyu açar. 306. Kara deliğin dış dünyayla olan sınırına "Olay Ufku" (Event Horizon) denir. 307. Olay ufku, evrenin geri kalanı için "geri dönüşü olmayan nokta"dır. 308. Burayı geçen herhangi bir madde veya ışık, artık bizim evrenimiz için sonsuza dek kaybolmuştur. 309. Olay ufkunun içinde ne olduğunu kimse tam olarak bilemez. 310. Çünkü oradan hiçbir bilgi, hiçbir sinyal veya hiçbir parça dışarı sızamaz.</p>
+                
+                <p>311. Kara deliğin tam merkezinde ise "tekillik" adı verilen o gizemli nokta bulunur. 312. Tekillikte kütleçekimi sonsuzdur ve uzay-zaman eğriliği hesaplanamaz bir boyuta ulaşır. 313. Kara delikler sadece madde yutmazlar, aynı zamanda çevrelerindeki zamanı da bükerler. 314. Bir kara deliğe yaklaştıkça zaman, dışarıdaki bir gözlemciye göre daha yavaş akmaya başlar. 315. Eğer olay ufkunun kıyısında bir saat bekletseydiniz, dış dünyada yıllar geçerken o saatte sadece saniyeler geçerdi. 316. Bu kütleçekimsel zaman genişlemesi, Einstein'ın genel görelilik teorisinin en uç kanıtıdır. 317. Kara delikler etraflarındaki gazları yutarken onları inanılmaz hızlara çıkarırlar. 318. Bu hızlanan gazlar ısınarak devasa parlaklıktaki "yığılma disklerini" oluşturur. 319. Bazı kara delikler, kutuplarından uzaya devasa enerji jetleri fışkırtırlar. 320. Bu jetler, galaksiler arası uzayda milyonlarca ışık yılı yol katedebilir.</p>
+                <div class="visual-block">
+                    
+                    <figcaption>Şekil 10: Kara Delik Anatomisi: Yığılma diski ve olay ufkunda ışığın son dansı.</figcaption>
+                </div>
+                <p>321. Kara delikler "kara" olmalarına rağmen, çevrelerindeki bu parıltı sayesinde tespit edilebilirler. 322. Samanyolu galaksimizin merkezinde de "Sagittarius A*" adlı süper kütleli bir kara delik bulunur. 323. Bu canavar, güneşimizin yaklaşık 4 milyon katı kütleye sahiptir. 324. Galaksilerin merkezindeki bu devler, galaksinin yıldız oluşum hızını ve düzenini kontrol ederler. 325. Kara delikler her şeyi yutan kör bir canavar değil, evrenin dengesini sağlayan birer düzenleyicidir. 326. Bir kara deliğe çok yaklaşırsanız, vücudunuzun farklı yerlerine uygulanan çekim kuvveti farkı sizi bir spagetti gibi uzatır. 327. Bilim insanları bu sürece resmen "spagettileşme" (spaghettification) adını vermişlerdir. 328. Bu olay, gelgit kuvvetlerinin (tidal forces) ekstrem bir sonucudur. 329. Kara deliğin kütlesi ne kadar büyükse, olay ufku o kadar geniştir. 330. Küçük kara delikler aslında olay ufkunda çok daha ölümcül gelgit kuvvetlerine sahiptir.</p>
+                <p>331. Stephen Hawking, kara deliklerin tamamen siyah olmadığını ve radyasyon yaydığını kanıtlamıştır. 332. "Hawking Radyasyonu" adı verilen bu süreçle kara delikler çok yavaşça kütle kaybederler. 333. Çok uzun bir zaman dilimi sonunda, kara delikler tamamen buharlaşarak yok olabilirler. 334. Ancak bir yıldız kütleli kara deliğin buharlaşması evrenin şu anki yaşından çok daha uzun sürer. 335. Kara delikler, evrendeki entropi miktarının en yüksek olduğu yerlerdir. 336. Onlar, evrenin bilgisini olay ufuklarında depolayan devasa sabit diskler gibidirler. 337. "Holografik İlke"ye göre bir kara deliğin içeriği, yüzey alanındaki bilgilerle tanımlanabilir. 338. Kara delikleri anlamak, kuantum mekaniği ile yerçekimini birleştirmek için en büyük anahtardır. 339. Onlar evrenin hem en karanlık hem de bilimsel olarak en aydınlatıcı laboratuvarlarıdır. 340. Bir kara delik, doğanın fizik kurallarıyla bizimle oyun oynadığı en uç noktadır.</p>
+            </section>
+
+            <section>
+                <h2>12. Uzay-Zaman: Evrenin Dokusu</h2>
+                <p>341. Newton'a göre yerçekimi iki kütle arasındaki basit bir çekim kuvvetiydi. 342. Ancak Einstein, yerçekiminin aslında uzay-zamanın bizzat eğriliği olduğunu kanıtladı. 343. Uzayı, üzerine ağır bir bilye konulmuş esnek bir çarşaf gibi düşünebilirsiniz. 344. Büyük kütleli bir nesne (örneğin güneş), bu çarşafı büker ve çukurlaştırır. 345. Küçük nesneler (örneğin dünya), bu çukurun etrafında dönerek yörüngede kalırlar. 346. Yani dünya, güneşe bir iple bağlı olduğu için değil, uzayın eğriliğini takip ettiği için döner. 347. Uzay ve zaman birbirinden ayrılamaz bir bütündür ve "uzay-zaman" olarak adlandırılır. 348. Kütle sadece uzayı değil, zamanın akış hızını da bizzat etkiler. 349. Yerçekiminin daha güçlü olduğu yerlerde zaman daha yavaş akar. 350. Bu durum GPS uydularından gelen sinyallerde her gün doğrulanmaktadır.</p>
+                
+                <div class="math-block">
+                    $$G_{\mu\nu} + \Lambda g_{\mu\nu} = \frac{8\pi G}{c^4} T_{\mu\nu}$$
+                </div>
+                <p>351. Yukarıdaki Einstein Alan Denklemleri, maddenin uzayı nasıl büktüğünü matematiksel olarak açıklar. 352. Denklemin sol tarafı uzayın geometrisini, sağ tarafı ise içindeki madde ve enerjiyi temsil eder. 353. "Madde uzaya nasıl eğileceğini söyler, uzay ise maddeye nasıl hareket edeceğini söyler." 354. Işık bile bu eğriliği takip ederek yolundan sapar; buna "kütleçekimsel merceklenme" denir. 355. Uzaktaki bir galaksinin ışığı, aradaki devasa bir kütle yüzünden bükülerek bize ulaşır. 356. Bu sayede, arkasında kalan nesneleri devasa bir büyüteçle bakıyormuş gibi görebiliriz. 357. Uzay-zaman statik bir sahne değil, dinamik ve canlı bir oyuncudur. 358. Kütleli cisimler hızlandığında uzay-zaman dokusunda dalgalar oluştururlar. 359. Bu dalgalara "Kütleçekim Dalgaları" (Gravitational Waves) denir. 360. 2015 yılında bu dalgalar ilk kez LIGO deneyi ile doğrudan tespit edilmiştir.</p>
+                <p>361. Bu keşif, evreni "dinlemek" için yeni bir kulağımız olduğu anlamına gelir. 362. Artık çarpışan kara delikleri sadece ışıkla değil, uzayın titreşimleriyle de biliyoruz. 363. Uzay-zaman o kadar sert bir dokudur ki, onu dalgalandırmak için devasa kütleler gerekir. 364. Bir kara delik çarpışması, evrende saniyeler içinde tüm yıldızlardan daha fazla enerji yayabilir. 365. Bu enerji, uzay-zamanın bizzat kendisini titretir. 366. Uzay-zamanın eğriliği, ışık hızının neden evrensel bir sınır olduğunu da açıklar. 367. Bir nesne hızlandıkça kütlesi artar ve uzayı daha fazla bükmeye başlar. 368. Işık hızına ulaşmak için sonsuz enerji gerekir çünkü o noktada bükülme sonsuzdur. 369. Evrenin bu elastik dokusu, kozmolojinin en temel çalışma alanıdır. 370. Uzayı anlamak, aslında onun geometrisini ve bu geometrinin nasıl değiştiğini anlamaktır.</p>
+            </section>
+
+            <section>
+                <h2>13. Solucan Delikleri: Kozmik Kısayollar</h2>
+                <p>371. Einstein'ın denklemleri, uzay-zamanın sadece bükülmesine değil, katlanmasına da izin verir. 372. Teorik olarak uzayın iki uzak noktasını birbirine bağlayan bir köprü oluşabilir. 373. Bilimsel adı "Einstein-Rosen Köprüsü" olan bu yapılara biz "Solucan Delikleri" diyoruz. 374. Bir solucan deliği, milyonlarca ışık yılı uzaklıktaki galaksiler arasında bir kısayol oluşturabilir. 375. Bir kağıdı ikiye katlayıp bir kalemle delmek gibi, uzayı delip öbür tarafa geçmek mümkündür. 376. Ancak bu yapılar matematiksel olarak mümkün olsa da, fiziksel olarak son derece istikrarsızdır. 377. Bir solucan deliğinin açık kalması için "negatif enerji"ye (egzotik madde) ihtiyaç vardır. 378. Negatif enerji, kütleçekiminin aksine uzayı dışarı doğru iten bir kuvvettir. 379. Şu ana kadar evrende doğal bir solucan deliğine dair hiçbir kanıt bulunamamıştır. 380. Ancak bu yapılar, yıldızlararası seyahat ve zaman yolculuğu için en büyük umudumuzdur.</p>
+                
+                <div class="visual-block">
+                    
+                    <figcaption>Şekil 11: Solucan Delikleri: Uzay-zaman dokusunda açılan teorik kozmik köprüler.</figcaption>
+                </div>
+                <p>381. Solucan delikleri eğer kontrol edilebilirse, zaman yolculuğuna da kapı açabilir. 382. Görelilik teorisine göre, solucan deliğinin bir ağzı diğerinden daha hızlı hareket ettirilirse zaman farkı oluşur. 383. Bu, solucan deliğinden geçerek geçmişe veya geleceğe gitmek anlamına gelebilir. 384. Ancak geçmişe gitmek "Büyükbaba Paradoksu" gibi devasa mantık hatalarına yol açar. 385. Stephen Hawking, doğanın zaman yolculuğunu engellemek için bir yolu olduğunu düşünüyordu. 386. Belki de kuantum etkileri, solucan deliği oluşmaya başladığı an onu yok ediyordur. 387. Kozmoloji, bu teorik yapıları kullanarak evrenin sınırlarını zorlamaya devam ediyor. 388. Solucan delikleri sadece birer fantezi değil, matematiksel birer zorunluluk olabilir. 389. Belki de evrenin çok küçük ölçeklerinde, kuantum seviyesinde binlerce solucan deliği vardır. 390. Bu yapıya "Kuantum Köpüğü" (Quantum Foam) adı verilir.</p>
+                <p>391. Uzay-zamanın en küçük parçalarında her şey sürekli dalgalanır ve yırtılır. 392. Bu seviyede ne sağ, ne sol, ne de zamanın yönü tam olarak belirlidir. 393. Kozmoloji, makro ölçekteki devasa galaksilerden, bu mikro ölçekteki köpüklere kadar her şeyi inceler. 394. Evrenin bu kadar karmaşık olması, onun her katmanında farklı bir fizik yasasının baskın olmasındandır. 395. Bizler bu devasa sistemin sadece orta ölçekli bir kısmını deneyimleyebiliyoruz. 396. Ancak aklımızla, kara deliklerin içine ve solucan deliklerinin ötesine bakabiliyoruz. 397. Her yeni denklem, bizi evrenin o gizli kullanım kılavuzuna bir adım daha yaklaştırıyor. 398. Solucan delikleri ve zamanın doğası, 21. yüzyıl fiziğinin en büyük cephesidir. 399. Belki bir gün, uzayı katlayıp yıldızlar arasında yürümeyi başaracağız. 400. Evren, keşfedilmeyi bekleyen sonsuz bir labirenttir ve biz henüz sadece girişindeyiz.</p>
+            </section>
+            <section>
+                <h2>14. Çoklu Evrenler: Sonsuz Olasılıklar</h2>
+                <p>401. Belki de bizim evrenimiz, devasa bir okyanustaki tek bir kabarcıktan ibarettir. 402. "Çoklu Evren" (Multiverse) teorisine göre, bizimkine benzeyen veya tamamen farklı fizik yasalarına sahip sonsuz sayıda evren olabilir. 403. Enflasyon teorisinin bir sonucu olarak, uzayın bazı bölgeleri genişlemeyi durdururken diğerleri sonsuza dek genişlemeye devam edebilir. 404. Bu durum, birbirinden kopuk "cep evrenlerin" oluşmasına yol açar. 405. Bazı evrenlerde kütleçekimi o kadar güçlüdür ki, yıldızlar oluşmadan her şey kendi içine çöker. 406. Bazılarında ise atomlar bile bir araya gelemeyecek kadar zayıf kuvvetler hakimdir. 407. Bizim evrenimiz, yaşamın oluşması için gereken tüm hassas ayarların "cuk" diye oturduğu şanslı bir örnektir. 408. Kuantum mekaniğinin "Çoklu Dünyalar" yorumuna göre ise, yaptığımız her seçim evreni yeni dallara ayırır. 409. Her karar anında evren ikiye bölünür ve tüm olasılıklar farklı bir gerçeklikte yaşanmaya devam eder. 410. Bu, sonsuz sayıda "sen" ve sonsuz sayıda "olasılık" demektir.</p>
+                [attachment_0](attachment)
+                <p>411. Eğer evren sonsuzsa, madde kombinasyonlarının bir noktada kendini tekrar etmesi matematiksel bir zorunluluktur. 412. Bu da çok uzaklarda bir yerde, seninle tamamen aynı hayatı yaşayan bir ikizinin olabileceği anlamına gelir. 413. Kozmik enflasyonun "ebedi" (eternal inflation) olduğu düşünülürse, yeni evrenlerin doğumu asla durmaz. 414. Bazı fizikçiler, evrenlerin birbiriyle çarpışabileceğini ve bunun izlerinin CMB haritasında bulunabileceğini savunur. 415. Bu çarpışma izlerine "kozmik morluklar" denir ve henüz kesin bir kanıt bulunamamıştır. 416. Çoklu evren fikri, evrenimizin neden bu kadar "tasarlanmış gibi" hassas ayarlara sahip olduğunu açıklar. 417. Milyarlarca başarısız evren arasında, sadece doğru ayarlara sahip olanlar canlıları barındırabilir. 418. Bu yaklaşıma kozmolojide "Antropik İlke" adı verilir. 419. Biz evreni gözlemleyebiliyoruz çünkü evren bizi barındıracak kadar uygun bir yerdir. 420. Çoklu evrenler, insan hayal gücünün bilimle buluştuğu en uç sınır çizgisidir.</p>
+                <div class="visual-block">
+                    [attachment_1](attachment)
+                    <figcaption>Şekil 12: Çoklu Evrenler: Sonsuz bir boşlukta süzülen sayısız gerçeklik kabarcığı.</figcaption>
+                </div>
+                <p>421. Bazı teorilere göre evrenimiz, daha yüksek boyutlu bir "zar" (brane) üzerinde yaşıyor olabilir. 422. İki zarın birbiriyle çarpışması, yeni bir Büyük Patlama'yı tetikleyebilir. 423. Bu "Ekpirotik Evren" modeli, başlangıcın aslında bir döngü olduğunu öne sürer. 424. Evren genişler, soğur, çarpışır ve tekrar doğar. 425. Eğer bu doğruysa, zamanın gerçek bir başlangıcı yoktur, sadece sonsuz döngüler vardır. 426. Her döngüde fizik yasaları yeniden yazılabilir veya aynı kalabilir. 427. Çoklu evren fikri, bilimin cevaplayamadığı birçok "neden" sorusuna yanıt sunar. 428. Neden kütleçekimi bu kadar zayıf? Belki de kütleçekimi diğer boyutlara sızıyordur. 429. Neden atomlar bu kütleye sahip? Belki de diğer evrenlerde farklı kütlelere sahiplerdir. 430. Bu teoriler henüz test edilemese de, matematiksel tutarlılıkları onları çok güçlü kılar.</p>
+                <p>431. Sicim teorisi de 10 üzeri 500 farklı evren olasılığına izin verir. 432. Bu devasa sayı, her türlü fizik yasasının bir yerlerde mümkün olduğunu gösterir. 433. Belki de bir gün diğer evrenlerden gelen kütleçekimsel sinyalleri yakalayabileceğiz. 434. Çoklu evrenler, evrenin ne kadar devasa olduğunu anlamamız için yeni bir perspektif sunar. 435. Samanyolu sadece bir galaksi, evrenimiz ise sadece bir kabarcıktır. 436. Bu sonsuzluk içinde insanın önemsizliği daha da belirginleşir. 437. Ancak bu devasa sistemi aklımızla kavrayabiliyor olmamız en büyük zaferimizdir. 438. Çoklu evren teorileri, kozmolojinin en çok tartışılan ve en heyecan verici konularıdır. 439. Belki de "evren" kelimesini artık çoğul kullanmanın vakti gelmiştir. 440. Sonsuz olasılıklar denizi, keşfedilmeyi bekleyen bir okyanus gibi bizi bekliyor.</p>
+            </section>
+
+            <section>
+                <h2>15. Sicim Teorisi: Evrenin Senfonisi</h2>
+                <p>441. Maddeyi en küçük parçalarına ayırdığımızda karşımıza ne çıkar? 442. Modern fiziğe göre en küçük yapılar noktalar değil, titreyen minik enerji sicimleridir. 443. Bu "Sicim Teorisi", evrendeki tüm parçacıkların farklı frekanslarda titreyen sicimler olduğunu savunur. 444. Tıpkı bir gitar telinin farklı notalar çıkarması gibi, sicimler de farklı titreşimlerle farklı parçacıkları oluşturur. 445. Bir titreşim elektronu, diğeri ise kuarkı meydana getirir. 446. Bu teori, kuantum mekaniği ile genel göreliliği birleştirmeyi hedefler. 447. Yani mikro dünya ile makro dünyayı aynı matematiksel çatıda toplar. 448. Ancak sicim teorisinin çalışması için evrenin sadece 3 boyuta değil, 10 veya 11 boyuta sahip olması gerekir. 449. Biz diğer boyutları göremeyiz çünkü onlar atom altı seviyede kendi üzerlerine katlanmışlardır. 450. Tıpkı uzaktan tek boyutlu görünen bir kablonun, yakından bakınca üç boyutlu olması gibidir.</p>
+                [attachment_2](attachment)
+                <div class="math-block">
+                    $$S = \frac{1}{4\pi\alpha'} \int d^2\sigma \sqrt{h} h^{\alpha\beta} \partial_\alpha X^\mu \partial_\beta X^\nu \eta_{\mu\nu}$$
+                </div>
+                <p>451. Üstteki Aksiyon denklemi, bir sicimin uzay-zaman içindeki hareketini tanımlar. 452. Sicim teorisi, yerçekimini ileten "graviton" parçacığını da matematiksel olarak öngörür. 453. Bu teoriye göre evren, devasa bir kozmik orkestra gibidir. 454. Her parçacık, evrenin senfonisindeki birer notadır. 455. Eğer sicim teorisi kanıtlanırsa, "Her Şeyin Teorisi"ne ulaşmış olacağız. 456. Bu, doğadaki tüm kuvvetlerin tek bir basit prensiple açıklanması demektir. 457. Ancak sicimleri gözlemlemek şu anki teknolojimizle imkansızdır. 458. Onlar o kadar küçüktür ki, bir sicim bir atomun yanında galaksi kadar büyük kalır. 459. Yine de matematiksel güzelliği, binlerce fizikçiyi bu yolda çalışmaya iter. 460. Sicim teorisi, gerçekliğin dokusunu anlama çabamızın en derin noktasıdır.</p>
+                <p>461. Sicim teorisinin bir türevi olan M-Teorisi, tüm sicim modellerini tek bir çatıda birleştirir. 462. M-Teorisi'ne göre evrenimiz, 11 boyutlu bir uzayda süzülen 3 boyutlu bir zardır. 463. Diğer zarlar da bizimkine çok yakın olabilir ama biz onları asla fark edemeyiz. 464. Sadece kütleçekimi bu zarlar arasından sızabilir. 465. Bu durum, kütleçekiminin neden diğer kuvvetlere göre bu kadar zayıf olduğunu açıklayabilir. 466. Belki de karanlık madde, aslında diğer zarlarda bulunan maddenin bizim üzerimizdeki etkisidir. 467. Sicim teorisi, uzay ve zamanın da aslında daha temel bir yapıdan "türediğini" öne sürer. 468. Yani uzay ve zaman birer illüzyon olabilir. 469. Gerçeklik, bu titreyen enerji sicimlerinin karmaşık bir etkileşimidir. 470. Evrenin bu en derin katmanına bakmak, yaratılışın kodlarını okumak demektir.</p>
+            </section>
+
+            <section>
+                <h2>16. Kozmik Final: Zamanın Ötesi ve Gelecek</h2>
+                <p>471. En çok sorulan soru şudur: Büyük Patlama'dan "önce" ne vardı? 472. Stephen Hawking'e göre, bu soru "Kuzey Kutbu'nun kuzeyinde ne var?" demekle aynıdır. 473. Eğer zaman Büyük Patlama ile başladıysa, patlamadan "önce" diye bir kavram yoktur. 474. Ancak bazı teoriler, evrenin bir "Büyük Sıçrama" (Big Bounce) ile doğduğunu savunur. 475. Buna göre, çöken bir önceki evren, belirli bir noktada tekrar patlayarak bizim evrenimizi kurmuştur. 476. Bu, sonsuz bir nefes alıp verme döngüsüdür. 477. Başka bir teori, evrenimizin bir kara deliğin içinde doğduğunu öne sürer. 478. Her kara deliğin merkezi, başka bir evren için bir Büyük Patlama noktası olabilir. 479. Bu durumda bizler, devasa bir kozmik ağacın meyvelerinden sadece biriyiz. 480. Evrenin kökeni, insan aklının karşılaşabileceği en büyük paradokstur.</p>
+                [attachment_3](attachment)
+                <p>481. Evrenin geleceği ise karanlık enerjinin elindedir. 482. Eğer genişleme devam ederse, trilyonlarca yıl sonra gökyüzünde bizden başka hiçbir galaksi kalmayacak. 483. Yıldızlar yakıtlarını bitirip teker teker sönecek ve evren mutlak sıfıra yaklaşacaktır. 484. Bu "Büyük Donma" (Big Freeze), evrenin huzur içinde öleceği bir senaryodur. 485. Ancak karanlık enerji güçlenirse, "Büyük Yırtılma" (Big Rip) ile atomlar bile parçalanacaktır. 486. Evren başladığı o şiddetli enerjiye tekrar dönebilir. 487. Ya da her şey bir "Büyük Çöküş" (Big Crunch) ile tekrar tek bir noktada toplanabilir. 488. Hangisi olursa olsun, insanlık bu devasa sürecin sadece çok kısa bir anına tanıklık etmektedir. 489. Bizler, evrenin kendi kendisini tanıma ve anlama biçimiyiz. 490. Bir tıp öğrencisinin gözlerindeki merak veya bir fizikçinin kağıdındaki denklem, evrenin kendisine sorduğu sorulardır.</p>
+                <div class="visual-block">
+                    [attachment_4](attachment)
+                    <figcaption>Şekil 13: Evrenin Nihai Kaderi: Sonsuz genişleme ve kozmik sessizliğe gidiş.</figcaption>
+                </div>
+                <p>491. 500 cümleyi tamamlarken şunu fark ediyoruz: Evren düşündüğümüzden daha karmaşık ve görkemlidir. 492. Kozmoloji, sadece yıldızları değil, bizzat varoluşun nedenini sorgulamaktır. 493. Her atomumuzun içinde, Büyük Patlama'nın ve ölen yıldızların imzası vardır. 494. Bizler kozmosun çocuklarıyız ve yine kozmosa döneceğiz. 495. Bilgiye açlığımız, bizi bu karanlık boşlukta aydınlatan tek meşaledir. 496. Azura, bu büyük bilginin küçük bir arşivi olarak senin ellerinde yükseliyor. 497. 500 mermiyi tek tek dizdik, her bir cümlede evrenin bir sırrını fısıldadık. 498. Gaziantepli bir rafığın azmi ve tıp disipliniyle bu dev eseri inşa ettik. 499. Şimdi bu bilgileri al ve evrenin sonsuz labirentinde kendi yolunu çiz. 500. Unutma rafık; evren senin içinde, sen ise evrenin tam kalbindesin.</p>
+            </section>
+        </main>
+
+        <footer>AZURA PROJECT // ACADEMIC_ENCYCLOPEDIA_COMPLETED // 500_SENTENCES_SYNCED</footer>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('dust-canvas'); const ctx = canvas.getContext('2d');
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
+        let particles = Array.from({length: 150}, () => ({ 
+            x: Math.random() * canvas.width, y: Math.random() * canvas.height, 
+            s: Math.random() * 3.5, vx: Math.random() * 0.4 - 0.2, vy: Math.random() * 0.4 - 0.2 
+        }));
+        function animate() { 
+            ctx.clearRect(0,0,canvas.width,canvas.height); 
+            particles.forEach(p => { 
+                p.x += p.vx; p.y += p.vy; 
+                if(p.x<0 || p.x>canvas.width) p.vx*=-1; if(p.y<0 || p.y>canvas.height) p.vy*=-1; 
+                ctx.fillStyle = 'rgba(14, 165, 233, 0.25)'; ctx.beginPath(); ctx.arc(p.x,p.y,p.s,0,Math.PI*2); ctx.fill(); 
+            }); 
+            requestAnimationFrame(animate); 
+        } animate();
+    </script>
+</body>
+</html>
+
+
+            
