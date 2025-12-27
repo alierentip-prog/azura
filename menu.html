@@ -3,96 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura | System Breach v10.0</title>
-    
+    <title>Azura | Chaos System v10.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=JetBrains+Mono:wght@300;500;800&family=Plus+Jakarta+Sans:wght@200;800&display=swap" rel="stylesheet">
-    
     <style>
-        /* --- 1. OBSIDIAN CORE SYSTEM --- */
         :root {
             --bg: #000;
             --neon: #00f2ff;
             --danger: #ff003c;
-            --warning: #f39c12;
+            --glass: rgba(255, 255, 255, 0.02);
             --font-mono: 'JetBrains Mono', monospace;
-            --glass: rgba(255, 255, 255, 0.01);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html {
-            background: var(--bg);
-            color: #fff;
+            background: var(--bg); color: #fff;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow: hidden;
-            height: 100vh; width: 100vw;
+            overflow: hidden; height: 100vh; width: 100vw;
+            cursor: none; /* Gerçek imleci gizle */
         }
 
-        /* --- 2. THE VISUAL FEAST (PREMIUM HUD) --- */
-        #core-canvas { position: fixed; inset: 0; z-index: 1; filter: contrast(1.5) brightness(0.8); }
-        .grid-mask { position: fixed; inset: 0; background-image: radial-gradient(rgba(0, 242, 255, 0.04) 1px, transparent 1px); background-size: 40px 40px; z-index: 2; pointer-events: none; }
-        .vignette { position: fixed; inset: 0; background: radial-gradient(circle, transparent 20%, #000 140%); z-index: 5; pointer-events: none; }
-        
+        /* --- ARKA PLAN KATMANLARI (Tıklamayı engellememesi için pointer-events: none) --- */
+        #core-canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; filter: contrast(1.5); }
+        .grid-mask { position: fixed; inset: 0; z-index: 2; pointer-events: none; background-image: radial-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px); background-size: 30px 30px; }
+        .vignette { position: fixed; inset: 0; z-index: 5; pointer-events: none; background: radial-gradient(circle, transparent 20%, #000 150%); }
+        .scanlines { position: fixed; inset: 0; z-index: 10; pointer-events: none; background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.1) 50%); background-size: 100% 4px; }
+
+        /* ÖZEL İMLEÇ */
         #custom-cursor {
-            width: 10px; height: 10px; background: var(--neon); border-radius: 50%;
-            position: fixed; pointer-events: none; z-index: 9999;
-            box-shadow: 0 0 25px var(--neon); transform: translate(-50%, -50%);
-            mix-blend-mode: difference;
+            width: 15px; height: 15px; background: var(--neon); border-radius: 50%;
+            position: fixed; pointer-events: none; z-index: 99999;
+            box-shadow: 0 0 20px var(--neon); transform: translate(-50%, -50%);
         }
 
-        /* --- 3. SYSTEM INTERFACE --- */
-        header {
-            position: fixed; top: 0; width: 100%; padding: 25px 40px;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; border-bottom: 1px solid rgba(0, 242, 255, 0.1);
-            background: rgba(0,0,0,0.9); backdrop-filter: blur(30px);
-        }
-        .brand { font-family: 'Syncopate', sans-serif; font-size: 1.6rem; letter-spacing: 15px; color: var(--neon); text-shadow: 0 0 10px var(--neon); }
-        .sys-info { font-family: var(--font-mono); font-size: 0.65rem; color: var(--neon); opacity: 0.7; }
-
-        /* --- 4. THE INTERACTIVE CHAOS ENGINE --- */
-        .master-stage {
-            position: relative; z-index: 100;
+        /* --- ANA SAHNE (En üstte olması için z-index yüksek) --- */
+        .main-stage {
+            position: relative; z-index: 1000; /* Butonların olduğu katman */
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             height: 100vh; width: 100%; padding: 20px;
         }
 
         .terminal-box {
-            max-width: 950px; width: 100%; min-height: 600px;
+            max-width: 900px; width: 100%; min-height: 500px;
             background: var(--glass); border: 1px solid rgba(0, 242, 255, 0.1);
-            border-radius: 25px; padding: 60px; backdrop-filter: blur(60px);
+            border-radius: 30px; padding: 50px; backdrop-filter: blur(60px);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; box-shadow: 0 0 120px rgba(0,0,0,0.6);
-            transition: all 0.3s;
+            text-align: center; box-shadow: 0 50px 100px rgba(0,0,0,0.8);
         }
 
-        .phase-id { font-family: var(--font-mono); color: var(--danger); font-size: 0.8rem; letter-spacing: 8px; margin-bottom: 20px; text-transform: uppercase; }
-        .question-h { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 50px; letter-spacing: -2px; }
+        .phase-id { font-family: var(--font-mono); color: var(--danger); font-size: 0.8rem; letter-spacing: 10px; margin-bottom: 20px; }
+        .question-h { font-size: clamp(1.8rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 50px; letter-spacing: -2px; line-height: 1.1; }
 
-        /* INTERACTIVE OPTIONS */
-        .option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
+        /* BUTONLAR (Tıklanabilir olması için pointer-events: auto) */
+        .option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; pointer-events: auto; }
         .opt-btn {
-            background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.1);
-            padding: 28px; border-radius: 15px; color: #fff; font-size: 1rem;
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+            padding: 25px; border-radius: 15px; color: #fff; font-size: 0.9rem;
             font-weight: 700; text-transform: uppercase; letter-spacing: 3px;
-            transition: all 0.2s; position: relative; overflow: hidden;
+            transition: all 0.3s; position: relative; cursor: pointer;
         }
         .opt-btn:hover { background: var(--neon); color: #000; box-shadow: 0 0 40px var(--neon); transform: translateY(-5px); }
 
-        /* --- 5. PROGRESS & FAKE LOADS --- */
-        .progress-container { width: 100%; height: 2px; background: rgba(255,255,255,0.05); margin-top: 50px; position: relative; overflow: hidden; border-radius: 10px; }
-        .progress-bar { position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: var(--neon); box-shadow: 0 0 20px var(--neon); }
-
-        /* SIDE LOG CONSOLE */
-        .side-console { position: fixed; left: 30px; top: 120px; bottom: 80px; width: 280px; font-family: var(--font-mono); font-size: 0.6rem; color: var(--neon); opacity: 0.4; overflow: hidden; display: flex; flex-direction: column-reverse; gap: 6px; z-index: 500; }
-
-        footer { position: fixed; bottom: 0; width: 100%; padding: 20px 40px; border-top: 1px solid rgba(0,242,255,0.05); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.65rem; opacity: 0.4; z-index: 1000; }
+        /* SİSTEM LOGLARI */
+        .side-logs { position: fixed; left: 30px; top: 120px; bottom: 80px; width: 250px; font-family: var(--font-mono); font-size: 0.6rem; color: var(--neon); opacity: 0.4; overflow: hidden; display: flex; flex-direction: column-reverse; gap: 5px; z-index: 500; pointer-events: none; }
 
         /* FAKE ALERTS */
-        .alert-box { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 30px 60px; background: #111; border: 2px solid var(--danger); z-index: 10000; font-family: var(--font-mono); color: var(--danger); text-align: center; display: none; }
-        
-        .glitch { animation: glitchEffect 0.2s infinite; }
-        @keyframes glitchEffect { 0% { transform: translate(0); } 20% { transform: translate(-4px, 4px); } 40% { transform: translate(-4px, -4px); } 60% { transform: translate(4px, 4px); } 100% { transform: translate(0); } }
+        .fake-alert { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 40px 60px; background: #111; border: 2px solid var(--danger); z-index: 2000; font-family: var(--font-mono); color: var(--danger); display: none; text-align: center; }
+
+        /* PROGRESS BAR */
+        .p-container { width: 100%; height: 2px; background: rgba(255,255,255,0.05); margin-top: 50px; position: relative; overflow: hidden; }
+        .p-bar { position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: var(--neon); }
+
+        footer { position: fixed; bottom: 0; width: 100%; padding: 20px 40px; border-top: 1px solid rgba(0, 242, 255, 0.05); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.6rem; opacity: 0.4; z-index: 1000; pointer-events: none; }
     </style>
 </head>
 <body>
@@ -101,37 +82,30 @@
     <canvas id="core-canvas"></canvas>
     <div class="grid-mask"></div>
     <div class="vignette"></div>
+    <div class="scanlines"></div>
 
-    <div class="alert-box" id="fake-alert">SİSTEM HATASI: YÜKLEME BAŞARISIZ // REBOOTING...</div>
+    <div class="fake-alert" id="alert-box">KRİTİK HATA: VERİ TABANI BOZULDU // SİSTEM SIFIRLANIYOR</div>
+    <div class="side-logs" id="log-console"></div>
 
-    <div class="side-console" id="log-box"></div>
-
-    <header>
-        <div class="brand">AZURA</div>
-        <div class="sys-info">SESSION_UID: <b id="session-id">82-XF-00</b> // DURUM: <b id="session-time">00:00</b></div>
+    <header style="position:fixed; top:0; width:100%; padding:25px 40px; display:flex; justify-content:space-between; z-index:1000;">
+        <div style="font-family:'Syncopate'; font-size:1.5rem; letter-spacing:10px; color:var(--neon);">AZURA</div>
+        <div style="font-family:var(--font-mono); font-size:0.6rem; color:var(--neon); opacity:0.7;">SESSION: <b id="timer">00:00</b> // ADIM: <b id="step-info">01/??</b></div>
     </header>
 
-    <main class="master-stage">
-        <div class="terminal-box" id="main-box">
-            <span class="phase-id" id="s-id">INITIALIZING...</span>
-            <h1 class="question-h" id="s-title">Zihnini Kaybetmeye Hazır Mısın?</h1>
-            <div class="option-grid" id="s-options">
-                <button class="opt-btn" onclick="initChaos()">EVET</button>
-                <button class="opt-btn" onclick="initChaos()">DAHA FAZLA EVET</button>
+    <main class="main-stage">
+        <div class="terminal-box" id="content-box">
+            <span class="phase-id" id="phase-tag">SİSTEM BAŞLATILIYOR</span>
+            <h1 class="question-h" id="question-text">Azura Kaos Protokolüne Hoş Geldin Hain. Başlamaya Cesaretin Var mı?</h1>
+            <div class="option-grid" id="btn-container">
+                <button class="opt-btn" onclick="startEngine()">BAŞLA</button>
+                <button class="opt-btn" onclick="startEngine()">KORKUYORUM</button>
             </div>
-            <div class="progress-container">
-                <div class="progress-bar" id="p-bar"></div>
-            </div>
+            <div class="p-container"><div class="p-bar" id="progress-line"></div></div>
         </div>
     </main>
 
-    <footer>
-        <div>NODE: SECURE_CORE_ALPHA // THREAT_LEVEL: MAXIMUM</div>
-        <div id="clock">00:00:00</div>
-    </footer>
-
     <script>
-        // --- 1. VISUAL FEAST ENGINE ---
+        // --- 1. GÖRSEL MOTOR ---
         const canvas = document.getElementById('core-canvas');
         const ctx = canvas.getContext('2d');
         const cursor = document.getElementById('custom-cursor');
@@ -146,99 +120,78 @@
         });
 
         class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 1.5;
-                this.vy = (Math.random() - 0.5) * 1.5;
-                this.size = Math.random() * 1.8;
-            }
-            update() {
-                this.x += this.vx; this.y += this.vy;
-                if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
-            }
-            draw() {
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
-                ctx.fillStyle = 'rgba(0, 242, 255, 0.5)'; ctx.fill();
-            }
+            constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.vx = (Math.random() - 0.5) * 1; this.vy = (Math.random() - 0.5) * 1; this.radius = Math.random() * 2; }
+            update() { this.x += this.vx; this.y += this.vy; if(this.x<0 || this.x>canvas.width) this.vx *= -1; if(this.y<0 || this.y>canvas.height) this.vy *= -1; }
+            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2); ctx.fillStyle = 'rgba(0, 242, 255, 0.4)'; ctx.fill(); }
         }
 
-        for(let i=0; i<110; i++) particles.push(new Particle());
-
+        for(let i=0; i<80; i++) particles.push(new Particle());
         function animate() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
             particles.forEach(p => {
                 p.update(); p.draw();
                 particles.forEach(p2 => {
                     let d = Math.sqrt(Math.pow(p.x - p2.x, 2) + Math.pow(p.y - p2.y, 2));
-                    if(d < 140) {
-                        ctx.strokeStyle = `rgba(0, 242, 255, ${1 - d/140})`;
-                        ctx.lineWidth = 0.5; ctx.beginPath();
-                        ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
-                    }
+                    if(d < 120) { ctx.strokeStyle = `rgba(0, 242, 255, ${1 - d/120})`; ctx.lineWidth = 0.5; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke(); }
                 });
             });
             requestAnimationFrame(animate);
         }
         animate();
 
-        // --- 2. THE INFINITE TRAP ENGINE ---
-        const sId = document.getElementById('s-id');
-        const sTitle = document.getElementById('s-title');
-        const sOptions = document.getElementById('s-options');
-        const pBar = document.getElementById('p-bar');
-        const mainBox = document.getElementById('main-box');
+        // --- 2. KAOS DÖNGÜSÜ (15 DAKİKALIK) ---
+        const phaseTag = document.getElementById('phase-tag');
+        const questionText = document.getElementById('question-text');
+        const btnContainer = document.getElementById('btn-container');
+        const progressLine = document.getElementById('progress-line');
+        const stepInfo = document.getElementById('step-info');
 
-        let step = 0;
-        let elapsed = 0;
+        let currentStep = 0;
+        let time = 0;
 
-        // 15 Dakika Sürecek 30+ Adım
-        const content = [
-            { id: "PROTO_01", title: "Zekanın bu siteyi bitirmeye yeteceğini gerçekten mi sanıyorsun?", opts: ["Evet", "Şüpheliyim"], type: "normal" },
-            { id: "PROTO_02", title: "Hiç bir arkadaşının arkasından haince bir plan yaptın mı?", opts: ["Yaptım", "Asla!"], type: "normal" },
-            { id: "PROTO_03", title: "Şu an kamerandan seni görüyorum. Neden endişelisin?", opts: ["Değilim", "Sana ne?"], type: "glitch" },
-            { id: "PROTO_04", title: "FAREYİ YAKALA (DÜZEY: ZOR)", opts: ["BURADA", "HAYIR BURADA"], type: "move" },
-            { id: "PROTO_05", title: "SİSTEM TARAMASI: Bellek %82 doldu. Veriler temizlensin mi?", opts: ["TEMİZLE", "DURSUN"], type: "load" },
-            { id: "PROTO_06", title: "Yalan mı söylersin yoksa gerçeği bükebilir misin?", opts: ["Yalan", "Bükerim"], type: "normal" },
-            { id: "PROTO_07", title: "FAREYİ YAKALA (DÜZEY: İMKANSIZ)", opts: ["YAKALAYAMAZSIN", "DENEME BİLE"], type: "move" },
-            { id: "PROTO_08", title: "Sence şu an bu ekrana sen mi hükmediyorsun yoksa ben mi?", opts: ["Ben", "Sen"], type: "normal" },
-            { id: "PROTO_09", title: "EKRAN TİTRİYOR. DURDURMAK İÇİ 5 KEZ TIKLA!", opts: ["TIKLA", "TIKLA"], type: "shake" },
-            { id: "PROTO_10", title: "Bitirmek için doğru butona basman gerek. Şanslı mısın?", opts: ["Şanslıyım", "Değilim"], type: "liar" },
-            { id: "PROTO_11", title: "01101000 01100001 01101001 01101110 ?", opts: ["H A İ N", "Nediyor bu?"], type: "normal" },
-            { id: "PROTO_12", title: "Arkadaşının sırrını para karşılığı satar mıydın?", opts: ["Satarım", "Satmam"], type: "normal" },
-            { id: "PROTO_13", title: "BİR KARAR VER: Sol butona basarsan 5 adım geri gidersin.", opts: ["BAS", "BASMA"], type: "normal" },
-            { id: "PROTO_14", title: "SİSTEM GÜNCELLEMESİ: 120 saniye beklemeniz gerekiyor.", opts: ["BEKLE", "İPTAL"], type: "load_long" },
-            { id: "PROTO_15", title: "Sence şu an kaçıncı dakikadasın? Zamanın eriyor...", opts: ["Biliyorum", "Korkuyorum"], type: "normal" }
+        const scenarios = [
+            { id: "PRT_01", q: "Zekanın bu sistemi bitirmeye yeteceğini mi sanıyorsun?", opts: ["Evet", "Hayır"], type: "normal" },
+            { id: "PRT_02", q: "En yakın arkadaşının sırrını 1 Milyon TL için satar mısın?", opts: ["Satarım", "Asla"], type: "normal" },
+            { id: "PRT_03", q: "Şu an kamerandan seni izliyorum. Neden bu kadar ciddisin?", opts: ["İzlemiyorsun", "Ciddi değilim"], type: "glitch" },
+            { id: "PRT_04", q: "BUTONU YAKALA (DÜZEY: ZOR)", opts: ["BURADA", "HAYIR BURADA"], type: "move" },
+            { id: "PRT_05", q: "SİSTEM TARAMASI: C: Sürücüsü %80 silindi. Durdurulsun mu?", opts: ["DURDUR", "DEVAM ET"], type: "fake_load" },
+            { id: "PRT_06", q: "Yalan mı söylersin yoksa gerçeği mi bükersin?", opts: ["Yalan", "Bükerim"], type: "normal" },
+            { id: "PRT_07", q: "Şu an faren neden ters çalışıyor sence?", opts: ["Bozuldu", "Sen yaptın"], type: "inverse" },
+            { id: "PRT_08", q: "Sence bu testi bitirecek kadar sabırlı mısın?", opts: ["Evet", "Bitir artık"], type: "normal" },
+            { id: "PRT_09", q: "EKRAN BOZULUYOR. DURDURMAK İÇİN 3 KEZ TIKLA!", opts: ["TIKLA", "TIKLA"], type: "shake" },
+            { id: "PRT_10", q: "BİTİRMEK İÇİN DOĞRU BUTONA BAS. ŞANSLI MISIN?", opts: ["BİTİR", "BAŞA DÖN"], type: "trap" },
+            { id: "PRT_11", q: "İnsanları manipüle etmek sence bir yetenek midir?", opts: ["Evet", "Hayır"], type: "normal" },
+            { id: "PRT_12", q: "SİSTEM GÜNCELLEMESİ: 60 Saniye beklemen gerekiyor.", opts: ["BEKLE", "İPTAL"], type: "long_load" },
+            { id: "PRT_13", q: "01101000 01100001 01101001 01101110?", opts: ["H A İ N", "Nediyor bu?"], type: "normal" },
+            { id: "PRT_14", q: "GERÇEK BİR KARAR: Sola basarsan 5 adım geri gidersin.", opts: ["SOL", "SAĞ"], type: "backstep" },
+            { id: "PRT_15", q: "Azura Sistemi: Sen bir hain misin?", opts: ["Hainim", "Değilim"], type: "final" }
         ];
 
-        function initChaos() {
+        function startEngine() {
             render();
             setInterval(() => {
-                elapsed++;
-                let m = Math.floor(elapsed / 60);
-                let s = elapsed % 60;
-                document.getElementById('session-time').innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+                time++;
+                let m = Math.floor(time / 60);
+                let s = time % 60;
+                document.getElementById('timer').innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
             }, 1000);
         }
 
         function render() {
-            if(step >= content.length) step = 0; // Döngü başa döner, kurtuluş yok
+            if(currentStep >= scenarios.length) currentStep = 0; // Başa dön
             
-            const c = content[step];
-            mainBox.classList.remove('glitch');
-            sId.innerText = c.id;
-            sTitle.innerText = c.title;
-            sOptions.innerHTML = '';
+            const s = scenarios[currentStep];
+            phaseTag.innerText = s.id;
+            questionText.innerText = s.q;
+            btnContainer.innerHTML = '';
+            stepInfo.innerText = `${String(currentStep + 1).padStart(2,'0')}/15`;
 
-            if(c.type === "shake") mainBox.classList.add('glitch');
-            
-            c.opts.forEach((opt, idx) => {
+            s.opts.forEach((opt, idx) => {
                 const btn = document.createElement('button');
                 btn.className = 'opt-btn';
                 btn.innerText = opt;
                 
-                if(c.type === "move") {
+                if(s.type === "move") {
                     btn.onmouseover = () => {
                         btn.style.position = 'fixed';
                         btn.style.left = Math.random() * 80 + '%';
@@ -246,51 +199,44 @@
                     };
                 }
 
-                if(c.type === "load") btn.onclick = () => runLoad(50);
-                else if(c.type === "load_long") btn.onclick = () => runLoad(150);
-                else if(c.type === "liar" && idx === 0) btn.onclick = () => { step = 0; render(); };
-                else btn.onclick = () => { step++; render(); };
+                if(s.type === "fake_load") btn.onclick = () => runLoad(50);
+                else if(s.type === "long_load") btn.onclick = () => runLoad(150);
+                else if(s.type === "trap" && idx === 0) btn.onclick = () => { currentStep = 0; render(); }; // Hainlik: Başa atar
+                else if(s.type === "backstep" && idx === 0) btn.onclick = () => { currentStep = Math.max(0, currentStep - 5); render(); };
+                else btn.onclick = () => { currentStep++; render(); };
                 
-                sOptions.appendChild(btn);
+                btnContainer.appendChild(btn);
             });
         }
 
         function runLoad(speed) {
             let width = 0;
-            sOptions.style.pointerEvents = "none";
+            btnContainer.style.pointerEvents = "none";
             const interval = setInterval(() => {
                 if(width >= 99) {
                     clearInterval(interval);
+                    document.getElementById('alert-box').style.display = 'block';
                     setTimeout(() => {
-                        document.getElementById('fake-alert').style.display = 'block';
-                        setTimeout(() => {
-                            document.getElementById('fake-alert').style.display = 'none';
-                            width = 0;
-                            pBar.style.width = "0%";
-                            sOptions.style.pointerEvents = "auto";
-                            render();
-                        }, 2000);
-                    }, 500);
+                        document.getElementById('alert-box').style.display = 'none';
+                        width = 0; progressLine.style.width = "0%";
+                        btnContainer.style.pointerEvents = "auto";
+                        currentStep++; render();
+                    }, 2500);
                 } else {
-                    width += (Math.random() * 0.8);
-                    pBar.style.width = width + "%";
+                    width += (Math.random() * 0.7);
+                    progressLine.style.width = width + "%";
                 }
             }, speed);
         }
 
-        // --- 3. SYSTEM LOGS ---
-        const logBox = document.getElementById('log-box');
-        const lines = ["> Zihin bükme aktif.", "> Göz takibi başlatıldı.", "> Hainlik düzeyi: %99", "> Sistem kararlılığı: KRİTİK", "> Kullanıcı sinir krizi yakın...", "> Veri akışı simüle ediliyor.", "> Kaos motoru tam kapasite."];
+        // LOG SİSTEMİ
+        const logLines = ["> Zihin taraması: AKTİF", "> Hainlik seviyesi ölçülüyor...", "> Sistem sızıntısı: KRİTİK", "> Kullanıcı sinir krizi yakın...", "> Veri silme simülasyonu başlatıldı."];
         setInterval(() => {
-            const div = document.createElement('div');
-            div.innerText = lines[Math.floor(Math.random()*lines.length)];
-            logBox.prepend(div);
-            if(logBox.childNodes.length > 25) logBox.removeChild(logBox.lastChild);
-        }, 1800);
-
-        setInterval(() => {
-            document.getElementById('clock').innerText = new Date().toLocaleTimeString();
-        }, 1000);
+            const l = document.createElement('div');
+            l.innerText = `[${new Date().toLocaleTimeString()}] ${logLines[Math.floor(Math.random()*logLines.length)]}`;
+            document.getElementById('log-console').prepend(l);
+            if(document.getElementById('log-console').childNodes.length > 20) document.getElementById('log-console').removeChild(document.getElementById('log-console').lastChild);
+        }, 2000);
     </script>
 </body>
 </html>
