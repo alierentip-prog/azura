@@ -9,204 +9,182 @@
     
     <style>
         :root { --bg: #f8fafc; --text: #0f172a; --primary: #8b5cf6; --accent: #0ea5e9; }
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body { 
             background: var(--bg); color: var(--text); 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            overflow-x: hidden; 
             min-height: 100vh;
         }
 
-        /* --- ARKA PLAN (Z-INDEX: -1) --- */
-        .bg-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
-        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.2; animation: float 20s infinite alternate; }
+        /* --- ARKA PLAN KATMANI (EN ALTTA - Z-INDEX: 1) --- */
+        .bg-layer-wrapper { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            z-index: 1; pointer-events: none; /* ASLA TIKLANAMAZ */
+        }
+        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.15; animation: float 20s infinite alternate; }
         .orb-1 { top: -5%; right: -5%; width: 500px; height: 500px; background: var(--primary); }
         .orb-2 { bottom: -10%; left: -5%; width: 450px; height: 450px; background: var(--accent); }
         @keyframes float { 0% { transform: translate(0,0); } 100% { transform: translate(-40px, 40px); } }
-        #dust-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        #dust-canvas { width: 100%; height: 100%; }
 
-        /* --- ANA KONTEYNER (Z-INDEX: 10) --- */
-        .container { 
-            max-width: 1400px; 
-            margin: 0 auto; 
-            padding: 60px 8%; /* Sağda solda ferah boşluk */
+        /* --- İÇERİK KATMANI (EN ÜSTTE - Z-INDEX: 100) --- */
+        .main-content-wrapper { 
             position: relative; 
-            z-index: 10; 
+            z-index: 100; /* Her şeyin üstünde */
+            width: 100%;
+        }
+
+        .container { 
+            max-width: 1400px; margin: 0 auto; 
+            padding: 60px 8%; 
         }
         
-        /* Geri Dönüş Tuşu */
         .back-nav { 
             display: inline-flex; align-items: center; gap: 10px; margin-bottom: 50px; 
             text-decoration: none; color: var(--primary); font-family: 'JetBrains Mono'; 
-            font-weight: bold; background: rgba(255,255,255,0.9); padding: 15px 30px; 
-            border-radius: 60px; backdrop-filter: blur(15px); border: 2px solid rgba(139, 92, 246, 0.2); 
-            transition: 0.3s; font-size: 1.1rem;
-            position: relative; z-index: 100; /* Kesin tıklanma için */
+            font-weight: bold; background: rgba(255,255,255,0.9); padding: 18px 35px; 
+            border-radius: 60px; border: 2px solid rgba(139, 92, 246, 0.2); 
+            font-size: 1.2rem; transition: 0.3s;
+            cursor: pointer; position: relative; z-index: 110;
         }
         .back-nav:hover { background: var(--primary); color: #fff; transform: scale(1.05); }
 
-        header { margin-bottom: 60px; border-left: 10px solid var(--primary); padding-left: 30px; }
-        .cat-title { font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 800; letter-spacing: -3px; }
+        header { margin-bottom: 60px; border-left: 12px solid var(--primary); padding-left: 30px; }
+        .cat-title { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 800; letter-spacing: -3px; }
 
-        /* --- KONU GRIDI (PERDE ÜZERİNDE) --- */
+        /* GRID DÜZENİ */
         .perde-grid { 
-            background: rgba(255, 255, 255, 0.75); 
+            background: rgba(255, 255, 255, 0.7); 
             backdrop-filter: blur(40px); 
-            padding: 80px 40px; 
-            border-radius: 70px; 
+            padding: 80px 40px; border-radius: 80px; 
             border: 1px solid rgba(255,255,255,0.6); 
-            box-shadow: 0 40px 100px rgba(0,0,0,0.05);
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px;
-            position: relative;
-            z-index: 20; /* Kartlar arka planın üstünde kalacak */
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 35px;
         }
 
-        /* --- KART TASARIMI --- */
-        .topic-link { text-decoration: none; color: inherit; display: block; }
-        
-        .topic-card {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 50px 35px;
-            border-radius: 40px;
-            border: 1px solid rgba(255,255,255,0.8);
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
+        /* LİNK VE KARTLAR */
+        .topic-link { 
+            text-decoration: none; color: inherit; display: block; 
+            position: relative; z-index: 120; /* Tıklanma garantisi */
             cursor: pointer;
         }
-
-        .topic-card:hover {
-            transform: translateY(-12px);
-            border-color: var(--primary);
-            background: #fff;
-            box-shadow: 0 25px 50px rgba(139, 92, 246, 0.15);
+        
+        .topic-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 55px 40px; border-radius: 50px;
+            border: 1px solid rgba(255,255,255,1);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 100%; display: flex; flex-direction: column; justify-content: center;
         }
 
-        .topic-card i { font-size: 2.5rem; margin-bottom: 25px; color: var(--primary); }
-        .topic-card h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 12px; letter-spacing: -1px; }
-        .topic-card p { font-size: 1.1rem; color: #64748b; line-height: 1.6; }
+        .topic-link:hover .topic-card {
+            transform: translateY(-15px);
+            border-color: var(--primary);
+            box-shadow: 0 30px 60px rgba(139, 92, 246, 0.2);
+        }
 
-        /* --- MOBİL AYARLAR --- */
+        .topic-card i { font-size: 3rem; margin-bottom: 30px; color: var(--primary); }
+        .topic-card h3 { font-size: 2rem; font-weight: 800; margin-bottom: 15px; letter-spacing: -1px; }
+        .topic-card p { font-size: 1.2rem; color: #475569; line-height: 1.6; }
+
         @media (max-width: 768px) {
             .container { padding: 40px 5%; }
             .perde-grid { padding: 40px 20px; border-radius: 40px; grid-template-columns: 1fr; }
-            .topic-card { padding: 35px 25px; }
+            .topic-card { padding: 40px 30px; }
         }
 
-        footer { text-align: center; padding: 60px 0; font-family: 'JetBrains Mono'; opacity: 0.5; font-size: 0.9rem; }
+        footer { text-align: center; padding: 100px 0; font-family: 'JetBrains Mono'; opacity: 0.4; letter-spacing: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="bg-layer">
+    <div class="bg-layer-wrapper">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
         <canvas id="dust-canvas"></canvas>
     </div>
 
-    <div class="container">
-        <a href="menu.html" class="back-nav"><i class="fa-solid fa-arrow-left"></i> NEXUS'A DÖN</a>
-        
-        <header>
-            <h1 class="cat-title">Fizik ve Evren 🌌</h1>
-            <p style="font-size: 1.4rem; color: #64748b; margin-top: 15px;">Kozmosun derinliklerine 10 büyük kapı.</p>
-        </header>
-
-        <div class="perde-grid">
+    <div class="main-content-wrapper">
+        <div class="container">
+            <a href="menu.html" class="back-nav"><i class="fa-solid fa-arrow-left"></i> NEXUS'A DÖN</a>
             
-            <a href="kozmoloji.html" class="topic-link">
-                <div class="topic-card">
-                    <i class="fa-solid fa-infinity"></i>
-                    <div>
+            <header>
+                <h1 class="cat-title">Fizik ve Evren 🌌</h1>
+                <p style="font-size: 1.5rem; color: #64748b; margin-top: 20px; font-weight: 300;">Kozmosun derinliklerine açılan 10 kapı.</p>
+            </header>
+
+            <div class="perde-grid">
+                
+                <a href="kozmoloji.html" class="topic-link">
+                    <div class="topic-card">
+                        <i class="fa-solid fa-infinity"></i>
                         <h3>Kozmoloji</h3>
-                        <p>Evrenin doğuşu, genişlemesi ve 13.8 milyar yıllık devasa hikayesi.</p>
+                        <p>Evrenin doğuşu, genişlemesi ve nihai kaderinin 500 cümlelik dev arşivi.</p>
                     </div>
-                </div>
-            </a>
+                </a>
 
-            <a href="kaos.html" class="topic-link">
-                <div class="topic-card">
-                    <i class="fa-solid fa-hurricane"></i>
-                    <div>
+                <a href="kaos.html" class="topic-link">
+                    <div class="topic-card">
+                        <i class="fa-solid fa-hurricane"></i>
                         <h3>Kaos Teorisi</h3>
-                        <p>Düzenin içindeki düzensizlik ve kelebeğin kanat çırpışındaki matematik.</p>
+                        <p>Düzensizliğin içindeki gizli düzen ve kelebek etkisinin matematiği.</p>
                     </div>
-                </div>
-            </a>
+                </a>
 
-            <div class="topic-card" style="opacity: 0.7;">
-                <i class="fa-solid fa-atom"></i>
-                <div>
-                    <h3>Kuantum Mekaniği</h3>
-                    <p>Atom altı dünyasındaki belirsizlikler ve dalga fonksiyonları.</p>
-                </div>
-            </div>
+                <a href="quantum.html" class="topic-link">
+                    <div class="topic-card">
+                        <i class="fa-solid fa-atom"></i>
+                        <h3>Kuantum Mekaniği</h3>
+                        <p>Atom altı dünyasının belirsizliği ve gerçekliğin olasılık dalgaları.</p>
+                    </div>
+                </a>
 
-            <div class="topic-card" style="opacity: 0.7;">
-                <i class="fa-solid fa-star"></i>
-                <div>
+                <div class="topic-card" style="opacity: 0.5;">
+                    <i class="fa-solid fa-star"></i>
                     <h3>Astrofizik</h3>
-                    <p>Yıldızların içindeki nükleer mutfak ve gök cisimlerinin fiziği.</p>
+                    <p>Yıldızların içindeki nükleer mutfak ve gök cisimleri.</p>
                 </div>
-            </div>
 
-            <div class="topic-card" style="opacity: 0.7;">
-                <i class="fa-solid fa-circle-nodes"></i>
-                <div>
+                <div class="topic-card" style="opacity: 0.5;">
+                    <i class="fa-solid fa-circle-nodes"></i>
                     <h3>Parçacık Fiziği</h3>
-                    <p>Maddenin en küçük yapı taşları ve Standart Model'in sırları.</p>
+                    <p>Maddenin en küçük yapı taşları ve kuvvetler.</p>
                 </div>
-            </div>
 
-            <div class="topic-card" style="opacity: 0.7;">
-                <i class="fa-solid fa-fire-flame-curved"></i>
-                <div>
+                <div class="topic-card" style="opacity: 0.5;">
+                    <i class="fa-solid fa-fire"></i>
                     <h3>Termodinamik</h3>
-                    <p>Enerjinin korunumu, ısı transferi ve evrensel entropi yasaları.</p>
+                    <p>Enerji, ısı ve evrensel entropi yasaları.</p>
                 </div>
-            </div>
 
-            <div class="topic-card" style="opacity: 0.7;">
-                <i class="fa-solid fa-radiation"></i>
-                <div>
+                <div class="topic-card" style="opacity: 0.5;">
+                    <i class="fa-solid fa-radiation"></i>
                     <h3>Nükleer Fizik</h3>
-                    <p>Atom çekirdeğinin enerjisi, füzyon ve radyoaktif bozunmalar.</p>
+                    <p>Çekirdek enerjisi ve radyoaktif bozunmalar.</p>
                 </div>
-            </div>
 
-            <div class="topic-card" style="opacity: 0.7;">
-                <i class="fa-solid fa-lightbulb"></i>
-                <div>
+                <div class="topic-card" style="opacity: 0.5;">
+                    <i class="fa-solid fa-lightbulb"></i>
                     <h3>Optik</h3>
-                    <p>Işığın doğası, fotonların yolculuğu ve yansıma yasaları.</p>
+                    <p>Işığın doğası ve fotonların yolculuğu.</p>
                 </div>
-            </div>
 
-            <div class="topic-card" style="opacity: 0.7;">
-                <i class="fa-solid fa-gear"></i>
-                <div>
+                <div class="topic-card" style="opacity: 0.5;">
+                    <i class="fa-solid fa-gear"></i>
                     <h3>Klasik Mekanik</h3>
-                    <p>Newtonian hareket yasaları ve kütleçekiminin temelleri.</p>
+                    <p>Newton yasaları ve kütleçekim temelleri.</p>
                 </div>
-            </div>
 
-            <div class="topic-card" style="opacity: 0.7;">
-                <i class="fa-solid fa-lines-leaning"></i>
-                <div>
+                <div class="topic-card" style="opacity: 0.5;">
+                    <i class="fa-solid fa-lines-leaning"></i>
                     <h3>Sicim Teorisi</h3>
-                    <p>Çok boyutlu evren modelleri ve titreyen enerji sicimleri.</p>
+                    <p>Çok boyutlu evren ve titreyen sicimler.</p>
                 </div>
+
             </div>
 
+            <footer>AZURA NEXUS // PHYSICS_CORE // 2025</footer>
         </div>
-
-        <footer>AZURA NEXUS // PHYSICS_SECTOR // 2025</footer>
     </div>
 
     <script>
