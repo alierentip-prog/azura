@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura | System Zero</title>
+    <title>Azura | The Chaos Terminal</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=JetBrains+Mono:wght@300;500;800&family=Plus+Jakarta+Sans:wght@200;800&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 1. OBSIDIAN CORE SYSTEM SETTINGS --- */
+        /* --- 1. SİSTEM MİMARİSİ --- */
         :root {
             --bg: #010101;
-            --neon-primary: #00f2ff;
-            --neon-danger: #ff003c;
-            --neon-warning: #f39c12;
-            --glass: rgba(255, 255, 255, 0.03);
-            --border-glow: rgba(0, 242, 255, 0.1);
+            --neon: #00f2ff;
+            --danger: #ff003c;
+            --warning: #f39c12;
             --font-mono: 'JetBrains Mono', monospace;
+            --glass: rgba(255, 255, 255, 0.02);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
@@ -29,207 +28,165 @@
             height: 100vh; width: 100vw;
         }
 
-        /* --- 2. MULTI-LAYERED VISUAL FEAST --- */
-        #core-canvas { position: fixed; top: 0; left: 0; z-index: 1; }
-        .grid-overlay {
+        /* --- 2. GÖRSEL KATMANLAR (Görsel Şölen) --- */
+        #core-canvas { position: fixed; top: 0; left: 0; z-index: 1; filter: contrast(1.5); }
+        .grid-net {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: 2; pointer-events: none;
+            background-image: linear-gradient(rgba(0, 242, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0, 242, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px; z-index: 2; pointer-events: none;
         }
-        .scanline {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.2) 50%);
-            background-size: 100% 4px; z-index: 100; pointer-events: none;
-            opacity: 0.3;
+        .vignette { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, transparent 40%, #000 120%); z-index: 5; pointer-events: none; }
+        
+        /* İnteraktif Cursor */
+        #cursor-glow {
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(0, 242, 255, 0.08) 0%, transparent 70%);
+            position: fixed; pointer-events: none; z-index: 3; transform: translate(-50%, -50%);
         }
 
-        /* --- 3. CUSTOM MOUSE TRAIL --- */
-        #cursor {
-            width: 20px; height: 20px; border: 1px solid var(--neon-primary);
-            border-radius: 50%; position: fixed; pointer-events: none;
-            z-index: 9999; transition: transform 0.1s;
-            box-shadow: 0 0 10px var(--neon-primary);
-        }
-
-        /* --- 4. SYSTEM HUD (HEAD-UP DISPLAY) --- */
+        /* --- 3. HUD (SİSTEM VERİLERİ) --- */
         header {
-            position: fixed; top: 0; width: 100%; padding: 25px 50px;
+            position: fixed; top: 0; width: 100%; padding: 25px 40px;
             display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(15px); border-bottom: 1px solid var(--border-glow);
+            z-index: 1000; border-bottom: 1px solid rgba(0, 242, 255, 0.1);
+            backdrop-filter: blur(20px); background: rgba(0,0,0,0.5);
         }
-        .brand { font-family: 'Syncopate', sans-serif; font-size: 1.8rem; letter-spacing: 15px; color: var(--neon-primary); }
-        .system-metrics { font-family: var(--font-mono); font-size: 0.7rem; display: flex; gap: 30px; }
-        .metric b { color: var(--neon-danger); }
+        .brand { font-family: 'Syncopate', sans-serif; font-size: 1.5rem; letter-spacing: 12px; color: var(--neon); text-shadow: 0 0 15px var(--neon); }
+        .sys-metrics { font-family: var(--font-mono); font-size: 0.65rem; color: var(--neon); display: flex; gap: 20px; }
+        .sys-metrics span b { color: var(--danger); }
 
-        /* --- 5. TERMINAL CONSOLE (LEFT) --- */
-        .terminal {
-            position: fixed; left: 20px; top: 120px; bottom: 80px; width: 280px;
-            background: rgba(0,0,0,0.8); border: 1px solid var(--border-glow);
-            padding: 20px; font-family: var(--font-mono); font-size: 0.6rem;
-            color: var(--neon-primary); z-index: 500; overflow: hidden;
-            display: flex; flex-direction: column; gap: 8px;
-        }
-        .term-line { opacity: 0.6; animation: typeIn 0.2s ease-out; }
-
-        /* --- 6. MAIN CONTENT HUB --- */
-        main {
-            margin-left: 320px; padding: 140px 60px 100px 60px;
-            position: relative; z-index: 100; height: 100vh;
-            overflow-y: scroll; scrollbar-width: none;
+        /* --- 4. TERMINAL VE İNTERAKTİF ALAN --- */
+        .terminal-container {
+            position: relative; z-index: 100;
+            display: flex; height: 100vh; padding-top: 100px;
         }
 
-        .title-block { margin-bottom: 70px; }
-        .title-block h1 { font-size: clamp(3rem, 10vw, 7rem); font-weight: 800; letter-spacing: -4px; line-height: 0.9; }
-        .title-block p { font-family: var(--font-mono); color: var(--neon-danger); letter-spacing: 8px; margin-top: 15px; }
-
-        /* --- 7. CYBER CARDS GRID --- */
-        .hub-grid {
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px;
+        /* Sol Panel: Canlı Loglar */
+        .side-console {
+            width: 300px; padding: 30px; border-right: 1px solid rgba(0, 242, 255, 0.1);
+            font-family: var(--font-mono); font-size: 0.6rem; color: var(--neon);
+            display: flex; flex-direction: column; gap: 5px; opacity: 0.6;
+            overflow: hidden; background: rgba(0,0,0,0.2);
         }
 
-        .hub-card {
-            position: relative; height: 500px; background: var(--glass);
-            border: 1px solid var(--border-glow); border-radius: 20px;
-            padding: 50px; display: flex; flex-direction: column; justify-content: space-between;
-            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-            overflow: hidden; backdrop-filter: blur(25px);
+        /* Orta Panel: Akıl Oyunları ve Sorular */
+        .interaction-stage {
+            flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 40px; text-align: center;
         }
 
-        .hub-card:hover {
-            transform: translateY(-10px) rotateY(5deg);
-            border-color: var(--neon-primary);
-            box-shadow: 0 0 50px rgba(0, 242, 255, 0.2);
+        .stage-box {
+            max-width: 800px; width: 100%;
+            background: var(--glass); border: 1px solid rgba(0, 242, 255, 0.1);
+            border-radius: 30px; padding: 60px; backdrop-filter: blur(40px);
+            animation: boxEntry 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .card-dec { font-family: var(--font-mono); font-size: 4rem; opacity: 0.05; position: absolute; right: 20px; top: 20px; transition: 0.5s; }
-        .hub-card:hover .card-dec { opacity: 0.15; color: var(--neon-primary); transform: scale(1.2); }
+        .question-tag { font-family: var(--font-mono); color: var(--danger); font-size: 0.8rem; letter-spacing: 5px; margin-bottom: 20px; display: block; }
+        .question-text { font-size: 2.5rem; font-weight: 800; margin-bottom: 40px; line-height: 1.2; letter-spacing: -1px; }
 
-        .hub-card h2 { font-size: 3rem; font-weight: 800; margin-bottom: 10px; z-index: 2; }
-        .hub-card p { font-size: 1rem; color: rgba(255,255,255,0.4); z-index: 2; line-height: 1.6; max-width: 80%; }
-
-        .btn-core {
-            width: fit-content; padding: 20px 45px; border-radius: 5px;
-            border: 1px solid var(--neon-primary); color: var(--neon-primary);
-            text-decoration: none; font-size: 0.8rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 5px; transition: 0.4s;
-            background: rgba(0,0,0,0.5); z-index: 2;
+        /* İnteraktif Butonlar */
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
+        .opt-btn {
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+            padding: 25px; border-radius: 15px; color: #fff; font-size: 1rem;
+            font-weight: 600; text-transform: uppercase; letter-spacing: 2px;
+            transition: all 0.4s; position: relative; overflow: hidden;
         }
-        .hub-card:hover .btn-core { background: var(--neon-primary); color: #000; box-shadow: 0 0 20px var(--neon-primary); }
+        .opt-btn:hover {
+            background: var(--neon); color: #000; border-color: var(--neon);
+            box-shadow: 0 0 30px var(--neon); transform: translateY(-5px);
+        }
 
-        /* --- 8. GLOBAL DATA FOOTER --- */
+        /* Hain Şaka Elementi */
+        .glitch-overlay {
+            position: fixed; inset: 0; background: #ff003c; z-index: 9999;
+            display: none; align-items: center; justify-content: center;
+            font-family: var(--font-mono); font-size: 3rem; color: #fff; font-weight: 900;
+        }
+
+        /* --- 5. ANİMASYONLAR --- */
+        @keyframes boxEntry { from { opacity: 0; transform: scale(0.9) translateY(40px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        
         footer {
-            position: fixed; bottom: 0; width: 100%; padding: 25px 50px;
-            border-top: 1px solid var(--border-glow); background: rgba(0,0,0,0.8);
-            display: flex; justify-content: space-between; align-items: center;
-            font-family: var(--font-mono); font-size: 0.65rem; color: var(--neon-primary); z-index: 1000;
+            position: fixed; bottom: 0; width: 100%; padding: 20px 40px;
+            border-top: 1px solid rgba(0, 242, 255, 0.1);
+            display: flex; justify-content: space-between; font-family: var(--font-mono);
+            font-size: 0.6rem; color: rgba(0, 242, 255, 0.4); z-index: 1000;
         }
 
-        /* --- ANIMATIONS --- */
-        @keyframes typeIn { from { transform: translateX(-10px); opacity: 0; } to { transform: translateX(0); opacity: 0.6; } }
-
-        @media (max-width: 1100px) {
-            .terminal { display: none; }
-            main { margin-left: 0; padding: 120px 20px; }
-            .hub-grid { grid-template-columns: 1fr; }
+        /* Mobil Ayarlar */
+        @media (max-width: 900px) {
+            .side-console { display: none; }
+            .options-grid { grid-template-columns: 1fr; }
+            .question-text { font-size: 1.8rem; }
+            .stage-box { padding: 30px; margin: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <div id="cursor"></div>
+    <div id="cursor-glow"></div>
     <canvas id="core-canvas"></canvas>
-    <div class="grid-overlay"></div>
-    <div class="scanline"></div>
+    <div class="grid-net"></div>
+    <div class="vignette"></div>
 
-    <div class="terminal" id="term-box">
-        </div>
+    <div class="glitch-overlay" id="fake-error">SİSTEM ÇÖKTÜ. VERİLER SİLİNİYOR...</div>
 
     <header>
         <div class="brand">AZURA</div>
-        <div class="system-metrics">
-            <div class="metric">ENCRYPTION: <b>AES-256</b></div>
-            <div class="metric">LATENCY: <b id="latency">24ms</b></div>
-            <div class="metric">Uptime: <b id="timer">00:00:00</b></div>
+        <div class="sys-metrics">
+            <span>MEM: <b>81%</b></span>
+            <span>Uptime: <b id="timer">00:00</b></span>
+            <span>Status: <b>CHAOS_MODE</b></span>
         </div>
     </header>
 
-    <main>
-        <section class="title-block">
-            <p>[ OBSIDIAN PROTOCOL V.09 ]</p>
-            <h1>Global Kaos ve<br>Akıl Oyunları.</h1>
-        </section>
+    <div class="terminal-container">
+        <aside class="side-console" id="log-console">
+            </aside>
 
-        <div class="hub-grid">
-            <div class="hub-card">
-                <span class="card-dec">77</span>
-                <div>
-                    <h2>Zihin Labirenti</h2>
-                    <p>Cevapların sadece birer veri değil, birer itiraf. Bakalım kim olduğunu saklayabilecek misin?</p>
+        <main class="interaction-stage">
+            <div class="stage-box" id="main-stage">
+                <span class="question-tag" id="stage-tag">INITIALIZING PROTOCOL...</span>
+                <h2 class="question-text" id="stage-text">Zihnini Bükmeye Hazır Mısın?</h2>
+                
+                <div class="options-grid" id="options-container">
+                    <button class="opt-btn" onclick="startSequence()">Sisteme Gir</button>
+                    <button class="opt-btn" onclick="triggerScare()">Dışarı Çık</button>
                 </div>
-                <a href="sorular.html" class="btn-core">Sorgula</a>
             </div>
-
-            <div class="hub-card">
-                <span class="card-dec">99</span>
-                <div>
-                    <h2>Hain Şakalar</h2>
-                    <p>Arkadaşlarını çıldırtacak, ekranlarını kilitlendi sanacakları siber tuzak paketi.</p>
-                </div>
-                <a href="sakalar.html" class="btn-core">Kaos Yarat</a>
-            </div>
-
-            <div class="hub-card">
-                <span class="card-dec">33</span>
-                <div>
-                    <h2>Kod Kırıcı</h2>
-                    <p>Mantık hataları ve görsel illüzyonlarla beynini yakacak akıl oyunları simülasyonu.</p>
-                </div>
-                <a href="oyunlar.html" class="btn-core">Sınırları Zorla</a>
-            </div>
-
-            <div class="hub-card">
-                <span class="card-dec">00</span>
-                <div>
-                    <h2>Gizli Arşiv</h2>
-                    <p>Sadece en "hain" ve en dikkatli kullanıcıların erişebildiği kilitli veri tabanı.</p>
-                </div>
-                <a href="arsiv.html" class="btn-core">Erişim Sağla</a>
-            </div>
-        </div>
-    </main>
+        </main>
+    </div>
 
     <footer>
-        <div>NODE_STATUS: SECURED // PACKET_SENT: 4096KB</div>
-        <div>AZURA OS ULTIMATE EDITION // NO_LOCATION_TRACKING</div>
-        <div id="live-time">00:00:00</div>
+        <div>CORE_VERSION: 9.9.9 // DEPLOYED_FOR_CHAOS</div>
+        <div id="clock">00:00:00</div>
     </footer>
 
     <script>
-        // --- 1. MOUSE FOLLOW ---
-        const cursor = document.getElementById('cursor');
-        document.addEventListener('mousemove', e => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-        });
-
-        // --- 2. GLOBAL MATRIX ENGINE ---
+        // --- 1. MOUSE VE CANVAS MOTORU ---
         const canvas = document.getElementById('core-canvas');
         const ctx = canvas.getContext('2d');
+        const glow = document.getElementById('cursor-glow');
         let particles = [];
 
         window.onresize = () => { canvas.width = innerWidth; canvas.height = innerHeight; };
         canvas.width = innerWidth; canvas.height = innerHeight;
 
+        document.addEventListener('mousemove', e => {
+            glow.style.left = e.clientX + 'px';
+            glow.style.top = e.clientY + 'px';
+        });
+
         class Particle {
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 0.8;
-                this.vy = (Math.random() - 0.5) * 0.8;
-                this.size = Math.random() * 1.5;
+                this.vx = (Math.random() - 0.5) * 1;
+                this.vy = (Math.random() - 0.5) * 1;
+                this.size = Math.random() * 2;
             }
             update() {
                 this.x += this.vx; this.y += this.vy;
@@ -242,17 +199,16 @@
             }
         }
 
-        for(let i=0; i<120; i++) particles.push(new Particle());
+        for(let i=0; i<80; i++) particles.push(new Particle());
 
         function animate() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
             particles.forEach(p => {
                 p.update(); p.draw();
-                // Mouse etkileşimi
                 particles.forEach(p2 => {
-                    let dist = Math.sqrt(Math.pow(p.x - p2.x, 2) + Math.pow(p.y - p2.y, 2));
-                    if(dist < 150) {
-                        ctx.strokeStyle = `rgba(0, 242, 255, ${1 - dist/150})`;
+                    let d = Math.sqrt(Math.pow(p.x - p2.x, 2) + Math.pow(p.y - p2.y, 2));
+                    if(d < 120) {
+                        ctx.strokeStyle = `rgba(0, 242, 255, ${1 - d/120})`;
                         ctx.lineWidth = 0.5; ctx.beginPath();
                         ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
                     }
@@ -262,34 +218,90 @@
         }
         animate();
 
-        // --- 3. TERMINAL LOGS ---
-        const logs = [
-            "> Initializing Zero-Day Exploit...",
-            "> Bypassing Global Firewalls...",
-            "> Loading Chaos Protocols...",
-            "> Memory Leak Detected...",
-            "> Accessing Encrypted Soul...",
-            "> Visual Glitch Level 5...",
-            "> Connection Secured...",
-            "> Waiting for Breach..."
+        // --- 2. İNTERAKTİF SORU VE KAOS MANTIĞI ---
+        const stage = document.getElementById('main-stage');
+        const stageTag = document.getElementById('stage-tag');
+        const stageText = document.getElementById('stage-text');
+        const optionsContainer = document.getElementById('options-container');
+
+        const questions = [
+            {
+                tag: "BÖLÜM 01: İTİRAF",
+                text: "Arkadaşının en büyük sırrını, kendi çıkarın için kullanır mıydın?",
+                opts: ["Evet, hayatta kalmalıyım", "Hayır, sadakat her şeydir"],
+                next: 1
+            },
+            {
+                tag: "BÖLÜM 02: MANİPÜLASYON",
+                text: "Şu an bu ekranın arkasında seni izlediğimi söylesem, kameranı kapatır mısın?",
+                opts: ["Zaten kapalıydı...", "Kapatmaya korkarım"],
+                next: 2
+            },
+            {
+                tag: "BÖLÜM 03: HAİNLİK",
+                text: "Sistemi çökertmek için tek bir tuşun kalsa, basar mıydın?",
+                opts: ["Hemen şimdi!", "Biraz daha eğlenelim"],
+                next: 3
+            }
         ];
-        const termBox = document.getElementById('term-box');
+
+        let currentStep = 0;
+
+        function startSequence() {
+            updateStage();
+        }
+
+        function updateStage() {
+            if(currentStep >= questions.length) {
+                stageText.innerHTML = "Tebrikler Hain Rafık. Zihin Labirenti Tamamlandı.";
+                optionsContainer.innerHTML = '<button class="opt-btn" onclick="location.reload()">Baştan Başla</button><button class="opt-btn" onclick="triggerScare()">Tümünü Sil</button>';
+                return;
+            }
+            const q = questions[currentStep];
+            stageTag.innerText = q.tag;
+            stageText.innerText = q.text;
+            optionsContainer.innerHTML = '';
+            q.opts.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'opt-btn';
+                btn.innerText = opt;
+                btn.onclick = () => { currentStep++; updateStage(); };
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        // Hain Şaka: Fake Error
+        function triggerScare() {
+            const error = document.getElementById('fake-error');
+            error.style.display = 'flex';
+            setTimeout(() => { error.innerText = "Şaka yaptım knkm, sakin ol."; }, 2000);
+            setTimeout(() => { error.style.display = 'none'; }, 4000);
+        }
+
+        // --- 3. SİSTEM LOGLARI ---
+        const logBox = document.getElementById('log-console');
+        const logs = [
+            "> Zihin taraması başlatıldı...",
+            "> Manipülasyon düzeyi: KRİTİK",
+            "> Hain planlar senkronize ediliyor...",
+            "> Veri sızıntısı simüle ediliyor...",
+            "> Zayıf nokta tespit edildi: VİCDAN",
+            "> Kullanıcı tepkileri izleniyor..."
+        ];
         let lIdx = 0;
         function addLog() {
             let p = document.createElement('div');
-            p.className = 'term-line';
             p.innerText = logs[lIdx % logs.length];
-            termBox.prepend(p);
-            if(termBox.childNodes.length > 25) termBox.removeChild(termBox.lastChild);
+            logBox.prepend(p);
+            if(logBox.childNodes.length > 30) logBox.removeChild(logBox.lastChild);
             lIdx++;
             setTimeout(addLog, Math.random() * 2000 + 500);
         }
         addLog();
 
-        // --- 4. HUD DATA ---
+        // Saat ve Timer
         setInterval(() => {
-            document.getElementById('latency').innerText = Math.floor(Math.random() * 30 + 5) + "ms";
-            document.getElementById('live-time').innerText = new Date().toLocaleTimeString();
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString();
         }, 1000);
     </script>
 </body>
