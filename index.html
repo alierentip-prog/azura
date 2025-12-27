@@ -5,113 +5,119 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Azura | Dijital Alanın</title>
     <style>
-        /* Derin Gri ve Işık Geçişli Arka Plan */
+        /* --- GENEL AYARLAR --- */
         body, html {
             margin: 0; padding: 0; height: 100%;
             display: flex; justify-content: center; align-items: center;
-            background: radial-gradient(circle, #2c2c2c 0%, #1a1a1a 100%);
+            /* YENİ: Açık Gri / Beyaz Ferah Arka Plan */
+            background: radial-gradient(circle at center, #ffffff 0%, #e0e0e0 100%);
             overflow: hidden;
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         .scene {
             position: relative;
             display: flex; justify-content: center; align-items: center;
+            width: 100%; height: 100%;
         }
 
-        /* Katmanlı Mavi Noktalı Halkalar */
+        /* --- HALKALAR (Büyük ve Parlak Mavi Noktalar) --- */
         .ring {
             position: absolute;
             border-radius: 50%;
-            border: 2px dotted rgba(52, 152, 219, 0.4);
+            border-style: dotted;
+            /* YENİ: Çok parlak neon mavi renk */
+            border-color: #00eaff; 
+            /* YENİ: Parlaklık efekti (Glow) */
+            filter: drop-shadow(0 0 10px rgba(0, 234, 255, 0.8));
             animation: spin linear infinite;
+            box-sizing: border-box;
         }
 
+        /* Masaüstü Varsayılan Boyutlar */
         .ring-outer {
-            width: 520px; height: 520px;
-            animation-duration: 20s;
+            width: 500px; height: 500px;
+            /* YENİ: Daha kalın kenar = Daha büyük noktalar */
+            border-width: 14px; 
+            animation-duration: 25s;
         }
 
         .ring-inner {
-            width: 440px; height: 440px;
-            border-color: rgba(52, 152, 219, 0.7);
-            animation-duration: 12s;
-            animation-direction: reverse; /* Ters yöne döner, doluluk hissi verir */
+            width: 400px; height: 400px;
+            /* YENİ: İç halka için kalınlık */
+            border-width: 12px;
+            animation-duration: 15s;
+            animation-direction: reverse;
+            opacity: 0.8; /* İç halka hafifçe daha şeffaf */
         }
 
-        /* Renk Değiştiren ve Parlayan Azura Yazısı */
+        /* --- AZURA YAZISI --- */
         .azura-title {
-            font-size: 6rem;
+            font-size: 5rem; 
             font-weight: 900;
-            letter-spacing: 18px;
+            letter-spacing: 15px;
             text-transform: uppercase;
-            /* Akışkan Gradient */
-            background: linear-gradient(90deg, #3498db, #a29bfe, #55efc4, #3498db);
+            text-align: center;
+            margin: 0;
+            
+            /* Renk Geçiş Efekti (Açık zeminde de net okunur) */
+            background: linear-gradient(90deg, #00eaff, #3498db, #55efc4, #00eaff);
             background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: flow 4s linear infinite, slideUp 1.2s ease-out forwards;
+            animation: flow 4s linear infinite, slideIn 1.5s ease-out;
             z-index: 10;
-            filter: drop-shadow(0 0 15px rgba(52, 152, 219, 0.3));
+            /* Yazının da etrafına hafif mavi ışık */
+            filter: drop-shadow(0 0 15px rgba(0, 234, 255, 0.4));
         }
 
-        /* Alt Yazı / Slogan */
-        .subtitle {
-            position: absolute;
-            bottom: -60px;
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 0.8rem;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            opacity: 0;
-            animation: fadeIn 1s ease-out 0.8s forwards;
-        }
+        /* --- MOBİL CİHAZLAR İÇİN ÖZEL AYARLAR --- */
+        @media screen and (max-width: 768px) {
+            /* Mobilde halka boyutları ve nokta kalınlıkları ayarlanır */
+            .ring-outer { width: 320px; height: 320px; border-width: 10px; }
+            .ring-inner { width: 260px; height: 260px; border-width: 8px; }
 
-        /* Animasyon Tanımları */
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+            .azura-title {
+                font-size: 3rem;
+                letter-spacing: 8px;
+            }
+        }
         
-        @keyframes flow {
-            to { background-position: 200% center; }
+        @media screen and (max-width: 380px) {
+             .ring-outer { width: 280px; height: 280px; border-width: 8px;}
+             .ring-inner { width: 230px; height: 230px; border-width: 7px;}
+             .azura-title { font-size: 2.5rem; letter-spacing: 5px; }
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); filter: blur(10px); }
-            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        /* --- ANİMASYONLAR --- */
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes flow { to { background-position: 200% center; } }
+        @keyframes slideIn {
+            from { opacity: 0; transform: scale(0.8); filter: blur(10px); }
+            to { opacity: 1; transform: scale(1); filter: blur(0); }
         }
 
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        /* Çıkış Geçişi */
-        .page-exit {
-            animation: exitBlur 0.8s forwards;
-        }
-
-        @keyframes exitBlur {
-            to { opacity: 0; filter: blur(20px); transform: scale(1.1); }
-        }
+        /* Çıkış Efekti */
+        .fade-out-scene { animation: exitBlur 1s forwards; }
+        @keyframes exitBlur { to { opacity: 0; filter: blur(20px); transform: scale(1.1); } }
     </style>
 </head>
 <body>
 
-    <div class="scene" id="splash-screen">
+    <div class="scene" id="main-content">
         <div class="ring ring-outer"></div>
         <div class="ring ring-inner"></div>
-        
         <h1 class="azura-title">Azura</h1>
-        
-        <div class="subtitle">Yükleniyor...</div>
     </div>
 
     <script>
-        // 3 saniyelik deneyim (Giriş + Bekleme + Çıkış)
+        // 3 saniye sonra yönlendirme
         setTimeout(function() {
-            document.getElementById('splash-screen').classList.add('page-exit');
+            document.getElementById('main-content').classList.add('fade-out-scene');
             setTimeout(function() {
                 window.location.href = "menu.html"; 
-            }, 800);
-        }, 2200); 
+            }, 1000);
+        }, 2500); 
     </script>
 
 </body>
