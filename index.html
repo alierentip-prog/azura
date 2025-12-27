@@ -2,269 +2,83 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura | The Zenith</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Space+Mono:wght@400;700&family=Inter:wght@900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Azura | The Knowledge Singularity</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Plus+Jakarta+Sans:wght@200;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* --- KÜRESEL DEĞİŞKENLER VE SIFIRLAMA --- */
         :root {
-            --primary: #00f2ff;
-            --secondary: #7000ff;
-            --bg: #050505;
+            --bg: #020202;
+            --accent: #00f2ff;
             --text: #ffffff;
-            --glitch-offset: 5px;
+            --muted: rgba(255, 255, 255, 0.4);
+            --border: rgba(255, 255, 255, 0.08);
+            --font-mono: 'JetBrains Mono', monospace;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body, html { 
-            height: 100%; width: 100%; 
-            background: var(--bg); 
-            color: var(--text); 
-            font-family: 'Space Mono', monospace; 
-            overflow: hidden; 
+            background: var(--bg); color: var(--text); 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            overflow: hidden; height: 100%; width: 100%;
         }
 
-        /* --- ARKA PLAN KATMANLARI --- */
-        #canvas-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1;
-        }
+        /* --- VISUAL CORE --- */
+        #bg-canvas { position: fixed; inset: 0; z-index: 1; opacity: 0.6; filter: contrast(1.2) brightness(0.8); }
+        .grid-mask { position: fixed; inset: 0; z-index: 2; pointer-events: none; background-image: radial-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px); background-size: 60px 60px; }
+        .vignette { position: fixed; inset: 0; z-index: 5; pointer-events: none; background: radial-gradient(circle, transparent 20%, #000 140%); }
+        .scanlines { position: fixed; inset: 0; z-index: 6; pointer-events: none; background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.1) 50%); background-size: 100% 4px; }
 
-        /* CRT Tarama Çizgileri */
-        .scanlines {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            background-size: 100% 2px, 3px 100%;
-            z-index: 5; pointer-events: none;
-        }
-
-        /* Dijital Kumlanma */
-        .noise {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('https://grainy-gradients.vercel.app/noise.svg');
-            opacity: 0.05; z-index: 6; pointer-events: none;
-        }
-
-        /* --- HUD ELEMENTLERİ --- */
-        .hud-element {
-            position: fixed; z-index: 10; padding: 20px;
-            color: var(--primary); font-size: 10px; letter-spacing: 2px;
-            text-transform: uppercase; font-weight: 700;
-        }
-        .top-left { top: 0; left: 0; border-left: 2px solid var(--primary); border-top: 2px solid var(--primary); margin: 20px; }
-        .top-right { top: 0; right: 0; border-right: 2px solid var(--primary); border-top: 2px solid var(--primary); margin: 20px; text-align: right; }
-        .bottom-left { bottom: 0; left: 0; border-left: 2px solid var(--primary); border-bottom: 2px solid var(--primary); margin: 20px; }
-        .bottom-right { bottom: 0; right: 0; border-right: 2px solid var(--primary); border-bottom: 2px solid var(--primary); margin: 20px; text-align: right; }
-
-        /* --- ANA MERKEZ --- */
-        .center-stage {
-            position: relative; z-index: 20;
+        /* --- HERO SECTION --- */
+        .hero {
+            position: relative; z-index: 100;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100vh; width: 100%;
+            height: 100vh; padding: 40px; text-align: center;
         }
 
-        /* GLITCH LOGO */
-        .azura-logo {
-            font-family: 'Syncopate', sans-serif;
-            font-size: clamp(3rem, 15vw, 9rem);
-            font-weight: 700;
-            letter-spacing: -5px;
-            color: #fff;
-            position: relative;
-            text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.025em -0.05em 0 rgba(0,255,0,0.75), 0.025em 0.05em 0 rgba(0,0,255,0.75);
-            animation: logoFloat 4s ease-in-out infinite, glitch 1s infinite alternate-reverse;
+        .pre-title {
+            font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent);
+            letter-spacing: 12px; text-transform: uppercase; margin-bottom: 20px;
+            animation: fadeIn 2s ease-out;
         }
 
-        /* ALT YAZI SİSTEMİ */
-        .scramble-box {
-            margin-top: 20px; font-size: 0.8rem; letter-spacing: 10px;
-            color: var(--primary); text-transform: uppercase;
-            min-height: 20px; opacity: 0.8;
+        .main-logo {
+            font-family: 'Syncopate', sans-serif; font-size: clamp(3rem, 15vw, 8rem);
+            font-weight: 700; letter-spacing: 30px; line-height: 1; margin-bottom: 30px;
+            color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.8);
+            position: relative; transition: all 0.5s;
         }
+        .main-logo:hover { -webkit-text-stroke: 1px var(--accent); filter: drop-shadow(0 0 30px var(--accent)); }
 
-        /* İLERLEME SİSTEMİ */
-        .loader-wrap {
-            width: 300px; height: 1px; background: rgba(255,255,255,0.05);
-            margin-top: 50px; position: relative; overflow: hidden;
+        .tagline-box { max-width: 600px; margin-bottom: 60px; }
+        .tagline { font-size: 1.1rem; font-weight: 200; letter-spacing: 2px; line-height: 1.8; color: var(--muted); }
+
+        /* --- ACTION BUTTON --- */
+        .enter-portal {
+            position: relative; padding: 25px 80px;
+            background: transparent; border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; text-decoration: none; font-weight: 800;
+            letter-spacing: 8px; text-transform: uppercase; font-size: 0.8rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
         }
-        .progress-line {
-            position: absolute; left: 0; top: 0; height: 100%; width: 0%;
-            background: var(--primary); box-shadow: 0 0 20px var(--primary);
-            animation: masterLoad 8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+        .enter-portal:hover { border-color: var(--accent); color: #000; }
+        .enter-portal::before {
+            content: ''; position: absolute; left: -100%; top: 0; width: 100%; height: 100%;
+            background: var(--accent); z-index: -1; transition: 0.4s;
         }
+        .enter-portal:hover::before { left: 0; }
 
-        /* --- ANİMASYONLAR --- */
-        @keyframes logoFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
+        /* --- HUD ELEMENTS --- */
+        .hud-top { position: fixed; top: 0; width: 100%; padding: 40px 60px; display: flex; justify-content: space-between; z-index: 200; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 3px; opacity: 0.5; }
+        .hud-side { position: fixed; left: 60px; top: 50%; transform: translateY(-50%) rotate(-90deg); transform-origin: left; z-index: 200; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 5px; color: var(--accent); }
 
-        @keyframes glitch {
-            0% { text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.05em -0.025em 0 rgba(0,255,0,0.75), -0.025em 0.05em 0 rgba(0,0,255,0.75); }
-            14% { text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.05em -0.025em 0 rgba(0,255,0,0.75), -0.025em 0.05em 0 rgba(0,0,255,0.75); }
-            15% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,0.75), 0.025em 0.025em 0 rgba(0,255,0,0.75), -0.05em -0.05em 0 rgba(0,0,255,0.75); }
-            49% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,0.75), 0.025em 0.025em 0 rgba(0,255,0,0.75), -0.05em -0.05em 0 rgba(0,0,255,0.75); }
-            50% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,0.75), 0.05em 0 0 rgba(0,255,0,0.75), 0 -0.05em 0 rgba(0,0,255,0.75); }
-            99% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,0.75), 0.05em 0 0 rgba(0,255,0,0.75), 0 -0.05em 0 rgba(0,0,255,0.75); }
-            100% { text-shadow: -0.025em 0 0 rgba(255,0,0,0.75), -0.025em -0.025em 0 rgba(0,255,0,0.75), -0.025em -0.05em 0 rgba(0,0,255,0.75); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes masterLoad { to { width: 100%; } }
-
-        /* EXIT SEQUENCE */
-        .zenith-exit { animation: cinematicExit 1.5s cubic-bezier(0.7, 0, 0.3, 1) forwards; }
-        @keyframes cinematicExit {
-            to { opacity: 0; filter: blur(100px) contrast(2); transform: scale(1.2); }
+        /* MOBİL */
+        @media (max-width: 768px) {
+            .hud-top, .hud-side { display: none; }
+            .main-logo { letter-spacing: 15px; }
+            .enter-portal { padding: 20px 40px; width: 100%; }
         }
     </style>
 </head>
-<body>
-
-    <canvas id="canvas-bg"></canvas>
-    <div class="scanlines"></div>
-    <div class="noise"></div>
-
-    <div class="hud-element top-left">
-        System: Active<br>
-        Source: alierentip-prog<br>
-        ID: 0x2A7F
-    </div>
-    <div class="hud-element top-right" id="clock">00:00:00</div>
-    <div class="hud-element bottom-left">
-        Lat: 37.0662 N<br>
-        Lon: 37.3833 E<br>
-        Loc: Gaziantep
-    </div>
-    <div class="hud-element bottom-right">
-        Status: Scanning Core...<br>
-        Protocol: 4.0.4-AZ
-    </div>
-
-    <main class="center-stage" id="master-container">
-        <h1 class="azura-logo">AZURA</h1>
-        <div class="scramble-box" id="scramble">Initialization...</div>
-        <div class="loader-wrap">
-            <div class="progress-line"></div>
-        </div>
-    </main>
-
-    <script>
-        // --- PARÇACIK FİZİK MOTORU ---
-        const canvas = document.getElementById('canvas-bg');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        let mouse = { x: null, y: null, radius: 150 };
-
-        window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
-        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; initParticles(); });
-
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        class Particle {
-            constructor(x, y, directionX, directionY, size, color) {
-                this.x = x; this.y = y; this.directionX = directionX; this.directionY = directionY;
-                this.size = size; this.color = color;
-            }
-            draw() {
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-                ctx.fillStyle = '#00f2ff'; ctx.fill();
-            }
-            update() {
-                if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
-                if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
-                
-                // Mouse etkileşimi (İtme kuvveti)
-                let dx = mouse.x - this.x; let dy = mouse.y - this.y;
-                let distance = Math.sqrt(dx*dx + dy*dy);
-                if (distance < mouse.radius) {
-                    if (mouse.x < this.x && this.x < canvas.width - this.size * 10) this.x += 10;
-                    if (mouse.x > this.x && this.x > this.size * 10) this.x -= 10;
-                    if (mouse.y < this.y && this.y < canvas.height - this.size * 10) this.y += 10;
-                    if (mouse.y > this.y && this.y > this.size * 10) this.y -= 10;
-                }
-                this.x += this.directionX; this.y += this.directionY;
-                this.draw();
-            }
-        }
-
-        function initParticles() {
-            particles = [];
-            let numberOfParticles = (canvas.height * canvas.width) / 9000;
-            for (let i = 0; i < numberOfParticles; i++) {
-                let size = (Math.random() * 2) + 1;
-                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-                let directionX = (Math.random() * 2) - 1;
-                let directionY = (Math.random() * 2) - 1;
-                particles.push(new Particle(x, y, directionX, directionY, size));
-            }
-        }
-
-        function connect() {
-            for (let a = 0; a < particles.length; a++) {
-                for (let b = a; b < particles.length; b++) {
-                    let distance = ((particles[a].x - particles[b].x) * (particles[a].x - particles[b].x)) + ((particles[a].y - particles[b].y) * (particles[a].y - particles[b].y));
-                    if (distance < (canvas.width/7) * (canvas.height/7)) {
-                        let opacity = 1 - (distance/20000);
-                        ctx.strokeStyle = `rgba(0, 242, 255, ${opacity})`;
-                        ctx.lineWidth = 1; ctx.beginPath();
-                        ctx.moveTo(particles[a].x, particles[a].y); ctx.lineTo(particles[b].x, particles[b].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-            ctx.clearRect(0, 0, innerWidth, innerHeight);
-            for (let i = 0; i < particles.length; i++) particles[i].update();
-            connect();
-        }
-        initParticles(); animate();
-
-        // --- SCRAMBLE TEXT ENGINE ---
-        class TextScramble {
-            constructor(el) { this.el = el; this.chars = '!<>-_\\/[]{}—=+*^?#________ığüşöçİĞÜŞÖÇ'; this.update = this.update.bind(this); }
-            setText(newText) {
-                const oldText = this.el.innerText; const length = Math.max(oldText.length, newText.length);
-                const promise = new Promise((resolve) => this.resolve = resolve); this.queue = [];
-                for (let i = 0; i < length; i++) {
-                    const from = oldText[i] || ''; const to = newText[i] || ''; const start = Math.floor(Math.random() * 40); const end = start + Math.floor(Math.random() * 40);
-                    this.queue.push({ from, to, start, end });
-                }
-                cancelAnimationFrame(this.frameRequest); this.frame = 0; this.update(); return promise;
-            }
-            update() {
-                let output = ''; let complete = 0;
-                for (let i = 0, n = this.queue.length; i < n; i++) {
-                    let { from, to, start, end, char } = this.queue[i];
-                    if (this.frame >= end) { complete++; output += to; }
-                    else if (this.frame >= start) { if (!char || Math.random() < 0.28) { char = this.chars[Math.floor(Math.random() * this.chars.length)]; this.queue[i].char = char; } output += `<span style="color:#00f2ff">${char}</span>`; }
-                    else { output += from; }
-                }
-                this.el.innerHTML = output;
-                if (complete === this.queue.length) { this.resolve(); } else { this.frameRequest = requestAnimationFrame(this.update); this.frame++; }
-            }
-        }
-
-        const phrases = ['Initializing Matrix', 'Accessing Azura Core', 'Synchronizing Soul', 'Welcome Rafık'];
-        const el = document.getElementById('scramble');
-        const fx = new TextScramble(el);
-        let counter = 0;
-        const next = () => { fx.setText(phrases[counter]).then(() => { setTimeout(next, 2000); }); counter = (counter + 1) % phrases.length; };
-        next();
-
-        // HUD Saat Güncelleme
-        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
-
-        // Final Yönlendirme (8 saniye sonra)
-        setTimeout(() => {
-            document.getElementById('master-container').classList.add('zenith-exit');
-            setTimeout(() => { window.location.href = "menu.html"; }, 1500);
-        }, 8000);
-    </script>
-</body>
-</html>
