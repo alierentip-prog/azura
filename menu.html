@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azura | Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Plus+Jakarta+Sans:wght@200;500;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #080808;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --accent: #00f2ff;
+            --metal-gray: #1a1a1a;
+            --text: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- ARKA PLAN SİSTEMİ --- */
+        .ambient-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(0, 242, 255, 0.05) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, rgba(112, 0, 255, 0.05) 0%, transparent 40%);
+            z-index: -1;
+        }
+
+        /* --- NAVİGASYON --- */
+        nav {
+            padding: 40px; display: flex; justify-content: space-between; align-items: center;
+            backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100;
+        }
+        .nav-logo { font-family: 'Syncopate', sans-serif; font-size: 1.5rem; letter-spacing: 5px; color: var(--accent); }
+        .nav-time { font-family: monospace; opacity: 0.5; font-size: 0.9rem; }
+
+        /* --- ANA KONTEYNER --- */
+        .container { max-width: 1400px; margin: 0 auto; padding: 60px 20px; }
+
+        .welcome-section { margin-bottom: 80px; opacity: 0; transform: translateY(30px); animation: fadeInUp 1s forwards; }
+        .welcome-section h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; letter-spacing: -2px; margin-bottom: 10px; }
+        .welcome-section p { font-size: 1.1rem; opacity: 0.6; letter-spacing: 2px; text-transform: uppercase; }
+
+        /* --- MENÜ KARTLARI (GRID) --- */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .menu-card {
+            position: relative;
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 40px;
+            height: 450px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+            backdrop-filter: blur(15px);
+        }
+
+        /* Kart Üzerine Gelince */
+        .menu-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0, 242, 255, 0.1);
+        }
+
+        .menu-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, transparent 30%, rgba(0, 242, 255, 0.1));
+            opacity: 0; transition: 0.5s;
+        }
+        .menu-card:hover::before { opacity: 1; }
+
+        /* Kart Numarası */
+        .card-no {
+            position: absolute; top: 40px; right: 40px;
+            font-size: 4rem; font-weight: 800; opacity: 0.05;
+            transition: 0.5s;
+        }
+        .menu-card:hover .card-no { opacity: 0.2; transform: scale(1.2); color: var(--accent); }
+
+        .card-icon { font-size: 2.5rem; margin-bottom: 20px; color: var(--accent); }
+        .card-title { font-size: 2rem; font-weight: 800; margin-bottom: 15px; }
+        .card-desc { font-size: 0.95rem; opacity: 0.5; line-height: 1.6; margin-bottom: 25px; }
+
+        .btn-enter {
+            width: fit-content; padding: 12px 30px; border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 100px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 2px; transition: 0.3s;
+        }
+        .menu-card:hover .btn-enter { background: var(--accent); color: #000; border-color: var(--accent); }
+
+        /* --- ANİMASYONLAR --- */
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+        /* Mobil Ayarlar */
+        @media (max-width: 768px) {
+            nav { padding: 20px; }
+            .container { padding: 40px 20px; }
+            .menu-card { height: 350px; padding: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-bg"></div>
+
+    <nav>
+        <div class="nav-logo">AZURA</div>
+        <div class="nav-time" id="live-clock">17:56:50</div>
+    </nav>
+
+    <div class="container">
+        <header class="welcome-section">
+            <p id="greeting-text">İyi Akşamlar,</p>
+            <h1>Hoş Geldin, Rafık.</h1>
+        </header>
+
+        <div class="menu-grid">
+            <div class="menu-card" onclick="location.href='dergi.html'">
+                <div class="card-no">01</div>
+                <div class="card-icon">◈</div>
+                <h3 class="card-title">Mini Dergi</h3>
+                <p class="card-desc">Her ay yenilenen, derin temalar üzerine kurgulanmış dijital sayfalar.</p>
+                <div class="btn-enter">İncele</div>
+            </div>
+
+            <div class="menu-card" onclick="location.href='motivasyon.html'">
+                <div class="card-no">02</div>
+                <div class="card-icon">△</div>
+                <h3 class="card-title">Motivasyon</h3>
+                <p class="card-desc">Zihnin sınırlarını zorlayan, seni harekete geçirecek güçlü içerikler.</p>
+                <div class="btn-enter">Harekete Geç</div>
+            </div>
+
+            <div class="menu-card" onclick="location.href='sohbetler.html'">
+                <div class="card-no">03</div>
+                <div class="card-icon">◍</div>
+                <h3 class="card-title">Kahve Sohbetleri</h3>
+                <p class="card-desc">Samimi, içten ve her yudumda başka bir hikaye anlatan blog yazıları.</p>
+                <div class="btn-enter">Dinle</div>
+            </div>
+
+            <div class="menu-card" onclick="location.href='kitaplar.html'">
+                <div class="card-no">04</div>
+                <div class="card-icon">📖</div>
+                <h3 class="card-title">Kitap Alıntıları</h3>
+                <p class="card-desc">Tozlu raflardan süzülen, altı çizili en değerli cümlelerin buluşma noktası.</p>
+                <div class="btn-enter">Keşfet</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Saat Güncelleme
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('live-clock').innerText = now.toLocaleTimeString('tr-TR');
+            
+            // Dinamik Karşılama
+            const hours = now.getHours();
+            let greeting = "";
+            if (hours < 12) greeting = "Günaydın";
+            else if (hours < 18) greeting = "İyi Günler";
+            else if (hours < 22) greeting = "İyi Akşamlar";
+            else greeting = "İyi Geceler";
+            document.getElementById('greeting-text').innerText = greeting + ",";
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+    </script>
+</body>
+</html>
