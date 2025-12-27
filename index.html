@@ -3,73 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura | Deneyim</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <title>Azura | Sinematik Deneyim</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Inter:wght@300;500&display=swap" rel="stylesheet">
     <style>
-        :root { --accent: #00d2ff; --bg: #e0e0e0; --text: #1a1a1a; }
-        body, html { margin: 0; padding: 0; height: 100%; background: var(--bg); overflow: hidden; font-family: 'Inter', sans-serif; }
+        :root {
+            --accent-glow: #00f2ff; /* Parlak Cam Göbeği Mavi */
+            --accent-secondary: #7b42f6; /* Derin Mor */
+            --bg-dark: #0a0a0a; /* Çok koyu antrasit/siyah */
+            --text-light: #ffffff;
+        }
+        body, html { margin: 0; padding: 0; height: 100%; background: var(--bg-dark); overflow: hidden; font-family: 'Inter', sans-serif; }
         
-        /* Arka Plan Katmanları */
-        #canvas { position: absolute; top: 0; left: 0; z-index: 1; }
-        .overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.1) 100%); z-index: 2; pointer-events: none; }
+        /* --- ARKA PLAN ATMOSFERİ (Ambient Aurora) --- */
+        .ambient-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 1; }
+        /* Yavaşça hareket eden devasa ışık topları */
+        .light-orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.4; animation: moveOrb 20s infinite alternate ease-in-out; }
+        .orb-1 { top: -10%; left: -10%; width: 60vw; height: 60vw; background: var(--accent-glow); animation-delay: 0s; }
+        .orb-2 { bottom: -20%; right: -20%; width: 70vw; height: 70vw; background: var(--accent-secondary); animation-delay: -5s; }
+        .orb-3 { top: 30%; left: 40%; width: 50vw; height: 50vw; background: rgba(0, 242, 255, 0.3); animation-delay: -10s; animation-duration: 25s; }
 
-        .main-stage { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; color: var(--text); }
+        /* Hafif Grenli Doku (Premium his için) */
+        .noise-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-image: url('https://grainy-gradients.vercel.app/noise.svg'); opacity: 0.03; z-index: 2; pointer-events: none; mix-blend-mode: overlay;}
+
+        /* --- ANA SAHNE --- */
+        .main-stage { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; color: var(--text-light); }
 
         /* --- ANA LOGO --- */
-        .logo-container { overflow: hidden; margin-bottom: 15px; }
+        .logo-container { overflow: hidden; margin-bottom: 20px; }
         .logo {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(4rem, 15vw, 9rem);
-            line-height: 1;
+            font-size: clamp(4rem, 15vw, 10rem);
+            line-height: 0.9;
             text-transform: uppercase;
-            letter-spacing: -2px;
+            letter-spacing: -3px;
             opacity: 0;
-            filter: blur(10px);
-            transform: translateY(50px);
-            animation: logoReveal 1.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            filter: blur(15px);
+            transform: scale(0.95) translateY(40px);
+            /* Hafif bir iç parlama efekti */
+            text-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
+            animation: logoReveal 2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.3s;
         }
 
-        /* --- DEĞİŞEN METİNLER --- */
+        /* --- DEĞİŞEN METİNLER (Düzeltilmiş Scramble) --- */
         .scramble-text {
-            font-size: 0.9rem;
-            letter-spacing: 4px;
+            font-size: 0.85rem;
+            letter-spacing: 6px;
             text-transform: uppercase;
-            font-weight: 600;
-            color: rgba(0,0,0,0.6);
+            font-weight: 500;
+            color: rgba(255,255,255,0.6); /* Daha şık bir beyaz */
             min-height: 25px;
-            margin-top: 25px;
+            margin-top: 30px;
         }
+        /* Scramble içindeki vurgulu harfler */
+        .highlight { color: var(--accent-glow); font-weight: 700; text-shadow: 0 0 10px var(--accent-glow); }
 
         /* --- YÜKLENME ÇUBUĞU --- */
         .loader-bar {
-            width: 200px;
-            height: 2px;
-            background: rgba(0,0,0,0.1);
-            margin-top: 45px;
-            position: relative;
-            overflow: hidden;
-            border-radius: 2px;
+            width: 180px; height: 2px; background: rgba(255,255,255,0.1); margin-top: 50px; position: relative; overflow: hidden; border-radius: 10px;
         }
         .progress {
             position: absolute; left: 0; top: 0; height: 100%; width: 0%;
-            background: var(--accent);
-            box-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
-            animation: progressMove 7.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            background: linear-gradient(90deg, var(--accent-glow), var(--accent-secondary)); /* Gradient çubuk */
+            box-shadow: 0 0 15px var(--accent-glow);
+            animation: progressMove 8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
         /* --- ANİMASYONLAR --- */
-        @keyframes logoReveal { to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+        @keyframes moveOrb {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            100% { transform: translate(10%, 10%) rotate(5deg) scale(1.1); }
+        }
+        @keyframes logoReveal { to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); } }
         @keyframes progressMove { to { width: 100%; } }
 
-        /* Çıkış Efekti */
-        .exit-scene { animation: exitAnim 1.2s cubic-bezier(0.7, 0, 0.3, 1) forwards; }
-        @keyframes exitAnim { to { opacity: 0; filter: blur(30px); transform: scale(1.05); } }
+        /* Çıkış Efekti (Daha dramatik) */
+        .exit-scene { animation: exitAnim 1.5s cubic-bezier(0.6, 0, 0.4, 1) forwards; }
+        @keyframes exitAnim { to { opacity: 0; filter: blur(40px) brightness(1.5); transform: scale(1.05); } }
     </style>
 </head>
 <body>
 
-    <canvas id="canvas"></canvas>
-    <div class="overlay"></div>
+    <div class="ambient-container">
+        <div class="light-orb orb-1"></div>
+        <div class="light-orb orb-2"></div>
+        <div class="light-orb orb-3"></div>
+    </div>
+    <div class="noise-overlay"></div>
 
     <div class="main-stage" id="stage">
         <div class="logo-container">
@@ -82,54 +101,14 @@
     </div>
 
     <script>
-        // --- PARÇACIK MOTORU (Daha zarif ayarlar) ---
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        const properties = { color: 'rgba(0, 210, 255, 0.5)', particleCount: 70, particleRadius: 1.5, lineLength: 120, particleMaxVelocity: 0.4 };
-
-        window.onresize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.velocityX = Math.random() * (properties.particleMaxVelocity * 2) - properties.particleMaxVelocity;
-                this.velocityY = Math.random() * (properties.particleMaxVelocity * 2) - properties.particleMaxVelocity;
-            }
-            position() {
-                this.x + this.velocityX > canvas.width || this.x + this.velocityX < 0 ? this.velocityX *= -1 : this.velocityX;
-                this.y + this.velocityY > canvas.height || this.y + this.velocityY < 0 ? this.velocityY *= -1 : this.velocityY;
-                this.x += this.velocityX; this.y += this.velocityY;
-            }
-            reDraw() { ctx.beginPath(); ctx.arc(this.x, this.y, properties.particleRadius, 0, Math.PI * 2); ctx.fillStyle = properties.color; ctx.fill(); }
-        }
-
-        function drawLines() {
-            for (let i in particles) {
-                for (let j in particles) {
-                    let dist = Math.sqrt(Math.pow(particles[i].x - particles[j].x, 2) + Math.pow(particles[i].y - particles[j].y, 2));
-                    if (dist < properties.lineLength) {
-                        ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `rgba(0, 210, 255, ${1 - dist / properties.lineLength - 0.2})`; ctx.lineWidth = '0.4'; ctx.stroke();
-                    }
-                }
-            }
-        }
-
-        function init() { particles = []; for (let i = 0; i < properties.particleCount; i++) particles.push(new Particle()); loop(); }
-        function loop() { ctx.clearRect(0, 0, canvas.width, canvas.height); for (let i in particles) { particles[i].position(); particles[i].reDraw(); } drawLines(); requestAnimationFrame(loop); }
-        init();
-
-        // --- GÜNCELLENMİŞ SCRAMBLE EFEKTİ (Türkçe Karakter Destekli) ---
+        // --- GÜNCELLENMİŞ SCRAMBLE EFEKTİ (Türkçe Destekli ve Vurgulu) ---
         class TextScramble {
-            constructor(el) { this.el = el; this.chars = 'AZURA_azura_<>[]{}—=+*^?#_şığüöçİĞÜÖÇ'; this.update = this.update.bind(this); }
+            constructor(el) { this.el = el; this.chars = 'AZURA_<>[]{}—=+*^?#_şığüöçİĞÜÖÇ'; this.update = this.update.bind(this); }
             setText(newText) {
                 const oldText = this.el.innerText; const length = Math.max(oldText.length, newText.length);
                 const promise = new Promise((resolve) => this.resolve = resolve); this.queue = [];
                 for (let i = 0; i < length; i++) {
-                    const from = oldText[i] || ''; const to = newText[i] || ''; const start = Math.floor(Math.random() * 40); const end = start + Math.floor(Math.random() * 40);
+                    const from = oldText[i] || ''; const to = newText[i] || ''; const start = Math.floor(Math.random() * 45); const end = start + Math.floor(Math.random() * 45);
                     this.queue.push({ from, to, start, end });
                 }
                 cancelAnimationFrame(this.frameRequest); this.frame = 0; this.update(); return promise;
@@ -139,7 +118,11 @@
                 for (let i = 0, n = this.queue.length; i < n; i++) {
                     let { from, to, start, end, char } = this.queue[i];
                     if (this.frame >= end) { complete++; output += to; }
-                    else if (this.frame >= start) { if (!char || Math.random() < 0.28) { char = this.chars[Math.floor(Math.random() * this.chars.length)]; this.queue[i].char = char; } output += `<span style="color:#00d2ff">${char}</span>`; }
+                    else if (this.frame >= start) { 
+                        if (!char || Math.random() < 0.28) { char = this.chars[Math.floor(Math.random() * this.chars.length)]; this.queue[i].char = char; } 
+                        // Karışık harfleri vurgulu yap
+                        output += `<span class="highlight">${char}</span>`; 
+                    }
                     else { output += from; }
                 }
                 this.el.innerHTML = output;
@@ -147,15 +130,15 @@
             }
         }
 
-        const phrases = ['Hoş Geldiniz', 'Dijital Dergi Deneyimi', 'Zihninizi Özgür Bırakın', 'Azura Başlıyor...'];
+        const phrases = ['Hoş Geldiniz', 'Dijital Lüksü Keşfedin', 'Zihninizi Özgür Bırakın', 'Azura Başlıyor...'];
         const el = document.getElementById('scramble');
         const fx = new TextScramble(el);
         let counter = 0;
-        const next = () => { fx.setText(phrases[counter]).then(() => { setTimeout(next, 1800); }); counter = (counter + 1) % phrases.length; };
+        const next = () => { fx.setText(phrases[counter]).then(() => { setTimeout(next, 2000); }); counter = (counter + 1) % phrases.length; };
         next();
 
         // Yönlendirme
-        setTimeout(() => { document.getElementById('stage').classList.add('exit-scene'); setTimeout(() => { window.location.href = "menu.html"; }, 1200); }, 7800);
+        setTimeout(() => { document.getElementById('stage').classList.add('exit-scene'); setTimeout(() => { window.location.href = "menu.html"; }, 1500); }, 8500);
     </script>
 </body>
 </html>
