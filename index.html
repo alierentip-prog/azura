@@ -3,154 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura | The Universal Singularity</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Plus+Jakarta+Sans:wght@200;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <title>Azura | Universal Science Nexus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Plus+Jakarta+Sans:wght@200;500;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #030303;
-            --accent: #00f2ff;
-            --surgical-white: #f5f5f5;
-            --muted: rgba(245, 245, 245, 0.4);
-            --font-mono: 'JetBrains Mono', monospace;
+            --bg-light: #f8fafc; /* Ferah beyaz-mavi fon */
+            --accent-science: #0ea5e9; /* Bilimsel gökyüzü mavisi */
+            --text-main: #0f172a; /* Derin lacivert (Okunabilirlik için) */
+            --muted: #64748b;
+            --glass-white: rgba(255, 255, 255, 0.7);
+            --font-main: 'Plus Jakarta Sans', sans-serif;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body, html { 
-            background: var(--bg); color: var(--surgical-white); 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: var(--bg-light); color: var(--text-main); 
+            font-family: var(--font-main); 
             overflow: hidden; height: 100vh; width: 100vw;
         }
 
-        /* --- VISUAL ARCHITECTURE --- */
-        #bg-canvas { position: fixed; inset: 0; z-index: 1; opacity: 0.5; filter: contrast(1.1) brightness(0.9); }
-        .grid-layer { position: fixed; inset: 0; z-index: 2; pointer-events: none; background-image: radial-gradient(rgba(0, 242, 255, 0.04) 1px, transparent 1px); background-size: 50px 50px; }
-        .vignette { position: fixed; inset: 0; z-index: 5; pointer-events: none; background: radial-gradient(circle, transparent 10%, #000 150%); }
+        /* --- ARKA PLAN (Aydınlık & Hareketli) --- */
+        #bg-canvas { position: fixed; inset: 0; z-index: 1; opacity: 0.8; }
+        .soft-glow { 
+            position: fixed; top: -10%; right: -10%; width: 50vw; height: 50vw; 
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%); 
+            z-index: 2; pointer-events: none; 
+        }
 
-        /* --- HERO SECTION --- */
+        /* --- ANA İÇERİK --- */
         .hero {
             position: relative; z-index: 100;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             height: 100vh; padding: 40px; text-align: center;
         }
 
-        .pre-title {
-            font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent);
-            letter-spacing: 15px; text-transform: uppercase; margin-bottom: 25px;
-            text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+        .pre-label {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; 
+            color: var(--accent-science); letter-spacing: 8px; 
+            text-transform: uppercase; margin-bottom: 20px;
         }
 
         .main-logo {
-            font-family: 'Syncopate', sans-serif; font-size: clamp(3rem, 18vw, 9rem);
-            font-weight: 700; letter-spacing: 35px; line-height: 1; margin-bottom: 40px;
-            color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,0.9);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            font-family: 'Syncopate', sans-serif; font-size: clamp(3rem, 15vw, 7rem);
+            font-weight: 700; letter-spacing: 20px; line-height: 1; margin-bottom: 30px;
+            color: var(--text-main); transition: all 0.5s;
         }
-        .main-logo:hover { -webkit-text-stroke: 1.5px var(--accent); filter: drop-shadow(0 0 40px var(--accent)); transform: scale(1.02); }
+        .main-logo:hover { letter-spacing: 25px; color: var(--accent-science); }
 
-        .manifesto-box { max-width: 700px; margin-bottom: 70px; border-left: 1px solid var(--accent); padding-left: 30px; text-align: left; }
-        .manifesto { font-size: 1.1rem; font-weight: 200; letter-spacing: 2px; line-height: 1.8; color: var(--muted); }
-
-        /* --- THE ENTRY PORTAL --- */
-        .enter-action {
-            position: relative; padding: 28px 90px;
-            background: transparent; border: 1px solid rgba(255,255,255,0.15);
-            color: #fff; text-decoration: none; font-weight: 800;
-            letter-spacing: 12px; text-transform: uppercase; font-size: 0.85rem;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            overflow: hidden;
+        .manifesto {
+            max-width: 650px; font-size: 1.1rem; font-weight: 300; 
+            line-height: 1.8; color: var(--muted); margin-bottom: 50px;
         }
-        .enter-action:hover { border-color: var(--accent); color: #000; letter-spacing: 15px; }
-        .enter-action::before {
-            content: ''; position: absolute; left: -100%; top: 0; width: 100%; height: 100%;
-            background: var(--accent); z-index: -1; transition: 0.5s;
+
+        /* --- PRESTİJ BUTONU --- */
+        .enter-btn {
+            padding: 22px 70px; background: #fff;
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            color: var(--text-main); text-decoration: none; 
+            font-weight: 800; letter-spacing: 6px; text-transform: uppercase;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 50px;
         }
-        .enter-action:hover::before { left: 0; }
+        .enter-btn:hover { 
+            background: var(--accent-science); color: #fff;
+            transform: translateY(-5px); box-shadow: 0 20px 40px rgba(14, 165, 233, 0.2);
+        }
 
-        /* --- HUD ELEMENTS --- */
-        .hud-top { position: fixed; top: 0; width: 100%; padding: 45px 65px; display: flex; justify-content: space-between; z-index: 200; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 5px; opacity: 0.6; }
-        .hud-bottom { position: fixed; bottom: 0; width: 100%; padding: 45px 65px; display: flex; justify-content: space-between; z-index: 200; font-family: var(--font-mono); font-size: 0.65rem; opacity: 0.3; }
+        /* --- HUD ELEMENTS (Açık Tema) --- */
+        .hud {
+            position: fixed; width: 100%; padding: 40px 60px;
+            display: flex; justify-content: space-between; z-index: 200;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+            letter-spacing: 2px; color: var(--muted);
+        }
+        .hud-top { top: 0; }
+        .hud-bottom { bottom: 0; border-top: 1px solid rgba(0,0,0,0.03); }
 
-        @keyframes pulse { 0% { opacity: 0.3; } 50% { opacity: 0.7; } 100% { opacity: 0.3; } }
-        .status-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; display: inline-block; margin-right: 10px; animation: pulse 2s infinite; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .floating { animation: float 4s ease-in-out infinite; }
     </style>
 </head>
 <body>
 
-    <header class="hud-top">
-        <div>37.0662° N, 37.3833° E // GAZIANTEP</div>
-        <div>UNIVERSAL_ARCHIVE_INITIATED</div>
-    </header>
+    <div class="soft-glow"></div>
+    <div class="hud hud-top">
+        <div>NEXUS_CORE: STATUS_OPTIMAL</div>
+        <div>STABLE_NETWORK // 2025</div>
+    </div>
 
     <canvas id="bg-canvas"></canvas>
-    <div class="grid-layer"></div>
-    <div class="vignette"></div>
 
     <main class="hero">
-        <span class="pre-title">Bilimsel Bilginin Nihai Sınırı</span>
+        <span class="pre-label">Evrensel Bilim Arşivi</span>
         <h1 class="main-logo">AZURA</h1>
         
-        <div class="manifesto-box">
-            <p class="manifesto">
-                Atomik ölçekten galaktik ufuklara, tıbbi hassasiyetten felsefi derinliğe... 
-                Biz, bilginin birer mimarı ve koruyucusuyuz. Dijital bir anıta hoş geldiniz.
-            </p>
-        </div>
+        <p class="manifesto">
+            Zihnin sınırlarını zorlayan, tıp biliminden kuantum fiziğine uzanan berrak bir bilgi portalı. 
+            Burada karmaşa yok, sadece saf ve aydınlık bilim var.
+        </p>
 
-        <a href="menu.html" class="enter-action">ARŞİVE ERİŞ</a>
+        <a href="menu.html" class="enter-btn floating">ARŞİVE ERİŞ</a>
     </main>
 
-    <footer class="hud-bottom">
-        <div>AZURA OS v2.0 // SINGULARITY PROTOCOL</div>
-        <div>SYSTEM_TIME: <span id="clock">00:00:00</span></div>
-    </footer>
+    <div class="hud hud-bottom">
+        <div>GAZIANTEP SCIENCE HUB</div>
+        <div id="clock">00:00:00</div>
+    </div>
 
     <script>
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
-        window.onresize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
-        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-
-        class Particle {
-            constructor() { this.reset(); }
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 0.8;
-                this.vy = (Math.random() - 0.5) * 0.8;
-                this.size = Math.random() * 1.5;
-            }
-            update() {
-                this.x += this.vx; this.y += this.vy;
-                if(this.x<0 || this.x>canvas.width || this.y<0 || this.y>canvas.height) this.reset();
-            }
-            draw() {
-                ctx.fillStyle = "rgba(0, 242, 255, 0.4)";
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill();
-            }
-        }
+        window.onresize = () => { canvas.width = innerWidth; canvas.height = innerHeight; };
+        canvas.width = innerWidth; canvas.height = innerHeight;
 
         let particles = [];
-        for(let i=0; i<120; i++) particles.push(new Particle());
+        for(let i=0; i<60; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 2 + 1,
+                vx: Math.random() * 0.5 - 0.25,
+                vy: Math.random() * 0.5 - 0.25
+            });
+        }
 
-        function animate() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "rgba(14, 165, 233, 0.15)";
+            
             particles.forEach((p, i) => {
-                p.update(); p.draw();
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fill();
+
                 for(let j=i+1; j<particles.length; j++) {
-                    let dx = p.x - particles[j].x;
-                    let dy = p.y - particles[j].y;
-                    let d = Math.sqrt(dx*dx + dy*dy);
-                    if(d < 140) {
-                        ctx.strokeStyle = `rgba(0, 242, 255, ${1 - d/140})`;
-                        ctx.lineWidth = 0.5; ctx.beginPath();
-                        ctx.moveTo(p.x, p.y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
+                    let p2 = particles[j];
+                    let dist = Math.sqrt((p.x - p2.x)**2 + (p.y - p2.y)**2);
+                    if(dist < 150) {
+                        ctx.strokeStyle = `rgba(14, 165, 233, ${0.1 - dist/1500})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
                     }
                 }
             });
-            requestAnimationFrame(animate);
+            requestAnimationFrame(draw);
         }
-        animate();
-        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+        draw();
+
+        setInterval(() => {
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR');
+        }, 1000);
     </script>
 </body>
 </html>
