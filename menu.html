@@ -3,316 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura | The Grand Architect</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=JetBrains+Mono:wght@300;500;800&family=Plus+Jakarta+Sans:wght@200;800&display=swap" rel="stylesheet">
+    <title>Azura | Architect's Void</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=JetBrains+Mono:wght@300;500;800&family=Inter:wght@900&display=swap" rel="stylesheet">
     <style>
-        /* --- 1. SİSTEM ÇEKİRDEĞİ --- */
         :root {
-            --bg-obsidian: #020202;
-            --neon-cyan: #00f2ff;
-            --neon-red: #ff003c;
-            --glass-core: rgba(255, 255, 255, 0.02);
+            --bg: #000;
+            --neon: #00f2ff;
+            --danger: #ff003c;
             --font-mono: 'JetBrains Mono', monospace;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        body, html { background: var(--bg-obsidian); color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; overflow: hidden; height: 100vh; width: 100vw; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body, html {
+            background: var(--bg); color: #fff;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden; height: 100vh; width: 100vw;
+            cursor: none;
+        }
 
-        /* --- 2. GÖRSEL ŞÖLEN (LAYERED HUD) --- */
-        #canvas-neural { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.6; }
-        .cyber-grid { position: fixed; inset: 0; z-index: 2; pointer-events: none; background-image: linear-gradient(rgba(0, 242, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 242, 255, 0.03) 1px, transparent 1px); background-size: 50px 50px; }
-        .vignette-fx { position: fixed; inset: 0; z-index: 5; pointer-events: none; background: radial-gradient(circle, transparent 20%, #000 130%); }
-        .noise-fx { position: fixed; inset: 0; z-index: 6; pointer-events: none; background-image: url('https://grainy-gradients.vercel.app/noise.svg'); opacity: 0.04; }
+        /* --- VISUAL OVERLAYS (Tıklamayı Engellemez) --- */
+        canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.5; }
+        .grid-mask { position: fixed; inset: 0; z-index: 2; pointer-events: none; background-image: radial-gradient(rgba(0, 242, 255, 0.04) 1px, transparent 1px); background-size: 40px 40px; }
+        .vignette { position: fixed; inset: 0; z-index: 5; pointer-events: none; background: radial-gradient(circle, transparent 20%, #000 150%); }
 
-        #mouse-particle { width: 10px; height: 10px; background: var(--neon-cyan); border-radius: 50%; position: fixed; pointer-events: none; z-index: 10000; box-shadow: 0 0 25px var(--neon-cyan); transform: translate(-50%, -50%); transition: transform 0.1s; }
+        /* ÖZEL İMLEÇ */
+        #cursor { width: 12px; height: 12px; background: var(--neon); border-radius: 50%; position: fixed; pointer-events: none; z-index: 100000; box-shadow: 0 0 25px var(--neon); transform: translate(-50%, -50%); mix-blend-mode: difference; }
 
-        /* --- 3. SYSTEM INTERFACE (HUD) --- */
-        header { position: fixed; top: 0; width: 100%; padding: 25px 40px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(0,0,0,0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0, 242, 255, 0.1); }
-        .brand-logo { font-family: 'Syncopate', sans-serif; font-size: 1.6rem; letter-spacing: 15px; color: var(--neon-cyan); }
-        .sys-diagnostics { font-family: var(--font-mono); font-size: 0.6rem; color: var(--neon-cyan); display: flex; gap: 30px; }
-        .diag-item b { color: var(--neon-red); }
-
-        /* --- 4. THE INTERACTIVE CORE (ZİHİN LABORATUVARI) --- */
-        .master-hub { position: relative; z-index: 500; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; width: 100%; }
-        
-        .console-box { 
-            max-width: 950px; width: 90%; min-height: 550px;
-            background: var(--glass-core); border: 1px solid rgba(0, 242, 255, 0.1);
-            border-radius: 30px; padding: 60px; backdrop-filter: blur(60px);
+        /* --- INTERACTIVE STAGE (Katman Hiyerarşisi) --- */
+        .stage {
+            position: relative; z-index: 10000; /* Butonların olduğu katman en üstte */
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; box-shadow: 0 0 100px rgba(0,0,0,0.8);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            height: 100vh; width: 100%; padding: 20px;
         }
 
-        .step-label { font-family: var(--font-mono); color: var(--neon-red); font-size: 0.75rem; letter-spacing: 8px; margin-bottom: 25px; text-transform: uppercase; }
-        .question-main { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 50px; letter-spacing: -2px; }
-
-        /* INTERACTIVE INPUTS & BUTTONS */
-        .action-area { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .cyber-btn {
-            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
-            padding: 25px; border-radius: 15px; color: #fff; font-size: 0.9rem;
-            font-weight: 700; text-transform: uppercase; letter-spacing: 3px;
-            transition: all 0.3s; cursor: pointer; position: relative;
-        }
-        .cyber-btn:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 40px var(--neon-cyan); transform: translateY(-5px); }
-
-        .terminal-input {
-            grid-column: span 2; background: rgba(0,0,0,0.5); border: 1px solid var(--neon-cyan);
-            padding: 20px; border-radius: 10px; color: var(--neon-cyan); font-family: var(--font-mono);
-            font-size: 1rem; text-align: center; display: none; margin-bottom: 20px;
+        .terminal-box {
+            max-width: 950px; width: 100%; min-height: 550px;
+            background: rgba(255,255,255,0.01); border: 1px solid rgba(0, 242, 255, 0.1);
+            border-radius: 20px; padding: 60px; backdrop-filter: blur(50px);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; box-shadow: 0 0 100px rgba(0,0,0,1);
+            transition: all 0.3s;
         }
 
-        /* --- 5. LOG STREAM (SIDEBAR) --- */
-        .sidebar-logs { position: fixed; left: 30px; top: 120px; bottom: 80px; width: 260px; font-family: var(--font-mono); font-size: 0.6rem; color: var(--neon-cyan); opacity: 0.3; overflow: hidden; display: flex; flex-direction: column-reverse; gap: 6px; pointer-events: none; }
+        .phase-label { font-family: var(--font-mono); color: var(--danger); font-size: 0.75rem; letter-spacing: 12px; margin-bottom: 30px; }
+        .logic-title { font-size: clamp(1.4rem, 4vw, 2.5rem); font-weight: 900; margin-bottom: 50px; line-height: 1.2; letter-spacing: -2px; }
 
-        /* FAKE SCREENS */
-        .fake-blackout { position: fixed; inset: 0; background: #000; z-index: 20000; display: none; align-items: center; justify-content: center; font-family: var(--font-mono); color: var(--neon-red); font-size: 1.5rem; }
+        /* AKSİYON BUTONLARI */
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; pointer-events: auto; }
+        .btn-void {
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(0, 242, 255, 0.2);
+            padding: 25px; border-radius: 12px; color: #fff; font-size: 0.9rem;
+            font-weight: 800; text-transform: uppercase; letter-spacing: 4px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer;
+        }
+        .btn-void:hover { background: var(--neon); color: #000; box-shadow: 0 0 50px var(--neon); transform: translateY(-5px); }
 
-        .progress-wrap { width: 100%; height: 2px; background: rgba(255,255,255,0.05); margin-top: 60px; position: relative; overflow: hidden; }
-        .progress-fill { position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: var(--neon-cyan); box-shadow: 0 0 15px var(--neon-cyan); }
+        /* HUD & LOGS */
+        header { position: fixed; top: 0; width: 100%; padding: 40px 60px; display: flex; justify-content: space-between; z-index: 20000; pointer-events: none; }
+        .hud-item { font-family: var(--font-mono); font-size: 0.65rem; color: var(--neon); }
+        .side-logs { position: fixed; left: 30px; top: 120px; bottom: 80px; width: 250px; font-family: var(--font-mono); font-size: 0.55rem; color: var(--neon); opacity: 0.3; display: flex; flex-direction: column-reverse; gap: 5px; overflow: hidden; pointer-events: none; }
 
-        footer { position: fixed; bottom: 0; width: 100%; padding: 25px 40px; border-top: 1px solid rgba(0, 242, 255, 0.05); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.6rem; opacity: 0.4; }
+        .loading-wrap { width: 100%; height: 2px; background: rgba(255,255,255,0.05); margin-top: 60px; position: relative; overflow: hidden; }
+        .loading-bar { position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: var(--neon); }
+        .blackout { position: fixed; inset: 0; background: #000; z-index: 200000; display: none; align-items: center; justify-content: center; font-family: var(--font-mono); color: var(--danger); font-size: 1.2rem; }
 
-        /* GLITCH CLASS */
-        .glitch-active { animation: shake 0.1s infinite; filter: hue-rotate(90deg); }
-        @keyframes shake { 0% { transform: translate(0); } 25% { transform: translate(-5px, 5px); } 50% { transform: translate(5px, -5px); } 100% { transform: translate(0); } }
+        @keyframes glitch { 0% { transform: translate(0); } 20% { transform: translate(-5px, 5px); } 100% { transform: translate(0); } }
+        .glitching { animation: glitch 0.1s infinite; filter: hue-rotate(90deg); }
+
+        footer { position: fixed; bottom: 0; width: 100%; padding: 30px 60px; border-top: 1px solid rgba(0, 242, 255, 0.05); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.6rem; opacity: 0.3; }
     </style>
 </head>
 <body>
+    <div id="cursor"></div>
+    <div class="blackout" id="b-screen">ERROR_CODE_0x00: NEURAL_REBOOT</div>
+    <canvas id="neural-canvas"></canvas>
+    <div class="grid-mask"></div>
+    <div class="vignette"></div>
 
-    <div id="mouse-particle"></div>
-    <div class="fake-blackout" id="blackout">CRITICAL_ERROR: MEMORY_CORRUPTION_DETECTED</div>
-    <canvas id="canvas-neural"></canvas>
-    <div class="cyber-grid"></div>
-    <div class="vignette-fx"></div>
-    <div class="noise-fx"></div>
-
-    <div class="sidebar-logs" id="log-console"></div>
+    <div class="side-logs" id="log-panel"></div>
 
     <header>
-        <div class="brand-logo">AZURA</div>
-        <div class="sys-diagnostics">
-            <div class="diag-item">NEURAL_LOAD: <b id="cpu-stat">0%</b></div>
-            <div class="diag-item">SESSION_TIME: <b id="session-timer">00:00</b></div>
-            <div class="diag-item">THREAT: <b>MAXIMUM</b></div>
-        </div>
+        <div style="font-family:'Syncopate'; font-size:1.8rem; letter-spacing:15px; color:var(--neon);">AZURA</div>
+        <div class="hud-item">NODE_ID: <b id="node-info">001/200</b> // STRESS: <b id="stress-lv">12%</b></div>
     </header>
 
-    <main class="master-hub">
-        <div class="console-box" id="main-console">
-            <span class="step-label" id="step-id">INITIALIZING...</span>
-            <h1 class="question-main" id="q-text">Mimarın Labirentine Hoş Geldin. Çıkış Bir İllüzyondur. Hazır Mısın?</h1>
-            
-            <input type="text" id="term-input" class="terminal-input" placeholder="KOMUT GİRİNİZ..." autocomplete="off">
-            
-            <div class="action-area" id="options-box">
-                <button class="cyber-btn" onclick="nextAction()">PROTOKOLÜ BAŞLAT</button>
-                <button class="cyber-btn" onclick="triggerGlitch()">SİSTEMDEN ÇIK</button>
+    <main class="stage">
+        <div class="terminal-box" id="main-box">
+            <span class="phase-label" id="p-id">SİSTEM ANALİZİ</span>
+            <h1 class="logic-title" id="p-title">Dürüst Olalım: Bu Labirentten Sağ Çıkamayacaksın. Hazır Mısın Rafık?</h1>
+            <div class="btn-grid" id="p-options">
+                <button class="btn-void" onclick="launchInfiniteEngine()">PROTOKOLÜ BAŞLAT</button>
+                <button class="btn-void" onclick="launchInfiniteEngine()">KAOSA GİR</button>
             </div>
-
-            <div class="progress-wrap"><div class="progress-fill" id="p-bar"></div></div>
+            <div class="loading-wrap"><div class="loading-bar" id="p-bar"></div></div>
         </div>
     </main>
 
     <footer>
-        <div>NODE: OBSIDIAN_ARCHITECT // ENCRYPTION: SHA-512</div>
-        <div id="live-time">00:00:00</div>
+        <div>AZURA CORE v12.0 // INFINITE CHAOS ENGINE</div>
+        <div id="clock">00:00:00</div>
     </footer>
-
-    <script>
-        // --- 1. NEURAL NETWORK ENGINE (Görsel Şölen) ---
-        const canvas = document.getElementById('canvas-neural');
+        <script>
+        // --- 1. GÖRSEL ÇEKİRDEK ---
+        const canvas = document.getElementById('neural-canvas');
         const ctx = canvas.getContext('2d');
-        const mouseP = document.getElementById('mouse-particle');
-        let dots = [];
+        const cursor = document.getElementById('cursor');
+        let points = [];
 
         window.onresize = () => { canvas.width = innerWidth; canvas.height = innerHeight; };
         canvas.width = innerWidth; canvas.height = innerHeight;
 
         document.addEventListener('mousemove', e => {
-            mouseP.style.left = e.clientX + 'px';
-            mouseP.style.top = e.clientY + 'px';
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
         });
 
-        class Dot {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 1.5;
-                this.vy = (Math.random() - 0.5) * 1.5;
-                this.size = Math.random() * 2;
-            }
-            update() {
-                this.x += this.vx; this.y += this.vy;
-                if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
-            }
-            draw() {
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
-                ctx.fillStyle = '#00f2ff'; ctx.fill();
-            }
+        class Point {
+            constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.vx = (Math.random() - 0.5) * 1.5; this.vy = (Math.random() - 0.5) * 1.5; this.size = Math.random() * 1.5; }
+            update() { this.x += this.vx; this.y += this.vy; if(this.x<0 || this.x>canvas.width) this.vx *= -1; if(this.y<0 || this.y>canvas.height) this.vy *= -1; }
+            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fillStyle = 'rgba(0, 242, 255, 0.3)'; ctx.fill(); }
         }
 
-        for(let i=0; i<120; i++) dots.push(new Dot());
-
+        for(let i=0; i<85; i++) points.push(new Point());
         function animate() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
-            dots.forEach(d => {
-                d.update(); d.draw();
-                dots.forEach(d2 => {
-                    let dist = Math.sqrt(Math.pow(d.x - d2.x, 2) + Math.pow(d.y - d2.y, 2));
-                    if(dist < 150) {
-                        ctx.strokeStyle = `rgba(0, 242, 255, ${1 - dist/150})`;
-                        ctx.lineWidth = 0.5; ctx.beginPath();
-                        ctx.moveTo(d.x, d.y); ctx.lineTo(d2.x, d2.y); ctx.stroke();
-                    }
+            points.forEach(p => {
+                p.update(); p.draw();
+                points.forEach(p2 => {
+                    let d = Math.sqrt(Math.pow(p.x - p2.x, 2) + Math.pow(p.y - p2.y, 2));
+                    if(d < 150) { ctx.strokeStyle = `rgba(0, 242, 255, ${1 - d/150})`; ctx.lineWidth = 0.5; ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke(); }
                 });
             });
             requestAnimationFrame(animate);
         }
         animate();
-
-        // --- 2. ARCHITECT LOGIC (30+ ADIMLIK İŞKENCE) ---
-        const stepId = document.getElementById('step-id');
-        const qText = document.getElementById('q-text');
-        const optionsBox = document.getElementById('options-box');
+                    // --- 2. THE ABSOLUTE 200 ENGINE ---
+        const pId = document.getElementById('p-id');
+        const pTitle = document.getElementById('p-title');
+        const pOptions = document.getElementById('p-options');
         const pBar = document.getElementById('p-bar');
-        const termInput = document.getElementById('term-input');
-        const mainConsole = document.getElementById('main-console');
+        const nodeInfo = document.getElementById('node-info');
+        const stressLv = document.getElementById('stress-lv');
 
-        let currentStep = 0;
-        let sessionSec = 0;
+        let step = 0;
+        let stress = 12;
 
-        // "Vay be" dedirtecek, profesyonelce hazırlanmış 30+ Senaryo
-        const protocols = [
-            { id: "LOGIC_01", q: "Bir cerrahsın. Masada iki hasta var: Bir seri katil ve bir bilim insanı. Tek bir kalbin var. Kim yaşar?", opts: ["Bilim İnsanı", "Liyakat Karar Verir"], type: "choice" },
-            { id: "CYBER_02", q: "Sence şu an bu ekranın arkasında sadece kodlar mı var, yoksa ben seni duyabiliyor muyum?", opts: ["Sadece Kod", "Biliyorum, Buradasın"], type: "glitch" },
-            { id: "HACK_03", q: "SİSTEME ERİŞİM İÇİN ŞİFREYİ GİRİN: (İpucu: Sitenin adı)", opts: [], type: "input", answer: "azura" },
-            { id: "TORTURE_04", q: "ZAMAN KİLİDİ: Veri tabanı senkronize ediliyor. Lütfen 30 saniye bekleyin.", opts: [], type: "long_load" },
-            { id: "ETHIC_05", q: "Hainlik bir yetenek midir yoksa bir seçim mi?", opts: ["Doğuştan Gelir", "Zamanla Öğrenilir"], type: "choice" },
-            { id: "MOVE_06", q: "BUTONU YAKALAYAMAZSAN DEVAM EDEMEZSİN!", opts: ["BURADAYIM", "YAKALA BENİ"], type: "evade" },
-            { id: "MED_07", q: "Anatomi Testi: İnsan vücudundaki en 'hain' organ hangisidir?", opts: ["Beyin", "Kalp"], type: "choice" },
-            { id: "VOID_08", q: "SESSİZLİK... Sence şu an arkandan kim geçti?", opts: ["Kimse", "Korktum..."], type: "blackout" },
-            { id: "LOOP_09", q: "BİTİRMEK İÇİN DOĞRU TUŞA BAS. (Uyarı: Yanlış tuş başa döndürür)", opts: ["BİTİR", "BAŞA DÖN"], type: "trap" },
-            { id: "CODE_10", q: "01001000 01000001 01001001 01001110 ?", opts: ["H A İ N", "Çözemedim"], type: "choice" },
-            // ... ve devam eden 20+ karmaşık adım ...
+        const baseBank = [
+            { q: "Bir cerrahsın. Masada bir seri katil ve bir dahi var. Tek bir organın var. Kim ölür?", o: ["Katil", "Dahi"], t: "etik" },
+            { q: "Bu cümle bir yalan ise, senin şu an bu butona basman bir hata mıdır?", o: ["Evet", "Paradoks!"], t: "glitch" },
+            { q: "Kamerandan seni izliyorum. Gözlerini kaçırman bir suçluluk belirtisi mi?", o: ["Korktum", "İzle Beni"], t: "scare" },
+            { q: "SİSTEM TARAMASI: C:/ sürücüsü %42 silindi. Durdurulsun mu?", o: ["DURDUR", "DEVAM ET"], t: "load" },
+            { q: "En yakın arkadaşının sırrını 1 Milyon TL için satar mıydın?", o: ["Satarım", "Dostluk Paha Biçilemez"], t: "etik" },
+            { q: "BUTONU YAKALAYAMAZSAN 5 ADIM GERİ GİDERSİN!", o: ["BURADA", "KAÇMA"], t: "evade" },
+            { q: "IQ TESTİ: Sence bu labirentin sonunda gerçekten bir ödül var mı?", o: ["VAR", "YOK"], t: "trap" },
+            { q: "Şu an farenin ters çalışması sence bir yazılım hatası mı yoksa bir test mi?", o: ["Hata", "Test"], t: "inverse" },
+            { q: "Ötenazi sence bir tıbbi hak mıdır yoksa bir cinayet mi?", o: ["Haktır", "Cinayettir"], t: "etik" },
+            { q: "SESSİZLİK... Arkandan geçen gölgeyi fark ettin mi?", o: ["Fark Ettim", "Korkutma Beni"], t: "blackout" }
         ];
 
-        function nextAction() {
-            renderStep();
+        // Diziyi 200'e tamamlayan ve soruları rastgele başlıklarla süsleyen sistem
+        const fullProtokol = [];
+        for (let i = 0; i < 200; i++) {
+            const temp = baseBank[i % baseBank.length];
+            fullProtokol.push({
+                ...temp,
+                id: `PROTOKOL_${String(i+1).padStart(3, '0')}`,
+                q: `AŞAMA ${i+1}: ` + temp.q
+            });
+        }
+
+        function launchInfiniteEngine() {
+            renderNode();
             setInterval(() => {
-                sessionSec++;
-                let m = Math.floor(sessionSec / 60);
-                let s = sessionSec % 60;
-                document.getElementById('session-timer').innerText = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-            }, 1000);
+                stress = Math.min(100, stress + Math.random() * 0.2);
+                stressLv.innerText = Math.floor(stress) + "%";
+            }, 2000);
         }
 
-        function renderStep() {
-            if(currentStep >= protocols.length) {
-                currentStep = 0; // Kısırdöngü: Kurtuluş yok!
+        function renderNode() {
+            if(step >= 200) {
+                pTitle.innerText = "TEBRİKLER HAİN RAFIK. 200 ADIMLIK İŞKENCEYİ BİTİRDİN. SİSTEM SİLİNİYOR.";
+                pOptions.innerHTML = '<button class="btn-void" onclick="location.reload()">SİSTEMİ REBOOT ET</button>';
+                return;
             }
 
-            const p = protocols[currentStep];
-            mainConsole.classList.remove('glitch-active');
-            stepId.innerText = p.id;
-            qText.innerText = p.q;
-            optionsBox.innerHTML = '';
-            termInput.style.display = "none";
+            const c = fullProtokol[step];
+            pId.innerText = c.id;
+            pTitle.innerText = c.q;
+            pOptions.innerHTML = '';
+            nodeInfo.innerText = `${String(step+1).padStart(3, '0')}/200`;
 
-            if(p.type === "choice") {
-                p.opts.forEach((opt, idx) => {
+            if(c.t === "load") {
+                runLoad(150);
+            } else if(c.t === "blackout") {
+                document.getElementById('b-screen').style.display = 'flex';
+                setTimeout(() => { document.getElementById('b-screen').style.display = 'none'; step++; renderNode(); }, 3500);
+            } else {
+                c.o.forEach((opt, idx) => {
                     const btn = document.createElement('button');
-                    btn.className = 'cyber-btn';
+                    btn.className = 'btn-void';
                     btn.innerText = opt;
-                    btn.onclick = () => { currentStep++; renderStep(); };
-                    optionsBox.appendChild(btn);
-                });
-            } else if(p.type === "input") {
-                termInput.style.display = "block";
-                termInput.value = "";
-                termInput.focus();
-                termInput.onkeypress = (e) => {
-                    if(e.key === "Enter" && termInput.value.toLowerCase() === p.answer) {
-                        currentStep++; renderStep();
-                    }
-                };
-            } else if(p.type === "long_load") {
-                runDeepLoad(200);
-            } else if(p.type === "evade") {
-                p.opts.forEach(opt => {
-                    const btn = document.createElement('button');
-                    btn.className = 'cyber-btn';
-                    btn.innerText = opt;
-                    btn.onmouseover = () => {
-                        btn.style.position = 'fixed';
-                        btn.style.left = Math.random() * 80 + '%';
-                        btn.style.top = Math.random() * 80 + '%';
+                    if(c.t === "evade") { btn.onmouseover = () => { btn.style.position = 'fixed'; btn.style.left = Math.random()*80+'%'; btn.style.top = Math.random()*80+'%'; }; }
+                    btn.onclick = () => {
+                        if(c.t === "trap" && idx === 0) { step = Math.max(0, step - 10); } // 10 adım geri fırlatma
+                        else { step++; }
+                        renderNode();
                     };
-                    btn.onclick = () => { currentStep++; renderStep(); };
-                    optionsBox.appendChild(btn);
-                });
-            } else if(p.type === "blackout") {
-                triggerBlackout();
-            } else if(p.type === "trap") {
-                p.opts.forEach((opt, idx) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'cyber-btn';
-                    btn.innerText = opt;
-                    btn.onclick = () => { 
-                        if(idx === 0) { currentStep = 0; renderStep(); } // Başa atar!
-                        else { currentStep++; renderStep(); }
-                    };
-                    optionsBox.appendChild(btn);
+                    pOptions.appendChild(btn);
                 });
             }
         }
 
-        function runDeepLoad(speed) {
+        function runLoad(speed) {
             let w = 0;
-            optionsBox.style.pointerEvents = "none";
+            pOptions.style.pointerEvents = 'none';
             const itv = setInterval(() => {
-                if(w >= 99) {
-                    clearInterval(itv);
-                    setTimeout(() => {
-                        w = 0; pBar.style.width = "0%";
-                        optionsBox.style.pointerEvents = "auto";
-                        currentStep++; renderStep();
-                    }, 1500);
-                } else {
-                    w += (Math.random() * 0.5);
-                    pBar.style.width = w + "%";
-                }
+                if(w >= 99) { clearInterval(itv); setTimeout(() => { w=0; pBar.style.width='0%'; pOptions.style.pointerEvents='auto'; step++; renderNode(); }, 1200); }
+                else { w += (Math.random()*0.6); pBar.style.width = w + "%"; }
             }, speed);
         }
 
-        function triggerBlackout() {
-            const bo = document.getElementById('blackout');
-            bo.style.display = "flex";
-            setTimeout(() => {
-                bo.style.display = "none";
-                currentStep++; renderStep();
-            }, 3000);
-        }
-
-        function triggerGlitch() {
-            mainConsole.classList.add('glitch-active');
-            setTimeout(() => mainConsole.classList.remove('glitch-active'), 1000);
-        }
-
-        // --- 3. SYSTEM DIAGNOSTICS LOGS ---
-        const logPanel = document.getElementById('log-console');
-        const architectLogs = ["> Bilinç katmanları taranıyor...", "> Medikal veri sızıntısı: AKTİF", "> Hainlik protokolü v10.5", "> Kullanıcı sabrı ölçülüyor: KRİTİK", "> Labirent duvarları örülüyor...", "> Göz bebekleri takibi: AKTİF"];
+        // HUD LOGS
+        const logPanel = document.getElementById('log-panel');
+        const lines = ["> Zihin katmanları analiz ediliyor...", "> Tıbbi etik ihlali saptandı.", "> Kullanıcı rezil etme motoru: AKTİF", "> Gaziantep veri sızıntısı: ENGELLENDİ.", "> Kaos motoru v12.0 devrede."];
         setInterval(() => {
             const entry = document.createElement('div');
-            entry.innerText = `[${new Date().toLocaleTimeString()}] ${architectLogs[Math.floor(Math.random()*architectLogs.length)]}`;
+            entry.innerText = `[${new Date().toLocaleTimeString()}] ${lines[Math.floor(Math.random()*lines.length)]}`;
             logPanel.prepend(entry);
             if(logPanel.childNodes.length > 25) logPanel.removeChild(logPanel.lastChild);
-            document.getElementById('cpu-stat').innerText = Math.floor(Math.random()*40 + 60) + "%";
-        }, 2000);
+        }, 1800);
 
-        setInterval(() => { document.getElementById('live-time').innerText = new Date().toLocaleTimeString(); }, 1000);
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
     </script>
 </body>
 </html>
+
+    
