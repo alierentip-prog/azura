@@ -3,43 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura | Kozmoloji</title>
+    <title>Azura | Kozmoloji: Evrenin Gizemi</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --bg: #f8fafc;
-            --text: #0f172a;
-            --primary: #8b5cf6; /* Fizik Moru */
-        }
-
+        :root { --bg: #f8fafc; --text: #0f172a; --primary: #8b5cf6; }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body { 
-            background: var(--bg); color: var(--text); 
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: hidden; line-height: 1.7;
-        }
+        body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; line-height: 1.8; }
 
-        /* --- DINAMIK ARKA PLAN (Fizik Teması) --- */
-        .background-wrapper {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; overflow: hidden; pointer-events: none;
-        }
-        .orb {
-            position: absolute; border-radius: 50%;
-            filter: blur(100px); opacity: 0.25;
-            animation: float-orb 20s infinite ease-in-out alternate;
-        }
+        /* --- DINAMIK ARKA PLAN --- */
+        .bg-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.25; animation: float 20s infinite alternate; }
         .orb-1 { top: -5%; right: -5%; width: 500px; height: 500px; background: rgba(139, 92, 246, 0.4); }
         .orb-2 { bottom: -10%; left: -5%; width: 450px; height: 450px; background: rgba(14, 165, 233, 0.3); animation-delay: -7s; }
-        @keyframes float-orb { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-40px, 40px) scale(1.1); } }
+        @keyframes float { 0% { transform: translate(0,0); } 100% { transform: translate(-40px, 40px); } }
         #dust-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
-        /* --- İÇERİK YAPISI --- */
-        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; position: relative; z-index: 10; }
+        /* --- ICERIK --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 50px 20px; position: relative; z-index: 10; }
         
-        /* Geri Dönüş Butonu */
         .back-nav {
             display: inline-flex; align-items: center; gap: 10px; margin-bottom: 40px;
             text-decoration: none; color: var(--primary); font-family: 'JetBrains Mono';
@@ -49,53 +32,46 @@
         }
         .back-nav:hover { background: var(--primary); color: #fff; transform: translateX(-5px); }
 
-        /* Makale Başlığı */
         header { margin-bottom: 50px; border-bottom: 1px solid rgba(139, 92, 246, 0.2); padding-bottom: 30px; }
-        .article-title { font-size: clamp(2.5rem, 6vw, 3.5rem); font-weight: 800; letter-spacing: -2px; line-height: 1.1; color: var(--text); margin-bottom: 15px; }
-        .article-meta { font-family: 'JetBrains Mono'; font-size: 0.8rem; color: var(--primary); opacity: 0.8; display: flex; gap: 20px; align-items: center; }
-        .article-meta i { margin-right: 8px; }
-
-        /* --- MAKALE GÖVDESİ (Glassmorphism Panel) --- */
-        .article-content {
-            display: grid; grid-template-columns: 1fr 300px; gap: 40px;
-            background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(25px);
-            padding: 50px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.5);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.03);
-        }
-
-        /* Sol Taraf: Metin ve Resimler */
-        .main-text h2 { font-size: 1.8rem; font-weight: 800; margin: 40px 0 20px 0; color: var(--text); }
-        .main-text h2:first-child { margin-top: 0; }
-        .main-text p { font-size: 1.05rem; color: #334155; margin-bottom: 25px; font-weight: 400; }
+        .title { font-size: clamp(2.2rem, 6vw, 3.5rem); font-weight: 800; letter-spacing: -2px; line-height: 1.2; margin-bottom: 15px; }
         
-        /* Resim Alanı Tasarımı */
-        figure.article-image { margin: 30px 0; }
-        figure.article-image img {
-            width: 100%; height: auto; border-radius: 25px;
-            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.15);
-            border: 1px solid rgba(255,255,255,0.5); transition: 0.3s;
+        /* MAKALE GÖVDESİ */
+        .article-card {
+            display: grid; grid-template-columns: 1fr 320px; gap: 40px;
+            background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(30px);
+            padding: 50px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.03);
         }
-        figure.article-image img:hover { transform: scale(1.01); box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2); }
-        figcaption { text-align: center; font-size: 0.85rem; color: #64748b; margin-top: 15px; font-style: italic; }
 
-        /* Sağ Taraf: Bilgi Kutusu (Sidebar) */
-        .sidebar-box {
-            background: rgba(139, 92, 246, 0.08); padding: 30px; border-radius: 25px;
-            border: 1px solid rgba(139, 92, 246, 0.2); height: fit-content; position: sticky; top: 40px;
+        .main-text h2 { font-size: 1.8rem; font-weight: 800; margin: 40px 0 20px 0; color: var(--primary); }
+        .main-text p { font-size: 1.1rem; color: #334155; margin-bottom: 25px; }
+
+        /* GÖRSELLER */
+        .article-img { margin: 40px 0; }
+        .article-img img {
+            width: 100%; border-radius: 25px; box-shadow: 0 15px 40px rgba(139, 92, 246, 0.2);
+            border: 1px solid rgba(255,255,255,0.5);
         }
-        .sidebar-box h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 20px; color: var(--primary); display: flex; align-items: center; gap: 10px; }
-        .sidebar-box ul { list-style: none; }
-        .sidebar-box li { margin-bottom: 15px; font-size: 0.9rem; color: #475569; display: flex; gap: 10px; }
-        .sidebar-box li i { color: var(--primary); margin-top: 4px; }
+        .article-img figcaption { text-align: center; font-size: 0.9rem; color: #64748b; margin-top: 15px; font-style: italic; }
 
-        footer { margin-top: 80px; text-align: center; font-family: 'JetBrains Mono'; font-size: 0.7rem; opacity: 0.4; letter-spacing: 4px; padding-bottom: 30px; }
+        /* SIDEBAR (BİLGİ KUTUSU) */
+        .sidebar {
+            background: rgba(139, 92, 246, 0.05); padding: 30px; border-radius: 30px;
+            border: 1px solid rgba(139, 92, 246, 0.15); height: fit-content; position: sticky; top: 30px;
+        }
+        .sidebar h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 20px; color: var(--primary); }
+        .sidebar ul { list-style: none; }
+        .sidebar li { font-size: 0.9rem; margin-bottom: 15px; display: flex; gap: 10px; color: #475569; }
+        .sidebar li i { color: var(--primary); margin-top: 5px; }
 
-        @media (max-width: 968px) { .article-content { grid-template-columns: 1fr; padding: 30px; } .sidebar-box { position: relative; top: 0; margin-top: 30px; } }
+        footer { margin-top: 100px; text-align: center; font-family: 'JetBrains Mono'; font-size: 0.7rem; opacity: 0.4; letter-spacing: 4px; padding-bottom: 40px; }
+
+        @media (max-width: 968px) { .article-card { grid-template-columns: 1fr; padding: 30px; } }
     </style>
 </head>
 <body>
 
-    <div class="background-wrapper">
+    <div class="bg-layer">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
         <canvas id="dust-canvas"></canvas>
@@ -105,72 +81,62 @@
         <a href="physic.html" class="back-nav"><i class="fa-solid fa-arrow-left"></i> FİZİK ARŞİVİNE DÖN</a>
         
         <header>
-            <h1 class="article-title">Kozmoloji: Evrenin Doğuşu ve Kaderi 🌌</h1>
-            <div class="article-meta">
-                <span><i class="fa-solid fa-infinity"></i> Sektör: Fizik ve Evren</span>
-                <span><i class="fa-regular fa-clock"></i> Okuma Süresi: 8 dk</span>
-            </div>
+            <h1 class="title">Kozmoloji: Evrenin Doğuşu ve Kaderi 🌌</h1>
+            <p style="font-family: 'JetBrains Mono'; color: var(--primary); font-size: 0.8rem; font-weight: bold;">SECTOR: PHYSICS_AND_UNIVERSE // MODULE_03</p>
         </header>
 
-        <article class="article-content">
+        <article class="article-card">
             <div class="main-text">
-                <h2>Başlangıcın Ötesi: Büyük Patlama</h2>
-                <p>Kozmoloji, evrenin bir bütün olarak incelenmesidir; doğuşu, evrimi, yapısı ve nihai kaderi. Modern kozmolojinin temeli, yaklaşık 13.8 milyar yıl önce evrenin son derece sıcak ve yoğun bir noktadan genişlemeye başladığını öne süren Büyük Patlama (Big Bang) teorisidir.</p>
-                <p>Bu teori, sadece bir "patlama" değil, uzay-zamanın kendisinin bir iğne ucu kadar küçük bir hacimden bugünkü devasa boyutlarına ulaşan şişme (inflation) sürecidir.</p>
-
-                <figure class="article-image">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/CMB_Timeline300_no_WMAP.jpg/1200px-CMB_Timeline300_no_WMAP.jpg" alt="Evrenin Zaman Çizelgesi">
-                    <figcaption>Şekil 1: Büyük Patlama'dan günümüze evrenin genişleme zaman çizelgesi ve Kozmik Mikrodalga Arka Alan Işıması (CMB).</figcaption>
+                <h2>Büyük Patlama (Big Bang)</h2>
+                <p>Kozmoloji, evrenin bir bütün olarak incelenmesidir. Her şey, yaklaşık 13.8 milyar yıl önce aşırı sıcak ve yoğun bir noktadan (tekillik) saniyeler içinde devasa bir boyuta genişleyerek başladı. Bu sürece <strong>Big Bang</strong> diyoruz.</p>
+                
+                <figure class="article-img">
+                    <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=1200" alt="Evrenin Genişlemesi">
+                    <figcaption>Kozmik genişlemenin ve galaksi oluşumlarının sanatsal bir tasviri.</figcaption>
                 </figure>
 
-                <h2>Karanlık Enerji ve Hızlanan Genişleme</h2>
-                <p>1990'ların sonunda yapılan gözlemler, evrenin genişleme hızının kütleçekimi nedeniyle yavaşlamadığını, aksine "Karanlık Enerji" adı verilen gizemli bir itici güç nedeniyle hızlandığını ortaya koydu. Evrenin enerji bütçesinin yaklaşık %68'ini oluşturan bu enerji, kozmolojinin en büyük bilinmezlerinden biridir.</p>
+                <h2>Karanlık Madde ve Enerji</h2>
+                <p>Evrenin sadece %5'i bildiğimiz atomlardan oluşur. Geri kalan devasa kısım, göremediğimiz ama çekim gücüyle galaksileri bir arada tutan <strong>Karanlık Madde</strong> ve evrenin hızla genişlemesini sağlayan <strong>Karanlık Enerji</strong>'dir.</p>
 
-                <figure class="article-image">
-                    <img src="https://cdn.esa.int/var/esa/storage/images/esa_multimedia/images/2019/09/the_cosmic_web/19716945-1-eng-GB/The_cosmic_web_pillars.jpg" alt="Kozmik Ağ Simülasyonu">
-                    <figcaption>Şekil 2: Karanlık madde tarafından şekillendirilen, galaksilerin bir araya gelerek oluşturduğu devasa "Kozmik Ağ" yapısı.</figcaption>
+                <figure class="article-img">
+                    <img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80&w=1200" alt="Derin Uzay">
+                    <figcaption>Hubble Uzay Teleskobu tarafından görüntülenen binlerce galaksi.</figcaption>
                 </figure>
             </div>
 
-            <aside class="sidebar-box">
-                <h3><i class="fa-solid fa-lightbulb"></i> Kritik Veriler</h3>
+            <aside class="sidebar">
+                <h3><i class="fa-solid fa-bolt"></i> Kozmik Veriler</h3>
                 <ul>
-                    <li><i class="fa-solid fa-check"></i> <strong>Evrenin Yaşı:</strong> ~13.8 Milyar Yıl</li>
-                    <li><i class="fa-solid fa-check"></i> <strong>Genişleme Hızı:</strong> Hubble Sabiti (H₀) ≈ 70 km/s/Mpc</li>
-                    <li><i class="fa-solid fa-check"></i> <strong>Karanlık Enerji:</strong> Evrenin %68'i</li>
-                    <li><i class="fa-solid fa-check"></i> <strong>Karanlık Madde:</strong> Evrenin %27'si</li>
-                    <li><i class="fa-solid fa-check"></i> <strong>Bildiğimiz Madde:</strong> Sadece %5!</li>
+                    <li><i class="fa-solid fa-circle-check"></i> <strong>Yaş:</strong> 13.79 Milyar Yıl</li>
+                    <li><i class="fa-solid fa-circle-check"></i> <strong>İçerik:</strong> %68 Karanlık Enerji</li>
+                    <li><i class="fa-solid fa-circle-check"></i> <strong>İçerik:</strong> %27 Karanlık Madde</li>
+                    <li><i class="fa-solid fa-circle-check"></i> <strong>Durum:</strong> Hızlanarak Genişliyor</li>
                 </ul>
             </aside>
         </article>
 
-        <footer>AZURA PROJECT // KNOWLEDGE_BASE // 2025</footer>
+        <footer>AZURA PROJECT // 2025 // THE ENCYCLOPEDIA OF THE FUTURE</footer>
     </div>
 
     <script>
         const canvas = document.getElementById('dust-canvas');
         const ctx = canvas.getContext('2d');
-        let particles = [];
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resize); resize();
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 1.5 + 0.5; this.vx = Math.random() * 0.4 - 0.2; this.vy = Math.random() * 0.4 - 0.2; this.opacity = Math.random() * 0.4;
-            }
-            update() {
-                this.x += this.vx; this.y += this.vy;
-                if(this.x < 0 || this.x > canvas.width) this.vx *= -1; if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
-            }
-            draw() {
-                ctx.fillStyle = `rgba(139, 92, 246, ${this.opacity})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
-            }
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let p = Array.from({length: 60}, () => ({
+            x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+            s: Math.random() * 2, vx: Math.random() * 0.4 - 0.2, vy: Math.random() * 0.4 - 0.2
+        }));
+        function anim() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            p.forEach(i => {
+                i.x += i.vx; i.y += i.vy;
+                if(i.x<0 || i.x>canvas.width) i.vx*=-1; if(i.y<0 || i.y>canvas.height) i.vy*=-1;
+                ctx.fillStyle = 'rgba(139, 92, 246, 0.2)'; ctx.beginPath();
+                ctx.arc(i.x, i.y, i.s, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(anim);
         }
-        for(let i=0; i<70; i++) particles.push(new Particle());
-        function animate() {
-            ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate);
-        }
-        animate();
+        anim();
     </script>
 </body>
 </html>
