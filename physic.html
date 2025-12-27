@@ -3,138 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura Nexus | 10 Core Sectors</title>
+    <title>Azura | Fizik ve Evren</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Plus+Jakarta+Sans:wght@300;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #f0f9ff; --text: #0f172a; --primary: #0ea5e9; }
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        
-        body { 
-            background: var(--bg); color: var(--text); 
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: hidden;
-        }
-
-        /* ARKA PLAN - En altta (z-index: -1) */
-        .background-wrapper {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; overflow: hidden; pointer-events: none;
-        }
-        .orb {
-            position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.35;
-            animation: float-orb 20s infinite ease-in-out alternate;
-        }
-        .orb-1 { top: -10%; left: -5%; width: 500px; height: 500px; background: rgba(14, 165, 233, 0.4); }
-        .orb-2 { bottom: -10%; right: -5%; width: 600px; height: 600px; background: rgba(139, 92, 246, 0.3); animation-delay: -5s; }
-        @keyframes float-orb { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(60px, -60px) scale(1.1); } }
+        :root { --bg: #f8fafc; --text: #0f172a; --primary: #8b5cf6; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; }
+        .bg-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.25; animation: float 20s infinite alternate; }
+        .orb-1 { top: -5%; right: -5%; width: 500px; height: 500px; background: #8b5cf6; }
+        @keyframes float { 0% { transform: translate(0,0); } 100% { transform: translate(-40px, 40px); } }
         #dust-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-
-        /* İÇERİK - En üstte (z-index: 10) */
-        .container { 
-            max-width: 1400px; margin: 0 auto; padding: 40px 20px; 
-            position: relative; z-index: 10; 
-        }
-        
-        header { text-align: center; margin-bottom: 80px; }
-        .brand { font-family: 'Syncopate', sans-serif; font-size: clamp(1.8rem, 5vw, 3.5rem); letter-spacing: 12px; color: var(--primary); margin-bottom: 15px; }
-        .status { font-family: 'JetBrains Mono'; font-size: 0.75rem; opacity: 0.6; letter-spacing: 5px; text-transform: uppercase; }
-
-        .nexus-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 25px; position: relative; z-index: 20; /* Kartların tıklanabilir olması için zirve z-index */
-        }
-
-        .category-card {
-            background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.5); padding: 50px 35px; border-radius: 35px;
-            text-decoration: none; color: inherit; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex; flex-direction: column; position: relative; overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.03);
-            cursor: pointer; /* Tıklanabilir olduğunu belli et */
-        }
-        .category-card:hover { 
-            transform: translateY(-12px) scale(1.02); 
-            border-color: var(--primary); 
-            box-shadow: 0 25px 50px rgba(14, 165, 233, 0.12);
-            background: rgba(255, 255, 255, 0.85);
-        }
-
-        .card-stripe { position: absolute; left: 0; top: 0; width: 6px; height: 100%; }
-        .cat-icon { font-size: 2.5rem; margin-bottom: 25px; }
-        .cat-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.5px; }
-        .cat-info { font-size: 0.95rem; color: #64748b; line-height: 1.6; }
-
-        footer { margin-top: 150px; text-align: center; font-family: 'JetBrains Mono'; font-size: 0.7rem; opacity: 0.4; letter-spacing: 4px; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 60px 20px; position: relative; z-index: 10; }
+        .back-nav { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 40px; text-decoration: none; color: var(--primary); font-family: 'JetBrains Mono'; font-weight: bold; background: rgba(255,255,255,0.7); padding: 12px 25px; border-radius: 50px; }
+        header { border-left: 8px solid var(--primary); padding-left: 30px; margin-bottom: 80px; }
+        .topics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
+        .topic-card { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.5); padding: 45px 35px; border-radius: 35px; text-decoration: none; color: inherit; transition: 0.4s; display: flex; flex-direction: column; min-height: 240px; }
+        .topic-card:hover { transform: translateY(-10px); border-color: var(--primary); background: rgba(255, 255, 255, 0.85); }
+        .topic-card i { font-size: 2.2rem; margin-bottom: 25px; color: var(--primary); }
     </style>
 </head>
 <body>
-
-    <div class="background-wrapper">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <canvas id="dust-canvas"></canvas>
-    </div>
-
+    <div class="bg-layer"><div class="orb orb-1"></div><canvas id="dust-canvas"></canvas></div>
     <div class="container">
-        <header>
-            <h1 class="brand">AZURA NEXUS</h1>
-            <p class="status">UNIVERSAL_KNOWLEDGE_HUB // 10 SECTORS</p>
-        </header>
-
-        <div class="nexus-grid" id="mainGrid">
-            </div>
-
-        <footer>© 2025 AZURA PROJECT</footer>
+        <a href="menu.html" class="back-nav"><i class="fa-solid fa-arrow-left"></i> NEXUS'A DÖN</a>
+        <header><h1>Fizik ve Evren 🌌</h1></header>
+        <div class="topics-grid">
+            <a href="kozmoloji.html" class="topic-card"><i class="fa-solid fa-infinity"></i><h3>Kozmoloji</h3><p>Evrenin kökeni ve Büyük Patlama.</p></a>
+            <div class="topic-card"><i class="fa-solid fa-atom"></i><h3>Kuantum Mekaniği</h3><p>Atom altı olasılıklar dünyası.</p></div>
+             <div class="topic-card"><i class="fa-solid fa-star"></i><h3>Astrofizik</h3><p>Yıldızların fiziği.</p></div>
+        </div>
     </div>
-
     <script>
-        const sectors = [
-            { n: "Fizik ve Evren", i: "fa-atom", c: "#8b5cf6", link: "physic.html", d: "Kozmik yasalar ve kuantum gerçekliği." },
-            { n: "Tıp ve Klinik", i: "fa-heart-pulse", c: "#f43f5e", link: "anatomy.html", d: "İnsan vücudunun gizemli dünyası." },
-            { n: "Teknoloji ve AI", i: "fa-microchip", c: "#10b981", link: "tech.html", d: "Geleceği inşa eden algoritmalar." },
-            { n: "Gastronomi", i: "fa-utensils", c: "#f59e0b", link: "gastronomy.html", d: "Lezzetin bilimsel mirası." },
-            { n: "Müzik Teorisi", i: "fa-music", c: "#6366f1", link: "music.html", d: "Seslerin matematiksel harmonisi." },
-            { n: "Zihin ve Psikoloji", i: "fa-brain", c: "#ec4899", link: "mind.html", d: "Bilinç ve ruhun yapısı." },
-            { n: "Doğa ve Biyoloji", i: "fa-dna", c: "#22c55e", link: "biology.html", d: "Yaşamın temel kodları." },
-            { n: "Tarih ve Arkeoloji", i: "fa-landmark", c: "#d97706", link: "history.html", d: "Geçmişin izleri." },
-            { n: "Strateji ve Finans", i: "fa-chess", c: "#3b82f6", link: "strategy.html", d: "Karar mekanizmaları." },
-            { n: "Yaşam ve Performans", i: "fa-bullseye", c: "#ef4444", link: "life.html", d: "Disiplin ve verimlilik." }
-        ];
-
-        const grid = document.getElementById('mainGrid');
-
-        sectors.forEach(s => {
-            const card = document.createElement('a');
-            card.href = s.link; // Yönlendirme burası rafık!
-            card.className = 'category-card';
-            card.innerHTML = `
-                <div class="card-stripe" style="background: ${s.c}"></div>
-                <i class="fa-solid ${s.i} cat-icon" style="color: ${s.c}"></i>
-                <h2 class="cat-title">${s.n}</h2>
-                <p class="cat-info">${s.d}</p>
-            `;
-            grid.appendChild(card);
-        });
-
-        // Toz Efekti
-        const canvas = document.getElementById('dust-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resize); resize();
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 1.5 + 0.5; this.vx = Math.random() * 0.4 - 0.2; this.vy = Math.random() * 0.4 - 0.2; this.opacity = Math.random() * 0.4;
-            }
-            update() { this.x += this.vx; this.y += this.vy; if(this.x < 0 || this.x > canvas.width) this.vx *= -1; if(this.y < 0 || this.y > canvas.height) this.vy *= -1; }
-            draw() { ctx.fillStyle = `rgba(14, 165, 233, ${this.opacity})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
-        }
-        for(let i=0; i<80; i++) particles.push(new Particle());
-        function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate); }
-        animate();
+        const canvas = document.getElementById('dust-canvas'); const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let particles = Array.from({length: 60}, () => ({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, s: Math.random() * 2, vx: Math.random() * 0.4 - 0.2, vy: Math.random() * 0.4 - 0.2 }));
+        function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p => { p.x += p.vx; p.y += p.vy; ctx.fillStyle = 'rgba(139,92,246,0.2)'; ctx.beginPath(); ctx.arc(p.x,p.y,p.s,0,Math.PI*2); ctx.fill(); }); requestAnimationFrame(animate); } animate();
     </script>
 </body>
 </html>
