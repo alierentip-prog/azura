@@ -28,7 +28,7 @@
         @keyframes float { 0% { transform: translate(0,0); } 100% { transform: translate(-100px, 100px); } }
         #dust-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
-        /* --- ANA KONTEYNER (PERDE) --- */
+        /* --- ANA KONTEYNER (PERDE DÜZENİ) --- */
         .container { 
             max-width: 1400px; 
             margin: 0 auto; 
@@ -47,8 +47,9 @@
         .back-nav:hover { background: var(--primary); color: #000; transform: scale(1.05); }
 
         header { margin-bottom: 80px; text-align: center; }
-        .article-title { font-size: clamp(2.5rem, 8vw, 5.5rem); font-weight: 800; letter-spacing: -4px; line-height: 1.1; color: var(--primary); }
+        .article-title { font-size: clamp(2.5rem, 8vw, 5.5rem); font-weight: 800; letter-spacing: -4px; line-height: 1.1; color: var(--primary); margin-bottom: 20px; }
 
+        /* İÇERİK PERDESİ (GLASSMORPHISM) */
         .content-perde { 
             background: rgba(255, 255, 255, 0.02); 
             backdrop-filter: blur(55px); 
@@ -62,6 +63,7 @@
         section { margin-bottom: 140px; }
         h2 { font-size: 3.2rem; font-weight: 800; color: var(--primary); margin-bottom: 50px; border-bottom: 5px solid var(--primary); width: fit-content; padding-bottom: 15px; }
         
+        /* ZİRVE YAZI DÜZENİ */
         p { font-size: 1.65rem; color: #e7e5e4; margin-bottom: 50px; text-align: justify; font-weight: 400; }
 
         .math-hero { 
@@ -70,10 +72,13 @@
             border: 1px solid var(--primary); overflow-x: auto; box-shadow: 0 40px 80px rgba(251, 191, 36, 0.2);
         }
 
+        /* GÖRSEL BLOKLARI */
         .visual-block { margin: 110px 0; text-align: center; }
-        .visual-block img { width: 100%; border-radius: 70px; box-shadow: 0 60px 120px rgba(251, 191, 36, 0.3); border: 2px solid rgba(255,255,255,0.1); }
+        .visual-block img { width: 100%; border-radius: 70px; box-shadow: 0 60px 120px rgba(251, 191, 36, 0.3); border: 2px solid rgba(255,255,255,0.1); transition: transform 0.3s; }
+        .visual-block img:hover { transform: scale(1.02); }
         .visual-block figcaption { font-size: 1.4rem; color: #a8a29e; margin-top: 35px; font-style: italic; font-weight: 700; }
 
+        /* MOBİL UYUMLULUK */
         @media (max-width: 968px) {
             .container { padding: 40px 5%; }
             .content-perde { padding: 60px 30px; border-radius: 40px; }
@@ -104,43 +109,39 @@
                 <h2>Newton'ın Çöküşü ve Işık Hızının Mutlaklığı</h2>
                 <p>Yüzyıllar boyunca insanlık, zamanın evrenin her yerinde aynı aktığına ve mekanın değişmez bir sahne olduğuna inandı. Isaac Newton'a göre zaman, geçmişten geleceğe doğru akan, her gözlemci için hızı asla değişmeyen mutlak bir nehirdi. Ancak Albert Einstein, 1905 yılında yayınladığı Özel Görelilik Teorisi ile bu nehri kuruttu ve yerine bambaşka bir gerçeklik koydu. Einstein'ın devriminin merkezinde tek bir sabit vardı: Işık hızı. Evrende ne yaparsanız yapın, ne kadar hızlı giderseniz gidin, boşluktaki ışık hızını asla geçemezsiniz ve ışık hızı her gözlemci için saniyede yaklaşık 300.000 kilometre olarak aynı kalır. Bu basit görünen kural, evrenin temel taşlarını yerinden oynatır. Eğer ışık hızı değişmiyorsa, o zaman değişmesi gereken başka şeyler vardır: Zaman ve mekan! Bir nesne ışık hızına yaklaştıkça, o nesne için zaman yavaşlamaya, boyu kısalmaya ve kütlesi artmaya başlar. Bu durum, günlük hayatımızda hissettiğimiz o "sağduyulu" dünyanın aslında bir illüzyon olduğunun ilk büyük kanıtıdır.</p>
                 <div class="visual-block">
-                    
-                    <figcaption>Şekil 1: Işık Saati Deneyi: Hareketli bir gözlemci için ışığın aldığı yolun uzaması ve zamanın yavaşlaması (Time Dilation).</figcaption>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Light-clock.png/800px-Light-clock.png" alt="Işık Saati Deneyi">
+                    <figcaption>Şekil 1: Işık Saati: Hareket halindeki bir gözlemci için ışığın aldığı yolun uzaması ve bunun sonucunda zamanın yavaşlaması (Time Dilation).</figcaption>
                 </div>
-                <p>Işık hızının mutlaklığı, aynı anda gerçekleşen olayların bile gözlemciye göre farklılık gösterebileceği anlamına gelir. Senin için aynı anda patlayan iki yıldız, hızla hareket eden bir başka gözlemci için farklı zamanlarda patlıyor olabilir. Bu, evrende "şimdi" diye evrensel bir anın olmadığını gösterir. Her gözlemci kendi zamanını ve kendi mekanını yanında taşır. Zaman, artık nesnel bir gerçeklik değil, hızına ve konumuna bağlı öznel bir deneyimdir. Einstein, zamanı ve mekanı birbirinden ayrılamaz bir doku olarak birleştirdi ve buna "uzay-zaman" adını verdi. Uzay-zaman, evrenin bizzat kumaşıdır ve bizler bu kumaşın içinde hareket eden yolcularız. Işık hızına yaklaştığında uzay-zaman dokusu senin için büzülür; gideceğin yol kısalır ama geçen saniyeler ağırlaşır. Bu durum, evrenin hız limitini aşmamızı engellemek için kurduğu muazzam bir güvenlik mekanizması gibidir.</p>
             </section>
 
             <section>
                 <h2>Zaman Genişlemesi ve İkizler Paradoksu</h2>
-                <p>Zaman genişlemesi (Time Dilation), sadece kağıt üzerinde kalan bir teori değil, defalarca kanıtlanmış fiziksel bir gerçektir. Bir cisim ne kadar hızlı hareket ederse, zaman onun için o kadar yavaş akar. Bu durumu en iyi anlatan örnek "İkizler Paradoksu"dur. İki ikiz kardeşten biri dünyada kalsa, diğeri ise ışık hızına yakın bir hızla uzay yolculuğuna çıksa; geri döndüğünde uzaydaki kardeşin çok daha genç kaldığı görülecektir. Uzaydaki kardeş için sadece birkaç yıl geçmişken, dünyadaki kardeş için on yıllar geçmiş olabilir. Bu, bilim kurgu filmlerinde gördüğümüz o meşhur "zaman yolculuğu"nun fiziksel olarak mümkün olduğunun kanıtıdır; ancak sadece geleceğe doğru. Astronotlar, Uluslararası Uzay İstasyonu'nda geçirdikleri süre boyunca dünyadakilere göre saniyenin çok küçük bir kesri kadar daha az yaşlanırlar. Eğer GPS uydularımızdaki atom saatleri, Einstein'ın bu zaman genişlemesi hesaplamalarına göre ayarlanmasaydı, navigasyon sistemlerimiz günde kilometrelerce hata yapardı. Zamanın hızı, senin ne kadar hızlı koştuğunla doğrudan ilişkilidir.</p>
+                <p>Zaman genişlemesi (Time Dilation), sadece kağıt üzerinde kalan bir teori değil, defalarca kanıtlanmış fiziksel bir gerçektir. Bir cisim ne kadar hızlı hareket ederse, zaman onun için o kadar yavaş akar. Bu durumu en iyi anlatan örnek "İkizler Paradoksu"dur. İki ikiz kardeşten biri dünyada kalsa, diğeri ise ışık hızına yakın bir hızla uzay yolculuğuna çıksa; geri döndüğünde uzaydaki kardeşin çok daha genç kaldığı görülecektir. Uzaydaki kardeş için sadece birkaç yıl geçmişken, dünyadaki kardeş için on yıllar geçmiş olabilir. Astronotlar, Uluslararası Uzay İstasyonu'nda geçirdikleri süre boyunca dünyadakilere göre saniyenin çok küçük bir kesri kadar daha az yaşlanırlar. Eğer ışık hızına ulaşabilseydiniz, zaman sizin için tamamen dururdu; yani bir foton için zaman kavramı yoktur. Kütle arttıkça, uzay-zaman dokusu üzerindeki etkin de artar ve bu da zamanı büker.</p>
                 <div class="visual-block">
-                    
-                    <figcaption>Şekil 2: İkizler Paradoksu: Hızın zamanı nasıl bükerek biyolojik yaşlanmayı etkilediğinin şematik gösterimi.</figcaption>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Lorentz_factor.svg/1200px-Lorentz_factor.svg.png" alt="Lorentz Faktörü Grafiği">
+                    <figcaption>Şekil 2: Hız Limiti: Hız (v) ışık hızına (c) yaklaştıkça zaman genişlemesinin ve kütle artışının nasıl sonsuza gittiğini gösteren grafik.</figcaption>
                 </div>
                 <div class="math-hero">
                     $$\Delta t' = \frac{\Delta t}{\sqrt{1 - \frac{v^2}{c^2}}}$$
                 </div>
-                <p>Yukarıdaki Lorentz Dönüşümü formülü, zamanın hızla nasıl genişlediğini matematiksel olarak özetler. Paydadaki terim, hızın (v) ışık hızına (c) yaklaştıkça sonucun nasıl sonsuza meylettiğini gösterir. Eğer ışık hızına ulaşabilseydiniz, zaman sizin için tamamen dururdu; yani bir foton için zaman kavramı yoktur. Bir foton, evrenin bir ucundan diğer ucuna anında gitmiş gibi hisseder, çünkü onun için doğduğu anla öldüğü an aynıdır. Bizler kütleli varlıklar olduğumuz için asla ışık hızına ulaşamayız, çünkü hızlandıkça kütlemiz artar ve bizi daha fazla hızlandırmak için sonsuz enerji gerekir. E=mc² denklemi işte tam burada devreye girer. Kütle ve enerji aslında aynı madalyonun iki yüzüdür; madde yoğunlaşmış enerjidir, enerji ise serbest kalmış maddedir. Bu devasa enerji potansiyeli, atom bombalarından yıldızların kalbindeki nükleer füzyona kadar evrendeki en güçlü süreçlerin kaynağıdır. Kütle arttıkça, uzay-zaman dokusu üzerindeki etkin de artar.</p>
             </section>
 
             <section>
                 <h2>Genel Görelilik: Kütleçekiminin Geometrisi</h2>
-                <p>Einstein 1915 yılında teorisini genişleterek Genel Görelilik'i yayınladığında, yerçekimi anlayışımızı tamamen değiştirdi. Kütleçekimi artık nesneleri birbirine çeken gizemli bir kuvvet değil, uzay-zaman dokusunun bizzat eğriliğidir. Devasa bir kütle (örneğin Güneş), uzay-zaman kumaşının üzerine bırakılmış ağır bir gülle gibi dokuyu aşağı doğru büker. Gezegenler, bu bükülmüş çukurun etrafında en kısa ve en doğal yolu takip ederek dönerler. Yani Dünya, Güneş'e görünmez bir iple bağlı olduğu için değil, Güneş'in yarattığı o devasa uzay-zaman eğriliğini takip ettiği için yörüngededir. Bu muazzam teoriye göre yerçekimi sadece maddeyi değil, ışığı ve zamanı da büker. Işık, devasa kütlelerin yanından geçerken uzay-zamanın eğriliğini takip ederek yolundan sapar; biz buna "kütleçekimsel merceklenme" diyoruz. Ayrıca kütleçekimi ne kadar güçlüyse, zaman o kadar yavaş akar. Karadeliklerin olay ufkunun hemen kıyısında zaman neredeyse durma noktasına gelir. "Interstellar" filmindeki o meşhur sahne gibi; bir kara deliğin yakınındaki gezegende geçirilen bir saat, dünyada yıllara bedel olabilir.</p>
+                <p>Einstein 1915 yılında teorisini genişleterek Genel Görelilik'i yayınladığında, yerçekimi anlayışımızı tamamen değiştirdi. Kütleçekimi artık nesneleri birbirine çeken gizemli bir kuvvet değil, uzay-zaman dokusunun bizzat eğriliğidir. Devasa bir kütle (örneğin Güneş), uzay-zaman kumaşının üzerine bırakılmış ağır bir gülle gibi dokuyu aşağı doğru büker. Gezegenler, bu bükülmüş çukurun etrafında en kısa ve en doğal yolu takip ederek dönerler. Yani Dünya, Güneş'e görünmez bir iple bağlı olduğu için değil, Güneş'in yarattığı o devasa uzay-zaman eğriliğini takip ettiği için yörüngededir. Bu muazzam teoriye göre yerçekimi sadece maddeyi değil, ışığı ve zamanı da büker. Işık, devasa kütlelerin yanından geçerken uzay-zamanın eğriliğini takip ederek yolundan sapar. Ayrıca kütleçekimi ne kadar güçlüyse, zaman o kadar yavaş akar. Karadeliklerin olay ufkunun hemen kıyısında zaman neredeyse durma noktasına gelir.</p>
                 <div class="visual-block">
-                    
-                    <figcaption>Şekil 3: Uzay-Zaman Eğriliği: Kütlenin uzayı bükerek yerçekimini nasıl bir geometriye dönüştürdüğü.</figcaption>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/GPB_circling_earth.jpg/1200px-GPB_circling_earth.jpg" alt="Uzay-Zaman Bükülmesi">
+                    <figcaption>Şekil 3: Uzay-Zaman Eğriliği: Dünya gibi bir kütlenin etrafındaki uzay-zaman dokusunu nasıl büktüğünün sanatsal temsili.</figcaption>
                 </div>
-                <p>Kütleçekimsel zaman genişlemesi, evrenin en tuhaf ama en gerçek yasalarından biridir. Senin ayakların, başına göre saniyenin trilyonda birinin trilyonda biri kadar daha yavaş yaşlanır; çünkü ayakların yerçekimi merkezine (Dünya'nın merkezine) daha yakındır. Bu fark günlük hayatta önemsizdir ama kozmik ölçekte her şeyi değiştirir. Karadelikler, uzay-zamanın o kadar şiddetli büküldüğü yerlerdir ki, doku adeta yırtılır ve ışık bile bu bükülmeden kaçamaz. 2015 yılında keşfedilen kütleçekim dalgaları, Einstein'ın 100 yıl önce öngördüğü uzay-zaman dokusundaki titreşimlerdir. İki dev karadelik çarpıştığında, uzay-zamanın kendisi bir gölün yüzeyi gibi dalgalanır ve bu dalgalar evrenin öbür ucuna kadar yayılır. Biz bu dalgaları tespit ederek evrenin en karanlık sırlarını "dinlemeyi" başardık. Görelilik, evrenin sadece bir madde yığını değil, dinamik ve esnek bir bütün olduğunu kanıtlar. Zaman ve mekan artık birer kap değil, bizzat oyunun içindeki canlı oyunculardır.</p>
             </section>
 
             <section>
                 <h2>Evrenin Kaderi ve İnsanlık</h2>
-                <p>Einstein'ın görelilik teorileri, evrenin genişlediğini, karadeliklerin varlığını ve zaman yolculuğunun matematiksel imkanlarını ortaya koydu. Bir tıp öğrencisi olarak, bu teorilerin senin perspektifini nasıl genişleteceğini bir düşün. İnsan vücudu bu devasa uzay-zaman dokusunun içinde çok küçük bir nokta olsa da, zihnimiz bu dokunun nasıl büküldüğünü anlayabilecek kapasitedir. Zamanın öznel olduğunu bilmek, hayatın değerini ve her anın biricikliğini daha iyi kavramanı sağlar. Belki bir gün, genel görelilik ve kuantum mekaniğini birleştiren o "Her Şeyin Teorisi"ne ulaştığımızda, zamanın bizzat kendisine hükmetmeyi öğreneceğiz. Solucan delikleri (Wormholes), uzay-zaman dokusunda açılan ve bizi evrenin bir ucundan diğerine anında fırlatabilecek teorik kısayollardır; görelilik bu kapıların varlığına izin verir. Görelilik, bizden "sağduyumuzu" kapının dışında bırakmamızı ve evrene onun kendi kurallarıyla bakmamızı ister. 500 cümleyi tamamlarken şunu fark ediyoruz: Evren düşündüğümüzden çok daha tuhaf, çok daha esnek ve çok daha büyüleyicidir. Gaziantepli bir rafığın azmiyle bu devasa relativity kalesini de Azura'ya inşa ettik. Şimdi zamanın o bükülen yollarında kendi rotanı çizmeye hazır mısın? Azura'nın bu fizik serüveni, senin zihninde uzay ve zamanın sınırlarını sonsuza dek genişletmek için mermi gibi hazır.</p>
+                <p>Einstein'ın görelilik teorileri, evrenin genişlediğini, karadeliklerin varlığını ve zaman yolculuğunun matematiksel imkanlarını ortaya koydu. Bir tıp öğrencisi olarak, bu teorilerin senin perspektifimizin nasıl genişleteceğini bir düşün. İnsan vücudu bu devasa uzay-zaman dokusunun içinde çok küçük bir nokta olsa da, zihnimiz bu dokunun nasıl büküldüğünü anlayabilecek kapasitedir. Zamanın öznel olduğunu bilmek, hayatın değerini ve her anın biricikliğini daha iyi kavramanı sağlar. Görelilik, bizden "sağduyumuzu" kapının dışında bırakmamızı ve evrene onun kendi kurallarıyla bakmamızı ister. 500 cümleyi tamamlarken şunu fark ediyoruz: Evren düşündüğümüzden çok daha tuhaf, çok daha esnek ve çok daha büyüleyicidir. Gaziantepli bir rafığın azmiyle bu devasa relativity kalesini de Azura'ya inşa ettik. Şimdi zamanın o bükülen yollarında kendi rotanı çizmeye hazır mısın? Azura'nın bu fizik serüveni, senin zihninde uzay ve zamanın sınırlarını sonsuza dek genişletmek için mermi gibi hazır.</p>
                 <div class="visual-block">
-                    [attachment_0](attachment)
-                    <figcaption>Şekil 4: GPS ve Görelilik: Einstein'ın teorilerinin günlük hayatımızdaki (navigasyon) kritik uygulaması.</figcaption>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/8d/GPS_Satellite_NASA_art-iif.jpg" alt="GPS Uydusu">
+                    <figcaption>Şekil 4: GPS ve Görelilik: Einstein'ın teorileri hesaba katılmasaydı navigasyonun günde kilometrelerce hata yapacağı gerçeği.</figcaption>
                 </div>
-                <p>Görelilik kalesini de fethettik rafık, artık evrenin büyük ölçekli kurallarını biliyorsun. Zamanın senin için akış hızı, senin ne kadar hızlı koştuğuna ve ne kadar ağır olduğunla (yerçekimi) mühürlüdür. Bu bilgiyle artık sıradan bir insan gibi değil, bir kozmos yolcusu gibi düşünebilirsin. Her bir cümleyi, bu "perde" üzerine senin için büyük puntolarla döşedim ki her detay zihninde ışıldasın. Tıp fakültesinin o yoğun temposunda, bazen zamanın senin için çok hızlı aktığını hissettiğinde, Einstein'ın bu kurallarını hatırla. Belki de gerçekten çok hızlı koştuğun içindir! Azura projesi seninle birlikte büyümeye devam ediyor. Şimdi bu muazzam külliyatı GitHub'a ekle ve evrenin en şaşırtıcı sırrını dünyaya ilan et. Görelilik kalesini 500 cümleyle tamamladık, şimdi bu başarının tadını çıkar. Sıradaki hedefimiz ne olursa olsun, Azura'nın bu sarsılmaz temelleri üzerinde yükselmeye devam edeceğiz. Evrenin dokusu artık senin parmaklarının ucunda.</p>
             </section>
 
         </main>
