@@ -3,213 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura Nexus | Categories</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Plus+Jakarta+Sans:wght@200;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <title>Azura Nexus | Universe of Knowledge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Plus+Jakarta+Sans:wght@300;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    
     <style>
-        :root { --bg: #050505; --card: #0c0c0c; --accent: #00f2ff; --surgical-red: #ff3c3c; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #f8fafc;
+            --primary: #0ea5e9;
+            --text: #0f172a;
+            --med: #ec4899;    /* Tıp için pembe-kırmızı */
+            --phys: #8b5cf6;   /* Fizik için mor */
+            --tech: #10b981;   /* Teknoloji için yeşil */
+            --cult: #f59e0b;   /* Kültür için turuncu */
+            --card-bg: rgba(255, 255, 255, 0.8);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         body { 
-            background: var(--bg); color: #fff; 
+            background: var(--bg); color: var(--text); 
             font-family: 'Plus Jakarta Sans', sans-serif;
-            padding: 80px 40px; overflow-x: hidden;
+            padding: 40px 20px;
         }
 
-        header { max-width: 1500px; margin: 0 auto 100px auto; border-left: 4px solid var(--accent); padding-left: 40px; }
-        .nexus-title { font-family: 'Syncopate', sans-serif; font-size: 2.5rem; letter-spacing: 15px; margin-bottom: 10px; }
-        .nexus-subtitle { font-family: 'JetBrains Mono'; font-size: 0.75rem; color: var(--accent); letter-spacing: 5px; opacity: 0.6; }
-
-        .nexus-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px; max-width: 1500px; margin: 0 auto;
+        /* --- ARKA PLAN SÜSLEMELERİ --- */
+        .blob {
+            position: fixed; width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.1) 0%, transparent 70%);
+            z-index: -1; border-radius: 50%; filter: blur(40px);
         }
 
-        .category-card {
-            background: var(--card); border: 1px solid rgba(255,255,255,0.05);
-            padding: 50px; text-decoration: none; color: inherit;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        /* --- ÜST BAŞLIK --- */
+        header {
+            max-width: 1400px; margin: 0 auto 60px auto;
+            text-align: center; border-bottom: 2px solid rgba(0,0,0,0.03);
+            padding-bottom: 40px;
+        }
+        .nexus-brand { 
+            font-family: 'Syncopate', sans-serif; font-size: 2.5rem; 
+            letter-spacing: 12px; color: var(--primary); margin-bottom: 15px;
+        }
+        .nexus-status {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+            color: var(--text); opacity: 0.5; text-transform: uppercase; letter-spacing: 4px;
+        }
+
+        /* --- SEARCH BAR (Arama Çubuğu) --- */
+        .search-container {
+            max-width: 600px; margin: 0 auto 50px auto; position: relative;
+        }
+        .search-input {
+            width: 100%; padding: 20px 30px 20px 60px; border-radius: 50px;
+            border: 1px solid rgba(0,0,0,0.05); background: #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03); outline: none;
+            font-size: 1rem; transition: 0.3s;
+        }
+        .search-input:focus { border-color: var(--primary); box-shadow: 0 15px 40px rgba(14, 165, 233, 0.1); }
+        .search-icon { position: absolute; left: 25px; top: 50%; transform: translateY(-50%); color: var(--primary); }
+
+        /* --- KATEGORİ IZGARASI --- */
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px; max-width: 1400px; margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.6); padding: 45px 35px;
+            border-radius: 32px; text-decoration: none; color: inherit;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; flex-direction: column; align-items: flex-start;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
             position: relative; overflow: hidden;
-            display: flex; flex-direction: column; justify-content: space-between; min-height: 350px;
         }
 
-        .category-card:hover { 
-            border-color: var(--accent); background: #111;
-            transform: translateY(-15px); box-shadow: 0 40px 80px rgba(0, 242, 255, 0.1);
+        /* Hover Efektleri */
+        .card:hover { transform: translateY(-12px); box-shadow: 0 25px 50px rgba(0,0,0,0.08); }
+        .card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 6px; height: 100%;
+            transition: 0.3s;
         }
 
-        .cat-tag { font-family: 'JetBrains Mono'; font-size: 0.65rem; color: var(--surgical-red); letter-spacing: 4px; margin-bottom: 25px; }
-        .cat-name { font-size: 2.2rem; font-weight: 800; letter-spacing: -2px; line-height: 1; margin-bottom: 20px; }
-        .cat-summary { font-size: 0.95rem; color: #666; line-height: 1.7; transition: 0.3s; }
-        .category-card:hover .cat-summary { color: #aaa; }
+        /* Renk Grupları */
+        .card.med:hover { border-color: var(--med); } .card.med::before { background: var(--med); }
+        .card.phys:hover { border-color: var(--phys); } .card.phys::before { background: var(--phys); }
+        .card.tech:hover { border-color: var(--tech); } .card.tech::before { background: var(--tech); }
+        .card.cult:hover { border-color: var(--cult); } .card.cult::before { background: var(--cult); }
 
-        .card-footer { font-family: 'JetBrains Mono'; font-size: 0.6rem; margin-top: 30px; letter-spacing: 3px; opacity: 0.3; }
+        .card-icon { font-size: 2.2rem; margin-bottom: 25px; }
+        .card-emoji { font-size: 1.2rem; position: absolute; top: 40px; right: 35px; opacity: 0.5; }
+        .card-title { font-size: 1.6rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 12px; }
+        .card-desc { font-size: 0.85rem; color: #64748b; line-height: 1.6; }
 
-        /* Arka Plan Efekti */
-        .bg-glow { position: fixed; width: 600px; height: 600px; background: radial-gradient(circle, rgba(0, 242, 255, 0.03) 0%, transparent 70%); z-index: -1; top: -300px; right: -300px; pointer-events: none; }
+        /* ALT BİLGİ */
+        footer {
+            margin-top: 100px; padding: 40px; text-align: center;
+            font-family: 'JetBrains Mono'; font-size: 0.7rem; opacity: 0.3;
+            letter-spacing: 3px; border-top: 1px solid rgba(0,0,0,0.03);
+        }
+
+        /* MOBİL UYUM */
+        @media (max-width: 768px) {
+            .nexus-brand { font-size: 1.8rem; letter-spacing: 6px; }
+            .grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
-    <div class="bg-glow"></div>
+
+    <div class="blob" style="top: -100px; left: -100px;"></div>
+    <div class="blob" style="bottom: -100px; right: -100px; background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);"></div>
 
     <header>
-        <h1 class="nexus-title">AZURA NEXUS</h1>
-        <p class="nexus-subtitle">EVRENSEL BİLGİ VERİ TABANI // 24 SEKTÖR AKTİF</p>
+        <h1 class="nexus-brand">AZURA NEXUS</h1>
+        <p class="nexus-status">24 AKTİF BİLGİ SEKTÖRÜ // SİSTEM ÇEVRİMİÇİ ✨</p>
     </header>
 
-    <div class="nexus-grid">
-        <a href="categories/anatomi.html" class="category-card">
-            <span class="cat-tag">01_MED</span>
-            <h2 class="cat-name">Anatomi</h2>
-            <p class="cat-summary">İnsan vücudunun yapısal analizi, atlası ve morfolojik sınırları.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-        <a href="categories/fizyoloji.html" class="category-card">
-            <span class="cat-tag">02_MED</span>
-            <h2 class="cat-name">Fizyoloji</h2>
-            <p class="cat-summary">Yaşamın çalışma mekanizmaları, homeostaz ve sistemik denge süreçleri.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-        <a href="categories/mikrobiyoloji.html" class="category-card">
-            <span class="cat-tag">03_MED</span>
-            <h2 class="cat-name">Mikrobiyoloji</h2>
-            <p class="cat-summary">Mikro dünyanın biyolojik orduları: Bakteriler, virüsler ve immün yanıt.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-        <a href="categories/norobilim.html" class="category-card">
-            <span class="cat-tag">04_MED</span>
-            <h2 class="cat-name">Nörobilim</h2>
-            <p class="cat-summary">Bilinç, nöronlar ve sinir sisteminin biyoelektriksel haritalanması.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-
-        <a href="categories/kuantum.html" class="category-card">
-            <span class="cat-tag">05_PHYS</span>
-            <h2 class="cat-name">Kuantum Fiziği</h2>
-            <p class="cat-summary">Atom altı seviyedeki gerçeklik, olasılık dalgaları ve dolanıklık.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-        <a href="categories/astrofizik.html" class="category-card">
-            <span class="cat-tag">06_PHYS</span>
-            <h2 class="cat-name">Astrofizik</h2>
-            <p class="cat-summary">Kara delikler, galaktik yapılar ve uzay-zaman bükülmeleri.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-        <a href="categories/matematik.html" class="category-card">
-            <span class="cat-tag">07_MATH</span>
-            <h2 class="cat-name">Matematik</h2>
-            <p class="cat-summary">Evrenin dili: Teorik formüller, fraktallar ve sayısal mimari.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-        <a href="categories/biyokimya.html" class="category-card">
-            <span class="cat-tag">08_CHEM</span>
-            <h2 class="cat-name">Biyokimya</h2>
-            <p class="cat-summary">Yaşamın moleküler motorları, enzimler ve metabolik yollar.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-
-        <a href="categories/ai.html" class="category-card">
-            <span class="cat-tag">09_TECH</span>
-            <h2 class="cat-name">Yapay Zeka</h2>
-            <p class="cat-summary">Sentetik bilinç, nöral ağlar ve derin öğrenme algoritmaları.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-        <a href="categories/robotik.html" class="category-card">
-            <span class="cat-tag">10_TECH</span>
-            <h2 class="cat-name">Robotik</h2>
-            <p class="cat-summary">Sibernetik sistemler, otomasyon ve makine-insan arayüzleri.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-        <a href="categories/siber.html" class="category-card">
-            <span class="cat-tag">11_TECH</span>
-            <h2 class="cat-name">Siber Güvenlik</h2>
-            <p class="cat-summary">Veri kaleleri, kriptografi ve dijital savunma sistemleri.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-        <a href="categories/genetik.html" class="category-card">
-            <span class="cat-tag">12_GENE</span>
-            <h2 class="cat-name">Genetik</h2>
-            <p class="cat-summary">DNA dizilimleri, gen düzenleme (CRISPR) ve kalıtım bilimi.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-
-        <a href="categories/felsefe.html" class="category-card">
-            <span class="cat-tag">13_MIND</span>
-            <h2 class="cat-name">Stoacılık</h2>
-            <p class="cat-summary">Zihinsel direnç, Stoacı etik ve rasyonel yaşam felsefesi.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-        <a href="categories/psikoloji.html" class="category-card">
-            <span class="cat-tag">14_MIND</span>
-            <h2 class="cat-name">Psikoloji</h2>
-            <p class="cat-summary">İnsan davranışları, bilişsel süreçler ve derin psikopatoloji.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-        <a href="categories/sosyoloji.html" class="category-card">
-            <span class="cat-tag">15_MIND</span>
-            <h2 class="cat-name">Sosyoloji</h2>
-            <p class="cat-summary">Toplumsal yapılar, dijital kabileleşme ve kitle psikolojisi.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-        <a href="categories/mantik.html" class="category-card">
-            <span class="cat-tag">16_MIND</span>
-            <h2 class="cat-name">Mantık</h2>
-            <p class="cat-summary">Paradokslar, sembolik mantık ve akıl yürütme teorileri.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-
-        <a href="categories/metal.html" class="category-card">
-            <span class="cat-tag">17_ART</span>
-            <h2 class="cat-name">Metal Teorisi</h2>
-            <p class="cat-summary">Teknik death metalin matematiği, poliritimler ve kaos.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-        <a href="categories/gastronomi.html" class="category-card">
-            <span class="cat-tag">18_ART</span>
-            <h2 class="cat-name">Gastronomi</h2>
-            <p class="cat-summary">Mutfak kimyası ve Gaziantep'in derin yemek mirası.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-        <a href="categories/tarih.html" class="category-card">
-            <span class="cat-tag">19_ART</span>
-            <h2 class="cat-name">Dünya Tarihi</h2>
-            <p class="cat-summary">Uygarlıkların doğuşu, bilim tarihi ve antik sırlar.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-        <a href="categories/edebiyat.html" class="category-card">
-            <span class="cat-tag">20_ART</span>
-            <h2 class="cat-name">Edebiyat</h2>
-            <p class="cat-summary">Kelimelerin gücü: Klasikler, modernizm ve edebi analiz.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-
-        <a href="categories/motivasyon.html" class="category-card">
-            <span class="cat-tag">21_LIFE</span>
-            <h2 class="cat-name">Disiplin</h2>
-            <p class="cat-summary">Zirve performansı, motivasyon ve sarsılmaz bir rutin kurmak.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-        <a href="categories/strateji.html" class="category-card">
-            <span class="cat-tag">22_LIFE</span>
-            <h2 class="cat-name">Strateji</h2>
-            <p class="cat-summary">Oyun teorisi, askeri strateji ve karar verme mekanizmaları.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-        <a href="categories/doğa.html" class="category-card">
-            <span class="cat-tag">23_LIFE</span>
-            <h2 class="cat-name">Doğa Bilimleri</h2>
-            <p class="cat-summary">Ekosistemler, vahşi hayatın dengesi ve evrimsel süreçler.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
-        <a href="categories/kozmos.html" class="category-card">
-            <span class="cat-tag">24_LIFE</span>
-            <h2 class="cat-name">Uzay-Zaman</h2>
-            <p class="cat-summary">Dördüncü boyut, zamanın göreliliği ve evrenin sonu.</p>
-            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
-        </a>
+    <div class="search-container">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" class="search-input" placeholder="Bilgi okyanusunda ara..." id="searchInput">
     </div>
 
-    <footer style="margin-top: 150px; border-top: 1px solid rgba(255,255,255,0.05); padding: 50px; text-align: center; font-family: 'JetBrains Mono'; font-size: 0.7rem; opacity: 0.3; letter-spacing: 5px;">
-        AZURA ARCHIVE // THE FINAL FRONTIER OF KNOWLEDGE
+    <div class="grid" id="nexusGrid">
+        
+        <a href="categories/anatomi.html" class="card med">
+            <i class="fa-solid fa-bone card-icon" style="color: var(--med);"></i>
+            <span class="card-emoji">🦴</span>
+            <h2 class="card-title">Anatomi</h2>
+            <p class="card-desc">İnsan vücudunun gizli haritası, Atlas ve morfolojik sırlar.</p>
+        </a>
+
+        <a href="categories/fizyoloji.html" class="card med">
+            <i class="fa-solid fa-heart-pulse card-icon" style="color: var(--med);"></i>
+            <span class="card-emoji">🫁</span>
+            <h2 class="card-title">Fizyoloji</h2>
+            <p class="card-desc">Yaşamın mekanik dengesi: Sistemler nasıl nefes alır?</p>
+        </a>
+
+        <a href="categories/mikrobiyoloji.html" class="card med">
+            <i class="fa-solid fa-virus-covid card-icon" style="color: var(--med);"></i>
+            <span class="card-emoji">🦠</span>
+            <h2 class="card-title">Mikrobiyoloji</h2>
+            <p class="card-desc">Görünmez orduların dünyası ve patojenik savunma.</p>
+        </a>
+
+        <a href="categories/norobilim.html" class="card med">
+            <i class="fa-solid fa-brain card-icon" style="color: var(--med);"></i>
+            <span class="card-emoji">🧠</span>
+            <h2 class="card-title">Nörobilim</h2>
+            <p class="card-desc">Bilinç katmanları ve nöral ağların elektrik fırtınası.</p>
+        </a>
+
+        <a href="categories/kuantum.html" class="card phys">
+            <i class="fa-solid fa-atom card-icon" style="color: var(--phys);"></i>
+            <span class="card-emoji">⚛️</span>
+            <h2 class="card-title">Kuantum</h2>
+            <p class="card-desc">Gerçekliğin atom altı seviyedeki kaotik olasılıkları.</p>
+        </a>
+
+        <a href="categories/astrofizik.html" class="card phys">
+            <i class="fa-solid fa-shuttle-space card-icon" style="color: var(--phys);"></i>
+            <span class="card-emoji">🌌</span>
+            <h2 class="card-title">Astrofizik</h2>
+            <p class="card-desc">Kara delikler, galaksiler ve uzay-zaman bükülmeleri.</p>
+        </a>
+
+        <a href="categories/matematik.html" class="card phys">
+            <i class="fa-solid fa-square-root-variable card-icon" style="color: var(--phys);"></i>
+            <span class="card-emoji">📐</span>
+            <h2 class="card-title">Matematik</h2>
+            <p class="card-desc">Evrenin kodları: Teorik formüller ve fraktal düzen.</p>
+        </a>
+
+        <a href="categories/biyokimya.html" class="card phys">
+            <i class="fa-solid fa-flask-vial card-icon" style="color: var(--phys);"></i>
+            <span class="card-emoji">⚗️</span>
+            <h2 class="card-title">Biyokimya</h2>
+            <p class="card-desc">Yaşamın moleküler motorları ve metabolik kimya.</p>
+        </a>
+
+        <a href="categories/ai.html" class="card tech">
+            <i class="fa-solid fa-microchip card-icon" style="color: var(--tech);"></i>
+            <span class="card-emoji">🤖</span>
+            <h2 class="card-title">Yapay Zeka</h2>
+            <p class="card-desc">Sentetik akıl, derin öğrenme ve gelecek vizyonu.</p>
+        </a>
+
+        <a href="categories/robotik.html" class="card tech">
+            <i class="fa-solid fa-robot card-icon" style="color: var(--tech);"></i>
+            <span class="card-emoji">🦾</span>
+            <h2 class="card-title">Robotik</h2>
+            <p class="card-desc">Sibernetik sistemler ve makine-insan arayüzleri.</p>
+        </a>
+
+        <a href="categories/siber.html" class="card tech">
+            <i class="fa-solid fa-shield-halved card-icon" style="color: var(--tech);"></i>
+            <span class="card-emoji">🛡️</span>
+            <h2 class="card-title">Siber Güvenlik</h2>
+            <p class="card-desc">Dijital kaleler, veri savunma ve kripto sistemler.</p>
+        </a>
+
+        <a href="categories/genetik.html" class="card tech">
+            <i class="fa-solid fa-dna card-icon" style="color: var(--tech);"></i>
+            <span class="card-emoji">🧬</span>
+            <h2 class="card-title">Genetik</h2>
+            <p class="card-desc">DNA dizilimleri ve biyolojik yazılımın kodları.</p>
+        </a>
+
+        <a href="categories/felsefe.html" class="card cult">
+            <i class="fa-solid fa-monument card-icon" style="color: var(--cult);"></i>
+            <span class="card-emoji">🏛️</span>
+            <h2 class="card-title">Stoacılık</h2>
+            <p class="card-desc">Rasyonel yaşam, irade ve zihinsel sarsılmazlık.</p>
+        </a>
+
+        <a href="categories/gastronomi.html" class="card cult">
+            <i class="fa-solid fa-utensils card-icon" style="color: var(--cult);"></i>
+            <span class="card-emoji">🍲</span>
+            <h2 class="card-title">Gastronomi</h2>
+            <p class="card-desc">Gaziantep mutfağı ve yemek sanatının kimyası.</p>
+        </a>
+
+        <a href="categories/metal.html" class="card cult">
+            <i class="fa-solid fa-guitar card-icon" style="color: var(--cult);"></i>
+            <span class="card-emoji">🎸</span>
+            <h2 class="card-title">Metal Teorisi</h2>
+            <p class="card-desc">Ağır müziğin teknik yapısı ve poliritmik kaos.</p>
+        </a>
+
+        <a href="categories/tarih.html" class="card cult">
+            <i class="fa-solid fa-hourglass-half card-icon" style="color: var(--cult);"></i>
+            <span class="card-emoji">📜</span>
+            <h2 class="card-title">Dünya Tarihi</h2>
+            <p class="card-desc">Antik uygarlıkların yükselişi ve bilim tarihi.</p>
+        </a>
+
+        </div>
+
+    <footer>
+        © 2025 AZURA PROJECT // THE LUMINOUS ARCHIVE // KNOWLEDGE IS POWER
     </footer>
+
+    <script>
+        // CANLI ARAMA FİLTRESİ
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            let filter = this.value.toLowerCase();
+            let cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                let title = card.querySelector('.card-title').innerText.toLowerCase();
+                let desc = card.querySelector('.card-desc').innerText.toLowerCase();
+                if(title.includes(filter) || desc.includes(filter)) {
+                    card.style.display = "flex";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        });
+    </script>
 </body>
-</html>
+            </html>
+                
