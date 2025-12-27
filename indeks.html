@@ -3,149 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura | Dijital Alanın</title>
+    <title>Azura | Giriş</title>
     <style>
-        /* Derinlik ve Arka Plan */
+        /* Genel Tasarım ve Gri Arka Plan */
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
-            background-color: #1a1a1a; /* Daha derin bir gri */
-            background-image: radial-gradient(circle, #2c2c2c 0%, #1a1a1a 100%);
             display: flex;
             justify-content: center;
             align-items: center;
+            background-color: #1e1e1e; /* Şık ve derin gri */
             overflow: hidden;
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Montserrat', sans-serif; /* Modern ve temiz bir font */
         }
 
-        .scene {
+        /* Ana Taşıyıcı */
+        .loader-wrapper {
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
+            animation: fadeIn 1.5s ease-out; /* Sayfa yavaşça belirir */
         }
 
-        /* Katmanlı Dönen Daireler */
-        .circle {
-            position: absolute;
-            border-radius: 50%;
-            border: 2px dotted transparent;
-        }
-
-        .outer-circle {
-            width: 500px;
-            height: 500px;
-            border-top: 2px dotted #3498db;
-            border-bottom: 2px dotted #3498db;
-            animation: rotate 10s linear infinite;
-            opacity: 0.3;
-        }
-
-        .inner-circle {
-            width: 420px;
-            height: 420px;
-            border-left: 2px dotted #5dade2;
-            border-right: 2px dotted #5dade2;
-            animation: rotate-reverse 7s linear infinite;
-            opacity: 0.5;
-        }
-
-        /* Harf Harf Gelen Azura Yazısı */
-        .azura-wrapper {
-            display: flex;
-            gap: 10px;
-            z-index: 10;
-        }
-
-        .letter {
-            font-size: 5.5rem;
+        /* Renk Değiştiren Azura Yazısı */
+        .azura-title {
+            font-size: 5rem;
             font-weight: 900;
-            letter-spacing: 5px;
-            background: linear-gradient(to bottom, #ffffff, #3498db);
+            letter-spacing: 15px;
+            text-transform: uppercase;
+            /* Renk geçişi ayarları */
+            background: linear-gradient(45deg, #3498db, #8e44ad, #2ecc71, #3498db);
+            background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: letter-in 0.8s forwards;
+            animation: colorShift 5s ease infinite;
+            z-index: 2;
+            text-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
-        /* Harflerin Geliş Sırası */
-        .letter:nth-child(1) { animation-delay: 0.2s; }
-        .letter:nth-child(2) { animation-delay: 0.4s; }
-        .letter:nth-child(3) { animation-delay: 0.6s; }
-        .letter:nth-child(4) { animation-delay: 0.8s; }
-        .letter:nth-child(5) { animation-delay: 1.0s; }
-
-        /* Alt Kısımda Yüklenme Çizgisi */
-        .progress-bar {
+        /* Mavi Noktalı Dönen Daire */
+        .spinning-circle {
             position: absolute;
-            bottom: -100px;
-            width: 200px;
-            height: 2px;
-            background: rgba(255,255,255,0.1);
-            overflow: hidden;
+            width: 450px;
+            height: 450px;
+            border: 6px dotted #3498db; /* İstediğin mavi noktalar */
+            border-radius: 50%;
+            animation: spin 10s linear infinite;
+            opacity: 0.6;
+            z-index: 1;
         }
 
-        .progress-line {
-            width: 0%;
-            height: 100%;
-            background: #3498db;
-            animation: progress 2.5s ease-in-out forwards;
+        /* Animasyonlar */
+        @keyframes colorShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        /* Animasyon Tanımları */
-        @keyframes rotate { to { transform: rotate(360deg); } }
-        @keyframes rotate-reverse { to { transform: rotate(-360deg); } }
-        
-        @keyframes letter-in {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
-        @keyframes progress {
-            to { width: 100%; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
         }
 
-        /* Sayfadan Çıkış Efekti */
-        .exit-animation {
-            animation: fadeOut 0.8s forwards;
+        /* Çıkış Animasyonu (3. saniyede devreye girer) */
+        .fade-out {
+            animation: exitEffect 0.8s forwards;
         }
 
-        @keyframes fadeOut {
-            to { opacity: 0; transform: scale(1.1); filter: blur(10px); }
+        @keyframes exitEffect {
+            to { opacity: 0; filter: blur(10px); transform: scale(1.1); }
         }
     </style>
 </head>
 <body>
 
-    <div class="scene" id="main-scene">
-        <div class="circle outer-circle"></div>
-        <div class="circle inner-circle"></div>
+    <div class="loader-wrapper" id="content">
+        <div class="spinning-circle"></div>
         
-        <div class="azura-wrapper">
-            <span class="letter">A</span>
-            <span class="letter">Z</span>
-            <span class="letter">U</span>
-            <span class="letter">R</span>
-            <span class="letter">A</span>
-        </div>
-
-        <div class="progress-bar">
-            <div class="progress-line"></div>
-        </div>
+        <h1 class="azura-title">Azura</h1>
     </div>
 
     <script>
-        // 3.5 saniye sonra sahneyi kapat ve yönlendir
-        setTimeout(() => {
-            document.getElementById('main-scene').classList.add('exit-animation');
-            setTimeout(() => {
-                window.location.href = "menu.html";
+        // 3 saniye sonra yönlendirme başlasın
+        setTimeout(function() {
+            // Önce görseli karart (0.8 saniye sürer)
+            document.getElementById('content').classList.add('fade-out');
+            
+            // Kararma bitince menu.html sayfasına git
+            setTimeout(function() {
+                window.location.href = "menu.html"; 
             }, 800);
-        }, 2700); // Toplamda yaklaşık 3.5 saniye
+        }, 2200); // 2.2 saniye bekle + 0.8 saniye kararma = Toplam 3 saniye
     </script>
+
 </body>
 </html>
