@@ -3,62 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura | Fizik ve Evren</title>
+    <title>Azura | Fizik ve Evren Arşivi</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    
     <style>
-        :root { --bg: #f8fafc; --text: #0f172a; --primary: #8b5cf6; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+        :root { --bg: #f8fafc; --text: #0f172a; --primary: #8b5cf6; --accent: #0ea5e9; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        
+        body { 
+            background: var(--bg); color: var(--text); 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            overflow-x: hidden; 
+            min-height: 100vh;
+        }
 
-        /* ARKA PLAN - Tıklamayı engellememesi için kritik ayar */
+        /* --- ARKA PLAN (Z-INDEX: -1) --- */
         .bg-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
-        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.25; animation: float 20s infinite alternate; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.2; animation: float 20s infinite alternate; }
         .orb-1 { top: -5%; right: -5%; width: 500px; height: 500px; background: var(--primary); }
-        .orb-2 { bottom: -10%; left: -5%; width: 450px; height: 450px; background: #0ea5e9; animation-delay: -7s; }
+        .orb-2 { bottom: -10%; left: -5%; width: 450px; height: 450px; background: var(--accent); }
         @keyframes float { 0% { transform: translate(0,0); } 100% { transform: translate(-40px, 40px); } }
         #dust-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
-        /* ICERIK */
-        .container { max-width: 1400px; margin: 0 auto; padding: 60px 20px; position: relative; z-index: 10; }
-        .back-nav { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 40px; text-decoration: none; color: var(--primary); font-family: 'JetBrains Mono'; font-weight: bold; font-size: 0.8rem; background: rgba(255,255,255,0.7); padding: 12px 25px; border-radius: 50px; backdrop-filter: blur(10px); border: 1px solid rgba(139, 92, 246, 0.2); transition: 0.3s; }
-        .back-nav:hover { background: var(--primary); color: #fff; transform: translateX(-5px); }
-
-        header { border-left: 8px solid var(--primary); padding-left: 30px; margin-bottom: 80px; }
-        .cat-title { font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 800; letter-spacing: -3px; line-height: 1; }
+        /* --- ANA KONTEYNER (Z-INDEX: 10) --- */
+        .container { 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 60px 8%; /* Sağda solda ferah boşluk */
+            position: relative; 
+            z-index: 10; 
+        }
         
-        .topics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; position: relative; z-index: 20; }
-        .topic-card { background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.5); padding: 45px 35px; border-radius: 35px; text-decoration: none; color: inherit; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; justify-content: space-between; min-height: 240px; cursor: pointer; }
-        .topic-card:hover { transform: translateY(-12px); border-color: var(--primary); box-shadow: 0 20px 50px rgba(139, 92, 246, 0.15); background: rgba(255, 255, 255, 0.85); }
-        .topic-card i { font-size: 2.2rem; margin-bottom: 25px; color: var(--primary); }
-        .topic-card h3 { font-size: 1.6rem; font-weight: 800; margin-bottom: 12px; letter-spacing: -1px; }
-        .topic-card p { font-size: 0.95rem; color: #64748b; line-height: 1.6; }
+        /* Geri Dönüş Tuşu */
+        .back-nav { 
+            display: inline-flex; align-items: center; gap: 10px; margin-bottom: 50px; 
+            text-decoration: none; color: var(--primary); font-family: 'JetBrains Mono'; 
+            font-weight: bold; background: rgba(255,255,255,0.9); padding: 15px 30px; 
+            border-radius: 60px; backdrop-filter: blur(15px); border: 2px solid rgba(139, 92, 246, 0.2); 
+            transition: 0.3s; font-size: 1.1rem;
+            position: relative; z-index: 100; /* Kesin tıklanma için */
+        }
+        .back-nav:hover { background: var(--primary); color: #fff; transform: scale(1.05); }
+
+        header { margin-bottom: 60px; border-left: 10px solid var(--primary); padding-left: 30px; }
+        .cat-title { font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 800; letter-spacing: -3px; }
+
+        /* --- KONU GRIDI (PERDE ÜZERİNDE) --- */
+        .perde-grid { 
+            background: rgba(255, 255, 255, 0.75); 
+            backdrop-filter: blur(40px); 
+            padding: 80px 40px; 
+            border-radius: 70px; 
+            border: 1px solid rgba(255,255,255,0.6); 
+            box-shadow: 0 40px 100px rgba(0,0,0,0.05);
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            position: relative;
+            z-index: 20; /* Kartlar arka planın üstünde kalacak */
+        }
+
+        /* --- KART TASARIMI --- */
+        .topic-link { text-decoration: none; color: inherit; display: block; }
+        
+        .topic-card {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 50px 35px;
+            border-radius: 40px;
+            border: 1px solid rgba(255,255,255,0.8);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-12px);
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 25px 50px rgba(139, 92, 246, 0.15);
+        }
+
+        .topic-card i { font-size: 2.5rem; margin-bottom: 25px; color: var(--primary); }
+        .topic-card h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 12px; letter-spacing: -1px; }
+        .topic-card p { font-size: 1.1rem; color: #64748b; line-height: 1.6; }
+
+        /* --- MOBİL AYARLAR --- */
+        @media (max-width: 768px) {
+            .container { padding: 40px 5%; }
+            .perde-grid { padding: 40px 20px; border-radius: 40px; grid-template-columns: 1fr; }
+            .topic-card { padding: 35px 25px; }
+        }
+
+        footer { text-align: center; padding: 60px 0; font-family: 'JetBrains Mono'; opacity: 0.5; font-size: 0.9rem; }
     </style>
 </head>
 <body>
-    <div class="bg-layer"><div class="orb orb-1"></div><div class="orb orb-2"></div><canvas id="dust-canvas"></canvas></div>
+
+    <div class="bg-layer">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <canvas id="dust-canvas"></canvas>
+    </div>
+
     <div class="container">
         <a href="menu.html" class="back-nav"><i class="fa-solid fa-arrow-left"></i> NEXUS'A DÖN</a>
-        <header><h1 class="cat-title">Fizik ve Evren 🌌</h1><p style="margin-top:15px; color:#64748b; font-weight:300; font-size:1.2rem;">Kozmik yasaların 10 temel yapı taşı.</p></header>
-        <div class="topics-grid">
-            <a href="kozmoloji.html" class="topic-card"><i class="fa-solid fa-infinity"></i><div><h3>Kozmoloji</h3><p>Evrenin kökeni, Büyük Patlama ve kozmik genişleme.</p></div></a>
-            <div class="topic-card"><i class="fa-solid fa-atom"></i><div><h3>Kuantum Mekaniği</h3><p>Parçacıkların dalga doğası ve belirsizlik ilkesi.</p></div></div>
-            <div class="topic-card"><i class="fa-solid fa-star"></i><div><h3>Astrofizik</h3><p>Yıldızların doğumu ve gök cisimlerinin fiziği.</p></div></div>
-            <div class="topic-card"><i class="fa-solid fa-circle-nodes"></i><div><h3>Parçacık Fiziği</h3><p>Higgs bozonu ve madde mimarisi.</p></div></div>
-            <div class="topic-card"><i class="fa-solid fa-fire"></i><div><h3>Termodinamik</h3><p>Enerji korunumu ve entropi yasaları.</p></div></div>
-            <div class="topic-card"><i class="fa-solid fa-radiation"></i><div><h3>Nükleer Fizik</h3><p>Atom çekirdeği ve füzyon enerjisi.</p></div></div>
-            <div class="topic-card"><i class="fa-solid fa-hurricane"></i><div><h3>Kaos Teorisi</h3><p>Düzensizliğin içindeki gizli matematik.</p></div></div>
-            <div class="topic-card"><i class="fa-solid fa-lightbulb"></i><div><h3>Optik</h3><p>Fotonların yolculuğu ve ışık teorileri.</p></div></div>
-            <div class="topic-card"><i class="fa-solid fa-gear"></i><div><h3>Klasik Mekanik</h3><p>Newton yasaları ve kütleçekimi.</p></div></div>
-            <div class="topic-card"><i class="fa-solid fa-lines-leaning"></i><div><h3>Sicim Teorisi</h3><p>Çok boyutlu evren modelleri.</p></div></div>
+        
+        <header>
+            <h1 class="cat-title">Fizik ve Evren 🌌</h1>
+            <p style="font-size: 1.4rem; color: #64748b; margin-top: 15px;">Kozmosun derinliklerine 10 büyük kapı.</p>
+        </header>
+
+        <div class="perde-grid">
+            
+            <a href="kozmoloji.html" class="topic-link">
+                <div class="topic-card">
+                    <i class="fa-solid fa-infinity"></i>
+                    <div>
+                        <h3>Kozmoloji</h3>
+                        <p>Evrenin doğuşu, genişlemesi ve 13.8 milyar yıllık devasa hikayesi.</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="kaos.html" class="topic-link">
+                <div class="topic-card">
+                    <i class="fa-solid fa-hurricane"></i>
+                    <div>
+                        <h3>Kaos Teorisi</h3>
+                        <p>Düzenin içindeki düzensizlik ve kelebeğin kanat çırpışındaki matematik.</p>
+                    </div>
+                </div>
+            </a>
+
+            <div class="topic-card" style="opacity: 0.7;">
+                <i class="fa-solid fa-atom"></i>
+                <div>
+                    <h3>Kuantum Mekaniği</h3>
+                    <p>Atom altı dünyasındaki belirsizlikler ve dalga fonksiyonları.</p>
+                </div>
+            </div>
+
+            <div class="topic-card" style="opacity: 0.7;">
+                <i class="fa-solid fa-star"></i>
+                <div>
+                    <h3>Astrofizik</h3>
+                    <p>Yıldızların içindeki nükleer mutfak ve gök cisimlerinin fiziği.</p>
+                </div>
+            </div>
+
+            <div class="topic-card" style="opacity: 0.7;">
+                <i class="fa-solid fa-circle-nodes"></i>
+                <div>
+                    <h3>Parçacık Fiziği</h3>
+                    <p>Maddenin en küçük yapı taşları ve Standart Model'in sırları.</p>
+                </div>
+            </div>
+
+            <div class="topic-card" style="opacity: 0.7;">
+                <i class="fa-solid fa-fire-flame-curved"></i>
+                <div>
+                    <h3>Termodinamik</h3>
+                    <p>Enerjinin korunumu, ısı transferi ve evrensel entropi yasaları.</p>
+                </div>
+            </div>
+
+            <div class="topic-card" style="opacity: 0.7;">
+                <i class="fa-solid fa-radiation"></i>
+                <div>
+                    <h3>Nükleer Fizik</h3>
+                    <p>Atom çekirdeğinin enerjisi, füzyon ve radyoaktif bozunmalar.</p>
+                </div>
+            </div>
+
+            <div class="topic-card" style="opacity: 0.7;">
+                <i class="fa-solid fa-lightbulb"></i>
+                <div>
+                    <h3>Optik</h3>
+                    <p>Işığın doğası, fotonların yolculuğu ve yansıma yasaları.</p>
+                </div>
+            </div>
+
+            <div class="topic-card" style="opacity: 0.7;">
+                <i class="fa-solid fa-gear"></i>
+                <div>
+                    <h3>Klasik Mekanik</h3>
+                    <p>Newtonian hareket yasaları ve kütleçekiminin temelleri.</p>
+                </div>
+            </div>
+
+            <div class="topic-card" style="opacity: 0.7;">
+                <i class="fa-solid fa-lines-leaning"></i>
+                <div>
+                    <h3>Sicim Teorisi</h3>
+                    <p>Çok boyutlu evren modelleri ve titreyen enerji sicimleri.</p>
+                </div>
+            </div>
+
         </div>
+
+        <footer>AZURA NEXUS // PHYSICS_SECTOR // 2025</footer>
     </div>
+
     <script>
         const canvas = document.getElementById('dust-canvas'); const ctx = canvas.getContext('2d');
         function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         window.addEventListener('resize', resize); resize();
-        let particles = Array.from({length: 70}, () => ({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, s: Math.random() * 2, vx: Math.random() * 0.4 - 0.2, vy: Math.random() * 0.4 - 0.2 }));
-        function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p => { p.x += p.vx; p.y += p.vy; if(p.x<0 || p.x>canvas.width) p.vx*=-1; if(p.y<0 || p.y>canvas.height) p.vy*=-1; ctx.fillStyle = 'rgba(139, 92, 246, 0.2)'; ctx.beginPath(); ctx.arc(p.x, p.y, p.s, 0, Math.PI * 2); ctx.fill(); }); requestAnimationFrame(animate); } animate();
+        let p = Array.from({length: 120}, () => ({ 
+            x: Math.random() * canvas.width, y: Math.random() * canvas.height, 
+            s: Math.random() * 3, vx: Math.random() * 0.4 - 0.2, vy: Math.random() * 0.4 - 0.2 
+        }));
+        function anim() { 
+            ctx.clearRect(0,0,canvas.width,canvas.height); 
+            p.forEach(i => { 
+                i.x += i.vx; i.y += i.vy; 
+                if(i.x<0 || i.x>canvas.width) i.vx*=-1; if(i.y<0 || i.y>canvas.height) i.vy*=-1; 
+                ctx.fillStyle = 'rgba(139, 92, 246, 0.25)'; ctx.beginPath(); ctx.arc(i.x,i.y,i.s,0,Math.PI*2); ctx.fill(); 
+            }); 
+            requestAnimationFrame(anim); 
+        } anim();
     </script>
 </body>
 </html>
