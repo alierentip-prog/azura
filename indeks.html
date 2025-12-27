@@ -3,86 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura</title>
+    <title>Azura | Dijital Alanın</title>
     <style>
+        /* Derin Gri ve Işık Geçişli Arka Plan */
         body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #1a1a1a; /* Derin Gri Arka Plan */
+            margin: 0; padding: 0; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            background: radial-gradient(circle, #2c2c2c 0%, #1a1a1a 100%);
             overflow: hidden;
-            font-family: sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
         }
 
-        .loader-wrapper {
+        .scene {
             position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: flex; justify-content: center; align-items: center;
         }
 
-        /* Renk Değiştiren Azura Yazısı */
+        /* Katmanlı Mavi Noktalı Halkalar */
+        .ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px dotted rgba(52, 152, 219, 0.4);
+            animation: spin linear infinite;
+        }
+
+        .ring-outer {
+            width: 520px; height: 520px;
+            animation-duration: 20s;
+        }
+
+        .ring-inner {
+            width: 440px; height: 440px;
+            border-color: rgba(52, 152, 219, 0.7);
+            animation-duration: 12s;
+            animation-direction: reverse; /* Ters yöne döner, doluluk hissi verir */
+        }
+
+        /* Renk Değiştiren ve Parlayan Azura Yazısı */
         .azura-title {
-            font-size: 4rem;
-            font-weight: bold;
-            letter-spacing: 10px;
+            font-size: 6rem;
+            font-weight: 900;
+            letter-spacing: 18px;
             text-transform: uppercase;
-            background: linear-gradient(45deg, #3498db, #a29bfe, #55efc4, #3498db);
-            background-size: 300% 300%;
+            /* Akışkan Gradient */
+            background: linear-gradient(90deg, #3498db, #a29bfe, #55efc4, #3498db);
+            background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: colorShift 4s ease infinite;
-            z-index: 2;
+            animation: flow 4s linear infinite, slideUp 1.2s ease-out forwards;
+            z-index: 10;
+            filter: drop-shadow(0 0 15px rgba(52, 152, 219, 0.3));
         }
 
-        /* Mavi Noktalı Dönen Daire */
-        .spinning-circle {
+        /* Alt Yazı / Slogan */
+        .subtitle {
             position: absolute;
-            width: 350px;
-            height: 350px;
-            border: 5px dotted #3498db; /* Mavi Noktalar */
-            border-radius: 50%;
-            animation: spin 12s linear infinite;
-            opacity: 0.7;
-            z-index: 1;
+            bottom: -60px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.8rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.8s forwards;
         }
 
-        @keyframes colorShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Animasyon Tanımları */
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        
+        @keyframes flow {
+            to { background-position: 200% center; }
         }
 
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); filter: blur(10px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
 
-        /* 3 Saniye Sonra Kaybolma Efekti */
-        .fade-out {
-            animation: exit 0.8s forwards;
+        @keyframes fadeIn {
+            to { opacity: 1; }
         }
 
-        @keyframes exit {
-            to { opacity: 0; filter: blur(10px); }
+        /* Çıkış Geçişi */
+        .page-exit {
+            animation: exitBlur 0.8s forwards;
+        }
+
+        @keyframes exitBlur {
+            to { opacity: 0; filter: blur(20px); transform: scale(1.1); }
         }
     </style>
 </head>
 <body>
 
-    <div class="loader-wrapper" id="content">
-        <div class="spinning-circle"></div>
+    <div class="scene" id="splash-screen">
+        <div class="ring ring-outer"></div>
+        <div class="ring ring-inner"></div>
+        
         <h1 class="azura-title">Azura</h1>
+        
+        <div class="subtitle">Yükleniyor...</div>
     </div>
 
     <script>
+        // 3 saniyelik deneyim (Giriş + Bekleme + Çıkış)
         setTimeout(function() {
-            document.getElementById('content').classList.add('fade-out');
+            document.getElementById('splash-screen').classList.add('page-exit');
             setTimeout(function() {
-                // Burası seni menü sayfasına atacak
                 window.location.href = "menu.html"; 
             }, 800);
         }, 2200); 
