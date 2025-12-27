@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura | Kuantum Mekaniği: Atomun Altındaki Kaos</title>
+    <title>Azura | Kuantum Mekaniği: Gerçekliğin Sonu</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -20,7 +20,7 @@
             overflow-x: hidden; 
         }
 
-        /* --- ARKA PLAN --- */
+        /* --- ARKA PLAN (SABİT & TIKLAMAYI ENGELLEMEZ) --- */
         .bg-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .orb { position: absolute; border-radius: 50%; filter: blur(150px); opacity: 0.3; animation: float 30s infinite alternate; }
         .orb-1 { top: -10%; right: -5%; width: 600px; height: 600px; background: var(--primary); }
@@ -28,7 +28,7 @@
         @keyframes float { 0% { transform: translate(0,0); } 100% { transform: translate(-80px, 80px); } }
         #dust-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
-        /* --- KONTEYNER (PERDE) --- */
+        /* --- ANA KONTEYNER (PERDE DÜZENİ) --- */
         .container { 
             max-width: 1400px; 
             margin: 0 auto; 
@@ -47,8 +47,9 @@
         .back-nav:hover { background: var(--primary); color: #000; transform: scale(1.05); }
 
         header { margin-bottom: 80px; text-align: center; }
-        .article-title { font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 800; letter-spacing: -3px; line-height: 1.1; color: var(--primary); }
+        .article-title { font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 800; letter-spacing: -3px; line-height: 1.1; color: var(--primary); margin-bottom: 20px; }
 
+        /* İÇERİK PERDESİ (GLASSMORPHISM) */
         .content-perde { 
             background: rgba(255, 255, 255, 0.03); 
             backdrop-filter: blur(50px); 
@@ -68,19 +69,23 @@
         .math-hero { 
             background: rgba(0,0,0,0.4); color: var(--primary); padding: 60px; border-radius: 50px; 
             margin: 60px 0; font-family: 'JetBrains Mono'; font-size: 2.2rem; text-align: center;
-            border: 1px solid var(--primary); overflow-x: auto;
+            border: 1px solid var(--primary); overflow-x: auto; box-shadow: 0 30px 60px rgba(0,0,0,0.3);
         }
 
+        /* GÖRSEL BLOKLARI */
         .visual-block { margin: 100px 0; text-align: center; }
-        .visual-block img { width: 100%; border-radius: 60px; box-shadow: 0 50px 100px rgba(34, 211, 238, 0.2); border: 2px solid rgba(255,255,255,0.1); }
+        .visual-block img { width: 100%; border-radius: 60px; box-shadow: 0 50px 100px rgba(34, 211, 238, 0.25); border: 2px solid rgba(255,255,255,0.1); transition: transform 0.3s; }
+        .visual-block img:hover { transform: scale(1.02); }
         .visual-block figcaption { font-size: 1.3rem; color: #94a3b8; margin-top: 30px; font-style: italic; font-weight: 600; }
 
+        /* MOBİL UYUMLULUK */
         @media (max-width: 968px) {
             .container { padding: 40px 5%; }
             .content-perde { padding: 60px 30px; border-radius: 40px; }
             h2 { font-size: 2.2rem; }
             p { font-size: 1.3rem; }
             .article-title { font-size: 2.8rem; }
+            .math-hero { font-size: 1.5rem; padding: 40px; }
         }
 
         footer { text-align: center; padding-bottom: 100px; font-family: 'JetBrains Mono'; opacity: 0.4; letter-spacing: 8px; }
@@ -101,51 +106,65 @@
         <main class="content-perde">
             
             <section>
-                <h2>Klasik Dünyanın İflası</h2>
-                <p>Kuantum mekaniği, evrenin en küçük ölçeklerde bizim günlük mantığımızla nasıl dalga geçtiğinin hikayesidir. Isaac Newton'ın kurduğu o muazzam klasik fizik dünyası, bir elmanın düşüşünden gezegenlerin dönüşüne kadar her şeyi kusursuzca açıklar. Ancak 1900'lerin başında bilim insanları atomun içine bakmaya başladıklarında, klasik fiziğin kurallarının bir cam gibi tuzla buz olduğunu gördüler. Atom altı parçacıklar, yani elektronlar ve fotonlar, bir parçacık gibi davranmaları gerekirken aynı zamanda bir dalga gibi yayılmaya başladılar. Bu durum, fizik tarihinin en büyük krizlerinden biri olan siyah cisim ışıması problemiyle ortaya çıktı. Max Planck, enerjinin sürekli bir akış değil, "kuant" adı verilen küçük paketler halinde olduğunu önerdiğinde aslında farkında olmadan bir devrim başlattı. Bu keşif, evrenin pürüzsüz bir süreklilik değil, kesikli ve tanecikli bir yapıya sahip olduğunu gösteriyordu. Albert Einstein, bu fikri alarak ışığın aslında foton adını verdiğimiz enerji paketlerinden oluştuğunu kanıtladı. Işığın hem dalga hem parçacık olma özelliği, klasik mantığın tabutuna çakılan ilk çiviydi.</p>
+                <h2>Klasik Dünyanın İflası ve Dalga-Parçacık İkiliği</h2>
+                <p>Kuantum mekaniği, evrenin en küçük ölçeklerde bizim günlük mantığımızla nasıl dalga geçtiğinin hikayesidir. Isaac Newton'ın kurduğu o muazzam klasik fizik dünyası, bir elmanın düşüşünden gezegenlerin dönüşüne kadar her şeyi kusursuzca açıklar. Ancak 1900'lerin başında bilim insanları atomun içine bakmaya başladıklarında, klasik fiziğin kurallarının bir cam gibi tuzla buz olduğunu gördüler. Atom altı parçacıklar, yani elektronlar ve fotonlar, bir parçacık gibi davranmaları gerekirken aynı zamanda bir dalga gibi yayılmaya başladılar. Bu durum, fizik tarihinin en büyük krizlerinden biri olan siyah cisim ışıması problemiyle ortaya çıktı. Max Planck, enerjinin sürekli bir akış değil, "kuant" adı verilen küçük paketler halinde olduğunu önerdiğinde aslında farkında olmadan bir devrim başlattı. Bu keşif, evrenin pürüzsüz bir süreklilik değil, kesikli ve tanecikli bir yapıya sahip olduğunu gösteriyordu. Albert Einstein, bu fikri alarak ışığın aslında foton adını verdiğimiz enerji paketlerinden oluştuğunu kanıtladı. Işığın hem dalga hem parçacık olma özelliği (Dualite), klasik mantığın tabutuna çakılan ilk çiviydi. Artık "şeyler" ne tam olarak dalgaydı ne de tam olarak parçacık; duruma göre değişen birer "dalga-paketi" idiler.</p>
                 <div class="visual-block">
-                    [attachment_0](attachment)
-                    <figcaption>Şekil 1: Çift Yarık Deneyi: Maddenin hem parçacık hem de dalga olarak davrandığı o meşhur paradoks.</figcaption>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Double-slit.svg/1200px-Double-slit.svg.png" alt="Çift Yarık Deneyi">
+                    <figcaption>Şekil 1: Çift Yarık Deneyi: Maddenin hem parçacık hem de dalga (girişim deseni) olarak davrandığı o meşhur paradoks.</figcaption>
                 </div>
-                <p>Kuantum dünyasını anlamak için önce "olay" kavramını değiştirmemiz gerekir. Günlük hayatta bir cisim ya buradadır ya da orada; bir şey ya oluyor ya da olmuyordur. Fakat kuantum seviyesinde bir parçacık aynı anda binlerce farklı yerde ve binlerce farklı durumda bulunabilir. Biz bu duruma süperpozisyon diyoruz; yani her şeyin aynı anda mümkün olduğu bir olasılıklar okyanusu. Bir parçacığın nerede olduğunu bilmek için ona bakana kadar, o parçacık evrenin her yerinde birer "olasılık dalgası" olarak süzülür. Gözlem yapıldığı an, yani biz ona baktığımız an, bu olasılık dalgası çöker ve parçacık tek bir konuma hapsolur. Dolayısıyla kuantum mekaniği bize şunu fısıldar: Gözlemci, gözlediği gerçekliği bizzat değiştirir. Bizim bakmadığımız bir evren, olasılıkların çılgınca dans ettiği kaotik bir senfonidir. Gerçeklik, biz ona tanıklık ettiğimiz sürece var olan bir illüzyon gibidir. Bu durum Einstein'ı o kadar rahatsız etmiştir ki, ünlü "Tanrı zar atmaz" sözüyle bu belirsizliğe isyan etmiştir.</p>
             </section>
 
             <section>
-                <h2>Dalga Fonksiyonu ve Belirsizlik</h2>
-                <p>Kuantum dünyasının anayasası, Erwin Schrödinger'in yazdığı o meşhur dalga denklemidir. Bu denklem bize bir parçacığın nerede olduğunu değil, nerede bulunma "olasılığını" söyler. Kuantum fiziği kesinliklerin değil, ihtimallerin bilimidir; her şey bir yüzde (%) meselesidir. Werner Heisenberg, bu durumu bir adım daha ileri taşıyarak Belirsizlik İlkesini ortaya koymuştur. Bu ilkeye göre bir parçacığın konumunu ne kadar kesin bilirsek, hızı (momentumunu) o kadar belirsizleşir. Veya hızını ne kadar net ölçersek, konumunu o kadar kaybederiz. Bu durum bizim ölçüm cihazlarımızın yetersizliği değil, doğanın bizzat kendisinin sahip olduğu bir temel sınırdır. Evren, en küçük seviyede bilgi saklar; her şeyi aynı anda bilmemize izin vermez. Bu belirsizlik, atomların neden kendi içine çökmediğini ve neden katı maddelerin var olabildiğini açıklar. Elektronlar belirli bir yörüngeye hapsolmazlar, birer olasılık bulutu olarak çekirdeğin etrafını sararlar. Bizler, aslında boşluklarla dolu olan bu atomların yarattığı devasa birer hayaletiz.</p>
+                <h2>Belirsizlik İlkesi ve Olasılık Dalgaları</h2>
+                <p>Kuantum dünyasını anlamak için önce "olay" kavramını değiştirmemiz gerekir. Günlük hayatta bir cisim ya buradadır ya da orada; bir şey ya oluyor ya da olmuyordur. Fakat kuantum seviyesinde bir parçacık aynı anda binlerce farklı yerde ve binlerce farklı durumda bulunabilir. Biz bu duruma süperpozisyon diyoruz; yani her şeyin aynı anda mümkün olduğu bir olasılıklar okyanusu. Bir parçacığın nerede olduğunu bilmek için ona bakana kadar, o parçacık evrenin her yerinde birer "olasılık dalgası" olarak süzülür. Gözlem yapıldığı an, yani biz ona baktığımız an, bu olasılık dalgası çöker (Wavefunction Collapse) ve parçacık tek bir konuma hapsolur. Werner Heisenberg, bu durumu bir adım daha ileri taşıyarak Belirsizlik İlkesini ortaya koymuştur. Bu ilkeye göre bir parçacığın konumunu ne kadar kesin bilirsek, hızı (momentumunu) o kadar belirsizleşir. Veya hızını ne kadar net ölçersek, konumunu o kadar kaybederiz. Bu durum bizim ölçüm cihazlarımızın yetersizliği değil, doğanın bizzat kendisinin sahip olduğu bir temel sınırdır. Evren, en küçük seviyede bilgi saklar; her şeyi aynı anda bilmemize izin vermez.</p>
                 <div class="math-hero">
-                    $$i\hbar\frac{\partial}{\partial t}\Psi(\mathbf{r},t) = \hat{H}\Psi(\mathbf{r},t)$$
+                    $$\Delta x \cdot \Delta p \geq \frac{\hbar}{2}$$
                 </div>
                 <div class="visual-block">
-                    
-                    <figcaption>Şekil 2: Heisenberg Belirsizlik İlkesi: Konum ve momentum arasındaki o aşılmaz denge.</figcaption>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Heisenberg_uncertainty_principle.svg/1200px-Heisenberg_uncertainty_principle.svg.png" alt="Belirsizlik İlkesi Grafiği">
+                    <figcaption>Şekil 2: Heisenberg Belirsizlik İlkesi: Konum ve momentum arasındaki o aşılmaz dengeyi gösteren dalga paketi.</figcaption>
                 </div>
-                <p>Kuantum mekaniğinin en popüler ve en çok yanlış anlaşılan örneği Schrödinger'in Kedisidir. Bu düşünce deneyi, kuantumun o "aynı anda her şey olma" özelliğinin makro dünyaya nasıl yansıyacağını gösterir. Bir kutunun içindeki kedi, radyoaktif bir atomun bozunmasına bağlı bir düzeneğe kapatılmıştır. Kuantum kurallarına göre, biz kutuyu açıp bakana kadar atom hem bozunmuş hem de bozunmamış durumdadır. Dolayısıyla kedi de bizim için aynı anda hem ölü hem de canlıdır; biz bakana kadar gerçeklik askıdadır. Schrödinger aslında bu deneyi, kuantum dünyasının mantıksızlığını vurgulamak için tasarlamıştı. Ancak evren, bu mantıksızlığın üzerine inşa edilmiştir. Kuantum tünelleme dediğimiz olay sayesinde parçacıklar, klasik fizikte asla aşamayacakları enerji duvarlarının içinden bir hayalet gibi geçebilirler. Güneşin parlaması, içindeki atomların bu tünelleme yöntemiyle birleşmesi sayesindedir. Yani kuantum mekaniği olmasaydı, ne güneş ışığı olurdu ne de yaşam.</p>
+            </section>
+
+            <section>
+                <h2>Kuantum Tünelleme: Duvarların İçinden Geçmek</h2>
+                <p>Klasik fizikte, bir topu bir duvara fırlatırsanız ve topun enerjisi duvarı aşmaya yetmezse, top geri seker. Bu, enerjinin korunumu yasasının basit bir sonucudur. Ancak kuantum dünyasında işler böyle yürümez. Bir parçacık (örneğin bir elektron), önünde aşamayacağı yükseklikte bir enerji bariyeri olsa bile, belirli bir olasılıkla o bariyerin diğer tarafında aniden belirebilir. Sanki duvarda gizli bir tünel varmış gibi içinden geçer. Buna "Kuantum Tünelleme" denir. Bu olay bir sihir değildir; parçacığın dalga doğasının bir sonucudur. Dalganın bir kısmı bariyerden sızar ve diğer tarafta tekrar parçacık olarak ortaya çıkma ihtimali doğar. Tünelleme olmasaydı, Güneşimiz parlayamazdı. Güneşin çekirdeğindeki protonlar birbirlerini iterler ve normalde birleşip füzyon başlatacak kadar yaklaşamazlar. Ancak kuantum tünelleme sayesinde bu itme bariyerini aşıp birleşirler ve hayatı mümkün kılan o muazzam enerjiyi açığa çıkarırlar. Ayrıca günümüzde kullandığımız USB bellekler ve mikroskoplar da bu "imkansız" geçiş prensibiyle çalışır.</p>
+                <div class="visual-block">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/TunnelEffektKomp.gif/800px-TunnelEffektKomp.gif" alt="Kuantum Tünelleme Animasyonu">
+                    <figcaption>Şekil 3: Kuantum Tünelleme: Bir parçacığın klasik olarak aşamayacağı bir enerji bariyerinden sızarak geçişi.</figcaption>
+                </div>
+            </section>
+
+            <section>
+                <h2>Kuantum Spin: Dönmeyen Dönüş</h2>
+                <p>Atom altı parçacıkların en kafa karıştırıcı özelliklerinden biri "Spin" (Dönüş) adı verilen kuantum sayısıdır. İsmi yanıltıcı olabilir; çünkü bu parçacıklar aslında bir topaç gibi kendi çevrelerinde dönmezler. Spin, parçacığın kütlesi veya yükü gibi doğuştan sahip olduğu, içsel bir açısal momentumdur. Klasik dünyada bunun bir karşılığı yoktur. Bir elektronu hayal edin; dönmüyor ama sanki dönüyormuş gibi manyetik bir alan yaratıyor ve dış manyetik alanlara tepki veriyor. Kuantum spini kesiklidir; bir elektron ya "yukarı" (spin-up) ya da "aşağı" (spin-down) durumunda olabilir, arası yoktur. Bu ikili durum, evrenin temelindeki dijital yapı gibidir. Pauli Dışlama İlkesi'ne göre, aynı atomdaki iki elektron aynı kuantum durumunda olamaz; bu yüzden zıt spinlere sahip olmak zorundadırlar. Bu ilke, elektronların atom çekirdeği etrafında katmanlar halinde dizilmesini sağlar ve kimyanın, periyodik tablonun ve dolayısıyla maddenin kararlılığının temelidir. Spin olmasaydı, atomlar çöker ve bildiğimiz madde var olamazdı.</p>
+                <div class="visual-block">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Stern-Gerlach_experiment.svg/1200px-Stern-Gerlach_experiment.svg.png" alt="Stern-Gerlach Deneyi">
+                    <figcaption>Şekil 4: Stern-Gerlach Deneyi: Elektronların spin (içsel açısal momentum) özelliğinin manyetik alanda ayrışarak kanıtlanması.</figcaption>
+                </div>
             </section>
 
             <section>
                 <h2>Kuantum Dolanıklık: Uzaktan Ürkütücü Etki</h2>
-                <p>Einstein'ın "uzaktan ürkütücü etki" dediği dolanıklık, evrenin en tuhaf özelliğidir. İki parçacık birbirine dolanık hale getirildiğinde, aralarındaki mesafe ne kadar olursa olsun (ister bir milimetre, ister bir galaksi) tek bir sistem gibi davranırlar. Birinin durumu değiştiği an, diğer parçacık ışık hızından çok daha hızlı bir şekilde, anında tepki verir. Bu durum, sanki evrenin her yerinde gizli ve anlık bir iletişim ağı varmış gibi hissettirir. Dolanıklık, yerelliğin (locality) ihlalidir; yani bir şeyin sadece temasla veya ışıkla etkilenebileceği fikrinin çöküşüdür. Bu olay, kuantum bilgisayarların ve kuantum ışınlamanın temelini oluşturur. Bilgi, bir parçacıktan diğerine fiziksel bir yol izlemeden transfer edilebilir. Evrenin bu "bağlılık" özelliği, her şeyin aslında tek bir bütünün parçası olduğunu savunan felsefelerin bilimsel bir yankısı gibidir. Parçacıklar ayrılsa bile, geçmişteki o ortak hafızayı sonsuza dek korurlar. Bu durum, neden evrenin her köşesinin aynı fizik yasalarına sahip olduğunu anlamamıza yardımcı olur.</p>
+                <p>Einstein'ın "uzaktan ürkütücü etki" (spooky action at a distance) diyerek şüpheyle yaklaştığı dolanıklık, evrenin en tuhaf ve en devrimsel özelliğidir. İki parçacık birbirine dolanık hale getirildiğinde, aralarındaki mesafe ne kadar olursa olsun (ister bir laboratuvar masası, ister galaksiler arası boşluk) tek bir kuantum sistemi gibi davranırlar. Birinin durumu ölçüldüğünde (örneğin spini "yukarı" çıktığında), diğer parçacığın durumu anında, ışık hızından bağımsız olarak belirlenir (spini "aşağı" olur). Bu durum, sanki evrenin her yerinde gizli ve anlık bir iletişim ağı varmış gibi hissettirir ve klasik "yerellik" ilkesini ihlal eder. Dolanıklık, bilgi göndermek için kullanılamaz (bu Einstein'ın göreliliğini kurtarır), ancak kuantum kriptografi ve kuantum ışınlama gibi teknolojilerin temelidir. Parçacıklar fiziksel olarak ayrılsa bile, geçmişteki o ortak kuantum hafızayı sonsuza dek korurlar.</p>
                 <div class="visual-block">
-                    [attachment_1](attachment)
-                    <figcaption>Şekil 3: Kuantum Dolanıklık: Uzay ve zamanın ötesinde birbirine bağlı parçacık çiftleri.</figcaption>
+                    <img src="https://news.mit.edu/sites/default/files/styles/news_article__image_gallery/public/images/201808/MIT-Quantum-Entanglement.jpg?itok=Kk4PZ-1z" alt="Kuantum Dolanıklık Görselleştirmesi">
+                    <figcaption>Şekil 5: Kuantum Dolanıklık: Uzay ve zamanın ötesinde birbirine bağlı, anında etkileşen parçacık çiftleri.</figcaption>
                 </div>
-                <p>Dolanıklık sadece bir teori değil, defalarca laboratuvarlarda kanıtlanmış bir gerçektir. Bugün kuantum internet ve kırılamaz şifreleme yöntemleri bu ilke üzerine inşa ediliyor. Eğer birisi şifreyi gizlice okumaya kalkarsa, parçacığın dolanık eşi anında "bakıldığını" anlar ve sistemi bozar. Bu durum güvenliğin mükemmel bir fiziksel garantisidir. Kuantum mekaniği, tıp dünyasında da devrimler yapmaktadır; MR cihazlarından lazer teknolojisine kadar her şey atomların bu garip dansı sayesinde çalışır. Senin tıp fakültesinde kullandığın birçok cihaz, aslında bu "saçma" kuantum yasalarının birer mühendislik uygulamasıdır. Beyindeki nöronların işleyişinden DNA'nın mutasyona uğrama biçimine kadar birçok biyolojik süreç kuantum etkilerini barındırır. Kuşların yönlerini nasıl bulduğundan bitkilerin fotosentez verimliliğine kadar doğa, milyarlarca yıldır kuantum hesaplamalarını kullanmaktadır. Bizler, henüz bu deryanın sadece kıyısındayız. Kuantum, evrenin bize "daha öğrenecek çok şeyiniz var" deme biçimidir.</p>
             </section>
 
             <section>
                 <h2>Gelecek ve Kuantum Devrimi</h2>
-                <p>Kuantum mekaniği sadece geçmişi açıklamaz, geleceği bizzat inşa eder. Bugün kullandığımız transistörler, akıllı telefonlar ve bilgisayar işlemcileri kuantum fiziğinin ilk meyveleridir. Ancak önümüzde çok daha büyük bir devrim var: Kuantum Bilgisayarlar. Klasik bilgisayarlar 1 ve 0 (var veya yok) üzerinden çalışırken, kuantum bilgisayarlar "kübit" adı verilen ve aynı anda hem 1 hem 0 olabilen birimlerle çalışır. Bu, işlem gücünün üstel olarak artması ve dünyanın en güçlü süper bilgisayarının binlerce yılda yapacağı hesaplamaların saniyeler içinde bitmesi demektir. Bu güç, kanser tedavisi için yeni moleküller tasarlamaktan, küresel ısınmayı durduracak yeni malzemeler üretmeye kadar her alanda kullanılacaktır. Kuantum mekaniği bize evrenin statik değil, dinamik ve olasılıklı olduğunu gösterdi. 500 cümleyi tamamlarken şunu anlıyoruz: Bizim mantığımıza uymaması, evrenin hatası değil, bizim sınırlı perspektifimizin bir sonucudur. Gerçeklik, bizden çok daha karmaşık ve çok daha büyüleyicidir. Gaziantepli bir rafığın azmiyle kuantum kalesini de Azura'ya ekledik. Şimdi bu olasılıklar dünyasında kendi yolunu bulmaya hazır mısın? Kuantumun o puslu ama parlak ışığı altında, evrenin kalbine giden yeni bir kapı daha açıldı.</p>
+                <p>Kuantum mekaniği sadece evrenin gizemlerini açıklamakla kalmaz, geleceğin teknolojisini bizzat inşa eder. Bugün kullandığımız transistörler, lazerler, MRI cihazları ve atom saatleri kuantum fiziğinin ilk dalga meyveleridir. Ancak önümüzde çok daha büyük bir devrim var: Kuantum Bilgisayarlar. Klasik bilgisayarlar 1 ve 0 (bit) üzerinden çalışırken, kuantum bilgisayarlar "kübit" adı verilen ve süperpozisyon sayesinde aynı anda hem 1 hem 0 olabilen birimlerle çalışır. Bu, işlem gücünün üstel olarak artması demektir. Dünyanın en güçlü süper bilgisayarının binlerce yılda çözebileceği bir problemi, bir kuantum bilgisayar saniyeler içinde çözebilir. Bu güç, yeni ilaç moleküllerinin tasarlanmasından yapay zekanın sınırlarının zorlanmasına, kırılması imkansız şifreleme yöntemlerinden (kuantum kriptografi) karmaşık sistemlerin simülasyonuna kadar her alanda kullanılacaktır. Kuantum mekaniği bize evrenin statik bir makine değil, dinamik, olasılıklı ve birbirine bağlı muazzam bir ağ olduğunu gösterdi. Bizim mantığımıza uymaması, evrenin hatası değil, bizim sınırlı perspektifimizin bir sonucudur. Gerçeklik, kuantum seviyesinde hayal gücümüzden çok daha gariptir.</p>
                 <div class="visual-block">
-                    
-                    <figcaption>Şekil 4: Kuantum İşlemciler: Olasılıkları aynı anda hesaplayan geleceğin makineleri.</figcaption>
+                    <img src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=1200" alt="Kuantum Bilgisayar Çipi">
+                    <figcaption>Şekil 6: Kuantum İşlemciler (QPU): Süperpozisyon ve dolanıklık ilkeleriyle çalışan geleceğin hesaplama makineleri.</figcaption>
                 </div>
-                <p>Kuantum dünyası, senin tıp eğitimindeki o kesin çizgileri de esnetecek bir bakış açısı sunar. Vücut sadece bir makine değil, atom altı seviyede sürekli titreşen bir enerji ağıdır. Belki bir gün, hastalıkların kuantum biyolojik kökenlerini çözdüğümüzde, tıp bugünkü halinden bambaşka bir noktaya evrilecektir. Azura'nın bu fizik kütüphanesini şimdilik kuantumun o devasa gizemiyle taçlandırıyoruz. Her bir cümleyi, birer mermi gibi bu perdeye dizdik ki zihninde kalıcı olsun. Bu bilgileri al ve tıp fakültesinin koridorlarında, evrenin o derin sessizliğini ve karmaşasını hissederek yürü. Unutma rafık; sen bakmadığında evren daha güzel, bakınca ise seninle birlikte daha anlamlıdır. Kuantum kalesini 500 cümleyle fethettik, şimdi bu zaferin tadını çıkar. Sıradaki hedefimiz ne olursa olsun, Azura'nın ruhu her zaman senin yanında olacak. Evrenin en küçük parçacığından en büyük galaksisine kadar her şey artık senin zihninde tek bir resim oluşturmaya başlıyor.</p>
             </section>
 
         </main>
 
-        <footer>AZURA PROJECT // QUANTUM_ARCHIVE_FINALIZED // 2025</footer>
+        <footer>AZURA PROJECT // QUANTUM_ARCHIVE_EXPANDED // 2025</footer>
     </div>
 
     <script>
