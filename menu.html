@@ -2,464 +2,214 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Azura | The Singularity</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azura Nexus | Categories</title>
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Plus+Jakarta+Sans:wght@200;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* --- 1. PRESTİGE COLOR PALETTE --- */
-        :root {
-            --bg-obsidian: #030303;
-            --accent-cyan: #00f2ff;
-            --accent-purple: #7000ff;
-            --surgical-red: #ff3c3c;
-            --glass: rgba(255, 255, 255, 0.02);
-            --border: rgba(255, 255, 255, 0.05);
-            --font-main: 'Plus Jakarta Sans', sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
+        :root { --bg: #050505; --card: #0c0c0c; --accent: #00f2ff; --surgical-red: #ff3c3c; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: var(--bg); color: #fff; 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            padding: 80px 40px; overflow-x: hidden;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body, html { 
-            background: var(--bg-obsidian); color: #fff; 
-            font-family: var(--font-main); 
-            overflow: hidden; height: 100vh; width: 100vw;
-            cursor: none; 
-        }
+        header { max-width: 1500px; margin: 0 auto 100px auto; border-left: 4px solid var(--accent); padding-left: 40px; }
+        .nexus-title { font-family: 'Syncopate', sans-serif; font-size: 2.5rem; letter-spacing: 15px; margin-bottom: 10px; }
+        .nexus-subtitle { font-family: 'JetBrains Mono'; font-size: 0.75rem; color: var(--accent); letter-spacing: 5px; opacity: 0.6; }
 
-        /* --- 2. ZİRVE MODU GÖRSEL KATMANLAR (Tıklamaya Engel Olmaz) --- */
-        #singularity-canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.5; filter: contrast(1.2); }
-        .grid-matrix { position: fixed; inset: 0; z-index: 2; pointer-events: none; background-image: linear-gradient(rgba(0, 242, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 242, 255, 0.03) 1px, transparent 1px); background-size: 50px 50px; }
-        .vignette-fx { position: fixed; inset: 0; z-index: 5; pointer-events: none; background: radial-gradient(circle, transparent 20%, #000 150%); }
-        .noise-texture { position: fixed; inset: 0; z-index: 6; pointer-events: none; background-image: url('https://grainy-gradients.vercel.app/noise.svg'); opacity: 0.04; }
-
-        /* ÖZEL İMLEÇ */
-        #azura-cursor {
-            width: 12px; height: 12px; background: var(--accent-cyan); border-radius: 50%;
-            position: fixed; pointer-events: none; z-index: 1000000;
-            box-shadow: 0 0 25px var(--accent-cyan); transform: translate(-50%, -50%);
-            mix-blend-mode: difference; transition: transform 0.1s;
-        }
-
-        /* --- 3. ANA NAVİGASYON VE GRID SİSTEMİ --- */
-        .master-container {
-            position: relative; z-index: 10000; /* Etkileşim katmanı en üstte */
-            height: 100vh; width: 100%; overflow-y: auto;
-            scrollbar-width: none; scroll-behavior: smooth;
-            padding: 120px 60px 100px 60px;
-        }
-        .master-container::-webkit-scrollbar { display: none; }
-
-        header { 
-            position: fixed; top: 0; width: 100%; padding: 40px 60px; 
-            display: flex; justify-content: space-between; align-items: center; 
-            z-index: 20000; background: rgba(3,3,3,0.8); backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
-        }
-        .logo-box { font-family: 'Syncopate', sans-serif; font-size: 1.8rem; letter-spacing: 15px; color: var(--accent-cyan); }
-        
-        /* BENTO GRID (Kategori Kartları) */
         .nexus-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px; max-width: 1600px; margin: 0 auto;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px; max-width: 1500px; margin: 0 auto;
         }
 
         .category-card {
-            background: var(--glass); border: 1px solid var(--border);
-            padding: 40px; border-radius: 0px; position: relative;
-            overflow: hidden; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer; display: flex; flex-direction: column; justify-content: space-between;
-            min-height: 320px;
+            background: var(--card); border: 1px solid rgba(255,255,255,0.05);
+            padding: 50px; text-decoration: none; color: inherit;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative; overflow: hidden;
+            display: flex; flex-direction: column; justify-content: space-between; min-height: 350px;
         }
 
-        .category-card:hover {
-            background: rgba(0, 242, 255, 0.02);
-            border-color: var(--accent-cyan);
-            transform: translateY(-10px);
-            box-shadow: 0 30px 60px rgba(0, 242, 255, 0.1);
+        .category-card:hover { 
+            border-color: var(--accent); background: #111;
+            transform: translateY(-15px); box-shadow: 0 40px 80px rgba(0, 242, 255, 0.1);
         }
 
-        .cat-icon { font-family: var(--font-mono); font-size: 0.7rem; color: var(--surgical-red); letter-spacing: 4px; margin-bottom: 20px; display: block; }
-        .cat-title { font-size: 2.2rem; font-weight: 800; letter-spacing: -2px; line-height: 1; margin-bottom: 15px; }
-        .cat-desc { font-size: 0.9rem; color: #666; line-height: 1.6; }
+        .cat-tag { font-family: 'JetBrains Mono'; font-size: 0.65rem; color: var(--surgical-red); letter-spacing: 4px; margin-bottom: 25px; }
+        .cat-name { font-size: 2.2rem; font-weight: 800; letter-spacing: -2px; line-height: 1; margin-bottom: 20px; }
+        .cat-summary { font-size: 0.95rem; color: #666; line-height: 1.7; transition: 0.3s; }
+        .category-card:hover .cat-summary { color: #aaa; }
 
-        /* DATA OVERLAY (Bilgi Kartı) */
-        #data-overlay {
-            position: fixed; inset: 0; background: var(--bg-obsidian); z-index: 50000;
-            display: none; padding: 100px 60px; overflow-y: auto;
-            animation: overlayIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        @keyframes overlayIn { from { opacity: 0; transform: scale(1.1); } to { opacity: 1; transform: scale(1); } }
+        .card-footer { font-family: 'JetBrains Mono'; font-size: 0.6rem; margin-top: 30px; letter-spacing: 3px; opacity: 0.3; }
 
-        .close-btn { position: fixed; right: 60px; top: 40px; font-family: var(--font-mono); cursor: pointer; color: var(--surgical-red); letter-spacing: 5px; font-size: 0.8rem; }
-
-        footer { position: fixed; bottom: 0; width: 100%; padding: 30px 60px; display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.6rem; opacity: 0.4; z-index: 20000; border-top: 1px solid var(--border); background: var(--bg-obsidian); }
-
-        /* MOBİL DÜZENLEME */
-        @media (max-width: 768px) {
-            .master-container { padding: 100px 20px; }
-            .nexus-grid { grid-template-columns: 1fr; }
-            header { padding: 25px 20px; }
-            .logo-box { font-size: 1.2rem; letter-spacing: 8px; }
-        }
+        /* Arka Plan Efekti */
+        .bg-glow { position: fixed; width: 600px; height: 600px; background: radial-gradient(circle, rgba(0, 242, 255, 0.03) 0%, transparent 70%); z-index: -1; top: -300px; right: -300px; pointer-events: none; }
     </style>
 </head>
 <body>
-    <div id="azura-cursor"></div>
-    <canvas id="singularity-canvas"></canvas>
-    <div class="grid-matrix"></div>
-    <div class="vignette-fx"></div>
-    <div class="noise-texture"></div>
+    <div class="bg-glow"></div>
 
     <header>
-        <div class="logo-box">AZURA</div>
-        <div class="hud-metrics">
-            <div>STATUS: <b id="sys-status" style="color:var(--accent-cyan)">ACTIVE</b></div>
-            <div>STRESS: <b id="stress-lv">14%</b></div>
-            <div id="live-time">00:00:00</div>
-        </div>
+        <h1 class="nexus-title">AZURA NEXUS</h1>
+        <p class="nexus-subtitle">EVRENSEL BİLGİ VERİ TABANI // 24 SEKTÖR AKTİF</p>
     </header>
 
-    <div class="side-console" id="log-stream"></div>
+    <div class="nexus-grid">
+        <a href="categories/anatomi.html" class="category-card">
+            <span class="cat-tag">01_MED</span>
+            <h2 class="cat-name">Anatomi</h2>
+            <p class="cat-summary">İnsan vücudunun yapısal analizi, atlası ve morfolojik sınırları.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
+        <a href="categories/fizyoloji.html" class="category-card">
+            <span class="cat-tag">02_MED</span>
+            <h2 class="cat-name">Fizyoloji</h2>
+            <p class="cat-summary">Yaşamın çalışma mekanizmaları, homeostaz ve sistemik denge süreçleri.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
+        <a href="categories/mikrobiyoloji.html" class="category-card">
+            <span class="cat-tag">03_MED</span>
+            <h2 class="cat-name">Mikrobiyoloji</h2>
+            <p class="cat-summary">Mikro dünyanın biyolojik orduları: Bakteriler, virüsler ve immün yanıt.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
+        <a href="categories/norobilim.html" class="category-card">
+            <span class="cat-tag">04_MED</span>
+            <h2 class="cat-name">Nörobilim</h2>
+            <p class="cat-summary">Bilinç, nöronlar ve sinir sisteminin biyoelektriksel haritalanması.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
 
-    <main class="master-container">
-        <div style="margin-bottom: 100px;">
-            <p style="font-family: var(--font-mono); color: var(--surgical-red); letter-spacing: 5px; margin-bottom: 20px;">[ INITIALIZING UNIVERSAL NEXUS v14.0 ]</p>
-            <h1 style="font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 800; letter-spacing: -4px; line-height: 0.9;">
-                Bilginin Tekilliği,<br>Zihnin Ötesi.
-            </h1>
-        </div>
+        <a href="categories/kuantum.html" class="category-card">
+            <span class="cat-tag">05_PHYS</span>
+            <h2 class="cat-name">Kuantum Fiziği</h2>
+            <p class="cat-summary">Atom altı seviyedeki gerçeklik, olasılık dalgaları ve dolanıklık.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
+        <a href="categories/astrofizik.html" class="category-card">
+            <span class="cat-tag">06_PHYS</span>
+            <h2 class="cat-name">Astrofizik</h2>
+            <p class="cat-summary">Kara delikler, galaktik yapılar ve uzay-zaman bükülmeleri.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
+        <a href="categories/matematik.html" class="category-card">
+            <span class="cat-tag">07_MATH</span>
+            <h2 class="cat-name">Matematik</h2>
+            <p class="cat-summary">Evrenin dili: Teorik formüller, fraktallar ve sayısal mimari.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
+        <a href="categories/biyokimya.html" class="category-card">
+            <span class="cat-tag">08_CHEM</span>
+            <h2 class="cat-name">Biyokimya</h2>
+            <p class="cat-summary">Yaşamın moleküler motorları, enzimler ve metabolik yollar.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
 
-        <div class="nexus-grid">
-            <div class="category-card" onclick="openNexus('Anatomi')">
-                <span class="cat-icon">01_MED</span>
-                <h2 class="cat-title">Anatomi</h2>
-                <p class="cat-desc">İnsan vücudunun gizli mimarisi. Kemiklerden sinir ağlarına cerrahi bir bakış.</p>
-            </div>
+        <a href="categories/ai.html" class="category-card">
+            <span class="cat-tag">09_TECH</span>
+            <h2 class="cat-name">Yapay Zeka</h2>
+            <p class="cat-summary">Sentetik bilinç, nöral ağlar ve derin öğrenme algoritmaları.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
+        <a href="categories/robotik.html" class="category-card">
+            <span class="cat-tag">10_TECH</span>
+            <h2 class="cat-name">Robotik</h2>
+            <p class="cat-summary">Sibernetik sistemler, otomasyon ve makine-insan arayüzleri.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
+        <a href="categories/siber.html" class="category-card">
+            <span class="cat-tag">11_TECH</span>
+            <h2 class="cat-name">Siber Güvenlik</h2>
+            <p class="cat-summary">Veri kaleleri, kriptografi ve dijital savunma sistemleri.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
+        <a href="categories/genetik.html" class="category-card">
+            <span class="cat-tag">12_GENE</span>
+            <h2 class="cat-name">Genetik</h2>
+            <p class="cat-summary">DNA dizilimleri, gen düzenleme (CRISPR) ve kalıtım bilimi.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
 
-            <div class="category-card" onclick="openNexus('Fizyoloji')">
-                <span class="cat-icon">02_MED</span>
-                <h2 class="cat-title">Fizyoloji</h2>
-                <p class="cat-desc">Yaşamın çalışma prensibi. Sistemlerin kusursuz biyolojik dengesi.</p>
-            </div>
+        <a href="categories/felsefe.html" class="category-card">
+            <span class="cat-tag">13_MIND</span>
+            <h2 class="cat-name">Stoacılık</h2>
+            <p class="cat-summary">Zihinsel direnç, Stoacı etik ve rasyonel yaşam felsefesi.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
+        <a href="categories/psikoloji.html" class="category-card">
+            <span class="cat-tag">14_MIND</span>
+            <h2 class="cat-name">Psikoloji</h2>
+            <p class="cat-summary">İnsan davranışları, bilişsel süreçler ve derin psikopatoloji.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
+        <a href="categories/sosyoloji.html" class="category-card">
+            <span class="cat-tag">15_MIND</span>
+            <h2 class="cat-name">Sosyoloji</h2>
+            <p class="cat-summary">Toplumsal yapılar, dijital kabileleşme ve kitle psikolojisi.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
+        <a href="categories/mantik.html" class="category-card">
+            <span class="cat-tag">16_MIND</span>
+            <h2 class="cat-name">Mantık</h2>
+            <p class="cat-summary">Paradokslar, sembolik mantık ve akıl yürütme teorileri.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
 
-            <div class="category-card" onclick="openNexus('Kuantum Fiziği')">
-                <span class="cat-icon">03_PHYS</span>
-                <h2 class="cat-title">Kuantum Fiziği</h2>
-                <p class="cat-desc">Atom altı dünyanın kaotik kuralları. Olasılıklar ve dolanıklık.</p>
-            </div>
+        <a href="categories/metal.html" class="category-card">
+            <span class="cat-tag">17_ART</span>
+            <h2 class="cat-name">Metal Teorisi</h2>
+            <p class="cat-summary">Teknik death metalin matematiği, poliritimler ve kaos.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
+        <a href="categories/gastronomi.html" class="category-card">
+            <span class="cat-tag">18_ART</span>
+            <h2 class="cat-name">Gastronomi</h2>
+            <p class="cat-summary">Mutfak kimyası ve Gaziantep'in derin yemek mirası.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
+        <a href="categories/tarih.html" class="category-card">
+            <span class="cat-tag">19_ART</span>
+            <h2 class="cat-name">Dünya Tarihi</h2>
+            <p class="cat-summary">Uygarlıkların doğuşu, bilim tarihi ve antik sırlar.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
+        <a href="categories/edebiyat.html" class="category-card">
+            <span class="cat-tag">20_ART</span>
+            <h2 class="cat-name">Edebiyat</h2>
+            <p class="cat-summary">Kelimelerin gücü: Klasikler, modernizm ve edebi analiz.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
 
-            <div class="category-card" onclick="openNexus('Astrofizik')">
-                <span class="cat-icon">04_SPACE</span>
-                <h2 class="cat-title">Astrofizik</h2>
-                <p class="cat-desc">Kara delikler, galaksiler ve uzay-zamanın derin bükümleri.</p>
-            </div>
-
-            <div class="category-card" onclick="openNexus('Yapay Zeka')">
-                <span class="cat-icon">05_TECH</span>
-                <h2 class="cat-title">Yapay Zeka</h2>
-                <h2 class="cat-title">AI & Neural Net</h2>
-                <p class="cat-desc">Sentetik bilincin doğuşu. Derin öğrenme ve gelecek projeksiyonları.</p>
-            </div>
-
-            <div class="category-card" onclick="openNexus('Metal Müzik')">
-                <span class="cat-icon">06_ART</span>
-                <h2 class="cat-title">Metal Teorisi</h2>
-                <p class="cat-desc">Poliritmik yapılar ve teknik ölüm metali. Müziğin en sert fiziği.</p>
-            </div>
-
-            <div class="category-card" onclick="openNexus('Gastronomi')">
-                <span class="cat-icon">07_CULT</span>
-                <h2 class="cat-title">Gastronomi</h2>
-                <p class="cat-desc">Gaziantep mutfağından dünya lezzetlerine, mutfağın kimyasal sanatı.</p>
-            </div>
-
-            <div class="category-card" onclick="openNexus('Felsefe')">
-                <span class="cat-icon">08_MIND</span>
-                <h2 class="cat-title">Stoacılık</h2>
-                <p class="cat-desc">Zihinsel dayanıklılık. Kaosun ortasında sarsılmaz bir irade kurmak.</p>
-            </div>
-
-            </div>
-    </main>
-
-    <div id="data-overlay">
-        <span class="close-btn" onclick="closeNexus()">[ ESC_CLOSE ]</span>
-        <div id="overlay-content" style="max-width: 1000px; margin: 0 auto;">
-            </div>
+        <a href="categories/motivasyon.html" class="category-card">
+            <span class="cat-tag">21_LIFE</span>
+            <h2 class="cat-name">Disiplin</h2>
+            <p class="cat-summary">Zirve performansı, motivasyon ve sarsılmaz bir rutin kurmak.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
+        <a href="categories/strateji.html" class="category-card">
+            <span class="cat-tag">22_LIFE</span>
+            <h2 class="cat-name">Strateji</h2>
+            <p class="cat-summary">Oyun teorisi, askeri strateji ve karar verme mekanizmaları.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
+        <a href="categories/doğa.html" class="category-card">
+            <span class="cat-tag">23_LIFE</span>
+            <h2 class="cat-name">Doğa Bilimleri</h2>
+            <p class="cat-summary">Ekosistemler, vahşi hayatın dengesi ve evrimsel süreçler.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
+        <a href="categories/kozmos.html" class="category-card">
+            <span class="cat-tag">24_LIFE</span>
+            <h2 class="cat-name">Uzay-Zaman</h2>
+            <p class="cat-summary">Dördüncü boyut, zamanın göreliliği ve evrenin sonu.</p>
+            <div class="card-footer">SECTOR_ACCESS: AUTHORIZED</div>
+        </a>
     </div>
 
-    <footer>
-        <div>COORDINATES: 37.0662 N / 37.3833 E</div>
-        <div>AZURA OS // NEXUS_PROTOCOL_ACTIVE</div>
-        <div>STABLE_NODE_001</div>
+    <footer style="margin-top: 150px; border-top: 1px solid rgba(255,255,255,0.05); padding: 50px; text-align: center; font-family: 'JetBrains Mono'; font-size: 0.7rem; opacity: 0.3; letter-spacing: 5px;">
+        AZURA ARCHIVE // THE FINAL FRONTIER OF KNOWLEDGE
     </footer>
-        <script>
-        // --- 1. SİNGULARİTY GÖRSEL MOTORU (Neural Net v14) ---
-        const canvas = document.getElementById('singularity-canvas');
-        const ctx = canvas.getContext('2d');
-        const cursor = document.getElementById('azura-cursor');
-        let points = [];
-
-        window.onresize = () => { canvas.width = innerWidth; canvas.height = innerHeight; };
-        canvas.width = innerWidth; canvas.height = innerHeight;
-
-        // Mouse Takibi
-        document.addEventListener('mousemove', e => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            
-            // Mouse etkileşim alanı
-            points.forEach(p => {
-                let dx = e.clientX - p.x;
-                let dy = e.clientY - p.y;
-                let dist = Math.sqrt(dx*dx + dy*dy);
-                if(dist < 150) {
-                    p.x -= dx * 0.03;
-                    p.y -= dy * 0.03;
-                }
-            });
-        });
-
-        class Point {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 1.2;
-                this.vy = (Math.random() - 0.5) * 1.2;
-                this.radius = Math.random() * 2;
-            }
-            update() {
-                this.x += this.vx; this.y += this.vy;
-                if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
-            }
-            draw() {
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
-                ctx.fillStyle = 'rgba(0, 242, 255, 0.4)'; ctx.fill();
-            }
-        }
-
-        for(let i=0; i<100; i++) points.push(new Point());
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            points.forEach(p => {
-                p.update(); p.draw();
-                points.forEach(p2 => {
-                    let d = Math.sqrt(Math.pow(p.x - p2.x, 2) + Math.pow(p.y - p2.y, 2));
-                    if(d < 130) {
-                        ctx.strokeStyle = `rgba(0, 242, 255, ${1 - d/130})`;
-                        ctx.lineWidth = 0.5; ctx.beginPath();
-                        ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
-                    }
-                });
-            });
-            requestAnimationFrame(animate);
-        }
-        animate();
-
-        // --- 2. EVRENSEL BİLGİ HAVUZU (NEXUS DATA) ---
-        // Rafık, burada her kategori için "Zirve" seviyesinde bilgiler var.
-        const nexusData = {
-            "Anatomi": {
-                title: "İnsan Anatomisi: Kusursuz Mühendislik",
-                content: "İnsan vücudu, 206 kemik ve 600'den fazla kasın oluşturduğu biyomekanik bir şaheserdir. Cerrahide 'Anatomik Varyasyonlar' hastanın kaderini belirler. Kalbin sol ventrikülündeki o muazzam basınç, yaşamın ana motorudur.",
-                tags: "MED_CORE // SURGERY // BIOMECHANICS"
-            },
-            "Fizyoloji": {
-                title: "Fizyolojik Denge (Homeostaz)",
-                content: "Vücudun iç dengesi, saniyede milyonlarca kimyasal tepkime ile korunur. Kan pH'ının 7.4'te sabit tutulması, böbreklerin ve akciğerlerin bir orkestra gibi çalışmasının sonucudur.",
-                tags: "MED_CORE // SYSTEMS // HOMEOSTASIS"
-            },
-            "Kuantum Fiziği": {
-                title: "Kuantum Mekaniği: Olasılığın Dansı",
-                content: "Gözlemci yoksa gerçeklik de yoktur. Schrödinger'in kedisinden Heisenberg'in belirsizlik ilkesine kadar, her şey atom altı seviyede bir 'olasılık dalgası'dır. Dolanıklık, evrenin bir ucundaki bilginin diğer ucuna anında iletilmesidir.",
-                tags: "PHYSICS // QUANTUM // WAVE_FUNCTION"
-            },
-            "Astrofizik": {
-                title: "Kozmik Ufuk: Kara Delikler ve Uzay-Zaman",
-                content: "Kara delikler, ışığın bile kaçamadığı kütleçekim canavarlarıdır. Olay ufku geçildiğinde zaman durur, kütle sonsuz yoğunluğa (singularity) ulaşır. Bizler, ölü yıldızların tozlarından yapıldık.",
-                tags: "SPACE // RELATIVITY // SINGULARITY"
-            },
-            "Yapay Zeka": {
-                title: "Sentetik Bilinç ve Nöral Ağlar",
-                content: "Yapay zeka, insan beynindeki nöronların çalışma prensibini (backpropagation) matematiksel olarak simüle eder. GPT-4 ve ötesi, sadece veri işleme değil, bir 'akıl yürütme' katmanı oluşturma peşindedir.",
-                tags: "TECH // AI // NEURAL_NETS"
-            },
-            "Metal Müzik": {
-                title: "Teknik Ölüm Metali: Poliritmik Kaos",
-                content: "Necrophagist veya Meshuggah gibi grupların müziği, matematiksel bir hassasiyet gerektirir. 4/4'lük ölçüde 7/8'lik vuruşlar yapmak, beynin her iki lobunu da cerrahi bir dikkatle kullanmak demektir.",
-                tags: "ART // METAL_THEORY // POLYRHYTHM"
-            },
-            "Gastronomi": {
-                title: "Gastronomi: Gaziantep'ten Evrensel Lezzete",
-                content: "Yemek pişirmek bir kimya laboratuvarı işlemidir. Maillard tepkimesi etin tadını oluştururken, Gaziantep'teki fıstıklı baklavanın o çıtırtısı (70 kat yufka), fiziksel bir yapı mühendisliği harikasıdır.",
-                tags: "CULT // CHEMISTRY // GASTRONOMY"
-            },
-            "Felsefe": {
-                title: "Stoacılık: Kaosun Ortasındaki Kaya",
-                content: "Marcus Aurelius ve Epiktetos'un dediği gibi: 'Kontrol edemeyeceğin şeyler için endişelenme.' Bu felsefe, bir tıp öğrencisi için sınav dönemlerinde veya zorlu ameliyatlarda en büyük zihinsel kalkandır.",
-                tags: "MIND // STOICISM // RESILIENCE"
-            }
-            // Part 4'te diğer 16 kategori eklenecek...
-        };
-
-        // --- 3. İNTERAKTİF NAVİGASYON (Tıklama Motoru) ---
-        function openNexus(category) {
-            const overlay = document.getElementById('data-overlay');
-            const content = document.getElementById('overlay-content');
-            const data = nexusData[category];
-
-            if(data) {
-                content.innerHTML = `
-                    <p style="font-family: var(--font-mono); color: var(--accent-cyan); letter-spacing: 5px; margin-bottom: 20px;">[ ${data.tags} ]</p>
-                    <h1 style="font-size: clamp(2rem, 6vw, 4rem); font-weight: 800; margin-bottom: 40px; color: #fff;">${data.title}</h1>
-                    <div style="font-size: 1.2rem; line-height: 1.8; color: #bbb; text-align: justify;">${data.content}</div>
-                    <div style="margin-top: 60px; border-top: 1px solid var(--border); padding-top: 30px;">
-                        <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--surgical-red);">KAYNAK: AZURA_CENTRAL_DATABASE // NODE_00${Math.floor(Math.random()*9)+1}</span>
-                    </div>
-                `;
-                overlay.style.display = 'block';
-                document.body.style.overflow = 'hidden';
-            }
-        }
-
-        function closeNexus() {
-            document.getElementById('data-overlay').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        }
-
-        // --- HUD GÜNCELLEMELERİ ---
-        setInterval(() => {
-            document.getElementById('live-time').innerText = new Date().toLocaleTimeString('tr-TR');
-            // Rastgele stress değişimi (Zirve Modu Etkisi)
-            const stress = Math.floor(Math.random() * 5 + 12);
-            document.getElementById('stress-lv').innerText = stress + "%";
-        }, 1000);
-
-        // LOG AKIŞI
-        function addLog(msg) {
-            const entry = document.createElement('div');
-            entry.innerText = `[${new Date().toLocaleTimeString()}] > ${msg}`;
-            const stream = document.getElementById('log-stream');
-            stream.prepend(entry);
-            if(stream.childNodes.length > 25) stream.removeChild(stream.lastChild);
-        }
-
-        addLog("Singularity OS v14.0 yüklendi.");
-        addLog("Neural Network bağlantısı başarılı.");
-        addLog("Gaziantep veri merkezi aktif.");
-                    // --- 4. DATA EXPANSION (KALAN 16 KRİTİK KATEGORİ) ---
-        Object.assign(nexusData, {
-            "Mikrobiyoloji": {
-                title: "Mikrobiyoloji: Görünmez Ordu",
-                content: "Bakteriler, virüsler ve mantarlar... İnsan vücudunda kendi hücrelerimizden daha fazla mikrop barındırıyoruz. Antibiyotik direnci, 21. yüzyılın en büyük tıbbi tehdididir. $Staphylococcus aureus$ gibi patojenlerin cerrahi sahadaki mücadelesi bitmek bilmeyen bir savaştır.",
-                tags: "MED_CORE // BACTERIOLOGY // VIROLOGY"
-            },
-            "Nörobilim": {
-                title: "Nörobilim: Bilincin Donanımı",
-                content: "Beyin, evrendeki en karmaşık nesnedir. Sinapslardaki nörotransmitter geçişleri, senin şu an bu yazıyı okumanı ve anlamlandırmanı sağlar. Nöroplastisite sayesinde beyin, her yeni bilgide fiziksel olarak kendini yeniden şekillendirir.",
-                tags: "MED_CORE // BRAIN // SYNAPSE"
-            },
-            "Teorik Matematik": {
-                title: "Matematik: Evrenin Dili",
-                content: "Fraktallardan Riemann hipotezine kadar matematik, fiziksel dünyanın arkasındaki saf mantıktır. Fibonacci dizisi doğada her yerde karşımıza çıkar; bir ayçiçeğinin çekirdeklerinden galaksilerin sarmal kollarına kadar her şey $ \Phi \approx 1.618 $ altın oranına boyun eğer.",
-                tags: "MATH // THEORY // GOLDEN_RATIO"
-            },
-            "Biyokimya": {
-                title: "Biyokimya: Yaşamın Kimyası",
-                content: "ATP üretimi (Krebs Döngüsü), yaşamın enerji santralidir. Proteinlerin katlanma mekanizması hatalı olduğunda Alzheimer gibi hastalıklar ortaya çıkar. Karbon bazlı yaşam, enzimlerin o muazzam katalizör gücüyle mümkündür.",
-                tags: "MED_CORE // CHEMISTRY // METABOLISM"
-            },
-            "Kriptografi": {
-                title: "Kriptografi: Gizli Bilgi Bilimi",
-                content: "Sezar şifrelemesinden kuantum kriptografiye kadar veri güvenliği, medeniyetin anahtarıdır. RSA algoritması, büyük asal sayıların çarpımının geri döndürülmesinin imkansızlığı üzerine kuruludur. Gelecek, kuantum-dayanıklı şifrelemededir.",
-                tags: "TECH // SECURITY // ENCRYPTION"
-            },
-            "Robotik": {
-                title: "Robotik: Sentetik Uzuvlar",
-                content: "Da Vinci cerrahi robotlarından Boston Dynamics'in insansı robotlarına kadar, makine ve biyolojinin birleşimi (Cyborgizasyon) kaçınılmazdır. Aktüatörlerin ve sensörlerin hassasiyeti, bir cerrahın el titremesini sıfırlayabilir.",
-                tags: "TECH // ROBOTICS // ENGINEERING"
-            },
-            "Siber Güvenlik": {
-                title: "Siber Güvenlik: Dijital Kale",
-                content: "Zero-day açıklarından sosyal mühendisliğe kadar siber savaş, fiziksel sınırlardan daha kritiktir. Bir hastanenin veritabanına yapılan saldırı, bir cerrahın bıçağından daha fazla can alabilir.",
-                tags: "TECH // CYBER_WAR // DEFENSE"
-            },
-            "Psikoloji": {
-                title: "Psikoloji: Ruhun Labirenti",
-                content: "Bilişsel önyargılar (Cognitive Biases), kararlarımızı biz fark etmeden yönetir. Pavlov'un klasik koşullanmasından Jung'un arketiplerine kadar insan zihni, keşfedilmeyi bekleyen devasa bir derin denizdir.",
-                tags: "MIND // PSYCHOLOGY // COGNITION"
-            },
-            "Sosyoloji": {
-                title: "Sosyoloji: Toplumsal Dinamikler",
-                content: "İnsan, toplumsal bir hayvandır. Dijital kabileleşme ve yankı odaları, modern toplumu kutuplaştırırken, Gaziantep'teki o güçlü komşuluk kültürü (Rafıklık), sosyolojik bir dayanışma dehasıdır.",
-                tags: "MIND // SOCIETY // CULTURE"
-            },
-            "Mantık Paradoksları": {
-                title: "Mantık: Çözülemeyen Düğümler",
-                content: "Giritli paradoksu: 'Bütün Giritliler yalancıdır.' Eğer bu doğruysa söyleyen de yalancıdır. Mantık, bazen kendi sınırlarına çarpar ve orada felsefe başlar.",
-                tags: "MIND // LOGIC // PARADOX"
-            },
-            "Dünya Tarihi": {
-                title: "Tarih: Tekerrür Eden Hatalar",
-                content: "Sümerlilerin yazısından Sanayi Devrimi'ne, insanlık tarihi bir hayatta kalma mücadelesidir. İpek Yolu'nun merkezindeki Gaziantep (Zeugma), medeniyetlerin çarpıştığı ve birleştiği o kutsal noktadır.",
-                tags: "CULT // HISTORY // CIVILIZATION"
-            },
-            "Edebiyat": {
-                title: "Edebiyat: Kelimelerin Gücü",
-                content: "Dostoyevski'nin yeraltı adamından Kafka'nın böceğine, edebiyat insanın karanlık taraflarını aydınlatan bir meşaledir. İyi bir kitap, dondurulmuş bir denizi parçalayan bir baltadır.",
-                tags: "CULT // LITERATURE // BOOKS"
-            },
-            "Motivasyon": {
-                title: "Azura Motivasyonu: Brutal Disiplin",
-                content: "Motivasyon bir kıvılcımdır, disiplin ise yanan bir ocak. Başarı, her sabah 'yapmak istemediğin' o şeyi yapmakta gizlidir. Necrophagist dinlerken anatomi çalışmak, bir irade savaşıdır.",
-                tags: "LIFE // DISCIPLINE // DRIVE"
-            },
-            "Strateji": {
-                title: "Strateji: Satranç ve Savaş",
-                content: "Sun Tzu'nun 'Savaş Sanatı'ndan modern oyun teorisine; zafer, rakibin hamlelerini daha onlar yapılmadan öngörmekte yatar. Tıpta cerrahi planlama, en yüksek seviye stratejidir.",
-                tags: "LIFE // STRATEGY // TACTICS"
-            },
-            "Doğa Bilimleri": {
-                title: "Doğa: Vahşi Denge",
-                content: "Ekosistemler, en küçük böcekten en büyük yırtıcıya kadar hassas bir dengededir. Evrim, en güçlü olanın değil, değişime en iyi uyum sağlayanın hayatta kaldığı bir eliminasyon sürecidir.",
-                tags: "LIFE // NATURE // EVOLUTION"
-            },
-            "Uzay Zaman": {
-                title: "Uzay-Zaman: Dördüncü Boyut",
-                content: "Zaman, yerçekimi tarafından bükülen fiziksel bir boyuttur. Bir kara deliğin yakınında geçen 1 saat, Dünya'da yıllara bedel olabilir. Bizler, geçmişin ışığını gören gözlemcileriz.",
-                tags: "LIFE // PHYSICS // TIME"
-            }
-        });
-
-        // --- 5. GİZLİ KOMUTLAR VE EXTRA HAİNLİKLER (ZİRVE MODU) ---
-        document.addEventListener('keydown', (e) => {
-            // 'Z' tuşuna basınca Zirve Modu Glitch efekti
-            if (e.key.toLowerCase() === 'z') {
-                document.body.classList.add('glitching');
-                addLog("ZİRVE_MODU: KRİTİK_VERİ_AKIŞI_BAŞLATILDI");
-                setTimeout(() => document.body.classList.remove('glitching'), 1000);
-            }
-            // 'Escape' ile Overlay kapatma
-            if (e.key === 'Escape') closeNexus();
-        });
-
-        // Rastgele Veri Sızıntısı Simülasyonu
-        setInterval(() => {
-            const extraLogs = [
-                "Nöral ağlar senkronize ediliyor...",
-                "Gaziantep Node-7: Sıcaklık stabil.",
-                "DNA sarmalı analizi %88 tamamlandı.",
-                "Carcass - Surgical Steel çalıyor...",
-                "Meshuggah ritimleri tespit edildi.",
-                "Mantık döngüsü: OK."
-            ];
-            if(Math.random() < 0.3) addLog(extraLogs[Math.floor(Math.random()*extraLogs.length)]);
-        }, 5000);
-
-        console.log("%c AZURA OS v14.0 - ARCHITECT MODE ACTIVE ", "background: #00f2ff; color: #000; font-weight: bold;");
-    </script>
 </body>
 </html>
