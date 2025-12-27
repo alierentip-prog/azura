@@ -3,216 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura Nexus | 10 Main Sectors</title>
+    <title>Azura Nexus | Master Hub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Plus+Jakarta+Sans:wght@300;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
-    
     <style>
-        :root {
-            --bg: #f0f9ff;
-            --text: #0f172a;
-            --primary: #0ea5e9;
-        }
-
+        :root { --bg: #f0f9ff; --text: #0f172a; --primary: #0ea5e9; }
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body { 
-            background: var(--bg); color: var(--text); 
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            padding: 40px 20px; overflow-x: hidden;
-        }
+        body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
 
-        /* --- ARKA PLAN EFEKTLERİ (Balonlar & Tozlar) --- */
-        .background-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; overflow: hidden; pointer-events: none;
-        }
-        
-        /* Yumuşak Işık Balonları */
-        .soft-orb {
-            position: absolute; border-radius: 50%;
-            filter: blur(80px); opacity: 0.4;
-            animation: float-orb 20s infinite ease-in-out alternate;
-        }
-        .orb-1 { top: -10%; left: -10%; width: 600px; height: 600px; background: rgba(14, 165, 233, 0.3); animation-duration: 25s; }
-        .orb-2 { bottom: -20%; right: -10%; width: 700px; height: 700px; background: rgba(99, 102, 241, 0.25); animation-duration: 30s; animation-delay: -5s; }
-        .orb-3 { top: 40%; left: 30%; width: 400px; height: 400px; background: rgba(245, 158, 11, 0.2); animation-duration: 22s; animation-delay: -10s; }
-
-        @keyframes float-orb {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(50px, -50px) scale(1.1); }
-        }
-
-        /* Toz Tanecikleri için Canvas */
+        /* --- DİNAMİK ARKA PLAN (Balonlar & Tozlar) --- */
+        .bg-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.3; animation: float 20s infinite alternate; }
+        .orb-1 { top: -10%; left: -10%; width: 500px; height: 500px; background: rgba(14, 165, 233, 0.4); }
+        .orb-2 { bottom: -10%; right: -10%; width: 600px; height: 600px; background: rgba(139, 92, 246, 0.3); }
+        @keyframes float { 0% { transform: translate(0,0); } 100% { transform: translate(50px, 50px); } }
         #dust-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
-        /* --- ANA İÇERİK --- */
-        header { max-width: 1400px; margin: 40px auto 60px auto; text-align: center; position: relative; z-index: 2; }
-        .brand { font-family: 'Syncopate', sans-serif; font-size: clamp(1.8rem, 5vw, 3.5rem); letter-spacing: 12px; color: var(--primary); margin-bottom: 15px; }
-        .status { font-family: 'JetBrains Mono'; font-size: 0.75rem; opacity: 0.7; letter-spacing: 4px; text-transform: uppercase; color: #475569; }
-
-        /* Arama Çubuğu */
-        .search-wrapper { 
-            max-width: 700px; margin: 0 auto 60px auto; 
-            position: sticky; top: 20px; z-index: 100; 
-        }
-        .search-bar {
-            width: 100%; padding: 20px 30px 20px 65px; border-radius: 100px;
-            border: 1px solid rgba(255,255,255,0.4); background: rgba(255,255,255,0.7);
-            backdrop-filter: blur(15px); box-shadow: 0 10px 30px rgba(14, 165, 233, 0.05);
-            outline: none; font-size: 1.1rem; transition: 0.4s; color: var(--text);
-        }
-        .search-bar:focus { border-color: var(--primary); box-shadow: 0 15px 40px rgba(14, 165, 233, 0.15); background: rgba(255,255,255,0.9); }
-        .search-icon { position: absolute; left: 25px; top: 50%; transform: translateY(-50%); color: var(--primary); font-size: 1.2rem; }
-
-        /* Kategori Izgarası (10 Kart İçin) */
-        .nexus-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 25px; max-width: 1400px; margin: 0 auto; position: relative; z-index: 2;
+        /* --- İÇERİK YAPISI --- */
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; position: relative; z-index: 10; }
+        header { text-align: center; margin-bottom: 60px; transition: 0.5s; }
+        .brand { font-family: 'Syncopate', sans-serif; font-size: clamp(1.5rem, 5vw, 3rem); letter-spacing: 10px; color: var(--primary); margin-bottom: 10px; }
+        
+        .back-btn { 
+            display: none; align-items: center; gap: 10px; margin-bottom: 30px; 
+            cursor: pointer; color: var(--primary); font-family: 'JetBrains Mono'; font-weight: bold;
+            background: rgba(255,255,255,0.6); width: fit-content; padding: 10px 20px; border-radius: 50px;
         }
 
-        /* Kart Tasarımı (Glassmorphism) */
-        .category-card {
-            background: rgba(255, 255, 255, 0.65); backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.5); padding: 45px 35px; border-radius: 32px;
-            text-decoration: none; color: inherit; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex; flex-direction: column; position: relative; overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.03);
+        /* --- KART TASARIMI --- */
+        .nexus-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .card {
+            background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(20px);
+            padding: 40px 30px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.5);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer; display: flex; flex-direction: column; position: relative; overflow: hidden;
         }
-        .category-card:hover { transform: translateY(-12px) scale(1.02); border-color: var(--primary); box-shadow: 0 25px 50px rgba(14, 165, 233, 0.12); background: rgba(255, 255, 255, 0.85); }
-
-        /* Renk Şeridi */
-        .card-stripe { position: absolute; left: 0; top: 0; width: 6px; height: 100%; transition: 0.3s; }
-
-        .cat-icon { font-size: 2.4rem; margin-bottom: 25px; transition: 0.3s; }
-        .cat-emoji { position: absolute; top: 35px; right: 30px; font-size: 1.5rem; opacity: 0.8; filter: saturate(1.2); }
-        .cat-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 10px; letter-spacing: -0.5px; }
-        .cat-info { font-size: 0.9rem; color: #64748b; line-height: 1.6; font-weight: 400; }
-
-        footer { margin-top: 120px; text-align: center; font-family: 'JetBrains Mono'; font-size: 0.7rem; opacity: 0.4; letter-spacing: 4px; position: relative; z-index: 2; }
+        .card:hover { transform: translateY(-10px); background: rgba(255,255,255,0.8); border-color: var(--primary); }
+        .card i { font-size: 2rem; margin-bottom: 20px; color: var(--primary); }
+        .card h3 { font-size: 1.4rem; font-weight: 800; margin-bottom: 10px; }
+        .card p { font-size: 0.9rem; color: #64748b; line-height: 1.5; }
+        .card-stripe { position: absolute; left: 0; top: 0; width: 5px; height: 100%; }
     </style>
 </head>
 <body>
 
-    <div class="background-container">
-        <div class="soft-orb orb-1"></div>
-        <div class="soft-orb orb-2"></div>
-        <div class="soft-orb orb-3"></div>
+    <div class="bg-layer">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
         <canvas id="dust-canvas"></canvas>
     </div>
 
-    <header>
-        <h1 class="brand">AZURA NEXUS</h1>
-        <p class="status">UNIVERSAL KNOWLEDGE HUB: 10 CORE SECTORS ✨</p>
-    </header>
+    <div class="container">
+        <div id="backBtn" class="back-btn" onclick="renderMenu()"><i class="fa-solid fa-arrow-left"></i> ANA MENÜYE DÖN</div>
+        
+        <header id="nexusHeader">
+            <h1 class="brand">AZURA NEXUS</h1>
+            <p style="letter-spacing: 5px; opacity: 0.6; font-size: 0.7rem;">SELECT_CORE_SECTOR // 2025</p>
+        </header>
 
-    <div class="search-wrapper">
-        <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input type="text" class="search-bar" placeholder="Hangi bilgi evrenine girmek istersin?" id="nexusSearch">
+        <div class="nexus-grid" id="mainGrid">
+            </div>
     </div>
 
-    <div class="nexus-grid" id="mainGrid">
-        </div>
-
-    <footer>
-        © 2025 AZURA PROJECT // DESIGNED FOR THE CURIOUS MIND
-    </footer>
-
     <script>
-        // --- 10 ANA SEKTÖR VERİSİ ---
-        const categories = [
-            { n: "Tıp ve Klinik Bilimler", e: "🩺", i: "fa-heart-pulse", c: "#f43f5e", slug: "tip-klinik" },
-            { n: "Fizik ve Evren", e: "🌌", i: "fa-atom", c: "#8b5cf6", slug: "fizik-evren" },
-            { n: "Teknoloji ve Yapay Zeka", e: "🤖", i: "fa-microchip", c: "#10b981", slug: "teknoloji-ai" },
-            { n: "Gastronomi ve Lezzet", e: "🍲", i: "fa-utensils", c: "#f59e0b", slug: "gastronomi" },
-            { n: "Müzik ve Sanat Teorisi", e: "🎸", i: "fa-music", c: "#6366f1", slug: "muzik-sanat" },
-            { n: "Zihin ve Psikoloji", e: "🧠", i: "fa-brain", c: "#ec4899", slug: "zihin-psikoloji" },
-            { n: "Doğa ve Biyoloji", e: "🧬", i: "fa-dna", c: "#22c55e", slug: "doga-biyoloji" },
-            { n: "Tarih ve Arkeoloji", e: "🏺", i: "fa-monument", c: "#d97706", slug: "tarih-arkeoloji" },
-            { n: "Strateji ve Finans", e: "♟️", i: "fa-chess", c: "#3b82f6", slug: "strateji-finans" },
-            { n: "Yaşam ve Performans", e: "🎯", i: "fa-bullseye", c: "#ef4444", slug: "yasam-performans" }
-        ];
+        // --- VERİ TABANI (10 Sektör ve Fizik Bölümleri) ---
+        const nexusDB = {
+            sectors: [
+                { id: "fizik", n: "Fizik ve Evren", i: "fa-atom", c: "#8b5cf6", d: "Evrenin dokusunu keşfet." },
+                { id: "tip", n: "Tıp ve Klinik", i: "fa-heart-pulse", c: "#f43f5e", d: "İnsan vücudunun gizemi." },
+                { id: "ai", n: "Yapay Zeka", i: "fa-robot", c: "#10b981", d: "Geleceğin zihni." },
+                { id: "gastronomi", n: "Gastronomi", i: "fa-utensils", c: "#f59e0b", d: "Lezzet mühendisliği." },
+                { id: "muzik", n: "Müzik Teorisi", i: "fa-music", c: "#6366f1", d: "Seslerin matematiği." },
+                { id: "zihin", n: "Zihin ve Ruh", i: "fa-brain", c: "#ec4899", d: "Bilinç ve davranışlar." },
+                { id: "doga", n: "Doğa ve Yaşam", i: "fa-leaf", c: "#22c55e", d: "Biyo-çeşitlilik arşivi." },
+                { id: "tarih", n: "Tarih ve Medeniyet", i: "fa-landmark", c: "#d97706", d: "Zamanın izleri." },
+                { id: "strateji", n: "Strateji", i: "fa-chess", c: "#3b82f6", d: "Karar mekanizmaları." },
+                { id: "performans", n: "Yaşam Kalitesi", i: "fa-bullseye", c: "#ef4444", d: "Disiplin ve verimlilik." }
+            ],
+            subSections: {
+                "fizik": [
+                    { t: "Kuantum Mekaniği", d: "Atom altı olasılıklar.", i: "fa-wave-square" },
+                    { t: "Astrofizik", d: "Yıldızların evrimi.", i: "fa-star" },
+                    { t: "Kozmoloji", d: "Evrenin genişlemesi.", i: "fa-infinity" },
+                    { t: "Parçacık Fiziği", d: "Standart model.", i: "fa-circle-nodes" },
+                    { t: "Termodinamik", d: "Isı ve enerji yasaları.", i: "fa-fire" },
+                    { t: "Nükleer Fizik", d: "Çekirdek enerjisi.", i: "fa-radiation" },
+                    { t: "Kaos Teorisi", d: "Düzensizliğin düzeni.", i: "fa-hurricane" },
+                    { t: "Optik", d: "Işığın fiziği.", i: "fa-lightbulb" },
+                    { t: "Klasik Mekanik", d: "Newton yasaları.", i: "fa-gear" },
+                    { t: "Sicim Teorisi", d: "Çok boyutlu evren.", i: "fa-lines-leaning" }
+                ]
+            }
+        };
 
         const grid = document.getElementById('mainGrid');
+        const backBtn = document.getElementById('backBtn');
+        const header = document.getElementById('nexusHeader');
 
-        categories.forEach(cat => {
-            const card = document.createElement('a');
-            // Linki akıllı şablona yönlendiriyoruz
-            card.href = `category.html?id=${cat.slug}`;
-            card.className = 'category-card';
-            
-            card.innerHTML = `
-                <div class="card-stripe" style="background: ${cat.c}"></div>
-                <i class="fa-solid ${cat.i} cat-icon" style="color: ${cat.c}"></i>
-                <span class="cat-emoji">${cat.e}</span>
-                <h2 class="cat-title">${cat.n}</h2>
-                <p class="cat-info">Bu sektörün derinliklerindeki alt disiplinleri keşfet.</p>
-            `;
-            
-            grid.appendChild(card);
-        });
-
-        // Arama Motoru
-        document.getElementById('nexusSearch').addEventListener('keyup', function() {
-            let filter = this.value.toLowerCase();
-            let cards = document.querySelectorAll('.category-card');
-            cards.forEach(card => {
-                let title = card.querySelector('.cat-title').innerText.toLowerCase();
-                card.style.display = title.includes(filter) ? "flex" : "none";
+        // ANA MENÜYÜ ÇİZEN FONKSİYON
+        function renderMenu() {
+            backBtn.style.display = 'none';
+            header.querySelector('.brand').innerText = "AZURA NEXUS";
+            grid.innerHTML = '';
+            nexusDB.sectors.forEach(s => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.onclick = () => renderCategory(s.id);
+                card.innerHTML = `
+                    <div class="card-stripe" style="background:${s.c}"></div>
+                    <i class="fa-solid ${s.i}" style="color:${s.c}"></i>
+                    <h3>${s.n}</h3>
+                    <p>${s.d}</p>
+                `;
+                grid.appendChild(card);
             });
-        });
+        }
 
-        // --- DİNAMİK TOZ EFEKTİ (Canvas) ---
+        // KATEGORİ DETAYINI ÇİZEN FONKSİYON
+        function renderCategory(id) {
+            const subs = nexusDB.subSections[id];
+            if(!subs) { alert("Bu bölüm yakında eklenecek!"); return; }
+
+            const sector = nexusDB.sectors.find(s => s.id === id);
+            backBtn.style.display = 'flex';
+            header.querySelector('.brand').innerText = sector.n.toUpperCase();
+            grid.innerHTML = '';
+
+            subs.forEach(sub => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-stripe" style="background:${sector.c}"></div>
+                    <i class="fa-solid ${sub.i}" style="color:${sector.c}"></i>
+                    <h3>${sub.t}</h3>
+                    <p>${sub.d}</p>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // TOZ EFEKTİ (Canvas)
         const canvas = document.getElementById('dust-canvas');
         const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 0.5;
-                this.speedX = Math.random() * 0.5 - 0.25;
-                this.speedY = Math.random() * 0.5 - 0.25;
-                this.color = `rgba(14, 165, 233, ${Math.random() * 0.3})`;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-            }
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function initParticles() {
-            particles = [];
-            for (let i = 0; i < 100; i++) {
-                particles.push(new Particle());
-            }
-        }
-        initParticles();
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        let particles = Array.from({length: 80}, () => ({
+            x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+            s: Math.random() * 2, vx: Math.random() * 0.4 - 0.2, vy: Math.random() * 0.4 - 0.2
+        }));
+        function animate() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
             particles.forEach(p => {
-                p.update();
-                p.draw();
+                p.x += p.vx; p.y += p.vy;
+                if(p.x<0 || p.x>canvas.width) p.vx*=-1; if(p.y<0 || p.y>canvas.height) p.vy*=-1;
+                ctx.fillStyle = 'rgba(14, 165, 233, 0.2)'; ctx.beginPath();
+                ctx.arc(p.x, p.y, p.s, 0, Math.PI*2); ctx.fill();
             });
-            requestAnimationFrame(animateParticles);
+            requestAnimationFrame(animate);
         }
-        animateParticles();
+        animate();
+        renderMenu(); // Başlangıçta menüyü yükle
     </script>
 </body>
 </html>
