@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azura | Kozmoloji</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --text: #0f172a;
+            --primary: #8b5cf6; /* Fizik Moru */
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        body { 
+            background: var(--bg); color: var(--text); 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden; line-height: 1.7;
+        }
+
+        /* --- DINAMIK ARKA PLAN (Fizik Teması) --- */
+        .background-wrapper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; overflow: hidden; pointer-events: none;
+        }
+        .orb {
+            position: absolute; border-radius: 50%;
+            filter: blur(100px); opacity: 0.25;
+            animation: float-orb 20s infinite ease-in-out alternate;
+        }
+        .orb-1 { top: -5%; right: -5%; width: 500px; height: 500px; background: rgba(139, 92, 246, 0.4); }
+        .orb-2 { bottom: -10%; left: -5%; width: 450px; height: 450px; background: rgba(14, 165, 233, 0.3); animation-delay: -7s; }
+        @keyframes float-orb { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-40px, 40px) scale(1.1); } }
+        #dust-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+        /* --- İÇERİK YAPISI --- */
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; position: relative; z-index: 10; }
+        
+        /* Geri Dönüş Butonu */
+        .back-nav {
+            display: inline-flex; align-items: center; gap: 10px; margin-bottom: 40px;
+            text-decoration: none; color: var(--primary); font-family: 'JetBrains Mono';
+            font-weight: bold; font-size: 0.8rem; background: rgba(255,255,255,0.7);
+            padding: 12px 25px; border-radius: 50px; backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 92, 246, 0.2); transition: 0.3s;
+        }
+        .back-nav:hover { background: var(--primary); color: #fff; transform: translateX(-5px); }
+
+        /* Makale Başlığı */
+        header { margin-bottom: 50px; border-bottom: 1px solid rgba(139, 92, 246, 0.2); padding-bottom: 30px; }
+        .article-title { font-size: clamp(2.5rem, 6vw, 3.5rem); font-weight: 800; letter-spacing: -2px; line-height: 1.1; color: var(--text); margin-bottom: 15px; }
+        .article-meta { font-family: 'JetBrains Mono'; font-size: 0.8rem; color: var(--primary); opacity: 0.8; display: flex; gap: 20px; align-items: center; }
+        .article-meta i { margin-right: 8px; }
+
+        /* --- MAKALE GÖVDESİ (Glassmorphism Panel) --- */
+        .article-content {
+            display: grid; grid-template-columns: 1fr 300px; gap: 40px;
+            background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(25px);
+            padding: 50px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.03);
+        }
+
+        /* Sol Taraf: Metin ve Resimler */
+        .main-text h2 { font-size: 1.8rem; font-weight: 800; margin: 40px 0 20px 0; color: var(--text); }
+        .main-text h2:first-child { margin-top: 0; }
+        .main-text p { font-size: 1.05rem; color: #334155; margin-bottom: 25px; font-weight: 400; }
+        
+        /* Resim Alanı Tasarımı */
+        figure.article-image { margin: 30px 0; }
+        figure.article-image img {
+            width: 100%; height: auto; border-radius: 25px;
+            box-shadow: 0 15px 30px rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(255,255,255,0.5); transition: 0.3s;
+        }
+        figure.article-image img:hover { transform: scale(1.01); box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2); }
+        figcaption { text-align: center; font-size: 0.85rem; color: #64748b; margin-top: 15px; font-style: italic; }
+
+        /* Sağ Taraf: Bilgi Kutusu (Sidebar) */
+        .sidebar-box {
+            background: rgba(139, 92, 246, 0.08); padding: 30px; border-radius: 25px;
+            border: 1px solid rgba(139, 92, 246, 0.2); height: fit-content; position: sticky; top: 40px;
+        }
+        .sidebar-box h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 20px; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        .sidebar-box ul { list-style: none; }
+        .sidebar-box li { margin-bottom: 15px; font-size: 0.9rem; color: #475569; display: flex; gap: 10px; }
+        .sidebar-box li i { color: var(--primary); margin-top: 4px; }
+
+        footer { margin-top: 80px; text-align: center; font-family: 'JetBrains Mono'; font-size: 0.7rem; opacity: 0.4; letter-spacing: 4px; padding-bottom: 30px; }
+
+        @media (max-width: 968px) { .article-content { grid-template-columns: 1fr; padding: 30px; } .sidebar-box { position: relative; top: 0; margin-top: 30px; } }
+    </style>
+</head>
+<body>
+
+    <div class="background-wrapper">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <canvas id="dust-canvas"></canvas>
+    </div>
+
+    <div class="container">
+        <a href="physic.html" class="back-nav"><i class="fa-solid fa-arrow-left"></i> FİZİK ARŞİVİNE DÖN</a>
+        
+        <header>
+            <h1 class="article-title">Kozmoloji: Evrenin Doğuşu ve Kaderi 🌌</h1>
+            <div class="article-meta">
+                <span><i class="fa-solid fa-infinity"></i> Sektör: Fizik ve Evren</span>
+                <span><i class="fa-regular fa-clock"></i> Okuma Süresi: 8 dk</span>
+            </div>
+        </header>
+
+        <article class="article-content">
+            <div class="main-text">
+                <h2>Başlangıcın Ötesi: Büyük Patlama</h2>
+                <p>Kozmoloji, evrenin bir bütün olarak incelenmesidir; doğuşu, evrimi, yapısı ve nihai kaderi. Modern kozmolojinin temeli, yaklaşık 13.8 milyar yıl önce evrenin son derece sıcak ve yoğun bir noktadan genişlemeye başladığını öne süren Büyük Patlama (Big Bang) teorisidir.</p>
+                <p>Bu teori, sadece bir "patlama" değil, uzay-zamanın kendisinin bir iğne ucu kadar küçük bir hacimden bugünkü devasa boyutlarına ulaşan şişme (inflation) sürecidir.</p>
+
+                <figure class="article-image">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/CMB_Timeline300_no_WMAP.jpg/1200px-CMB_Timeline300_no_WMAP.jpg" alt="Evrenin Zaman Çizelgesi">
+                    <figcaption>Şekil 1: Büyük Patlama'dan günümüze evrenin genişleme zaman çizelgesi ve Kozmik Mikrodalga Arka Alan Işıması (CMB).</figcaption>
+                </figure>
+
+                <h2>Karanlık Enerji ve Hızlanan Genişleme</h2>
+                <p>1990'ların sonunda yapılan gözlemler, evrenin genişleme hızının kütleçekimi nedeniyle yavaşlamadığını, aksine "Karanlık Enerji" adı verilen gizemli bir itici güç nedeniyle hızlandığını ortaya koydu. Evrenin enerji bütçesinin yaklaşık %68'ini oluşturan bu enerji, kozmolojinin en büyük bilinmezlerinden biridir.</p>
+
+                <figure class="article-image">
+                    <img src="https://cdn.esa.int/var/esa/storage/images/esa_multimedia/images/2019/09/the_cosmic_web/19716945-1-eng-GB/The_cosmic_web_pillars.jpg" alt="Kozmik Ağ Simülasyonu">
+                    <figcaption>Şekil 2: Karanlık madde tarafından şekillendirilen, galaksilerin bir araya gelerek oluşturduğu devasa "Kozmik Ağ" yapısı.</figcaption>
+                </figure>
+            </div>
+
+            <aside class="sidebar-box">
+                <h3><i class="fa-solid fa-lightbulb"></i> Kritik Veriler</h3>
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> <strong>Evrenin Yaşı:</strong> ~13.8 Milyar Yıl</li>
+                    <li><i class="fa-solid fa-check"></i> <strong>Genişleme Hızı:</strong> Hubble Sabiti (H₀) ≈ 70 km/s/Mpc</li>
+                    <li><i class="fa-solid fa-check"></i> <strong>Karanlık Enerji:</strong> Evrenin %68'i</li>
+                    <li><i class="fa-solid fa-check"></i> <strong>Karanlık Madde:</strong> Evrenin %27'si</li>
+                    <li><i class="fa-solid fa-check"></i> <strong>Bildiğimiz Madde:</strong> Sadece %5!</li>
+                </ul>
+            </aside>
+        </article>
+
+        <footer>AZURA PROJECT // KNOWLEDGE_BASE // 2025</footer>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('dust-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5 + 0.5; this.vx = Math.random() * 0.4 - 0.2; this.vy = Math.random() * 0.4 - 0.2; this.opacity = Math.random() * 0.4;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if(this.x < 0 || this.x > canvas.width) this.vx *= -1; if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(139, 92, 246, ${this.opacity})`; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
+            }
+        }
+        for(let i=0; i<70; i++) particles.push(new Particle());
+        function animate() {
+            ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
+</body>
+</html>
