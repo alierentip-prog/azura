@@ -12,285 +12,147 @@
             --bg: #f8fafc;
             --primary: #0ea5e9;
             --text: #0f172a;
-            /* Renk Grupları */
-            --med: #f43f5e;    /* Tıp / Biyoloji */
-            --phys: #8b5cf6;   /* Fizik / Matematik */
-            --tech: #10b981;   /* Teknoloji / Yazılım */
-            --cult: #f59e0b;   /* Kültür / Gastronomi */
-            --mind: #6366f1;   /* Felsefe / Psikoloji */
-            --card-bg: rgba(255, 255, 255, 0.85);
+            /* Bilimsel Renk Kodları */
+            --med: #f43f5e;    /* Tıp / Klinik */
+            --phys: #8b5cf6;   /* Temel Bilimler */
+            --tech: #10b981;   /* Teknoloji */
+            --cult: #f59e0b;   /* Gastronomi / Kültür */
+            --mind: #6366f1;   /* Sosyal / Zihin */
+            --card-bg: rgba(255, 255, 255, 0.9);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body { 
-            background: var(--bg); color: var(--text); 
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            padding: 40px 20px;
-        }
+        body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; padding: 20px; }
 
-        .blob {
-            position: fixed; width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(14, 165, 233, 0.08) 0%, transparent 70%);
-            z-index: -1; border-radius: 50%; filter: blur(60px); pointer-events: none;
-        }
+        /* Arka Plan Hareketli Glow */
+        .blob { position: fixed; width: 800px; height: 800px; background: radial-gradient(circle, rgba(14, 165, 233, 0.05) 0%, transparent 70%); z-index: -1; filter: blur(80px); pointer-events: none; }
 
-        header {
-            max-width: 1400px; margin: 0 auto 60px auto;
-            text-align: center; padding-bottom: 40px;
-        }
-        .brand { 
-            font-family: 'Syncopate', sans-serif; font-size: 2.8rem; 
-            letter-spacing: 15px; color: var(--primary); margin-bottom: 15px;
-        }
-        .status {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
-            color: var(--text); opacity: 0.6; letter-spacing: 5px;
-        }
+        header { max-width: 1400px; margin: 40px auto; text-align: center; }
+        .brand { font-family: 'Syncopate', sans-serif; font-size: clamp(1.5rem, 5vw, 3rem); letter-spacing: 15px; color: var(--primary); margin-bottom: 10px; }
+        .status { font-family: 'JetBrains Mono'; font-size: 0.7rem; opacity: 0.6; letter-spacing: 5px; }
 
-        /* ARAMA MOTORU */
-        .search-wrapper { max-width: 700px; margin: 0 auto 60px auto; position: relative; }
+        /* Gelişmiş Arama Barı */
+        .search-wrapper { max-width: 800px; margin: 0 auto 50px auto; position: sticky; top: 20px; z-index: 1000; }
         .search-bar {
-            width: 100%; padding: 22px 30px 22px 65px; border-radius: 100px;
-            border: 1px solid rgba(0,0,0,0.05); background: #fff;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.04); outline: none;
-            font-size: 1.1rem; transition: 0.4s;
+            width: 100%; padding: 25px 35px 25px 70px; border-radius: 100px;
+            border: 1px solid rgba(0,0,0,0.05); background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(20px); box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            outline: none; font-size: 1.1rem; transition: 0.4s;
         }
-        .search-bar:focus { border-color: var(--primary); box-shadow: 0 20px 50px rgba(14, 165, 233, 0.15); }
-        .search-icon { position: absolute; left: 28px; top: 50%; transform: translateY(-50%); color: var(--primary); font-size: 1.2rem; }
+        .search-bar:focus { border-color: var(--primary); box-shadow: 0 25px 50px rgba(14, 165, 233, 0.2); }
+        .search-icon { position: absolute; left: 30px; top: 50%; transform: translateY(-50%); color: var(--primary); font-size: 1.3rem; }
 
-        /* KATEGORİ GRID */
+        /* Izgara Sistemi */
         .nexus-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px; max-width: 1600px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 15px; max-width: 1600px; margin: 0 auto;
         }
 
         .category-card {
-            background: var(--card-bg); backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.7); padding: 40px 30px;
-            border-radius: 30px; text-decoration: none; color: inherit;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: var(--card-bg); border: 1px solid rgba(0,0,0,0.03);
+            padding: 30px 20px; border-radius: 24px; text-decoration: none; color: inherit;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex; flex-direction: column; position: relative;
         }
-        .category-card:hover { transform: translateY(-10px); box-shadow: 0 25px 50px rgba(0,0,0,0.08); }
+        .category-card:hover { transform: scale(1.03); box-shadow: 0 15px 35px rgba(0,0,0,0.08); border-color: var(--primary); }
 
-        /* Renk Kodlama Şeritleri */
-        .category-card::after { content: ''; position: absolute; left: 0; top: 20%; width: 4px; height: 60%; border-radius: 0 10px 10px 0; transition: 0.3s; }
-        .med::after { background: var(--med); } .phys::after { background: var(--phys); }
-        .tech::after { background: var(--tech); } .cult::after { background: var(--cult); }
-        .mind::after { background: var(--mind); }
+        /* Renk Etiketleri */
+        .category-card::before { content: ''; position: absolute; left: 0; top: 25%; width: 4px; height: 50%; border-radius: 0 10px 10px 0; }
+        .med::before { background: var(--med); } .phys::before { background: var(--phys); }
+        .tech::before { background: var(--tech); } .cult::before { background: var(--cult); }
+        .mind::before { background: var(--mind); }
 
-        .cat-icon { font-size: 2rem; margin-bottom: 20px; }
-        .cat-emoji { position: absolute; top: 35px; right: 30px; font-size: 1.1rem; opacity: 0.4; }
-        .cat-title { font-size: 1.4rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 10px; }
-        .cat-info { font-size: 0.8rem; color: #64748b; line-height: 1.6; }
+        .cat-icon { font-size: 1.8rem; margin-bottom: 15px; }
+        .cat-emoji { position: absolute; top: 25px; right: 20px; font-size: 1rem; opacity: 0.4; }
+        .cat-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 5px; }
+        .cat-info { font-size: 0.75rem; color: #64748b; line-height: 1.4; }
 
-        footer {
-            margin-top: 100px; padding: 60px; text-align: center;
-            font-family: 'JetBrains Mono'; font-size: 0.7rem; opacity: 0.3;
-            letter-spacing: 4px; border-top: 1px solid rgba(0,0,0,0.03);
-        }
-
-        @media (max-width: 768px) { .brand { font-size: 1.6rem; letter-spacing: 6px; } }
+        footer { padding: 80px; text-align: center; font-family: 'JetBrains Mono'; font-size: 0.7rem; opacity: 0.3; letter-spacing: 5px; }
     </style>
 </head>
 <body>
 
-    <div class="blob" style="top: -100px; left: -100px;"></div>
-    <div class="blob" style="bottom: -100px; right: -100px; background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);"></div>
+    <div class="blob"></div>
 
     <header>
         <h1 class="brand">AZURA NEXUS</h1>
-        <p class="status">KNOWLEDGE_INTEGRATION: 48 SECTORS ACTIVE ✨</p>
+        <p class="status">INFINITE_KNOWLEDGE_SYNC: 80 SECTORS ONLINE ✨</p>
     </header>
 
     <div class="search-wrapper">
         <i class="fa-solid fa-magnifying-glass search-icon"></i>
-        <input type="text" class="search-bar" placeholder="Hangi bilgiye ihtiyacın var?" id="nexusSearch">
+        <input type="text" class="search-bar" placeholder="80 kategori içinde keşfe çık..." id="nexusSearch">
     </div>
 
     <div class="nexus-grid" id="mainGrid">
         
-        <a href="categories/anatomi.html" class="category-card med">
-            <i class="fa-solid fa-bone cat-icon" style="color: var(--med);"></i>
-            <span class="cat-emoji">🦴</span>
-            <h2 class="cat-title">Anatomi</h2>
-            <p class="cat-info">Vücut mimarisi ve morfoloji.</p>
-        </a>
-        <a href="categories/fizyoloji.html" class="category-card med">
-            <i class="fa-solid fa-heart-pulse cat-icon" style="color: var(--med);"></i>
-            <span class="cat-emoji">🫁</span>
-            <h2 class="cat-title">Fizyoloji</h2>
-            <p class="cat-info">Yaşamın sistemik dengesi.</p>
-        </a>
-        <a href="categories/mikrobiyoloji.html" class="category-card med">
-            <i class="fa-solid fa-virus cat-icon" style="color: var(--med);"></i>
-            <span class="cat-emoji">🦠</span>
-            <h2 class="cat-title">Mikrobiyoloji</h2>
-            <p class="cat-info">Görünmez dünya ve patojenler.</p>
-        </a>
-        <a href="categories/norobilim.html" class="category-card med">
-            <i class="fa-solid fa-brain cat-icon" style="color: var(--med);"></i>
-            <span class="cat-emoji">🧠</span>
-            <h2 class="cat-title">Nörobilim</h2>
-            <p class="cat-info">Bilinç ve sinir ağları.</p>
-        </a>
-        <a href="categories/patoloji.html" class="category-card med">
-            <i class="fa-solid fa-microscope cat-icon" style="color: var(--med);"></i>
-            <span class="cat-emoji">🔬</span>
-            <h2 class="cat-title">Patoloji</h2>
-            <p class="cat-info">Hücresel hasar ve hastalıklar.</p>
-        </a>
-        <a href="categories/farmakoloji.html" class="category-card med">
-            <i class="fa-solid fa-pills cat-icon" style="color: var(--med);"></i>
-            <span class="cat-emoji">💊</span>
-            <h2 class="cat-title">Farmakoloji</h2>
-            <p class="cat-info">İlaçların etki mekanizmaları.</p>
-        </a>
-        <a href="categories/immunoloji.html" class="category-card med">
-            <i class="fa-solid fa-shield-virus cat-icon" style="color: var(--med);"></i>
-            <span class="cat-emoji">🛡️</span>
-            <h2 class="cat-title">İmmünoloji</h2>
-            <p class="cat-info">Vücudun savunma sistemleri.</p>
-        </a>
-        <a href="categories/genetik.html" class="category-card med">
-            <i class="fa-solid fa-dna cat-icon" style="color: var(--med);"></i>
-            <span class="cat-emoji">🧬</span>
-            <h2 class="cat-title">Genetik</h2>
-            <p class="cat-info">DNA dizilimi ve miras.</p>
-        </a>
+        <a href="categories/anatomi.html" class="category-card med"><i class="fa-solid fa-bone cat-icon" style="color:var(--med)"></i><span class="cat-emoji">🦴</span><h2 class="cat-title">Anatomi</h2><p class="cat-info">Vücut mimarisi.</p></a>
+        <a href="categories/fizyoloji.html" class="category-card med"><i class="fa-solid fa-heart-pulse cat-icon" style="color:var(--med)"></i><span class="cat-emoji">🫁</span><h2 class="cat-title">Fizyoloji</h2><p class="cat-info">Sistemik denge.</p></a>
+        <a href="categories/mikrobiyoloji.html" class="category-card med"><i class="fa-solid fa-virus cat-icon" style="color:var(--med)"></i><span class="cat-emoji">🦠</span><h2 class="cat-title">Mikrobiyoloji</h2><p class="cat-info">Görünmez dünya.</p></a>
+        <a href="categories/norobilim.html" class="category-card med"><i class="fa-solid fa-brain cat-icon" style="color:var(--med)"></i><span class="cat-emoji">🧠</span><h2 class="cat-title">Nörobilim</h2><p class="cat-info">Bilinç haritası.</p></a>
+        <a href="categories/patoloji.html" class="category-card med"><i class="fa-solid fa-microscope cat-icon" style="color:var(--med)"></i><span class="cat-emoji">🔬</span><h2 class="cat-title">Patoloji</h2><p class="cat-info">Hastalık bilimi.</p></a>
+        <a href="categories/farmakoloji.html" class="category-card med"><i class="fa-solid fa-pills cat-icon" style="color:var(--med)"></i><span class="cat-emoji">💊</span><h2 class="cat-title">Farmakoloji</h2><p class="cat-info">İlaç etkileri.</p></a>
+        <a href="categories/immunoloji.html" class="category-card med"><i class="fa-solid fa-shield-virus cat-icon" style="color:var(--med)"></i><span class="cat-emoji">🛡️</span><h2 class="cat-title">İmmünoloji</h2><p class="cat-info">Vücut savunması.</p></a>
+        <a href="categories/genetik.html" class="category-card med"><i class="fa-solid fa-dna cat-icon" style="color:var(--med)"></i><span class="cat-emoji">🧬</span><h2 class="cat-title">Genetik</h2><p class="cat-info">DNA dizilimi.</p></a>
+        <a href="categories/kardiyoloji.html" class="category-card med"><i class="fa-solid fa-vial-circle-check cat-icon" style="color:var(--med)"></i><span class="cat-emoji">❤️</span><h2 class="cat-title">Kardiyoloji</h2><p class="cat-info">Kalp sağlığı.</p></a>
+        <a href="categories/onkoloji.html" class="category-card med"><i class="fa-solid fa-biohazard cat-icon" style="color:var(--med)"></i><span class="cat-emoji">🎗️</span><h2 class="cat-title">Onkoloji</h2><p class="cat-info">Kanser araştırmaları.</p></a>
+        <a href="categories/radyoloji.html" class="category-card med"><i class="fa-solid fa-x-ray cat-icon" style="color:var(--med)"></i><span class="cat-emoji">🩻</span><h2 class="cat-title">Radyoloji</h2><p class="cat-info">Görüntüleme.</p></a>
+        <a href="categories/cerrahi.html" class="category-card med"><i class="fa-solid fa-scalpel cat-icon" style="color:var(--med)"></i><span class="cat-emoji">🔪</span><h2 class="cat-title">Cerrahi</h2><p class="cat-info">Operatif müdahale.</p></a>
+        <a href="categories/biyokimya.html" class="category-card med"><i class="fa-solid fa-vials cat-icon" style="color:var(--med)"></i><span class="cat-emoji">⚗️</span><h2 class="cat-title">Biyokimya</h2><p class="cat-info">Yaşam kimyası.</p></a>
+        <a href="categories/embriyoloji.html" class="category-card med"><i class="fa-solid fa-baby cat-icon" style="color:var(--med)"></i><span class="cat-emoji">🐣</span><h2 class="cat-title">Embriyoloji</h2><p class="cat-info">Doğum öncesi.</p></a>
+        <a href="categories/histoloji.html" class="category-card med"><i class="fa-solid fa-eye-dropper cat-icon" style="color:var(--med)"></i><span class="cat-emoji">🩸</span><h2 class="cat-title">Histoloji</h2><p class="cat-info">Doku bilimi.</p></a>
+        <a href="categories/hematoloji.html" class="category-card med"><i class="fa-solid fa-droplet cat-icon" style="color:var(--med)"></i><span class="cat-emoji">💉</span><h2 class="cat-title">Hematoloji</h2><p class="cat-info">Kan hastalıkları.</p></a>
 
-        <a href="categories/kuantum.html" class="category-card phys">
-            <i class="fa-solid fa-atom cat-icon" style="color: var(--phys);"></i>
-            <span class="cat-emoji">⚛️</span>
-            <h2 class="cat-title">Kuantum</h2>
-            <p class="cat-info">Atom altı dünyanın kaosu.</p>
-        </a>
-        <a href="categories/astrofizik.html" class="category-card phys">
-            <i class="fa-solid fa-shuttle-space cat-icon" style="color: var(--phys);"></i>
-            <span class="cat-emoji">🌌</span>
-            <h2 class="cat-title">Astrofizik</h2>
-            <p class="cat-info">Kara delikler ve galaksiler.</p>
-        </a>
-        <a href="categories/matematik.html" class="category-card phys">
-            <i class="fa-solid fa-infinity cat-icon" style="color: var(--phys);"></i>
-            <span class="cat-emoji">📐</span>
-            <h2 class="cat-title">Matematik</h2>
-            <p class="cat-info">Evrenin saf dili.</p>
-        </a>
-        <a href="categories/kimya.html" class="category-card phys">
-            <i class="fa-solid fa-vial cat-icon" style="color: var(--phys);"></i>
-            <span class="cat-emoji">🧪</span>
-            <h2 class="cat-title">Kimya</h2>
-            <p class="cat-info">Moleküler etkileşimler.</p>
-        </a>
-        <a href="categories/termodinamik.html" class="category-card phys">
-            <i class="fa-solid fa-fire-flame-curved cat-icon" style="color: var(--phys);"></i>
-            <span class="cat-emoji">🔥</span>
-            <h2 class="cat-title">Termodinamik</h2>
-            <p class="cat-info">Enerji ve entropi yasaları.</p>
-        </a>
-        <a href="categories/jeoloji.html" class="category-card phys">
-            <i class="fa-solid fa-mountain-sun cat-icon" style="color: var(--phys);"></i>
-            <span class="cat-emoji">🌋</span>
-            <h2 class="cat-title">Jeoloji</h2>
-            <p class="cat-info">Yerin altındaki sırlar.</p>
-        </a>
+        <a href="categories/kuantum.html" class="category-card phys"><i class="fa-solid fa-atom cat-icon" style="color:var(--phys)"></i><span class="cat-emoji">⚛️</span><h2 class="cat-title">Kuantum</h2><p class="cat-info">Parçacık fiziği.</p></a>
+        <a href="categories/astrofizik.html" class="category-card phys"><i class="fa-solid fa-shuttle-space cat-icon" style="color:var(--phys)"></i><span class="cat-emoji">🌌</span><h2 class="cat-title">Astrofizik</h2><p class="cat-info">Kozmik sırlar.</p></a>
+        <a href="categories/matematik.html" class="category-card phys"><i class="fa-solid fa-infinity cat-icon" style="color:var(--phys)"></i><span class="cat-emoji">📐</span><h2 class="cat-title">Matematik</h2><p class="cat-info">Evrenin dili.</p></a>
+        <a href="categories/termodinamik.html" class="category-card phys"><i class="fa-solid fa-fire cat-icon" style="color:var(--phys)"></i><span class="cat-emoji">🔥</span><h2 class="cat-title">Termodinamik</h2><p class="cat-info">Isı ve enerji.</p></a>
+        <a href="categories/jeoloji.html" class="category-card phys"><i class="fa-solid fa-mountain cat-icon" style="color:var(--phys)"></i><span class="cat-emoji">🌋</span><h2 class="cat-title">Jeoloji</h2><p class="cat-info">Yerkabuğu.</p></a>
+        <a href="categories/botanik.html" class="category-card phys"><i class="fa-solid fa-seedling cat-icon" style="color:var(--phys)"></i><span class="cat-emoji">🌱</span><h2 class="cat-title">Botanik</h2><p class="cat-info">Bitki bilimi.</p></a>
+        <a href="categories/zooloji.html" class="category-card phys"><i class="fa-solid fa-hippo cat-icon" style="color:var(--phys)"></i><span class="cat-emoji">🐘</span><h2 class="cat-title">Zooloji</h2><p class="cat-info">Hayvanlar alemi.</p></a>
+        <a href="categories/meteoroloji.html" class="category-card phys"><i class="fa-solid fa-cloud-bolt cat-icon" style="color:var(--phys)"></i><span class="cat-emoji">⛈️</span><h2 class="cat-title">Meteoroloji</h2><p class="cat-info">Hava olayları.</p></a>
+        <a href="categories/deniz-biyolojisi.html" class="category-card phys"><i class="fa-solid fa-fish-fins cat-icon" style="color:var(--phys)"></i><span class="cat-emoji">🧜‍♂️</span><h2 class="cat-title">Deniz Bilimi</h2><p class="cat-info">Okyanus yaşamı.</p></a>
+        <a href="categories/paleontoloji.html" class="category-card phys"><i class="fa-solid fa-dragon cat-icon" style="color:var(--phys)"></i><span class="cat-emoji">🦴</span><h2 class="cat-title">Paleontoloji</h2><p class="cat-info">Fosil bilimi.</p></a>
+        <a href="categories/ekoloji.html" class="category-card phys"><i class="fa-solid fa-earth-europe cat-icon" style="color:var(--phys)"></i><span class="cat-emoji">🌍</span><h2 class="cat-title">Ekoloji</h2><p class="cat-info">Doğal denge.</p></a>
+        <a href="categories/optik.html" class="category-card phys"><i class="fa-solid fa-lightbulb cat-icon" style="color:var(--phys)"></i><span class="cat-emoji">💡</span><h2 class="cat-title">Optik</h2><p class="cat-info">Işık fiziği.</p></a>
 
-        <a href="categories/ai.html" class="category-card tech">
-            <i class="fa-solid fa-robot cat-icon" style="color: var(--tech);"></i>
-            <span class="cat-emoji">🤖</span>
-            <h2 class="cat-title">Yapay Zeka</h2>
-            <p class="cat-info">Sentetik bilinç devrimi.</p>
-        </a>
-        <a href="categories/kodlama.html" class="category-card tech">
-            <i class="fa-solid fa-code cat-icon" style="color: var(--tech);"></i>
-            <span class="cat-emoji">💻</span>
-            <h2 class="cat-title">Yazılım</h2>
-            <p class="cat-info">Geleceği inşa eden diller.</p>
-        </a>
-        <a href="categories/siber.html" class="category-card tech">
-            <i class="fa-solid fa-user-secret cat-icon" style="color: var(--tech);"></i>
-            <span class="cat-emoji">🔐</span>
-            <h2 class="cat-title">Siber Güvenlik</h2>
-            <p class="cat-info">Dijital kale savunması.</p>
-        </a>
-        <a href="categories/blockchain.html" class="category-card tech">
-            <i class="fa-solid fa-link cat-icon" style="color: var(--tech);"></i>
-            <span class="cat-emoji">⛓️</span>
-            <h2 class="cat-title">Blockchain</h2>
-            <p class="cat-info">Verinin şifreli geleceği.</p>
-        </a>
-        <a href="categories/robotik.html" class="category-card tech">
-            <i class="fa-solid fa-gear cat-icon" style="color: var(--tech);"></i>
-            <span class="cat-emoji">🦾</span>
-            <h2 class="cat-title">Robotik</h2>
-            <p class="cat-info">Mekanik ve hayatın birleşimi.</p>
-        </a>
+        <a href="categories/ai.html" class="category-card tech"><i class="fa-solid fa-robot cat-icon" style="color:var(--tech)"></i><span class="cat-emoji">🤖</span><h2 class="cat-title">Yapay Zeka</h2><p class="cat-info">Sentetik akıl.</p></a>
+        <a href="categories/kodlama.html" class="category-card tech"><i class="fa-solid fa-code cat-icon" style="color:var(--tech)"></i><span class="cat-emoji">💻</span><h2 class="cat-title">Kodlama</h2><p class="cat-info">Yazılım sanatı.</p></a>
+        <a href="categories/siber.html" class="category-card tech"><i class="fa-solid fa-user-secret cat-icon" style="color:var(--tech)"></i><span class="cat-emoji">🔐</span><h2 class="cat-title">Siber Güvenlik</h2><p class="cat-info">Veri kalesi.</p></a>
+        <a href="categories/blockchain.html" class="category-card tech"><i class="fa-solid fa-link cat-icon" style="color:var(--tech)"></i><span class="cat-emoji">⛓️</span><h2 class="cat-title">Blockchain</h2><p class="cat-info">Merkeziyetsiz gelecek.</p></a>
+        <a href="categories/robotik.html" class="category-card tech"><i class="fa-solid fa-gear cat-icon" style="color:var(--tech)"></i><span class="cat-emoji">🦾</span><h2 class="cat-title">Robotik</h2><p class="cat-info">Mekanik hayat.</p></a>
+        <a href="categories/nanotech.html" class="category-card tech"><i class="fa-solid fa-microchip cat-icon" style="color:var(--tech)"></i><span class="cat-emoji">🔬</span><h2 class="cat-title">Nano Teknoloji</h2><p class="cat-info">Atomik mühendislik.</p></a>
+        <a href="categories/vr.html" class="category-card tech"><i class="fa-solid fa-vr-cardboard cat-icon" style="color:var(--tech)"></i><span class="cat-emoji">🕶️</span><h2 class="cat-title">Sanal Gerçeklik</h2><p class="cat-info">Dijital evren.</p></a>
+        <a href="categories/uzay-madenciligi.html" class="category-card tech"><i class="fa-solid fa-pickaxe cat-icon" style="color:var(--tech)"></i><span class="cat-emoji">🚀</span><h2 class="cat-title">Uzay Madenciliği</h2><p class="cat-info">Göktaşı hasadı.</p></a>
 
-        <a href="categories/gastronomi.html" class="category-card cult">
-            <i class="fa-solid fa-utensils cat-icon" style="color: var(--cult);"></i>
-            <span class="cat-emoji">🍲</span>
-            <h2 class="cat-title">Gastronomi</h2>
-            <p class="cat-info">Gaziantep mutfak mirası.</p>
-        </a>
-        <a href="categories/metal.html" class="category-card cult">
-            <i class="fa-solid fa-guitar cat-icon" style="color: var(--cult);"></i>
-            <span class="cat-emoji">🎸</span>
-            <h2 class="cat-title">Metal Teorisi</h2>
-            <p class="cat-info">Tekniğin ve kaosun müziği.</p>
-        </a>
-        <a href="categories/tarih.html" class="category-card cult">
-            <i class="fa-solid fa-monument cat-icon" style="color: var(--cult);"></i>
-            <span class="cat-emoji">🏺</span>
-            <h2 class="cat-title">Dünya Tarihi</h2>
-            <p class="cat-info">Medeniyetlerin yükselişi.</p>
-        </a>
-        <a href="categories/edebiyat.html" class="category-card cult">
-            <i class="fa-solid fa-book cat-icon" style="color: var(--cult);"></i>
-            <span class="cat-emoji">📚</span>
-            <h2 class="cat-title">Edebiyat</h2>
-            <p class="cat-info">Kelimelerin sonsuz gücü.</p>
-        </a>
-        <a href="categories/sinema.html" class="category-card cult">
-            <i class="fa-solid fa-film cat-icon" style="color: var(--cult);"></i>
-            <span class="cat-emoji">🎬</span>
-            <h2 class="cat-title">Sinema</h2>
-            <p class="cat-info">Görsel hikaye sanatı.</p>
-        </a>
+        <a href="categories/gastronomi.html" class="category-card cult"><i class="fa-solid fa-utensils cat-icon" style="color:var(--cult)"></i><span class="cat-emoji">🍲</span><h2 class="cat-title">Gastronomi</h2><p class="cat-info">Antep mirası.</p></a>
+        <a href="categories/mutfak-kimyasi.html" class="category-card cult"><i class="fa-solid fa-mortar-pestle cat-icon" style="color:var(--cult)"></i><span class="cat-emoji">⚗️</span><h2 class="cat-title">Moleküler Mutfak</h2><p class="cat-info">Lezzet bilimi.</p></a>
+        <a href="categories/metal-teorisi.html" class="category-card cult"><i class="fa-solid fa-guitar cat-icon" style="color:var(--cult)"></i><span class="cat-emoji">🎸</span><h2 class="cat-title">Metal Teorisi</h2><p class="cat-info">Kaosun matematiği.</p></a>
+        <a href="categories/tarih.html" class="category-card cult"><i class="fa-solid fa-monument cat-icon" style="color:var(--cult)"></i><span class="cat-emoji">🏺</span><h2 class="cat-title">Dünya Tarihi</h2><p class="cat-info">Antik sırlar.</p></a>
+        <a href="categories/edebiyat.html" class="category-card cult"><i class="fa-solid fa-book cat-icon" style="color:var(--cult)"></i><span class="cat-emoji">📚</span><h2 class="cat-title">Edebiyat</h2><p class="cat-info">Kelimelerin gücü.</p></a>
+        <a href="categories/arkeoloji.html" class="category-card cult"><i class="fa-solid fa-skull-crossbones cat-icon" style="color:var(--cult)"></i><span class="cat-emoji">🏚️</span><h2 class="cat-title">Arkeoloji</h2><p class="cat-info">Kayıp şehirler.</p></a>
+        <a href="categories/mitoloji.html" class="category-card cult"><i class="fa-solid fa-bolt-lightning cat-icon" style="color:var(--cult)"></i><span class="cat-emoji">⚡</span><h2 class="cat-title">Mitoloji</h2><p class="cat-info">Tanrılar ve destanlar.</p></a>
+        <a href="categories/mimari.html" class="category-card cult"><i class="fa-solid fa-archway cat-icon" style="color:var(--cult)"></i><span class="cat-emoji">🏛️</span><h2 class="cat-title">Mimari</h2><p class="cat-info">Yapı sanatı.</p></a>
+        <a href="categories/sinema.html" class="category-card cult"><i class="fa-solid fa-film cat-icon" style="color:var(--cult)"></i><span class="cat-emoji">🎬</span><h2 class="cat-title">Sinema</h2><p class="cat-info">Görsel anlatı.</p></a>
+        <a href="categories/fotografcilik.html" class="category-card cult"><i class="fa-solid fa-camera-retro cat-icon" style="color:var(--cult)"></i><span class="cat-emoji">📷</span><h2 class="cat-title">Fotoğrafçılık</h2><p class="cat-info">Işıkla yazmak.</p></a>
 
-        <a href="categories/felsefe.html" class="category-card mind">
-            <i class="fa-solid fa-landmark cat-icon" style="color: var(--mind);"></i>
-            <span class="cat-emoji">🏛️</span>
-            <h2 class="cat-title">Felsefe</h2>
-            <p class="cat-info">Stoacı etik ve mantık.</p>
-        </a>
-        <a href="categories/psikoloji.html" class="category-card mind">
-            <i class="fa-solid fa-masks-theater cat-icon" style="color: var(--mind);"></i>
-            <span class="cat-emoji">🎭</span>
-            <h2 class="cat-title">Psikoloji</h2>
-            <p class="cat-info">İnsan davranış analizi.</p>
-        </a>
-        <a href="categories/disiplin.html" class="category-card mind">
-            <i class="fa-solid fa-bullseye cat-icon" style="color: var(--mind);"></i>
-            <span class="cat-emoji">🎯</span>
-            <h2 class="cat-title">Disiplin</h2>
-            <p class="cat-info">Zirve performansı stratejisi.</p>
-        </a>
-        <a href="categories/sosyoloji.html" class="category-card mind">
-            <i class="fa-solid fa-users-line cat-icon" style="color: var(--mind);"></i>
-            <span class="cat-emoji">🤝</span>
-            <h2 class="cat-title">Sosyoloji</h2>
-            <p class="cat-info">Toplum ve kitle hareketi.</p>
-        </a>
+        <a href="categories/felsefe.html" class="category-card mind"><i class="fa-solid fa-brain cat-icon" style="color:var(--mind)"></i><span class="cat-emoji">🏛️</span><h2 class="cat-title">Felsefe</h2><p class="cat-info">Stoacı etik.</p></a>
+        <a href="categories/psikoloji.html" class="category-card mind"><i class="fa-solid fa-masks-theater cat-icon" style="color:var(--mind)"></i><span class="cat-emoji">🎭</span><h2 class="cat-title">Psikoloji</h2><p class="cat-info">Zihin analizi.</p></a>
+        <a href="categories/sosyoloji.html" class="category-card mind"><i class="fa-solid fa-users-line cat-icon" style="color:var(--mind)"></i><span class="cat-emoji">🤝</span><h2 class="cat-title">Sosyoloji</h2><p class="cat-info">Toplum bilimi.</p></a>
+        <a href="categories/mantik.html" class="category-card mind"><i class="fa-solid fa-puzzle-piece cat-icon" style="color:var(--mind)"></i><span class="cat-emoji">🧩</span><h2 class="cat-title">Mantık</h2><p class="cat-info">Akıl yürütme.</p></a>
+        <a href="categories/disiplin.html" class="category-card mind"><i class="fa-solid fa-bullseye cat-icon" style="color:var(--mind)"></i><span class="cat-emoji">🎯</span><h2 class="cat-title">Disiplin</h2><p class="cat-info">Zirve performansı.</p></a>
+        <a href="categories/uyku-bilimi.html" class="category-card mind"><i class="fa-solid fa-moon cat-icon" style="color:var(--mind)"></i><span class="cat-emoji">😴</span><h2 class="cat-title">Uyku Bilimi</h2><p class="cat-info">Nöral yenilenme.</p></a>
+        <a href="categories/beslenme.html" class="category-card mind"><i class="fa-solid fa-apple-whole cat-icon" style="color:var(--mind)"></i><span class="cat-emoji">🍎</span><h2 class="cat-title">Beslenme</h2><p class="cat-info">Biyolojik yakıt.</p></a>
+        <a href="categories/zaman-yonetimi.html" class="category-card mind"><i class="fa-solid fa-hourglass-start cat-icon" style="color:var(--mind)"></i><span class="cat-emoji">⏳</span><h2 class="cat-title">Zaman Yönetimi</h2><p class="cat-info">Verimlilik sanatı.</p></a>
 
         </div>
 
     <footer>
-        AZURA OS // THE FINAL FRONTIER OF KNOWLEDGE // 2025
+        AZURA OS // THE INFINITE LIBRARY OF THE ARCHITECT // 2025
     </footer>
 
     <script>
-        // CANLI FİLTRELEME
+        // CANLI FİLTRELEME MOTORU
         document.getElementById('nexusSearch').addEventListener('keyup', function() {
             let val = this.value.toLowerCase();
             let cards = document.querySelectorAll('.category-card');
@@ -301,5 +163,5 @@
         });
     </script>
 </body>
-                </html>
-                
+    </html>
+                                                                                                                                            
