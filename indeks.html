@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura | Giriş</title>
+    <title>Azura</title>
     <style>
-        /* Genel Tasarım ve Gri Arka Plan */
         body, html {
             margin: 0;
             padding: 0;
@@ -13,49 +12,44 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #1e1e1e; /* Şık ve derin gri */
+            background-color: #1a1a1a; /* Derin Gri Arka Plan */
             overflow: hidden;
-            font-family: 'Montserrat', sans-serif; /* Modern ve temiz bir font */
+            font-family: sans-serif;
         }
 
-        /* Ana Taşıyıcı */
         .loader-wrapper {
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
-            animation: fadeIn 1.5s ease-out; /* Sayfa yavaşça belirir */
         }
 
         /* Renk Değiştiren Azura Yazısı */
         .azura-title {
-            font-size: 5rem;
-            font-weight: 900;
-            letter-spacing: 15px;
+            font-size: 4rem;
+            font-weight: bold;
+            letter-spacing: 10px;
             text-transform: uppercase;
-            /* Renk geçişi ayarları */
-            background: linear-gradient(45deg, #3498db, #8e44ad, #2ecc71, #3498db);
+            background: linear-gradient(45deg, #3498db, #a29bfe, #55efc4, #3498db);
             background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: colorShift 5s ease infinite;
+            animation: colorShift 4s ease infinite;
             z-index: 2;
-            text-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
         /* Mavi Noktalı Dönen Daire */
         .spinning-circle {
             position: absolute;
-            width: 450px;
-            height: 450px;
-            border: 6px dotted #3498db; /* İstediğin mavi noktalar */
+            width: 350px;
+            height: 350px;
+            border: 5px dotted #3498db; /* Mavi Noktalar */
             border-radius: 50%;
-            animation: spin 10s linear infinite;
-            opacity: 0.6;
+            animation: spin 12s linear infinite;
+            opacity: 0.7;
             z-index: 1;
         }
 
-        /* Animasyonlar */
         @keyframes colorShift {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
@@ -67,18 +61,13 @@
             to { transform: rotate(360deg); }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        /* Çıkış Animasyonu (3. saniyede devreye girer) */
+        /* 3 Saniye Sonra Kaybolma Efekti */
         .fade-out {
-            animation: exitEffect 0.8s forwards;
+            animation: exit 0.8s forwards;
         }
 
-        @keyframes exitEffect {
-            to { opacity: 0; filter: blur(10px); transform: scale(1.1); }
+        @keyframes exit {
+            to { opacity: 0; filter: blur(10px); }
         }
     </style>
 </head>
@@ -86,21 +75,17 @@
 
     <div class="loader-wrapper" id="content">
         <div class="spinning-circle"></div>
-        
         <h1 class="azura-title">Azura</h1>
     </div>
 
     <script>
-        // 3 saniye sonra yönlendirme başlasın
         setTimeout(function() {
-            // Önce görseli karart (0.8 saniye sürer)
             document.getElementById('content').classList.add('fade-out');
-            
-            // Kararma bitince menu.html sayfasına git
             setTimeout(function() {
+                // Burası seni menü sayfasına atacak
                 window.location.href = "menu.html"; 
             }, 800);
-        }, 2200); // 2.2 saniye bekle + 0.8 saniye kararma = Toplam 3 saniye
+        }, 2200); 
     </script>
 
 </body>
