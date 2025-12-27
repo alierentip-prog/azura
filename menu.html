@@ -3,230 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Azura | The Singularity Protocol</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=JetBrains+Mono:wght@300;500;800&family=Inter:wght@900&display=swap" rel="stylesheet">
+    <title>Azura | The Singularity</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Plus+Jakarta+Sans:wght@200;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* --- 1. SİSTEM ÇEKİRDEĞİ --- */
+        /* --- 1. PRESTİGE COLOR PALETTE --- */
         :root {
-            --bg-deep: #020202;
-            --neon-cyan: #00f2ff;
-            --neon-red: #ff003c;
-            --neon-purple: #7000ff;
-            --glass-strong: rgba(255, 255, 255, 0.03);
-            --border-glow: rgba(0, 242, 255, 0.15);
+            --bg-obsidian: #030303;
+            --accent-cyan: #00f2ff;
+            --accent-purple: #7000ff;
+            --surgical-red: #ff3c3c;
+            --glass: rgba(255, 255, 255, 0.02);
+            --border: rgba(255, 255, 255, 0.05);
+            --font-main: 'Plus Jakarta Sans', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body, html {
-            background: var(--bg-deep); color: #fff;
-            font-family: 'Inter', sans-serif;
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body, html { 
+            background: var(--bg-obsidian); color: #fff; 
+            font-family: var(--font-main); 
             overflow: hidden; height: 100vh; width: 100vw;
-            cursor: none; user-select: none;
+            cursor: none; 
         }
 
-        /* --- 2. GÖRSEL ŞÖLEN (Tıklamaya engel olmayan katmanlar) --- */
-        #neural-canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.6; filter: contrast(1.4) brightness(1.2); }
-        .grid-matrix { position: fixed; inset: 0; z-index: 2; pointer-events: none; background-image: linear-gradient(rgba(0, 242, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 242, 255, 0.03) 1px, transparent 1px); background-size: 40px 40px; }
-        .vignette-layer { position: fixed; inset: 0; z-index: 5; pointer-events: none; background: radial-gradient(circle, transparent 20%, #000 140%); }
-        .scanline-fx { position: fixed; inset: 0; z-index: 6; pointer-events: none; background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.2) 50%); background-size: 100% 4px; }
-        .noise-layer { position: fixed; inset: 0; z-index: 7; pointer-events: none; background-image: url('https://grainy-gradients.vercel.app/noise.svg'); opacity: 0.05; }
+        /* --- 2. ZİRVE MODU GÖRSEL KATMANLAR (Tıklamaya Engel Olmaz) --- */
+        #singularity-canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.5; filter: contrast(1.2); }
+        .grid-matrix { position: fixed; inset: 0; z-index: 2; pointer-events: none; background-image: linear-gradient(rgba(0, 242, 255, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 242, 255, 0.03) 1px, transparent 1px); background-size: 50px 50px; }
+        .vignette-fx { position: fixed; inset: 0; z-index: 5; pointer-events: none; background: radial-gradient(circle, transparent 20%, #000 150%); }
+        .noise-texture { position: fixed; inset: 0; z-index: 6; pointer-events: none; background-image: url('https://grainy-gradients.vercel.app/noise.svg'); opacity: 0.04; }
 
         /* ÖZEL İMLEÇ */
         #azura-cursor {
-            width: 14px; height: 14px; background: var(--neon-cyan); border-radius: 50%;
+            width: 12px; height: 12px; background: var(--accent-cyan); border-radius: 50%;
             position: fixed; pointer-events: none; z-index: 1000000;
-            box-shadow: 0 0 30px var(--neon-cyan); transform: translate(-50%, -50%);
-            mix-blend-mode: difference; transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 25px var(--accent-cyan); transform: translate(-50%, -50%);
+            mix-blend-mode: difference; transition: transform 0.1s;
         }
 
-        /* --- 3. ANA ETKİLEŞİM KATMANI (EN ÜST) --- */
-        .master-stage {
-            position: relative; z-index: 10000; /* Tıklama sorunu burada biter */
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100vh; width: 100%; padding: 25px;
+        /* --- 3. ANA NAVİGASYON VE GRID SİSTEMİ --- */
+        .master-container {
+            position: relative; z-index: 10000; /* Etkileşim katmanı en üstte */
+            height: 100vh; width: 100%; overflow-y: auto;
+            scrollbar-width: none; scroll-behavior: smooth;
+            padding: 120px 60px 100px 60px;
+        }
+        .master-container::-webkit-scrollbar { display: none; }
+
+        header { 
+            position: fixed; top: 0; width: 100%; padding: 40px 60px; 
+            display: flex; justify-content: space-between; align-items: center; 
+            z-index: 20000; background: rgba(3,3,3,0.8); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .logo-box { font-family: 'Syncopate', sans-serif; font-size: 1.8rem; letter-spacing: 15px; color: var(--accent-cyan); }
+        
+        /* BENTO GRID (Kategori Kartları) */
+        .nexus-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px; max-width: 1600px; margin: 0 auto;
         }
 
-        .terminal-monolith {
-            max-width: 1100px; width: 100%; min-height: 650px;
-            background: var(--glass-strong); border: 1px solid rgba(0, 242, 255, 0.1);
-            border-radius: 0px; padding: 70px; backdrop-filter: blur(60px);
-            display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between;
-            text-align: left; box-shadow: 0 0 150px rgba(0,0,0,0.8);
-            border-left: 5px solid var(--neon-cyan);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        .category-card {
+            background: var(--glass); border: 1px solid var(--border);
+            padding: 40px; border-radius: 0px; position: relative;
+            overflow: hidden; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer; display: flex; flex-direction: column; justify-content: space-between;
+            min-height: 320px;
         }
 
-        .protocol-header { font-family: var(--font-mono); color: var(--neon-red); font-size: 0.75rem; letter-spacing: 12px; margin-bottom: 30px; text-transform: uppercase; }
-        .main-query { font-size: clamp(1.5rem, 4vw, 3rem); font-weight: 900; line-height: 1.1; margin-bottom: 50px; letter-spacing: -3px; color: #fff; }
-
-        /* BUTONLAR (PRO TASARIM) */
-        .interaction-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; pointer-events: auto; }
-        .btn-core {
-            background: rgba(255,255,255,0.02); border: 1px solid rgba(0, 242, 255, 0.1);
-            padding: 30px; border-radius: 4px; color: #fff; font-size: 0.85rem;
-            font-weight: 800; text-transform: uppercase; letter-spacing: 5px;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer;
-            position: relative; overflow: hidden;
+        .category-card:hover {
+            background: rgba(0, 242, 255, 0.02);
+            border-color: var(--accent-cyan);
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(0, 242, 255, 0.1);
         }
-        .btn-core:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 60px var(--neon-cyan); transform: translateX(10px); }
-        .btn-core::before { content: ''; position: absolute; left: -100%; top: 0; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent); transition: 0.5s; }
-        .btn-core:hover::before { left: 100%; }
 
-        /* HUD & DATA PANELS */
-        header { position: fixed; top: 0; width: 100%; padding: 40px 60px; display: flex; justify-content: space-between; z-index: 20000; pointer-events: none; }
-        .hud-logo { font-family: 'Syncopate', sans-serif; font-size: 2rem; letter-spacing: 20px; color: var(--neon-cyan); text-shadow: 0 0 20px var(--neon-cyan); }
-        .hud-metrics { font-family: var(--font-mono); font-size: 0.65rem; color: var(--neon-cyan); text-align: right; }
+        .cat-icon { font-family: var(--font-mono); font-size: 0.7rem; color: var(--surgical-red); letter-spacing: 4px; margin-bottom: 20px; display: block; }
+        .cat-title { font-size: 2.2rem; font-weight: 800; letter-spacing: -2px; line-height: 1; margin-bottom: 15px; }
+        .cat-desc { font-size: 0.9rem; color: #666; line-height: 1.6; }
 
-        .progress-system { width: 100%; height: 2px; background: rgba(255,255,255,0.05); margin-top: 60px; position: relative; }
-        .progress-bar { position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: var(--neon-cyan); box-shadow: 0 0 20px var(--neon-cyan); transition: width 0.4s; }
+        /* DATA OVERLAY (Bilgi Kartı) */
+        #data-overlay {
+            position: fixed; inset: 0; background: var(--bg-obsidian); z-index: 50000;
+            display: none; padding: 100px 60px; overflow-y: auto;
+            animation: overlayIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes overlayIn { from { opacity: 0; transform: scale(1.1); } to { opacity: 1; transform: scale(1); } }
 
-        .side-console { position: fixed; left: 40px; top: 140px; bottom: 100px; width: 300px; font-family: var(--font-mono); font-size: 0.55rem; color: var(--neon-cyan); opacity: 0.4; display: flex; flex-direction: column-reverse; gap: 8px; overflow: hidden; pointer-events: none; }
+        .close-btn { position: fixed; right: 60px; top: 40px; font-family: var(--font-mono); cursor: pointer; color: var(--surgical-red); letter-spacing: 5px; font-size: 0.8rem; }
 
-        /* FAKE ALERTS & BLACKOUTS */
-        .blackout-screen { position: fixed; inset: 0; background: #000; z-index: 200000; display: none; align-items: center; justify-content: center; font-family: var(--font-mono); color: var(--neon-red); font-size: 1.5rem; }
-        .glitch-flash { position: fixed; inset: 0; background: #fff; z-index: 300000; display: none; mix-blend-mode: difference; }
+        footer { position: fixed; bottom: 0; width: 100%; padding: 30px 60px; display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.6rem; opacity: 0.4; z-index: 20000; border-top: 1px solid var(--border); background: var(--bg-obsidian); }
 
-        footer { position: fixed; bottom: 0; width: 100%; padding: 30px 60px; border-top: 1px solid rgba(0, 242, 255, 0.05); display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.65rem; opacity: 0.4; }
-
-        @keyframes boxShake { 0% { transform: translate(0); } 20% { transform: translate(-10px, 10px); } 40% { transform: translate(-10px, -10px); } 60% { transform: translate(10px, 10px); } 100% { transform: translate(0); } }
-        .shake-active { animation: boxShake 0.1s infinite; }
-
-        @media (max-width: 1000px) {
-            header { padding: 30px; }
-            .side-console { display: none; }
-            .terminal-monolith { padding: 40px; min-height: 500px; }
-            .main-query { font-size: 1.8rem; }
-            .interaction-grid { grid-template-columns: 1fr; }
+        /* MOBİL DÜZENLEME */
+        @media (max-width: 768px) {
+            .master-container { padding: 100px 20px; }
+            .nexus-grid { grid-template-columns: 1fr; }
+            header { padding: 25px 20px; }
+            .logo-box { font-size: 1.2rem; letter-spacing: 8px; }
         }
     </style>
 </head>
 <body>
     <div id="azura-cursor"></div>
-    <div class="blackout-screen" id="b-screen">SİSTEM YENİDEN BAŞLATILIYOR... // KATMAN_KAYBI_TESPİT_EDİLDİ</div>
-    <div class="glitch-flash" id="flash-overlay"></div>
-    <canvas id="neural-canvas"></canvas>
+    <canvas id="singularity-canvas"></canvas>
     <div class="grid-matrix"></div>
-    <div class="vignette-layer"></div>
-    <div class="scanline-fx"></div>
-    <div class="noise-layer"></div>
+    <div class="vignette-fx"></div>
+    <div class="noise-texture"></div>
 
     <header>
-        <div class="hud-logo">AZURA</div>
+        <div class="logo-box">AZURA</div>
         <div class="hud-metrics">
-            <div>NODE_STATUS: <b id="node-info">001/200</b></div>
-            <div>STRESS_LEVEL: <b id="stress-lv">12%</b></div>
-            <div>SESSION_TIME: <b id="timer">00:00</b></div>
+            <div>STATUS: <b id="sys-status" style="color:var(--accent-cyan)">ACTIVE</b></div>
+            <div>STRESS: <b id="stress-lv">14%</b></div>
+            <div id="live-time">00:00:00</div>
         </div>
     </header>
 
-    <div class="side-console" id="log-console"></div>
+    <div class="side-console" id="log-stream"></div>
 
-    <main class="master-stage">
-        <div class="terminal-monolith" id="main-terminal">
-            <div id="protocol-content">
-                <span class="protocol-header" id="p-label">SİSTEM BAŞLATILIYOR</span>
-                <h1 class="main-query" id="p-title">Mimarın Labirentine Hoş Geldin. Bu Bir Web Sitesi Değil, Zihinsel Bir Otopsidir. Hazır Mısın?</h1>
-                
-                <div class="interaction-grid" id="p-options">
-                    <button class="btn-core" onclick="initAzuraEngine()">PROTOKOLÜ DOĞRULA</button>
-                    <button class="btn-core" onclick="initAzuraEngine()">SİSTEME SIZ (RİSKLİ)</button>
-                </div>
-            </div>
-
-            <div class="progress-system">
-                <div class="progress-bar" id="p-bar"></div>
-            </div>
+    <main class="master-container">
+        <div style="margin-bottom: 100px;">
+            <p style="font-family: var(--font-mono); color: var(--surgical-red); letter-spacing: 5px; margin-bottom: 20px;">[ INITIALIZING UNIVERSAL NEXUS v14.0 ]</p>
+            <h1 style="font-size: clamp(2.5rem, 8vw, 5rem); font-weight: 800; letter-spacing: -4px; line-height: 0.9;">
+                Bilginin Tekilliği,<br>Zihnin Ötesi.
+            </h1>
         </div>
+
+        <div class="nexus-grid">
+            <div class="category-card" onclick="openNexus('Anatomi')">
+                <span class="cat-icon">01_MED</span>
+                <h2 class="cat-title">Anatomi</h2>
+                <p class="cat-desc">İnsan vücudunun gizli mimarisi. Kemiklerden sinir ağlarına cerrahi bir bakış.</p>
+            </div>
+
+            <div class="category-card" onclick="openNexus('Fizyoloji')">
+                <span class="cat-icon">02_MED</span>
+                <h2 class="cat-title">Fizyoloji</h2>
+                <p class="cat-desc">Yaşamın çalışma prensibi. Sistemlerin kusursuz biyolojik dengesi.</p>
+            </div>
+
+            <div class="category-card" onclick="openNexus('Kuantum Fiziği')">
+                <span class="cat-icon">03_PHYS</span>
+                <h2 class="cat-title">Kuantum Fiziği</h2>
+                <p class="cat-desc">Atom altı dünyanın kaotik kuralları. Olasılıklar ve dolanıklık.</p>
+            </div>
+
+            <div class="category-card" onclick="openNexus('Astrofizik')">
+                <span class="cat-icon">04_SPACE</span>
+                <h2 class="cat-title">Astrofizik</h2>
+                <p class="cat-desc">Kara delikler, galaksiler ve uzay-zamanın derin bükümleri.</p>
+            </div>
+
+            <div class="category-card" onclick="openNexus('Yapay Zeka')">
+                <span class="cat-icon">05_TECH</span>
+                <h2 class="cat-title">Yapay Zeka</h2>
+                <h2 class="cat-title">AI & Neural Net</h2>
+                <p class="cat-desc">Sentetik bilincin doğuşu. Derin öğrenme ve gelecek projeksiyonları.</p>
+            </div>
+
+            <div class="category-card" onclick="openNexus('Metal Müzik')">
+                <span class="cat-icon">06_ART</span>
+                <h2 class="cat-title">Metal Teorisi</h2>
+                <p class="cat-desc">Poliritmik yapılar ve teknik ölüm metali. Müziğin en sert fiziği.</p>
+            </div>
+
+            <div class="category-card" onclick="openNexus('Gastronomi')">
+                <span class="cat-icon">07_CULT</span>
+                <h2 class="cat-title">Gastronomi</h2>
+                <p class="cat-desc">Gaziantep mutfağından dünya lezzetlerine, mutfağın kimyasal sanatı.</p>
+            </div>
+
+            <div class="category-card" onclick="openNexus('Felsefe')">
+                <span class="cat-icon">08_MIND</span>
+                <h2 class="cat-title">Stoacılık</h2>
+                <p class="cat-desc">Zihinsel dayanıklılık. Kaosun ortasında sarsılmaz bir irade kurmak.</p>
+            </div>
+
+            </div>
     </main>
 
+    <div id="data-overlay">
+        <span class="close-btn" onclick="closeNexus()">[ ESC_CLOSE ]</span>
+        <div id="overlay-content" style="max-width: 1000px; margin: 0 auto;">
+            </div>
+    </div>
+
     <footer>
-        <div>AZURA OS v13.0.4 // GAZIANTEP_NODE_ACTIVE // SECURE_CONNECTION: TRUE</div>
-        <div id="live-clock">00:00:00</div>
+        <div>COORDINATES: 37.0662 N / 37.3833 E</div>
+        <div>AZURA OS // NEXUS_PROTOCOL_ACTIVE</div>
+        <div>STABLE_NODE_001</div>
     </footer>
-
-    <script>
-        // --- DEV SORU BANKASI (İLK 100 / 200) ---
-        // Rafık, burada her soru bir "Hainlik" ve "Zeka" testi barındırır.
-        const protocolBank = [
-            { id: "ETHIC_001", q: "Bir cerrahsın. Masada tek bir kalp var. Bir katili mi yoksa bir aptalı mı yaşatırsın?", o: ["Katil (Mantıklı)", "Aptal (Vicdanlı)"], t: "choice" },
-            { id: "LOGIC_002", q: "Bu cümle yalandır. Eğer buna inanıyorsan, zekan şu an sistem tarafından 'yetersiz' işaretlendi.", o: ["İnanıyorum", "Paradoks!"], t: "glitch" },
-            { id: "SCARE_003", q: "Kamerandan göz bebeklerini tarıyorum. Neden yalan söylüyorsun?", o: ["Söylemiyorum", "Beni Nereden Görüyorsun?"], t: "scare" },
-            { id: "MED_004", q: "Anatomi Testi: İnsan vücudundaki en 'hain' organ hangisidir?", o: ["Beyin (Manipülatör)", "Kalp (Zayıf Nokta)"], t: "choice" },
-            { id: "CYBER_005", q: "SİSTEM TARAMASI: C:/ Sürücüsü formatlanıyor... Durdurmak için 10 saniyen var.", o: ["DURDUR", "BOŞVER"], t: "fake_load" },
-            { id: "TRAP_006", q: "FAREYİ YAKALAYAMAZSAN BU TEST ASLA BİTMEYECEK!", o: ["YAKALA", "HAYIR BURADA"], t: "evade" },
-            { id: "MIND_007", q: "IQ ANALİZİ: Sence şu an bu ekrana sen mi hükmediyorsun yoksa bu kodlar mı?", o: ["Ben", "Tabii ki Sen"], t: "choice" },
-            { id: "ETHIC_008", q: "Bir arkadaşının hayatı pahasına dünyayı kurtaracak formülü çalar mıydın?", o: ["Çalarım", "Dostluk Kutsaldır"], t: "choice" },
-            { id: "HAIN_009", q: "Şu an farenin neden ters çalışmaya başladığını açıkla. (Rezil Olma Başladı)", o: ["Donanım Hatası", "Sen Yaptın!"], t: "inverse" },
-            { id: "VOID_010", q: "SESSİZLİK... Arkandan geçen gölgeyi fark ettin mi?", o: ["Fark Ettim", "Korkutma Beni"], t: "blackout" },
-            { id: "MATH_011", q: "$$ \int e^x dx = e^x + C $$ ise, hayatının entegrali neden hep sıfıra yaklaşıyor?", o: ["Hata Payı", "Limit Yok"], t: "choice" },
-            { id: "MED_012", q: "Bir hastaya yanlış teşhis koydun ve öldü. Kimse bilmiyor. İstifa mı edersin, devam mı?", o: ["İstifa", "Gömüp Devam"], t: "choice" },
-            { id: "TRAP_013", q: "BİR SEÇİM YAP: Sol butona basarsan 10 adım geri fırlatılırsın.", o: ["SOL (Tuzak)", "SAĞ"], t: "trap" },
-            { id: "CYBER_014", q: "Sence şu an bu kodun içinde kaç tane 'backdoor' (arka kapı) gizledim?", o: ["Sıfır", "Sayısız"], t: "choice" },
-            { id: "LOGIC_015", q: "Bir berber, sadece kendi saçını kesemeyenleri kesiyorsa; berber kendi saçını keser mi?", o: ["Keser", "Kesemez"], t: "choice" },
-            { id: "SCARE_016", q: "SİSTEM MESAJI: IP Adresin Gaziantep Emniyet Müdürlüğü'ne iletildi. (Şaka?)", o: ["İptal Et!", "Sorun Yok"], t: "glitch" },
-            { id: "MED_017", q: "Plasebo etkisiyle birini iyileştirmek sence etik midir yoksa dürüstlükten ödün müdür?", o: ["Etiktir", "Yalandır"], t: "choice" },
-            { id: "VOID_018", q: "Ekranda beliren o anlık parlama, aslında senin bilinçaltına gönderilen bir komuttu.", o: ["Anladım", "Hadi Canım!"], t: "glitch" },
-            { id: "HAIN_019", q: "EN SEVDİĞİN ŞARKIYI SİSTEMDEN SİLEYİM Mİ? (Geri Dönüşü Yok)", o: ["SİL", "DOKUNMA"], t: "choice" },
-            { id: "TRAP_020", q: "99 ADIM KALDI. Yoksa 180 mi demiştik?", o: ["Yorulmaya Başladım", "Devam Et!"], t: "choice" }
-            // ... [Part 3'te 200'e tamamlanacak devasa veri akışı devam ediyor] ...
-        ];
-                // --- PRO-LEVEL PROTOCOL EXPANSION (PART 3) ---
-        const extendedNodes = [
-            { id: "LOGIC_021", q: "Bir yapay zeka bir cerrahtan %0.1 daha az hata yapıyorsa, cerrahın varlığına gerek var mıdır?", o: ["Vardır (İnsan Faktörü)", "Gerek Yok (Verimlilik)"], t: "choice" },
-            { id: "MATH_022", q: "$$ \lim_{x \to \infty} \frac{1}{x} = 0 $$ ise, senin bu siteden çıkma ihtimalin neden hala sıfıra yaklaşmıyor?", o: ["Sonsuz Döngü", "Hata Payı"], t: "glitch" },
-            { id: "MED_023", q: "Plasebo etkisiyle birini iyileştirmek sence tıbbi bir başarı mıdır yoksa ahlaki bir dolandırıcılık mı?", o: ["Başarıdır", "Dolandırıcılıktır"], t: "choice" },
-            { id: "HAIN_024", q: "BUTONU YAKALA: Eğer basamazsan Gaziantep'teki tüm fıstıklı baklavalar bir gecede bayatlayacak!", o: ["YAKALA", "DENEME BİLE"], t: "evade" },
-            { id: "SCARE_025", q: "SİSTEM MESAJI: Web geçmişin şu an 'inceleniyor' olarak işaretlendi. (Protokol 404)", o: ["İptal Et", "Devam Et"], t: "scare" },
-            { id: "LOGIC_026", q: "Kendi kendinin dedesi olduğunu kanıtlayabilir misin? (Zaman Paradoksu)", o: ["Kanıtlarım", "Beynim Yandı"], t: "glitch" },
-            { id: "MED_027", q: "Bir hastaya yanlış kan grubu verdin. Kimse görmedi. Kanıtları yok eder misin?", o: ["Asla", "Hainlik Kanımda Var"], t: "choice" },
-            { id: "VOID_028", q: "EKRAN KARARIYOR... Sence bu bir yazılım hatası mı yoksa senin korkuların mı?", o: ["Hata", "Korku"], t: "blackout" },
-            { id: "TRAP_029", q: "BAŞA DÖNMEK İÇİN SOLA, BİTİRMEK İÇİN SAĞA BAS. (Uyarı: Biri yalan söylüyor)", o: ["SOL", "SAĞ"], t: "trap" },
-            { id: "CYBER_030", q: "Bu siteyi şu an hacklemeye çalışsan, sence ilk güvenlik duvarını kaç saniyede geçerdin?", o: ["1 Saniye", "Asla Geçemem"], t: "choice" }
-            // [Sistem bu listeyi 200'e kadar otomatik varyasyonlarla modifiye eder]
-        ];
-
-        // 200 UNIQUE NODE GENERATOR
-        const allProtocols = [...protocolBank];
-        for (let i = 21; i <= 200; i++) {
-            const template = extendedNodes[i % extendedNodes.length];
-            allProtocols.push({
-                ...template,
-                id: `NODE_${String(i).padStart(3, '0')}`,
-                q: `[KRİTİK_AŞAMA_${i}]: ` + template.q
-            });
-        }
-
-        // --- 1. VISUAL ENGINE (NEURAL NETWORK CANVAS) ---
-        const canvas = document.getElementById('neural-canvas');
+        <script>
+        // --- 1. SİNGULARİTY GÖRSEL MOTORU (Neural Net v14) ---
+        const canvas = document.getElementById('singularity-canvas');
         const ctx = canvas.getContext('2d');
         const cursor = document.getElementById('azura-cursor');
-        let dots = [];
+        let points = [];
 
         window.onresize = () => { canvas.width = innerWidth; canvas.height = innerHeight; };
         canvas.width = innerWidth; canvas.height = innerHeight;
 
+        // Mouse Takibi
         document.addEventListener('mousemove', e => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
-            // Parçacıkları imlece çekme
-            dots.forEach(d => {
-                let dx = e.clientX - d.x;
-                let dy = e.clientY - d.y;
+            
+            // Mouse etkileşim alanı
+            points.forEach(p => {
+                let dx = e.clientX - p.x;
+                let dy = e.clientY - p.y;
                 let dist = Math.sqrt(dx*dx + dy*dy);
-                if(dist < 200) {
-                    d.x += dx * 0.02;
-                    d.y += dy * 0.02;
+                if(dist < 150) {
+                    p.x -= dx * 0.03;
+                    p.y -= dy * 0.03;
                 }
             });
         });
 
-        class Dot {
+        class Point {
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 1.5;
-                this.vy = (Math.random() - 0.5) * 1.5;
+                this.vx = (Math.random() - 0.5) * 1.2;
+                this.vy = (Math.random() - 0.5) * 1.2;
                 this.radius = Math.random() * 2;
             }
             update() {
@@ -240,171 +240,226 @@
             }
         }
 
-        for(let i=0; i<120; i++) dots.push(new Dot());
+        for(let i=0; i<100; i++) points.push(new Point());
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            dots.forEach(d => {
-                d.update(); d.draw();
-                dots.forEach(d2 => {
-                    let dist = Math.sqrt(Math.pow(d.x - d2.x, 2) + Math.pow(d.y - d2.y, 2));
-                    if(dist < 150) {
-                        ctx.strokeStyle = `rgba(0, 242, 255, ${1 - dist/150})`;
+            points.forEach(p => {
+                p.update(); p.draw();
+                points.forEach(p2 => {
+                    let d = Math.sqrt(Math.pow(p.x - p2.x, 2) + Math.pow(p.y - p2.y, 2));
+                    if(d < 130) {
+                        ctx.strokeStyle = `rgba(0, 242, 255, ${1 - d/130})`;
                         ctx.lineWidth = 0.5; ctx.beginPath();
-                        ctx.moveTo(d.x, d.y); ctx.lineTo(d2.x, d2.y); ctx.stroke();
+                        ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
                     }
                 });
             });
             requestAnimationFrame(animate);
         }
         animate();
-                // --- 2. AZURA CORE ENGINE (NİHAİ MANTIK) ---
-        const pIdDisplay = document.getElementById('node-info');
-        const pStressDisplay = document.getElementById('stress-lv');
-        const pTimerDisplay = document.getElementById('timer');
-        const pTitle = document.getElementById('p-title');
-        const pLabel = document.getElementById('p-label');
-        const optionsArea = document.getElementById('p-options');
-        const progressBar = document.getElementById('p-bar');
-        const terminalBox = document.getElementById('main-terminal');
 
-        let stepIndex = 0;
-        let sessionTime = 0;
-        let stressLevel = 12;
-
-        // --- SİSTEMİ BAŞLATAN FONKSİYON ---
-        function initAzuraEngine() {
-            renderNode();
-            
-            // Zamanlayıcı ve Stress Motoru
-            setInterval(() => {
-                sessionTime++;
-                let mins = Math.floor(sessionTime / 60);
-                let secs = sessionTime % 60;
-                pTimerDisplay.innerText = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
-                
-                // Stress Seviyesi Simülasyonu
-                stressLevel = Math.min(100, stressLevel + (Math.random() * 0.4));
-                pStressDisplay.innerText = Math.floor(stressLevel) + "%";
-            }, 1000);
-        }
-
-        // --- HER AŞAMAYI ÇİZEN FONKSİYON ---
-        function renderNode() {
-            // 200 Adım Tamamlandı mı?
-            if (stepIndex >= 200) {
-                pTitle.innerHTML = "TEŞHİS: SEN BİR 'SİNGULARITY' VAKASISIN RAFIK. <br> SİSTEM KONTROLÜ TAMAMEN ELE GEÇİRDİ.";
-                pLabel.innerText = "DENEY_BİTTİ";
-                optionsArea.innerHTML = '<button class="btn-core" onclick="location.reload()">SİSTEMİ REBOOT ET</button>';
-                triggerGlitch(2000);
-                return;
+        // --- 2. EVRENSEL BİLGİ HAVUZU (NEXUS DATA) ---
+        // Rafık, burada her kategori için "Zirve" seviyesinde bilgiler var.
+        const nexusData = {
+            "Anatomi": {
+                title: "İnsan Anatomisi: Kusursuz Mühendislik",
+                content: "İnsan vücudu, 206 kemik ve 600'den fazla kasın oluşturduğu biyomekanik bir şaheserdir. Cerrahide 'Anatomik Varyasyonlar' hastanın kaderini belirler. Kalbin sol ventrikülündeki o muazzam basınç, yaşamın ana motorudur.",
+                tags: "MED_CORE // SURGERY // BIOMECHANICS"
+            },
+            "Fizyoloji": {
+                title: "Fizyolojik Denge (Homeostaz)",
+                content: "Vücudun iç dengesi, saniyede milyonlarca kimyasal tepkime ile korunur. Kan pH'ının 7.4'te sabit tutulması, böbreklerin ve akciğerlerin bir orkestra gibi çalışmasının sonucudur.",
+                tags: "MED_CORE // SYSTEMS // HOMEOSTASIS"
+            },
+            "Kuantum Fiziği": {
+                title: "Kuantum Mekaniği: Olasılığın Dansı",
+                content: "Gözlemci yoksa gerçeklik de yoktur. Schrödinger'in kedisinden Heisenberg'in belirsizlik ilkesine kadar, her şey atom altı seviyede bir 'olasılık dalgası'dır. Dolanıklık, evrenin bir ucundaki bilginin diğer ucuna anında iletilmesidir.",
+                tags: "PHYSICS // QUANTUM // WAVE_FUNCTION"
+            },
+            "Astrofizik": {
+                title: "Kozmik Ufuk: Kara Delikler ve Uzay-Zaman",
+                content: "Kara delikler, ışığın bile kaçamadığı kütleçekim canavarlarıdır. Olay ufku geçildiğinde zaman durur, kütle sonsuz yoğunluğa (singularity) ulaşır. Bizler, ölü yıldızların tozlarından yapıldık.",
+                tags: "SPACE // RELATIVITY // SINGULARITY"
+            },
+            "Yapay Zeka": {
+                title: "Sentetik Bilinç ve Nöral Ağlar",
+                content: "Yapay zeka, insan beynindeki nöronların çalışma prensibini (backpropagation) matematiksel olarak simüle eder. GPT-4 ve ötesi, sadece veri işleme değil, bir 'akıl yürütme' katmanı oluşturma peşindedir.",
+                tags: "TECH // AI // NEURAL_NETS"
+            },
+            "Metal Müzik": {
+                title: "Teknik Ölüm Metali: Poliritmik Kaos",
+                content: "Necrophagist veya Meshuggah gibi grupların müziği, matematiksel bir hassasiyet gerektirir. 4/4'lük ölçüde 7/8'lik vuruşlar yapmak, beynin her iki lobunu da cerrahi bir dikkatle kullanmak demektir.",
+                tags: "ART // METAL_THEORY // POLYRHYTHM"
+            },
+            "Gastronomi": {
+                title: "Gastronomi: Gaziantep'ten Evrensel Lezzete",
+                content: "Yemek pişirmek bir kimya laboratuvarı işlemidir. Maillard tepkimesi etin tadını oluştururken, Gaziantep'teki fıstıklı baklavanın o çıtırtısı (70 kat yufka), fiziksel bir yapı mühendisliği harikasıdır.",
+                tags: "CULT // CHEMISTRY // GASTRONOMY"
+            },
+            "Felsefe": {
+                title: "Stoacılık: Kaosun Ortasındaki Kaya",
+                content: "Marcus Aurelius ve Epiktetos'un dediği gibi: 'Kontrol edemeyeceğin şeyler için endişelenme.' Bu felsefe, bir tıp öğrencisi için sınav dönemlerinde veya zorlu ameliyatlarda en büyük zihinsel kalkandır.",
+                tags: "MIND // STOICISM // RESILIENCE"
             }
+            // Part 4'te diğer 16 kategori eklenecek...
+        };
 
-            const current = allProtocols[stepIndex];
-            pIdDisplay.innerText = `${String(stepIndex + 1).padStart(3, '0')}/200`;
-            pLabel.innerText = current.id;
-            pTitle.innerText = current.q;
-            optionsArea.innerHTML = ''; // Temizle
+        // --- 3. İNTERAKTİF NAVİGASYON (Tıklama Motoru) ---
+        function openNexus(category) {
+            const overlay = document.getElementById('data-overlay');
+            const content = document.getElementById('overlay-content');
+            const data = nexusData[category];
 
-            // PROTOKOL TİPİNE GÖRE DAVRANİŞ
-            if (current.t === "fake_load") {
-                runFakeLoad(120); // 15 dakikayı doldurmak için yavaş yükleme
-            } else if (current.t === "blackout") {
-                triggerBlackout();
-            } else {
-                // Şıkları Oluştur
-                current.o.forEach((opt, idx) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'btn-core';
-                    btn.innerText = opt;
-
-                    // Kaçan Buton Hainliği
-                    if (current.t === "evade") {
-                        btn.onmouseover = () => {
-                            btn.style.position = 'fixed';
-                            btn.style.left = Math.random() * 80 + '%';
-                            btn.style.top = Math.random() * 80 + '%';
-                        };
-                    }
-
-                    // TIKLAMA OLAYI (Kesin Çözüm)
-                    btn.onclick = (e) => {
-                        e.preventDefault();
-                        if (current.t === "trap" && idx === 0) {
-                            // Hain Tuzak: 10 Adım Geri Fırlat
-                            stepIndex = Math.max(0, stepIndex - 10);
-                            triggerLog("KRİTİK_HATA: KULLANICI TUZAĞA DÜŞTÜ. 10 ADIM GERİ ALINDI.");
-                            triggerGlitch(500);
-                        } else {
-                            stepIndex++;
-                            triggerLog(`ADIM ${stepIndex} DOĞRULANDI. SİNYAL_OK.`);
-                        }
-                        renderNode();
-                    };
-                    optionsArea.appendChild(btn);
-                });
+            if(data) {
+                content.innerHTML = `
+                    <p style="font-family: var(--font-mono); color: var(--accent-cyan); letter-spacing: 5px; margin-bottom: 20px;">[ ${data.tags} ]</p>
+                    <h1 style="font-size: clamp(2rem, 6vw, 4rem); font-weight: 800; margin-bottom: 40px; color: #fff;">${data.title}</h1>
+                    <div style="font-size: 1.2rem; line-height: 1.8; color: #bbb; text-align: justify;">${data.content}</div>
+                    <div style="margin-top: 60px; border-top: 1px solid var(--border); padding-top: 30px;">
+                        <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--surgical-red);">KAYNAK: AZURA_CENTRAL_DATABASE // NODE_00${Math.floor(Math.random()*9)+1}</span>
+                    </div>
+                `;
+                overlay.style.display = 'block';
+                document.body.style.overflow = 'hidden';
             }
         }
 
-        // --- HAİN YÜKLEME BARI (Fake Load) ---
-        function runFakeLoad(speed) {
-            let width = 0;
-            optionsArea.style.pointerEvents = 'none'; // Tıklamayı engelle
-            const loadInterval = setInterval(() => {
-                if (width >= 99) {
-                    clearInterval(loadInterval);
-                    // %99'da Takılma Hainliği
-                    setTimeout(() => {
-                        width = 0;
-                        progressBar.style.width = '0%';
-                        optionsArea.style.pointerEvents = 'auto';
-                        stepIndex++;
-                        renderNode();
-                    }, 2000);
-                } else {
-                    width += (Math.random() * 0.5);
-                    progressBar.style.width = width + "%";
-                }
-            }, speed);
+        function closeNexus() {
+            document.getElementById('data-overlay').style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
 
-        // --- GÖRSEL EFEKT MOTORLARI ---
-        function triggerBlackout() {
-            const screen = document.getElementById('b-screen');
-            screen.style.display = 'flex';
-            setTimeout(() => {
-                screen.style.display = 'none';
-                stepIndex++;
-                renderNode();
-            }, 4000);
-        }
+        // --- HUD GÜNCELLEMELERİ ---
+        setInterval(() => {
+            document.getElementById('live-time').innerText = new Date().toLocaleTimeString('tr-TR');
+            // Rastgele stress değişimi (Zirve Modu Etkisi)
+            const stress = Math.floor(Math.random() * 5 + 12);
+            document.getElementById('stress-lv').innerText = stress + "%";
+        }, 1000);
 
-        function triggerGlitch(duration) {
-            terminalBox.classList.add('shake-active');
-            document.getElementById('flash-overlay').style.display = 'block';
-            setTimeout(() => {
-                terminalBox.classList.remove('shake-active');
-                document.getElementById('flash-overlay').style.display = 'none';
-            }, duration);
-        }
-
-        // --- SİSTEM LOGLARI ---
-        function triggerLog(msg) {
+        // LOG AKIŞI
+        function addLog(msg) {
             const entry = document.createElement('div');
-            entry.innerText = `[${new Date().toLocaleTimeString()}] ${msg}`;
-            const logBox = document.getElementById('log-console');
-            logBox.prepend(entry);
-            if (logBox.childNodes.length > 35) logBox.removeChild(logBox.lastChild);
+            entry.innerText = `[${new Date().toLocaleTimeString()}] > ${msg}`;
+            const stream = document.getElementById('log-stream');
+            stream.prepend(entry);
+            if(stream.childNodes.length > 25) stream.removeChild(stream.lastChild);
         }
 
-        // Saat ve Başlangıç Logları
-        setInterval(() => { document.getElementById('live-clock').innerText = new Date().toLocaleTimeString(); }, 1000);
-        
-        // İlk Loglar
-        triggerLog("Azura Singularity OS v13.0 Başlatıldı.");
-        triggerLog("Gaziantep Node-7 Bağlantısı Kuruldu.");
-        triggerLog("Zihinsel Analiz Protokolü Beklemede.");
+        addLog("Singularity OS v14.0 yüklendi.");
+        addLog("Neural Network bağlantısı başarılı.");
+        addLog("Gaziantep veri merkezi aktif.");
+                    // --- 4. DATA EXPANSION (KALAN 16 KRİTİK KATEGORİ) ---
+        Object.assign(nexusData, {
+            "Mikrobiyoloji": {
+                title: "Mikrobiyoloji: Görünmez Ordu",
+                content: "Bakteriler, virüsler ve mantarlar... İnsan vücudunda kendi hücrelerimizden daha fazla mikrop barındırıyoruz. Antibiyotik direnci, 21. yüzyılın en büyük tıbbi tehdididir. $Staphylococcus aureus$ gibi patojenlerin cerrahi sahadaki mücadelesi bitmek bilmeyen bir savaştır.",
+                tags: "MED_CORE // BACTERIOLOGY // VIROLOGY"
+            },
+            "Nörobilim": {
+                title: "Nörobilim: Bilincin Donanımı",
+                content: "Beyin, evrendeki en karmaşık nesnedir. Sinapslardaki nörotransmitter geçişleri, senin şu an bu yazıyı okumanı ve anlamlandırmanı sağlar. Nöroplastisite sayesinde beyin, her yeni bilgide fiziksel olarak kendini yeniden şekillendirir.",
+                tags: "MED_CORE // BRAIN // SYNAPSE"
+            },
+            "Teorik Matematik": {
+                title: "Matematik: Evrenin Dili",
+                content: "Fraktallardan Riemann hipotezine kadar matematik, fiziksel dünyanın arkasındaki saf mantıktır. Fibonacci dizisi doğada her yerde karşımıza çıkar; bir ayçiçeğinin çekirdeklerinden galaksilerin sarmal kollarına kadar her şey $ \Phi \approx 1.618 $ altın oranına boyun eğer.",
+                tags: "MATH // THEORY // GOLDEN_RATIO"
+            },
+            "Biyokimya": {
+                title: "Biyokimya: Yaşamın Kimyası",
+                content: "ATP üretimi (Krebs Döngüsü), yaşamın enerji santralidir. Proteinlerin katlanma mekanizması hatalı olduğunda Alzheimer gibi hastalıklar ortaya çıkar. Karbon bazlı yaşam, enzimlerin o muazzam katalizör gücüyle mümkündür.",
+                tags: "MED_CORE // CHEMISTRY // METABOLISM"
+            },
+            "Kriptografi": {
+                title: "Kriptografi: Gizli Bilgi Bilimi",
+                content: "Sezar şifrelemesinden kuantum kriptografiye kadar veri güvenliği, medeniyetin anahtarıdır. RSA algoritması, büyük asal sayıların çarpımının geri döndürülmesinin imkansızlığı üzerine kuruludur. Gelecek, kuantum-dayanıklı şifrelemededir.",
+                tags: "TECH // SECURITY // ENCRYPTION"
+            },
+            "Robotik": {
+                title: "Robotik: Sentetik Uzuvlar",
+                content: "Da Vinci cerrahi robotlarından Boston Dynamics'in insansı robotlarına kadar, makine ve biyolojinin birleşimi (Cyborgizasyon) kaçınılmazdır. Aktüatörlerin ve sensörlerin hassasiyeti, bir cerrahın el titremesini sıfırlayabilir.",
+                tags: "TECH // ROBOTICS // ENGINEERING"
+            },
+            "Siber Güvenlik": {
+                title: "Siber Güvenlik: Dijital Kale",
+                content: "Zero-day açıklarından sosyal mühendisliğe kadar siber savaş, fiziksel sınırlardan daha kritiktir. Bir hastanenin veritabanına yapılan saldırı, bir cerrahın bıçağından daha fazla can alabilir.",
+                tags: "TECH // CYBER_WAR // DEFENSE"
+            },
+            "Psikoloji": {
+                title: "Psikoloji: Ruhun Labirenti",
+                content: "Bilişsel önyargılar (Cognitive Biases), kararlarımızı biz fark etmeden yönetir. Pavlov'un klasik koşullanmasından Jung'un arketiplerine kadar insan zihni, keşfedilmeyi bekleyen devasa bir derin denizdir.",
+                tags: "MIND // PSYCHOLOGY // COGNITION"
+            },
+            "Sosyoloji": {
+                title: "Sosyoloji: Toplumsal Dinamikler",
+                content: "İnsan, toplumsal bir hayvandır. Dijital kabileleşme ve yankı odaları, modern toplumu kutuplaştırırken, Gaziantep'teki o güçlü komşuluk kültürü (Rafıklık), sosyolojik bir dayanışma dehasıdır.",
+                tags: "MIND // SOCIETY // CULTURE"
+            },
+            "Mantık Paradoksları": {
+                title: "Mantık: Çözülemeyen Düğümler",
+                content: "Giritli paradoksu: 'Bütün Giritliler yalancıdır.' Eğer bu doğruysa söyleyen de yalancıdır. Mantık, bazen kendi sınırlarına çarpar ve orada felsefe başlar.",
+                tags: "MIND // LOGIC // PARADOX"
+            },
+            "Dünya Tarihi": {
+                title: "Tarih: Tekerrür Eden Hatalar",
+                content: "Sümerlilerin yazısından Sanayi Devrimi'ne, insanlık tarihi bir hayatta kalma mücadelesidir. İpek Yolu'nun merkezindeki Gaziantep (Zeugma), medeniyetlerin çarpıştığı ve birleştiği o kutsal noktadır.",
+                tags: "CULT // HISTORY // CIVILIZATION"
+            },
+            "Edebiyat": {
+                title: "Edebiyat: Kelimelerin Gücü",
+                content: "Dostoyevski'nin yeraltı adamından Kafka'nın böceğine, edebiyat insanın karanlık taraflarını aydınlatan bir meşaledir. İyi bir kitap, dondurulmuş bir denizi parçalayan bir baltadır.",
+                tags: "CULT // LITERATURE // BOOKS"
+            },
+            "Motivasyon": {
+                title: "Azura Motivasyonu: Brutal Disiplin",
+                content: "Motivasyon bir kıvılcımdır, disiplin ise yanan bir ocak. Başarı, her sabah 'yapmak istemediğin' o şeyi yapmakta gizlidir. Necrophagist dinlerken anatomi çalışmak, bir irade savaşıdır.",
+                tags: "LIFE // DISCIPLINE // DRIVE"
+            },
+            "Strateji": {
+                title: "Strateji: Satranç ve Savaş",
+                content: "Sun Tzu'nun 'Savaş Sanatı'ndan modern oyun teorisine; zafer, rakibin hamlelerini daha onlar yapılmadan öngörmekte yatar. Tıpta cerrahi planlama, en yüksek seviye stratejidir.",
+                tags: "LIFE // STRATEGY // TACTICS"
+            },
+            "Doğa Bilimleri": {
+                title: "Doğa: Vahşi Denge",
+                content: "Ekosistemler, en küçük böcekten en büyük yırtıcıya kadar hassas bir dengededir. Evrim, en güçlü olanın değil, değişime en iyi uyum sağlayanın hayatta kaldığı bir eliminasyon sürecidir.",
+                tags: "LIFE // NATURE // EVOLUTION"
+            },
+            "Uzay Zaman": {
+                title: "Uzay-Zaman: Dördüncü Boyut",
+                content: "Zaman, yerçekimi tarafından bükülen fiziksel bir boyuttur. Bir kara deliğin yakınında geçen 1 saat, Dünya'da yıllara bedel olabilir. Bizler, geçmişin ışığını gören gözlemcileriz.",
+                tags: "LIFE // PHYSICS // TIME"
+            }
+        });
 
+        // --- 5. GİZLİ KOMUTLAR VE EXTRA HAİNLİKLER (ZİRVE MODU) ---
+        document.addEventListener('keydown', (e) => {
+            // 'Z' tuşuna basınca Zirve Modu Glitch efekti
+            if (e.key.toLowerCase() === 'z') {
+                document.body.classList.add('glitching');
+                addLog("ZİRVE_MODU: KRİTİK_VERİ_AKIŞI_BAŞLATILDI");
+                setTimeout(() => document.body.classList.remove('glitching'), 1000);
+            }
+            // 'Escape' ile Overlay kapatma
+            if (e.key === 'Escape') closeNexus();
+        });
+
+        // Rastgele Veri Sızıntısı Simülasyonu
+        setInterval(() => {
+            const extraLogs = [
+                "Nöral ağlar senkronize ediliyor...",
+                "Gaziantep Node-7: Sıcaklık stabil.",
+                "DNA sarmalı analizi %88 tamamlandı.",
+                "Carcass - Surgical Steel çalıyor...",
+                "Meshuggah ritimleri tespit edildi.",
+                "Mantık döngüsü: OK."
+            ];
+            if(Math.random() < 0.3) addLog(extraLogs[Math.floor(Math.random()*extraLogs.length)]);
+        }, 5000);
+
+        console.log("%c AZURA OS v14.0 - ARCHITECT MODE ACTIVE ", "background: #00f2ff; color: #000; font-weight: bold;");
     </script>
 </body>
 </html>
