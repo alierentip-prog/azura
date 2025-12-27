@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura | Fizik ve Evren Arşivi</title>
+    <title>Azura | Fizik ve Evren Sektörü</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
@@ -17,10 +17,10 @@
             min-height: 100vh;
         }
 
-        /* --- ARKA PLAN KATMANI (EN ALTTA - Z-INDEX: 1) --- */
+        /* --- ARKA PLAN (SİSTEMİ BOZMAZ) --- */
         .bg-layer-wrapper { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            z-index: 1; pointer-events: none; /* ASLA TIKLANAMAZ */
+            z-index: 1; pointer-events: none; 
         }
         .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.15; animation: float 20s infinite alternate; }
         .orb-1 { top: -5%; right: -5%; width: 500px; height: 500px; background: var(--primary); }
@@ -28,10 +28,10 @@
         @keyframes float { 0% { transform: translate(0,0); } 100% { transform: translate(-40px, 40px); } }
         #dust-canvas { width: 100%; height: 100%; }
 
-        /* --- İÇERİK KATMANI (EN ÜSTTE - Z-INDEX: 100) --- */
+        /* --- ANA İÇERİK (EN ÜST KATMAN) --- */
         .main-content-wrapper { 
             position: relative; 
-            z-index: 100; /* Her şeyin üstünde */
+            z-index: 100; /* Tıklama garantisi */
             width: 100%;
         }
 
@@ -46,14 +46,14 @@
             font-weight: bold; background: rgba(255,255,255,0.9); padding: 18px 35px; 
             border-radius: 60px; border: 2px solid rgba(139, 92, 246, 0.2); 
             font-size: 1.2rem; transition: 0.3s;
-            cursor: pointer; position: relative; z-index: 110;
+            cursor: pointer;
         }
         .back-nav:hover { background: var(--primary); color: #fff; transform: scale(1.05); }
 
         header { margin-bottom: 60px; border-left: 12px solid var(--primary); padding-left: 30px; }
         .cat-title { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 800; letter-spacing: -3px; }
 
-        /* GRID DÜZENİ */
+        /* PERDE ÜZERİNDEKİ GRID */
         .perde-grid { 
             background: rgba(255, 255, 255, 0.7); 
             backdrop-filter: blur(40px); 
@@ -62,12 +62,8 @@
             display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 35px;
         }
 
-        /* LİNK VE KARTLAR */
-        .topic-link { 
-            text-decoration: none; color: inherit; display: block; 
-            position: relative; z-index: 120; /* Tıklanma garantisi */
-            cursor: pointer;
-        }
+        /* LİNK KARTLARI */
+        .topic-link { text-decoration: none; color: inherit; display: block; cursor: pointer; }
         
         .topic-card {
             background: rgba(255, 255, 255, 0.9);
@@ -110,7 +106,7 @@
             
             <header>
                 <h1 class="cat-title">Fizik ve Evren 🌌</h1>
-                <p style="font-size: 1.5rem; color: #64748b; margin-top: 20px; font-weight: 300;">Kozmosun derinliklerine açılan 10 kapı.</p>
+                <p style="font-size: 1.5rem; color: #64748b; margin-top: 20px;">Bilim kulelerine açılan 10 büyük kapı.</p>
             </header>
 
             <div class="perde-grid">
@@ -119,7 +115,7 @@
                     <div class="topic-card">
                         <i class="fa-solid fa-infinity"></i>
                         <h3>Kozmoloji</h3>
-                        <p>Evrenin doğuşu, genişlemesi ve nihai kaderinin 500 cümlelik dev arşivi.</p>
+                        <p>Evrenin doğuşu ve 13.8 milyar yıllık devasa hikayesi.</p>
                     </div>
                 </a>
 
@@ -127,7 +123,7 @@
                     <div class="topic-card">
                         <i class="fa-solid fa-hurricane"></i>
                         <h3>Kaos Teorisi</h3>
-                        <p>Düzensizliğin içindeki gizli düzen ve kelebek etkisinin matematiği.</p>
+                        <p>Düzensizliğin içindeki o gizli ve muazzam matematik.</p>
                     </div>
                 </a>
 
@@ -135,55 +131,57 @@
                     <div class="topic-card">
                         <i class="fa-solid fa-atom"></i>
                         <h3>Kuantum Mekaniği</h3>
-                        <p>Atom altı dünyasının belirsizliği ve gerçekliğin olasılık dalgaları.</p>
+                        <p>Gerçekliğin atom altı seviyedeki o "saçma" dansı.</p>
+                    </div>
+                </a>
+
+                <a href="relativity.html" class="topic-link">
+                    <div class="topic-card">
+                        <i class="fa-solid fa-hourglass-start"></i>
+                        <h3>Görelilik</h3>
+                        <p>Zamanın büküldüğü ve mekanın eğildiği Einstein dünyası.</p>
                     </div>
                 </a>
 
                 <div class="topic-card" style="opacity: 0.5;">
                     <i class="fa-solid fa-star"></i>
                     <h3>Astrofizik</h3>
-                    <p>Yıldızların içindeki nükleer mutfak ve gök cisimleri.</p>
+                    <p>Yıldızların nükleer kalbi ve gök cisimlerinin fiziği.</p>
                 </div>
 
                 <div class="topic-card" style="opacity: 0.5;">
                     <i class="fa-solid fa-circle-nodes"></i>
                     <h3>Parçacık Fiziği</h3>
-                    <p>Maddenin en küçük yapı taşları ve kuvvetler.</p>
+                    <p>Maddenin en küçük sırları ve Standart Model.</p>
                 </div>
 
                 <div class="topic-card" style="opacity: 0.5;">
                     <i class="fa-solid fa-fire"></i>
                     <h3>Termodinamik</h3>
-                    <p>Enerji, ısı ve evrensel entropi yasaları.</p>
-                </div>
-
-                <div class="topic-card" style="opacity: 0.5;">
-                    <i class="fa-solid fa-radiation"></i>
-                    <h3>Nükleer Fizik</h3>
-                    <p>Çekirdek enerjisi ve radyoaktif bozunmalar.</p>
+                    <p>Enerji korunumu ve evrensel entropi yasası.</p>
                 </div>
 
                 <div class="topic-card" style="opacity: 0.5;">
                     <i class="fa-solid fa-lightbulb"></i>
                     <h3>Optik</h3>
-                    <p>Işığın doğası ve fotonların yolculuğu.</p>
+                    <p>Işığın doğası ve fotonların sonsuz yolculuğu.</p>
                 </div>
 
                 <div class="topic-card" style="opacity: 0.5;">
                     <i class="fa-solid fa-gear"></i>
                     <h3>Klasik Mekanik</h3>
-                    <p>Newton yasaları ve kütleçekim temelleri.</p>
+                    <p>Newtonian yasalar ve kütleçekim temelleri.</p>
                 </div>
 
                 <div class="topic-card" style="opacity: 0.5;">
                     <i class="fa-solid fa-lines-leaning"></i>
                     <h3>Sicim Teorisi</h3>
-                    <p>Çok boyutlu evren ve titreyen sicimler.</p>
+                    <p>11 boyutlu evren ve titreyen enerji sicimleri.</p>
                 </div>
 
             </div>
 
-            <footer>AZURA NEXUS // PHYSICS_CORE // 2025</footer>
+            <footer>AZURA NEXUS // PHYSICS_SECTOR // 2025</footer>
         </div>
     </div>
 
