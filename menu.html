@@ -3,183 +3,351 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura | Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Plus+Jakarta+Sans:wght@200;500;800&display=swap" rel="stylesheet">
+    <title>Azura | System Dashboard</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Plus+Jakarta+Sans:wght@200;400;600;800&family=JetBrains+Mono:wght@300;500&display=swap" rel="stylesheet">
+    
     <style>
+        /* --- 1. KÜRESEL SİSTEM AYARLARI --- */
         :root {
-            --bg: #080808;
-            --card-bg: rgba(255, 255, 255, 0.03);
-            --accent: #00f2ff;
-            --metal-gray: #1a1a1a;
-            --text: #ffffff;
+            --bg-deep: #050505;
+            --accent-cyan: #00f2ff;
+            --accent-purple: #7000ff;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --border-glow: rgba(0, 242, 255, 0.2);
+            --text-main: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.5);
+            --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background-color: var(--bg);
-            color: var(--text);
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: crosshair; }
+        
+        body, html {
+            height: 100%; width: 100%;
+            background: var(--bg-deep);
+            color: var(--text-main);
             font-family: 'Plus Jakarta Sans', sans-serif;
             overflow-x: hidden;
-            min-height: 100vh;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-cyan) var(--bg-deep);
         }
 
-        /* --- ARKA PLAN SİSTEMİ --- */
-        .ambient-bg {
+        /* Özel Scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep); }
+        ::-webkit-scrollbar-thumb { background: var(--accent-cyan); border-radius: 10px; }
+
+        /* --- 2. ARKA PLAN MİMARİSİ (ZENITH CORE) --- */
+        #canvas-ambient {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 20% 30%, rgba(0, 242, 255, 0.05) 0%, transparent 40%),
-                        radial-gradient(circle at 80% 70%, rgba(112, 0, 255, 0.05) 0%, transparent 40%);
-            z-index: -1;
+            z-index: -1; pointer-events: none;
         }
 
-        /* --- NAVİGASYON --- */
-        nav {
-            padding: 40px; display: flex; justify-content: space-between; align-items: center;
-            backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100;
+        .noise-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+            opacity: 0.05; z-index: 0; pointer-events: none;
         }
-        .nav-logo { font-family: 'Syncopate', sans-serif; font-size: 1.5rem; letter-spacing: 5px; color: var(--accent); }
-        .nav-time { font-family: monospace; opacity: 0.5; font-size: 0.9rem; }
 
-        /* --- ANA KONTEYNER --- */
-        .container { max-width: 1400px; margin: 0 auto; padding: 60px 20px; }
+        .vignette {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%);
+            z-index: 1; pointer-events: none;
+        }
 
-        .welcome-section { margin-bottom: 80px; opacity: 0; transform: translateY(30px); animation: fadeInUp 1s forwards; }
-        .welcome-section h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; letter-spacing: -2px; margin-bottom: 10px; }
-        .welcome-section p { font-size: 1.1rem; opacity: 0.6; letter-spacing: 2px; text-transform: uppercase; }
+        /* --- 3. NAVİGASYON ÜST PANEL (HUD) --- */
+        header {
+            position: fixed; top: 0; width: 100%;
+            padding: 30px 60px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
 
-        /* --- MENÜ KARTLARI (GRID) --- */
-        .menu-grid {
+        .nav-brand {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.8rem; letter-spacing: 8px;
+            background: linear-gradient(90deg, #fff, var(--accent-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textFlow 5s linear infinite;
+        }
+
+        .system-status {
+            display: flex; gap: 40px; font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem; letter-spacing: 2px; color: var(--accent-cyan);
+        }
+
+        .status-item span { color: var(--text-dim); margin-right: 5px; }
+
+        /* --- 4. ANA İÇERİK YAPISI --- */
+        main {
+            position: relative; z-index: 10;
+            padding: 180px 10% 100px 10%;
+        }
+
+        .hero-title {
+            margin-bottom: 100px;
+            animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .hero-title p {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem; color: var(--accent-cyan);
+            letter-spacing: 5px; text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .hero-title h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800; letter-spacing: -3px;
+            line-height: 1.1;
+        }
+
+        /* --- 5. MENÜ GRID SİSTEMİ (3D TILT EFFECT) --- */
+        .hub-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
         }
 
-        .menu-card {
+        .hub-card {
             position: relative;
-            background: var(--card-bg);
+            height: 550px;
+            background: var(--glass-bg);
             border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 24px;
-            padding: 40px;
-            height: 450px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
+            border-radius: 40px;
+            padding: 60px;
+            display: flex; flex-direction: column; justify-content: space-between;
+            transition: var(--transition-smooth);
             overflow: hidden;
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            cursor: pointer;
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(20px);
         }
 
-        /* Kart Üzerine Gelince */
-        .menu-card:hover {
-            transform: translateY(-15px) scale(1.02);
-            border-color: var(--accent);
-            box-shadow: 0 20px 40px rgba(0, 242, 255, 0.1);
-        }
-
-        .menu-card::before {
+        .hub-card::before {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, transparent 30%, rgba(0, 242, 255, 0.1));
-            opacity: 0; transition: 0.5s;
+            background: radial-gradient(circle at var(--x) var(--y), rgba(0, 242, 255, 0.15) 0%, transparent 50%);
+            opacity: 0; transition: 0.3s;
         }
-        .menu-card:hover::before { opacity: 1; }
 
-        /* Kart Numarası */
-        .card-no {
-            position: absolute; top: 40px; right: 40px;
-            font-size: 4rem; font-weight: 800; opacity: 0.05;
-            transition: 0.5s;
+        .hub-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-20px);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.5);
         }
-        .menu-card:hover .card-no { opacity: 0.2; transform: scale(1.2); color: var(--accent); }
 
-        .card-icon { font-size: 2.5rem; margin-bottom: 20px; color: var(--accent); }
-        .card-title { font-size: 2rem; font-weight: 800; margin-bottom: 15px; }
-        .card-desc { font-size: 0.95rem; opacity: 0.5; line-height: 1.6; margin-bottom: 25px; }
+        .hub-card:hover::before { opacity: 1; }
 
-        .btn-enter {
-            width: fit-content; padding: 12px 30px; border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 100px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 2px; transition: 0.3s;
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .card-index { font-family: 'Syncopate', sans-serif; font-size: 1.2rem; color: var(--accent-cyan); opacity: 0.5; }
+        .card-icon { font-size: 3rem; filter: drop-shadow(0 0 10px var(--accent-cyan)); }
+
+        .card-body h2 { font-size: 3rem; font-weight: 800; margin-bottom: 20px; letter-spacing: -1px; }
+        .card-body p { font-size: 1.1rem; color: var(--text-dim); line-height: 1.6; max-width: 80%; }
+
+        .card-footer {
+            display: flex; justify-content: space-between; align-items: center;
         }
-        .menu-card:hover .btn-enter { background: var(--accent); color: #000; border-color: var(--accent); }
 
-        /* --- ANİMASYONLAR --- */
-        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        .btn-hub {
+            padding: 18px 45px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 100px;
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600; font-size: 0.8rem; letter-spacing: 3px;
+            text-transform: uppercase;
+            transition: var(--transition-smooth);
+            text-decoration: none;
+        }
 
-        /* Mobil Ayarlar */
-        @media (max-width: 768px) {
-            nav { padding: 20px; }
-            .container { padding: 40px 20px; }
-            .menu-card { height: 350px; padding: 30px; }
+        .hub-card:hover .btn-hub {
+            background: var(--accent-cyan);
+            color: #000;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.4);
+        }
+
+        /* --- 6. FOOTER HUD --- */
+        footer {
+            padding: 60px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex; justify-content: space-between;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem; color: var(--text-dim);
+            letter-spacing: 2px;
+        }
+
+        /* --- 7. ANİMASYONLAR --- */
+        @keyframes textFlow { to { background-position: 200% center; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Mobil Optimizasyon */
+        @media (max-width: 1100px) {
+            .hub-grid { grid-template-columns: 1fr; }
+            header { padding: 20px 30px; }
+            .nav-brand { font-size: 1.2rem; }
+            .system-status { display: none; }
         }
     </style>
 </head>
 <body>
 
-    <div class="ambient-bg"></div>
+    <canvas id="canvas-ambient"></canvas>
+    <div class="noise-layer"></div>
+    <div class="vignette"></div>
 
-    <nav>
-        <div class="nav-logo">AZURA</div>
-        <div class="nav-time" id="live-clock">17:56:50</div>
-    </nav>
+    <header>
+        <div class="nav-brand">AZURA</div>
+        <div class="system-status">
+            <div class="status-item"><span>SYS_CORE:</span> <b id="cpu-load">0%</b></div>
+            <div class="status-item"><span>LOCAL_TIME:</span> <b id="clock">00:00:00</b></div>
+            <div class="status-item"><span>LOC:</span> <b>37.0662° N</b></div>
+        </div>
+    </header>
 
-    <div class="container">
-        <header class="welcome-section">
-            <p id="greeting-text">İyi Akşamlar,</p>
-            <h1>Hoş Geldin, Rafık.</h1>
-        </header>
+    <main>
+        <section class="hero-title">
+            <p id="greeting">Sisteme Hoş Geldin</p>
+            <h1>Zihnin Dijital<br>Ufku Burada Başlar.</h1>
+        </section>
 
-        <div class="menu-grid">
-            <div class="menu-card" onclick="location.href='dergi.html'">
-                <div class="card-no">01</div>
-                <div class="card-icon">◈</div>
-                <h3 class="card-title">Mini Dergi</h3>
-                <p class="card-desc">Her ay yenilenen, derin temalar üzerine kurgulanmış dijital sayfalar.</p>
-                <div class="btn-enter">İncele</div>
+        <div class="hub-grid">
+            <div class="hub-card" onmousemove="tilt(event, this)">
+                <div class="card-header">
+                    <span class="card-index">/01</span>
+                    <span class="card-icon">⌬</span>
+                </div>
+                <div class="card-body">
+                    <h2>Mini Dergi</h2>
+                    <p>Entelektüel birikim ve estetik tasarımın buluştuğu aylık dijital sayfalar.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="dergi.html" class="btn-hub">Veriyi İşle</a>
+                </div>
             </div>
 
-            <div class="menu-card" onclick="location.href='motivasyon.html'">
-                <div class="card-no">02</div>
-                <div class="card-icon">△</div>
-                <h3 class="card-title">Motivasyon</h3>
-                <p class="card-desc">Zihnin sınırlarını zorlayan, seni harekete geçirecek güçlü içerikler.</p>
-                <div class="btn-enter">Harekete Geç</div>
+            <div class="hub-card" onmousemove="tilt(event, this)">
+                <div class="card-header">
+                    <span class="card-index">/02</span>
+                    <span class="card-icon">⚡</span>
+                </div>
+                <div class="card-body">
+                    <h2>Motivasyon</h2>
+                    <p>Sınırlarını zorlaman için gereken dopamin ve odaklanma protokolleri.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="motivasyon.html" class="btn-hub">Enerjiyi Aç</a>
+                </div>
             </div>
 
-            <div class="menu-card" onclick="location.href='sohbetler.html'">
-                <div class="card-no">03</div>
-                <div class="card-icon">◍</div>
-                <h3 class="card-title">Kahve Sohbetleri</h3>
-                <p class="card-desc">Samimi, içten ve her yudumda başka bir hikaye anlatan blog yazıları.</p>
-                <div class="btn-enter">Dinle</div>
+            <div class="hub-card" onmousemove="tilt(event, this)">
+                <div class="card-header">
+                    <span class="card-index">/03</span>
+                    <span class="card-icon">☕</span>
+                </div>
+                <div class="card-body">
+                    <h2>Kahve Sohbetleri</h2>
+                    <p>Samimi düşünceler, Gaziantep'ten esintiler ve hayatın içinden blog yazıları.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="sohbetler.html" class="btn-hub">Sohbete Katıl</a>
+                </div>
             </div>
 
-            <div class="menu-card" onclick="location.href='kitaplar.html'">
-                <div class="card-no">04</div>
-                <div class="card-icon">📖</div>
-                <h3 class="card-title">Kitap Alıntıları</h3>
-                <p class="card-desc">Tozlu raflardan süzülen, altı çizili en değerli cümlelerin buluşma noktası.</p>
-                <div class="btn-enter">Keşfet</div>
+            <div class="hub-card" onmousemove="tilt(event, this)">
+                <div class="card-header">
+                    <span class="card-index">/04</span>
+                    <span class="card-icon">🕮</span>
+                </div>
+                <div class="card-body">
+                    <h2>Kitap Alıntıları</h2>
+                    <p>Ustalardan süzülen, hayatına yön verecek o kritik satırların arşivi.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="kitaplar.html" class="btn-hub">Arşivi Tara</a>
+                </div>
             </div>
         </div>
-    </div>
+    </main>
+
+    <footer>
+        <div>AZURA OS v4.0.5 - ALL RIGHTS RESERVED</div>
+        <div>DESIGNED FOR THE BOLD</div>
+        <div id="date-display">2025.12.27</div>
+    </footer>
 
     <script>
-        // Saat Güncelleme
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('live-clock').innerText = now.toLocaleTimeString('tr-TR');
-            
-            // Dinamik Karşılama
-            const hours = now.getHours();
-            let greeting = "";
-            if (hours < 12) greeting = "Günaydın";
-            else if (hours < 18) greeting = "İyi Günler";
-            else if (hours < 22) greeting = "İyi Akşamlar";
-            else greeting = "İyi Geceler";
-            document.getElementById('greeting-text').innerText = greeting + ",";
+        // --- 1. AMBIENT ENGINE (ARKA PLAN) ---
+        const canvas = document.getElementById('canvas-ambient');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+
+        window.onresize = () => { canvas.width = innerWidth; canvas.height = innerHeight; };
+        canvas.width = innerWidth; canvas.height = innerHeight;
+
+        class Star {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speed = Math.random() * 0.5 + 0.1;
+                this.alpha = Math.random();
+            }
+            update() {
+                this.y -= this.speed;
+                if (this.y < 0) this.reset();
+            }
+            draw() {
+                ctx.fillStyle = `rgba(0, 242, 255, ${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
-        setInterval(updateClock, 1000);
-        updateClock();
+
+        for(let i=0; i<150; i++) stars.push(new Star());
+
+        function animate() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            stars.forEach(s => { s.update(); s.draw(); });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // --- 2. TILT & MOUSE TRACKING ---
+        function tilt(e, el) {
+            const rect = el.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            el.style.setProperty('--x', `${x}px`);
+            el.style.setProperty('--y', `${y}px`);
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = (y - centerY) / 20;
+            const rotateY = (centerX - x) / 20;
+
+            el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-15px)`;
+        }
+
+        // --- 3. HUD LOGIC ---
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString('tr-TR');
+            document.getElementById('cpu-load').innerText = Math.floor(Math.random() * 20 + 5) + "%";
+        }, 1000);
+
+        const hours = new Date().getHours();
+        const greet = hours < 12 ? "Sisteme Günaydın" : hours < 18 ? "Sisteme İyi Günler" : "Sisteme İyi Akşamlar";
+        document.getElementById('greeting').innerText = greet + " Rafık //";
+
     </script>
 </body>
 </html>
