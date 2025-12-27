@@ -3,88 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura</title>
+    <title>Azura | Deneyim</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@300;500&display=swap" rel="stylesheet">
     <style>
+        /* --- GENEL ATMOSFER --- */
         body, html {
             margin: 0; padding: 0; height: 100%;
-            display: flex; justify-content: center; align-items: center;
-            /* YENİ: Daha belirgin bir Açık Gri */
-            background-color: #e0e0e0; 
+            background-color: #000;
             overflow: hidden;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        .container {
-            position: relative;
+            font-family: 'Inter', sans-serif;
             display: flex; justify-content: center; align-items: center;
-            width: 100%; height: 100%;
         }
 
-        /* --- BÜYÜK VE PARLAK NOKTALI HALKALAR --- */
-        .ring {
-            position: absolute;
+        /* Hareketli Derin Uzay Arka Planı */
+        .space-background {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+            z-index: -2;
+        }
+        
+        /* Atmosferik Sis Efekti */
+        .nebula {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(0, 234, 255, 0.1), transparent 40%),
+                radial-gradient(circle at 80% 20%, rgba(138, 43, 226, 0.1), transparent 40%);
+            animation: nebulaMove 20s ease-in-out infinite alternate;
+            z-index: -1;
+        }
+
+        /* Süzülen Işık Parçacıkları (Particles) */
+        .particles span {
+            position: absolute; bottom: -50px;
+            background: transparent;
+            box-shadow: 0 0 10px 2px rgba(0, 234, 255, 0.4);
             border-radius: 50%;
-            border: 12px dotted #00f2ff; /* Çok parlak mavi ve büyük noktalar */
-            /* Parlama efekti (Neon etkisi) */
-            filter: drop-shadow(0 0 15px #00f2ff);
-            animation: spin linear infinite;
+            animation: rise 15s infinite linear;
+        }
+        .particles span:nth-child(1) { left: 10%; width: 5px; height: 5px; animation-duration: 12s; animation-delay: 0s; }
+        .particles span:nth-child(2) { left: 30%; width: 7px; height: 7px; animation-duration: 18s; animation-delay: 2s; }
+        .particles span:nth-child(3) { left: 50%; width: 4px; height: 4px; animation-duration: 10s; animation-delay: 5s; }
+        .particles span:nth-child(4) { left: 70%; width: 6px; height: 6px; animation-duration: 14s; animation-delay: 1s; }
+        .particles span:nth-child(5) { left: 90%; width: 5px; height: 5px; animation-duration: 16s; animation-delay: 3s; }
+
+        /* --- İÇERİK KONTEYNERİ --- */
+        .content-wrapper {
+            text-align: center;
+            z-index: 10;
+            color: white;
+            display: flex; flex-direction: column; align-items: center;
         }
 
-        .ring-outer {
-            width: 420px; height: 420px;
-            animation-duration: 20s;
-        }
-
-        .ring-inner {
-            width: 320px; height: 320px;
-            animation-duration: 12s;
-            animation-direction: reverse;
-            opacity: 0.7;
-        }
-
-        /* --- AZURA YAZISI --- */
-        .azura-text {
-            font-size: 4.5rem;
-            font-weight: 900;
-            letter-spacing: 12px;
+        /* ANA BAŞLIK: AZURA */
+        .main-title {
+            font-family: 'Syncopate', sans-serif;
+            font-size: clamp(3rem, 8vw, 7rem); /* Mobilde küçülür, PC'de büyür */
+            font-weight: 700;
+            letter-spacing: 10px;
             text-transform: uppercase;
-            /* Yazı rengi mavi tonlarında gradient */
-            background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+            background: linear-gradient(90deg, #fff, #00eaff, #fff);
+            background-size: 200% auto;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            z-index: 10;
+            animation: shineText 3s linear infinite, cinematicIn 2s ease-out forwards;
+            opacity: 0; /* Başlangıçta görünmez */
+            filter: drop-shadow(0 0 20px rgba(0, 234, 255, 0.5));
         }
 
-        /* --- MOBİL AYARLAR (Tam Uyumlu) --- */
-        @media (max-width: 768px) {
-            .ring-outer { width: 300px; height: 300px; border-width: 10px; }
-            .ring-inner { width: 220px; height: 220px; border-width: 8px; }
-            .azura-text { font-size: 2.5rem; letter-spacing: 6px; }
+        /* DEĞİŞEN ALT YAZILAR */
+        .subtitle-container {
+            height: 30px; /* Yazı alanı yüksekliği */
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            margin-top: 20px;
         }
 
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .subtitle-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: cycleText 6s linear infinite;
+        }
 
-        /* Çıkış Kararması */
-        .fade-out { animation: fadeOutEffect 0.8s forwards; }
-        @keyframes fadeOutEffect { to { opacity: 0; filter: blur(15px); } }
+        /* Yazıların sırayla gelmesi için gecikmeler */
+        .subtitle-text:nth-child(1) { animation-delay: 0s; }
+        .subtitle-text:nth-child(2) { animation-delay: 2s; }
+        .subtitle-text:nth-child(3) { animation-delay: 4s; }
+
+        /* ALTTAKİ İLERLEME ÇUBUĞU (Progress Bar) */
+        .progress-container {
+            margin-top: 40px;
+            width: 200px;
+            height: 2px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #00eaff;
+            box-shadow: 0 0 10px #00eaff;
+            animation: loadProgress 5.5s ease-in-out forwards;
+        }
+
+        /* --- ANİMASYON TANIMLARI --- */
+        @keyframes nebulaMove { 0% { transform: scale(1); } 100% { transform: scale(1.1); } }
+        @keyframes rise { 0% { bottom: -50px; transform: translateX(0); opacity: 0; } 50% { opacity: 1; } 100% { bottom: 110%; transform: translateX(100px); opacity: 0; } }
+        @keyframes shineText { to { background-position: 200% center; } }
+        
+        /* Sinematik Giriş Efekti */
+        @keyframes cinematicIn {
+            0% { opacity: 0; letter-spacing: 30px; filter: blur(20px); transform: scale(0.9); }
+            100% { opacity: 1; letter-spacing: 10px; filter: blur(0); transform: scale(1); }
+        }
+
+        /* Yazı Değiştirme Döngüsü */
+        @keyframes cycleText {
+            0% { opacity: 0; transform: translateY(20px); }
+            10%, 30% { opacity: 1; transform: translateY(0); } /* Yazı ekranda kalır */
+            40%, 100% { opacity: 0; transform: translateY(-20px); } /* Yazı yukarı kaybolur */
+        }
+
+        @keyframes loadProgress { to { width: 100%; } }
+
+        /* Çıkış Efekti */
+        .fade-out-final { animation: finalExit 1s forwards; }
+        @keyframes finalExit { to { opacity: 0; transform: scale(1.05); filter: blur(30px); } }
     </style>
 </head>
 <body>
 
-    <div class="container" id="loader">
-        <div class="ring ring-outer"></div>
-        <div class="ring ring-inner"></div>
-        <h1 class="azura-text">Azura</h1>
+    <div class="space-background"></div>
+    <div class="nebula"></div>
+    
+    <div class="particles">
+        <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <div class="content-wrapper" id="main-stage">
+        <h1 class="main-title">Azura</h1>
+        
+        <div class="subtitle-container">
+            <div class="subtitle-text">Hoş Geldiniz</div>
+            <div class="subtitle-text">Dijital Alanınız</div>
+            <div class="subtitle-text">İlham Yükleniyor...</div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
     </div>
 
     <script>
+        // 6 saniyelik sinematik deneyim
         setTimeout(() => {
-            document.getElementById('loader').classList.add('fade-out');
+            document.getElementById('main-stage').classList.add('fade-out-final');
             setTimeout(() => { 
-                // menu.html sayfası henüz yoksa 404 verebilir, bu normaldir.
                 window.location.href = "menu.html"; 
-            }, 800);
-        }, 2500);
+            }, 1000); // Kararma efekti bitince yönlendir
+        }, 6000); // 6 saniye bekle (Yazıların döngüsü tamamlansın)
     </script>
 </body>
 </html>
