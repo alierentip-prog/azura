@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Kuantum: Schrödinger'in Kedisi | Azura</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --koyu-yesil: #0a2f1f; --altin: #b8860b; --bordo: #5a0000;
+            --krem: #f2ead3; --ceviz: #3d2b1f; --bakir: #b87333;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--krem); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--ceviz); line-height: 1.8; overflow-x: hidden; }
+
+        /* --- DİNAMİK PARADOKS ARKA PLANI --- */
+        #cat-bg { position: fixed; inset: 0; z-index: 1; opacity: 0.3; filter: blur(80px); pointer-events: none; }
+
+        .header { 
+            position: sticky; top: 0; background: var(--koyu-yesil); color: #fff; 
+            padding: 15px 25px; display: flex; justify-content: space-between; 
+            z-index: 100; border-bottom: 3px solid var(--altin);
+        }
+
+        .hero-box {
+            height: 55vh; background: linear-gradient(135deg, var(--koyu-yesil), var(--bordo), var(--altin));
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; color: #fff; padding: 40px; position: relative; z-index: 10;
+        }
+
+        .main-article { 
+            max-width: 900px; margin: -70px auto 0; padding: 60px 35px; 
+            background: #fff; border-radius: 60px 60px 0 0; position: relative; 
+            z-index: 20; box-shadow: 0 -30px 60px rgba(0,0,0,0.15); 
+        }
+        
+        h1 { font-size: clamp(2.5rem, 10vw, 4.2rem); font-weight: 800; letter-spacing: -3px; line-height: 0.85; margin-bottom: 25px; }
+        h2 { font-size: 2rem; font-weight: 800; margin: 45px 0 20px; color: var(--koyu-yesil); border-left: 10px solid var(--bordo); padding-left: 20px; }
+        p { margin-bottom: 25px; font-size: 1.15rem; text-align: justify; }
+
+        /* --- RENK BOMBASI BLOKLARI --- */
+        .color-section { padding: 45px; border-radius: 45px; margin: 45px 0; color: #fff; }
+        .green-dark { background: linear-gradient(45deg, var(--koyu-yesil), var(--ceviz)); }
+        .gold-bordo { background: linear-gradient(45deg, var(--altin), var(--bordo)); }
+
+        .cat-visual {
+            width: 100%; height: 400px; background: #000; border-radius: 45px; margin: 40px 0;
+            display: flex; align-items: center; justify-content: center; border: 2.5px solid var(--altin); position: relative;
+        }
+
+        .nav-gate { display: flex; justify-content: center; padding: 80px 0 120px; }
+        .home-link { background: var(--koyu-yesil); color: #fff; padding: 22px 55px; border-radius: 60px; text-decoration: none; font-weight: 800; border: 2px solid var(--altin); box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+    </style>
+</head>
+<body>
+
+    <canvas id="cat-bg"></canvas>
+
+    <div class="header">
+        <a href="quantum.html" style="color:#fff; text-decoration:none;"><i class="fa-solid fa-chevron-left"></i> SEKTÖR</a>
+        <div id="clock" style="font-family:'JetBrains Mono'; font-weight:800;">00:00:00</div>
+        <div style="font-size:0.7rem; letter-spacing:2px;">SUPERPOSITION_MAX</div>
+    </div>
+
+    <section class="hero-box">
+        <p style="font-family:'JetBrains Mono'; letter-spacing:6px; opacity:0.8;">QUANTUM PARADOX</p>
+        <h1>Ölü ve Diri:<br>Kedinin Sırrı.</h1>
+    </section>
+
+    <main class="main-article">
+        <p>Usta, Kuantum serisinin en ironik bölümüne geldik. Erwin Schrödinger, aslında kuantum mekaniğinin ne kadar saçma göründüğünü kanıtlamak için bu deneyi uydurmuştu ama ironik bir şekilde bu kedi kuantumun simgesi haline geldi. Hayal et: Kapalı bir kutunun içinde bir kedi, bir miktar radyoaktif madde ve bu madde bozunursa zehir salacak bir düzenek var. Kuantum kurallarına göre, biz kutuyu açıp bakana kadar radyoaktif madde hem bozunmuştur hem de bozunmamıştır.</p>
+
+        <div class="color-section green-dark">
+            <h3>Kutudaki Hayalet</h3>
+            <p>Eğer atom altı parçacık (radyoaktif madde) süperpozisyon halindeyse (Bölüm 2), onunla bağlantılı olan kedi de süperpozisyon halindedir. Yani kutuyu açana kadar kedi matematiksel olarak hem ölüdür hem de diridir!. Bu, gerçekliğin bizim bakışımızla şekillendiğinin en sert ve en pofuduk örneğidir.</p>
+        </div>
+
+        
+
+        <h2>Gözlemci Etkisi ve Bilinç</h2>
+        <p>Buradaki asıl soru şudur usta: Kutuyu açan kişi kim? Kedi kendi kendinin gözlemcisi olabilir mi? Yoksa evrenin gerçek olması için illa bilinçli bir varlığın ona bakması mı gerekir?. Kuantum mekaniği, biz bakmadığımız sürece evrenin bir "olasılıklar sisi" olduğunu savunur. Sen bir tıp öğrencisi olarak kadavraya baktığında veya bir hücreyi mikroskop altında incelediğinde, aslında o biyolojik yapıyı milyonlarca kuantum ihtimalinden tek bir fiziksel gerçeğe "hapsediyorsun".</p>
+
+        <div class="cat-visual">
+            <i class="fa-solid fa-cat fa-bounce" style="font-size: 10rem; color: var(--altin); opacity: 0.7;"></i>
+            <p style="position:absolute; bottom:25px; color:var(--altin); font-family:'JetBrains Mono';">OBSERVER_DEPENDENT_REALITY_ACTIVE</p>
+        </div>
+
+        <h2>Çoklu Dünyalar Yorumu</h2>
+        <p>Bazı fizikçiler bu paradoksu çözmek için daha da çılgın bir fikir ortaya attılar: Kutuyu açtığında evren ikiye bölünür! Bir evrende kedi ölüdür, diğer evrende ise diridir. Sen sadece bu dallardan birine şahit olursun. Eğer bu doğruysa, yaptığın her seçimle, verdiğin her kararla milyarlarca yeni evren yaratıyorsun demektir. Azura Physics'in bu kapısı, bizi doğrudan "Multiverse" (Çoklu Evren) teorisine çıkarır.</p>
+
+        <div class="color-section gold-bordo">
+            <h3>Tıbbi Kuantum ve Teşhis</h3>
+            <p>Hastalıkların teşhisinde kullanılan ileri görüntüleme teknikleri, aslında Schrödinger'in kedisi gibi "belirsiz" olan durumları netleştirmek içindir. Bir tümörün varlığı, biz o biyopsiyi yapıp "gözlemleyene" kadar kuantum seviyesinde bir olasılıklar kümesidir. Gözlem, teşhisin ve tedavinin başlangıcıdır usta.</p>
+        </div>
+
+        
+
+        <h2>Final: Gerçeklik Nedir?</h2>
+        <p>Kuantum serisini burada bitiriyoruz ama sorular taze usta. Kedinin ölü mü diri mi olduğuna biz mi karar veriyoruz, yoksa evren zaten kararlı mı? İzafiyet'in devasa kumaşı (Bordo) ile Kuantum'un bu belirsiz dansı (Yeşil) elbet bir gün birleşecek (Singularity). O güne kadar biz, kutuları açmaya ve evrenin gizemlerini keşfetmeye devam edeceğiz.</p>
+
+        <div class="nav-gate">
+            <a href="menu.html" class="home-link">NEXUS ANA MERKEZİNE DÖN</a>
+        </div>
+    </main>
+
+    <script>
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+
+        const canvas = document.getElementById('cat-bg');
+        const ctx = canvas.getContext('2d');
+        let dots = [];
+        const palette = ['#0a2f1f', '#b8860b', '#5a0000', '#b87333'];
+
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            dots = Array.from({length: 15}, () => ({
+                x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+                r: Math.random()*300+180, color: palette[Math.floor(Math.random()*palette.length)],
+                vx: (Math.random()-0.5)*1.3, vy: (Math.random()-0.5)*1.3
+            }));
+        }
+
+        function draw() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            dots.forEach(d => {
+                d.x += d.vx; d.y += d.vy;
+                if(d.x < -d.r) d.x = canvas.width+d.r; if(d.x > canvas.width+d.r) d.x = -d.r;
+                if(d.y < -d.r) d.y = canvas.height+d.r; if(d.y > canvas.height+d.r) d.y = -d.r;
+                ctx.fillStyle = d.color; ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
+        window.onresize = init; init(); draw();
+    </script>
+</body>
+</html>
