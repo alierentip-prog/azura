@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Azura | Kuantum Sektörü</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&family=JetBrains+Mono:wght@800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --koyu-yesil: #0a2f1f; --altin: #b8860b; 
+            --krem-koyu: #f2ead3; --ceviz: #3d2b1f; 
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--krem-koyu); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--ceviz); }
+        
+        /* --- ELITE HEADER (KOYU YEŞİL & ALTIN) --- */
+        .header { 
+            background: var(--koyu-yesil); padding: 15px; display: flex; 
+            justify-content: space-between; align-items: center; color: #fff; 
+            border-bottom: 3px solid var(--altin); box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .container { padding: 30px 20px; max-width: 600px; margin: 0 auto; }
+        .hero h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -2px; line-height: 0.9; margin-bottom: 35px; color: var(--koyu-yesil); }
+
+        /* --- SEKTÖR KAPILARI --- */
+        .quantum-list { display: flex; flex-direction: column; gap: 15px; }
+        .gate-card { 
+            background: #faf7ed; padding: 25px; border-radius: 40px; 
+            display: flex; align-items: center; gap: 20px; text-decoration: none; color: inherit;
+            border: 2px solid rgba(10,47,31,0.1); transition: 0.4s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+        }
+        .gate-card:hover { transform: translateY(-8px); border-color: var(--altin); background: #fff; }
+        
+        .icon-circle { 
+            background: var(--koyu-yesil); color: var(--altin); 
+            width: 60px; height: 60px; border-radius: 20px; 
+            display: flex; align-items: center; justify-content: center; font-size: 1.5rem; 
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="physic.html" style="color:#fff;"><i class="fa-solid fa-chevron-left"></i></a>
+        <div style="font-family:'JetBrains Mono'; font-weight:800;" id="clock">00:00:00</div>
+        <div style="font-size:0.7rem;">QUANTUM_DEPT</div>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <p style="font-family:'JetBrains Mono'; color:var(--altin); font-size:0.7rem; letter-spacing:4px;">PROBABILITY & CHAOS</p>
+            <h1>Olasılıkların<br>Derinliği. 🌀</h1>
+        </div>
+
+        <nav class="quantum-list">
+            <a href="quantum-1.html" class="gate-card">
+                <div class="icon-circle"><i class="fa-solid fa-wave-square"></i></div>
+                <div><h3>Dalga-Parçacık İkilisi</h3><p>Hem orada hem burada.</p></div>
+            </a>
+            <a href="quantum-2.html" class="gate-card">
+                <div class="icon-circle" style="background:var(--altin); color:var(--koyu-yesil);"><i class="fa-solid fa-shuffle"></i></div>
+                <div><h3>Süperpozisyon</h3><p>Ölçülene kadar her şey mümkün.</p></div>
+            </a>
+            <a href="quantum-3.html" class="gate-card">
+                <div class="icon-circle" style="background:#001f3f; color:#b87333;"><i class="fa-solid fa-link"></i></div>
+                <div><h3>Kuantum Dolanıklık</h3><p>Işıktan hızlı iletişim mi?</p></div>
+            </a>
+            <a href="quantum-4.html" class="gate-card">
+                <div class="icon-circle" style="background:#5a0000; color:#fff;"><i class="fa-solid fa-cat"></i></div>
+                <div><h3>Schrödinger'in Kedisi</h3><p>Paradokslar diyarı.</p></div>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+    </script>
+</body>
+</html>
