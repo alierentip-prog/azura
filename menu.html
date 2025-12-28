@@ -3,128 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Azura | Intelligent Gateway</title>
+    <title>Azura | Zihin Analiz Protokolü</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #f8f9fa; --card: #ffffff; --text: #1a1a1a;
-            --primary: #5a0000; --accent: #b87333; --border: rgba(0,0,0,0.08);
-            --success: #2e7d32; --error: #c62828;
+            --bg: #f2ead3; --card: #ffffff; --text: #1a1a1a;
+            --primary: #5a0000; --accent: #b87333; --border: rgba(0,0,0,0.1);
         }
         [data-theme="dark"] {
             --bg: #0a0a0b; --card: #161618; --text: #e0e0e0;
-            --border: rgba(255,255,255,0.08);
+            --border: rgba(255,255,255,0.1);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        body { background: var(--bg); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text); overflow: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text); overflow: hidden; transition: background 0.5s ease; }
 
-        /* --- GATEKEEPER FULLSCREEN --- */
+        /* --- ANALİZ EKRANI --- */
         #gatekeeper {
             position: fixed; inset: 0; background: var(--bg); z-index: 9999;
             display: flex; align-items: center; justify-content: center; padding: 20px;
         }
         .test-hub {
-            background: var(--card); width: 100%; max-width: 550px; padding: 50px;
+            background: var(--card); width: 100%; max-width: 600px; padding: 50px;
             border-radius: 60px; border: 3px solid var(--primary); position: relative;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.3);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.2);
         }
-        .test-header { margin-bottom: 30px; }
-        .progress-bar { height: 6px; background: var(--border); border-radius: 3px; margin-bottom: 20px; overflow: hidden; }
-        #progress-fill { height: 100%; background: var(--accent); width: 10%; }
+        .progress-container { margin-bottom: 30px; }
+        .bar-outer { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+        #bar-inner { height: 100%; width: 10%; background: var(--primary); transition: 0.5s; }
+        
+        .q-meta { font-family: 'JetBrains Mono'; font-weight: 800; font-size: 0.8rem; color: var(--accent); letter-spacing: 3px; margin-bottom: 10px; }
+        .q-title { font-size: 1.8rem; font-weight: 800; color: var(--primary); line-height: 1.1; margin-bottom: 35px; }
 
-        .q-num { font-family: 'JetBrains Mono'; color: var(--accent); font-weight: 800; font-size: 0.9rem; letter-spacing: 2px; }
-        .q-text { font-size: 1.5rem; font-weight: 800; margin: 15px 0 30px; line-height: 1.2; color: var(--primary); }
-
-        .options-grid { display: grid; gap: 12px; }
-        .opt-btn {
-            background: var(--bg); border: 2px solid var(--border); padding: 20px;
-            border-radius: 25px; cursor: pointer; color: var(--text); font-weight: 600;
-            text-align: left; display: flex; align-items: center; gap: 15px; font-size: 1rem;
+        .options-list { display: grid; gap: 15px; }
+        .opt-card {
+            background: var(--bg); border: 2px solid var(--border); padding: 22px;
+            border-radius: 30px; cursor: pointer; display: flex; align-items: center;
+            gap: 15px; font-weight: 600; font-size: 1.05rem; transition: 0.3s;
         }
-        .opt-btn:hover { border-color: var(--primary); transform: translateX(10px); background: var(--card); }
-        .opt-btn.correct { background: var(--success); color: #fff; border-color: var(--success); }
-        .opt-btn.wrong { background: var(--error); color: #fff; border-color: var(--error); }
+        .opt-card:hover { border-color: var(--primary); transform: translateX(10px); background: var(--card); }
+        .opt-card i { opacity: 0.3; font-size: 0.9rem; }
 
-        /* --- MAIN DASHBOARD (HIDDEN AT START) --- */
-        #main-nexus { opacity: 0; visibility: hidden; transform: translateY(30px); }
-        .access-granted #main-nexus { opacity: 1; visibility: visible; transform: translateY(0); }
-        .access-granted #gatekeeper { opacity: 0; visibility: hidden; pointer-events: none; }
-        .access-granted body { overflow: auto; }
+        /* --- SONUÇ EKRANI --- */
+        #result-screen { display: none; text-align: center; }
+        .profile-icon { font-size: 5rem; color: var(--accent); margin-bottom: 20px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 
-        /* --- PROFESSIONAL UI COMPONENTS --- */
-        .top-nav { padding: 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: var(--bg); z-index: 100; }
+        /* --- ANA MENÜ --- */
+        #main-nexus { display: none; opacity: 0; transform: translateY(20px); transition: 1s; }
+        .authorized #main-nexus { display: block; opacity: 1; transform: translateY(0); }
+        .authorized #gatekeeper { display: none; }
+        .authorized body { overflow-y: auto; }
+
+        /* --- PROFESYONEL NAV --- */
+        .top-nav { padding: 30px; display: flex; justify-content: space-between; align-items: center; }
         .logo { font-family: 'JetBrains Mono'; font-weight: 800; font-size: 1.8rem; color: var(--primary); letter-spacing: -2px; }
-        .status-pill { background: var(--primary); color: #fff; padding: 10px 20px; border-radius: 30px; font-family: 'JetBrains Mono'; font-weight: 800; font-size: 0.8rem; }
+        .nexus-time { background: var(--primary); color: #fff; padding: 12px 25px; border-radius: 30px; font-family: 'JetBrains Mono'; font-weight: 800; }
 
         .dashboard { max-width: 650px; margin: 0 auto; padding: 20px; }
-        .quote-card { background: var(--card); padding: 30px; border-radius: 40px; border-left: 10px solid var(--accent); margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        
-        .nav-menu { display: grid; gap: 18px; }
-        .nav-item {
-            background: var(--card); padding: 30px; border-radius: 45px;
-            display: flex; align-items: center; gap: 25px; text-decoration: none; color: inherit;
-            border: 1px solid var(--border); box-shadow: 0 15px 35px rgba(0,0,0,0.02);
-        }
-        .nav-item:hover { transform: translateY(-12px); border-color: var(--accent); box-shadow: 0 25px 50px rgba(0,0,0,0.1); }
-        .icon-circle { width: 75px; height: 75px; border-radius: 28px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: #fff; }
+        .quote-box { background: var(--card); padding: 35px; border-radius: 45px; border-left: 12px solid var(--accent); margin-bottom: 40px; box-shadow: 0 15px 40px rgba(0,0,0,0.05); }
 
-        /* --- THEMES --- */
-        .theme-med { background: linear-gradient(135deg, #5a0000, #a50016); }
-        .theme-physic { background: linear-gradient(135deg, #001f3f, #003366); }
-        .theme-math { background: linear-gradient(135deg, #3d2b1f, #b87333); }
-        .theme-lab { background: linear-gradient(135deg, #1a237e, #4a148c); }
+        .menu-grid { display: grid; gap: 20px; }
+        .menu-item {
+            background: var(--card); padding: 35px; border-radius: 50px;
+            display: flex; align-items: center; gap: 25px; text-decoration: none; color: inherit;
+            border: 1px solid var(--border); transition: 0.4s;
+        }
+        .menu-item:hover { transform: translateY(-15px); border-color: var(--accent); box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
+        .icon-wrap { width: 80px; height: 80px; border-radius: 30px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: #fff; box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+
+        .color-med { background: linear-gradient(135deg, #5a0000, #a50016); }
+        .color-physic { background: linear-gradient(135deg, #001f3f, #003366); }
+        .color-math { background: linear-gradient(135deg, #3d2b1f, #b87333); }
+        .color-lab { background: linear-gradient(135deg, #1a237e, #4a148c); }
     </style>
 </head>
 <body data-theme="light">
 
     <div id="gatekeeper">
-        <div class="test-hub">
-            <div class="test-header">
-                <div class="progress-bar"><div id="progress-fill"></div></div>
-                <span class="q-num" id="q-counter">SORU 01 // 10</span>
-            </div>
-            <div id="q-area">
-                <h2 class="q-text" id="q-text">Yükleniyor...</h2>
-                <div class="options-grid" id="opt-container">
+        <div class="test-hub" id="test-content">
+            <div id="question-screen">
+                <div class="progress-container">
+                    <div class="q-meta" id="q-counter">ANALİZ: 01 // 10</div>
+                    <div class="bar-outer"><div id="bar-inner"></div></div>
+                </div>
+                <h2 class="q-title" id="q-text">Bir problemi çözerken ilk yaklaşımın nedir?</h2>
+                <div class="options-list" id="opt-list">
                     </div>
+            </div>
+
+            <div id="result-screen">
+                <i class="fa-solid fa-brain profile-icon"></i>
+                <h2 id="profile-name" style="margin-bottom:10px;">Analiz Tamamlandı</h2>
+                <p id="profile-desc" style="margin-bottom:30px; opacity:0.7;">Zihin frekansın Azura ile senkronize edildi.</p>
+                <button onclick="enterNexus()" style="background:var(--primary); color:#fff; padding:20px 50px; border-radius:30px; border:none; font-weight:800; cursor:pointer;">MERKEZE GİRİŞ YAP</button>
             </div>
         </div>
     </div>
 
     <div id="main-nexus">
         <header class="top-nav">
-            <div class="logo">AZURA_NEXUS</div>
-            <div class="status-pill" id="live-clock">00:00:00</div>
+            <div class="logo">AZURA_CORE</div>
+            <div class="nexus-time" id="clock">00:00:00</div>
         </header>
 
         <div class="dashboard">
-            <div class="quote-card">
-                <p id="quote-display" style="font-weight: 600; font-style: italic; font-size: 1.1rem; opacity: 0.9;">"Hayal gücü, bilgiden daha önemlidir." - Albert Einstein</p>
+            <div class="quote-box">
+                <p id="quote" style="font-weight: 600; font-style: italic; font-size: 1.1rem;">"Evrenin gizemi, zihnin derinliklerinde saklıdır."</p>
+                <p style="font-size:0.8rem; margin-top:10px; opacity:0.5; font-family:'JetBrains Mono';" id="user-profile">PROFİL: ANALİZ EDİLİYOR...</p>
             </div>
 
-            <nav class="nav-menu">
-                <a href="medical.html" class="nav-item">
-                    <div class="icon-circle theme-med"><i class="fa-solid fa-staff-snake"></i></div>
-                    <div class="nav-info"><h3>Tıp & Klinik 🫀</h3><p>Akademik Vaka Arşivi</p></div>
+            <nav class="menu-grid">
+                <a href="medical.html" class="menu-item">
+                    <div class="icon-wrap color-med"><i class="fa-solid fa-microscope"></i></div>
+                    <div><h3>Tıp & Klinik 🫀</h3><p>Klinik Vaka & Anatomi</p></div>
                     <i class="fa-solid fa-chevron-right" style="margin-left:auto; opacity:0.2;"></i>
                 </a>
-
-                <a href="physic.html" class="nav-item">
-                    <div class="icon-circle theme-physic"><i class="fa-solid fa-atom"></i></div>
-                    <div class="nav-info"><h3>Fizik Sektörü ⚛️</h3><p>Kozmoloji & Kuantum</p></div>
+                <a href="physic.html" class="menu-item">
+                    <div class="icon-wrap color-physic"><i class="fa-solid fa-atom"></i></div>
+                    <div><h3>Fizik Sektörü ⚛️</h3><p>Kozmoloji Kapıları</p></div>
                     <i class="fa-solid fa-chevron-right" style="margin-left:auto; opacity:0.2;"></i>
                 </a>
-
-                <a href="math.html" class="nav-item">
-                    <div class="icon-circle theme-math"><i class="fa-solid fa-infinity"></i></div>
-                    <div class="nav-info"><h3>Matematik 📐</h3><p>Karmaşık Denklemler</p></div>
+                <a href="math.html" class="menu-item">
+                    <div class="icon-wrap color-math"><i class="fa-solid fa-infinity"></i></div>
+                    <div><h3>Matematik 📐</h3><p>Denklemlerin Ruhu</p></div>
                     <i class="fa-solid fa-chevron-right" style="margin-left:auto; opacity:0.2;"></i>
                 </a>
-
-                <a href="games.html" class="nav-item">
-                    <div class="icon-circle theme-lab"><i class="fa-solid fa-brain"></i></div>
-                    <div class="nav-info"><h3>Zihin Lab 🧠</h3><p>Simülasyon & Testler</p></div>
+                <a href="games.html" class="menu-item">
+                    <div class="icon-wrap color-lab"><i class="fa-solid fa-brain"></i></div>
+                    <div><h3>Zihin Lab 🧠</h3><p>Kişilik & Simülasyon</p></div>
                     <i class="fa-solid fa-chevron-right" style="margin-left:auto; opacity:0.2;"></i>
                 </a>
             </nav>
@@ -132,72 +139,81 @@
     </div>
 
     <script>
-        const testData = [
-            { q: "Bir nöronun uyarılması için gereken eşik değerine ne ad verilir?", a: ["Aksiyon Potansiyeli", "Sinaptik Boşluk", "Depolarizasyon", "Miyelin Kılıf"], c: 0 },
-            { q: "Schrödinger'in kedisi hangi kuantum ilkesini temsil eder?", a: ["Dolanıklık", "Süperpozisyon", "Belirsizlik", "Tünelleme"], c: 1 },
-            { q: "Entropi, termodinamiğin hangi yasasıyla açıklanır?", a: ["1. Yasa", "2. Yasa", "3. Yasa", "Sıfırıncı Yasa"], c: 1 },
-            { q: "DNA sarmalında Adenin karşısına hangi baz gelir?", a: ["Guanin", "Sitozin", "Timin", "Urasil"], c: 2 },
-            { q: "Evrenin genişlediğini kanıtlayan gözlem hangisidir?", a: ["Maviye Kayma", "Kızıla Kayma", "Kütleçekimsel Mercek", "Olay Ufku"], c: 1 },
-            { q: "Işık hızına yaklaştıkça zamanın yavaşlamasına ne denir?", a: ["Zaman Daralması", "Kütle Artışı", "Boy Kısalması", "İzafiyet"], c: 0 },
-            { q: "Altın oran (Phi) yaklaşık olarak kaçtır?", a: ["1.414", "3.141", "2.718", "1.618"], c: 3 },
-            { q: "Beynin ana bellek merkezi neresidir?", a: ["Amigdala", "Serebellum", "Hipokampüs", "Talamus"], c: 2 },
-            { q: "Hangi kuvvet atom çekirdeğini bir arada tutar?", a: ["Elektromanyetik", "Zayıf Nükleer", "Güçlü Nükleer", "Kütleçekimi"], c: 2 },
-            { q: "Azura sistemine tam erişim istiyor musun?", a: ["Hayır", "Belki", "Analiz Ediliyor", "EVET"], c: 3 }
+        // KİŞİLİK TESTİ VERİSİ
+        const questions = [
+            { t: "Kaosun ortasında kalsan tavrın ne olurdu?", o: ["Sakin kalıp düzen kurarım", "Akışa bırakıp adapte olurum", "Fırsatları kollarım", "Mantıklı bir çıkış ararım"], p: [1,2,3,4] },
+            { t: "Bir bilginin doğruluğunu nasıl ölçersin?", o: ["Deney ve gözlemle", "Mantıksal tutarlılıkla", "İçgüdülerimle", "Kaynakların güvenilirliğiyle"], p: [4,3,2,1] },
+            { t: "Gelecek senin için ne ifade ediyor?", o: ["Bilinmez bir macera", "Kontrol edilmesi gereken bir süreç", "Teknolojik bir devrim", "Kaderin bir parçası"], p: [2,4,3,1] },
+            { t: "Bir makine bilinç kazanırsa ona ne dersin?", o: ["Tehdit", "Evrimin bir parçası", "Arkadaş", "Sadece bir kod yığını"], p: [1,4,3,2] },
+            { t: "Zamanın akışını hissedebiliyor musun?", o: ["Çok hızlı geçiyor", "Her anın farkındayım", "Zaman bir yanılsama", "Sadece bir ölçü birimi"], p: [1,2,4,3] },
+            { t: "Hangi renk zihnini daha iyi yansıtır?", o: ["Derin Lacivert", "Kan Kırmızısı", "Bakır Tonları", "Antrasit"], p: [4,1,3,2] },
+            { t: "Yalnızlık senin için nedir?", o: ["Korkutucu", "Yaratıcılık kaynağı", "Dinlenme alanı", "Gereksiz"], p: [1,4,3,2] },
+            { t: "Başarıya giden yol hangisidir?", o: ["Disiplin", "Yaratıcılık", "Şans", "Zeka"], p: [4,3,1,2] },
+            { t: "Evrenin bir sonu var mıdır?", o: ["Evet, her şey biter", "Döngüseldir, yeniden başlar", "Sonsuzdur", "Bunu bilmek imkansız"], p: [2,4,3,1] },
+            { t: "Azura'nın derinliklerine inmeye hazır mısın?", o: ["Kesinlikle", "Korkuyorum ama evet", "Zaten oradayım", "Daha fazla bekleyemem"], p: [4,2,3,4] }
         ];
 
         let currentQ = 0;
+        let totalScore = 0;
 
-        function loadQuestion() {
-            const data = testData[currentQ];
-            document.getElementById('q-counter').innerText = `SORU ${String(currentQ + 1).padStart(2, '0')} // 10`;
-            document.getElementById('q-text').innerText = data.q;
-            document.getElementById('progress-fill').style.width = `${(currentQ + 1) * 10}%`;
+        function loadQ() {
+            const q = questions[currentQ];
+            document.getElementById('q-counter').innerText = `ANALİZ: ${String(currentQ + 1).padStart(2, '0')} // 10`;
+            document.getElementById('bar-inner').style.width = `${(currentQ + 1) * 10}%`;
+            document.getElementById('q-text').innerText = q.t;
             
-            const container = document.getElementById('opt-container');
-            container.innerHTML = "";
-            
-            data.a.forEach((opt, idx) => {
-                const btn = document.createElement('button');
-                btn.className = 'opt-btn';
-                btn.innerHTML = `<span style="opacity:0.5; font-family:monospace;">0${idx+1}</span> ${opt}`;
-                btn.onclick = () => checkAnswer(idx);
-                container.appendChild(btn);
+            const list = document.getElementById('opt-list');
+            list.innerHTML = "";
+            q.o.forEach((opt, i) => {
+                const div = document.createElement('div');
+                div.className = "opt-card";
+                div.innerHTML = `<i class="fa-solid fa-circle-dot"></i> ${opt}`;
+                div.onclick = () => selectOpt(q.p[i]);
+                list.appendChild(div);
             });
         }
 
-        function checkAnswer(idx) {
-            const btns = document.querySelectorAll('.opt-btn');
-            if(idx === testData[currentQ].c) {
-                btns[idx].classList.add('correct');
-                setTimeout(() => {
-                    currentQ++;
-                    if(currentQ < testData.length) {
-                        loadQuestion();
-                    } else {
-                        grantAccess();
-                    }
-                }, 600);
+        function selectOpt(p) {
+            totalScore += p;
+            if(currentQ < 9) {
+                currentQ++;
+                loadQ();
             } else {
-                btns[idx].classList.add('wrong');
-                setTimeout(() => btns[idx].classList.remove('wrong'), 500);
+                showResult();
             }
         }
 
-        function grantAccess() {
-            document.body.classList.add('access-granted');
+        function showResult() {
+            document.getElementById('question-screen').style.display = "none";
+            document.getElementById('result-screen').style.display = "block";
+            
+            let name = "";
+            let desc = "";
+            if(totalScore >= 35) { name = "Analitik Singularity"; desc = "Zihnin tam bir veri işleme merkezi. Mantığın ötesini görüyorsun."; }
+            else if(totalScore >= 25) { name = "Kozmik Kaşif"; desc = "Merakın seni evrenin en karanlık köşelerine bile taşıyabilir."; }
+            else { name = "Biyolojik Stratejist"; desc = "Pratik zekan ve hayatta kalma içgüdülerin seni her zaman önde tutuyor."; }
+            
+            document.getElementById('profile-name').innerText = name;
+            document.getElementById('profile-desc').innerText = desc;
+            document.getElementById('user-profile').innerText = `PROFİL: ${name.toUpperCase()}`;
         }
 
+        function enterNexus() {
+            document.body.classList.add('authorized');
+        }
+
+        // OTOMATİK TEMA VE SAAT
         function updateNexus() {
             const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString('tr-TR');
             const hrs = now.getHours();
-            document.getElementById('live-clock').innerText = now.toLocaleTimeString('tr-TR');
-            if (hrs >= 19 || hrs <= 6) document.body.setAttribute('data-theme', 'dark');
+            if(hrs >= 19 || hrs <= 6) document.body.setAttribute('data-theme', 'dark');
             else document.body.setAttribute('data-theme', 'light');
         }
 
         setInterval(updateNexus, 1000);
         updateNexus();
-        loadQuestion();
+        loadQ();
     </script>
 </body>
 </html>
