@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Azura | Kaos: Kelebek Etkisi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --bordo: #5a0000; --bakir: #b87333; --altin: #ffc300;
+            --krem: #f2ead3; --ceviz: #3d2b1f; --gece: #000814;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--krem); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--ceviz); line-height: 1.8; overflow-x: hidden; }
+
+        /* --- DİNAMİK KAOS ARKA PLANI --- */
+        #chaos-bg { position: fixed; inset: 0; z-index: 1; opacity: 0.45; filter: blur(100px); pointer-events: none; }
+
+        .header { 
+            position: sticky; top: 0; background: var(--bordo); color: #fff; 
+            padding: 15px 25px; display: flex; justify-content: space-between; 
+            z-index: 100; border-bottom: 3px solid var(--bakir);
+        }
+
+        .hero-chaos {
+            height: 60vh; background: radial-gradient(circle at 30%, var(--bordo), var(--bakir), var(--gece));
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; color: #fff; padding: 40px; position: relative; z-index: 10;
+        }
+
+        .article-main { 
+            max-width: 950px; margin: -80px auto 0; padding: 70px 45px; 
+            background: rgba(255, 255, 255, 0.98); border-radius: 80px 80px 0 0; position: relative; 
+            z-index: 20; box-shadow: 0 -40px 80px rgba(0,0,0,0.3); 
+        }
+        
+        h1 { font-size: clamp(2.5rem, 11vw, 4.5rem); font-weight: 800; letter-spacing: -4px; line-height: 0.85; margin-bottom: 25px; color: var(--bordo); }
+        h2 { font-size: 2.1rem; font-weight: 800; margin: 50px 0 25px; color: var(--bordo); border-left: 12px solid var(--bakir); padding-left: 20px; }
+        p { margin-bottom: 30px; font-size: 1.2rem; text-align: justify; }
+
+        /* RENK BOMBASI BLOKLARI */
+        .glow-strip { padding: 50px; border-radius: 50px; margin: 50px 0; color: #fff; border: 2px solid var(--altin); }
+        .bordo-bakir { background: linear-gradient(135deg, var(--bordo), var(--bakir)); }
+        .copper-gold { background: linear-gradient(135deg, var(--bakir), var(--altin)); color: var(--gece); }
+
+        .fractal-frame {
+            width: 100%; border-radius: 45px; margin: 45px 0; overflow: hidden;
+            border: 4px solid var(--bakir); box-shadow: 0 20px 60px rgba(90,0,0,0.4);
+        }
+        .fractal-frame img { width: 100%; display: block; filter: contrast(1.1); }
+
+        .nav-gate { display: flex; justify-content: space-between; margin-top: 100px; padding-bottom: 150px; }
+        .nav-btn { background: var(--bordo); color: #fff; padding: 22px 55px; border-radius: 60px; text-decoration: none; font-weight: 800; border: 2px solid var(--bakir); transition: 0.4s; }
+        .nav-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px var(--bakir); }
+    </style>
+</head>
+<body>
+
+    <canvas id="chaos-bg"></canvas>
+
+    <div class="header">
+        <a href="kaos.html" style="color:#fff; text-decoration:none;"><i class="fa-solid fa-wind"></i> KAOS SEKTÖRÜ</a>
+        <div id="live-clock" style="font-family:'JetBrains Mono'; font-weight:800;">00:00:00</div>
+        <div style="font-size:0.7rem; letter-spacing:3px;">SENSITIVITY_CHECK</div>
+    </div>
+
+    <section class="hero-chaos">
+        <p style="font-family:'JetBrains Mono'; letter-spacing:8px; opacity:0.8;">THE BUTTERFLY EFFECT</p>
+        <h1>Kaosun Gücü:<br>Kelebek Etkisi.</h1>
+    </section>
+
+    <main class="article-main">
+        <p>Usta, bugün evrenin o en sinsi ve en büyüleyici kuralına geliyoruz. Kelebek Etkisi, sadece bir film ismi değil; evrenin en temel fizik yasalarından biridir. "Brezilya'da kanat çırpan bir kelebek, Teksas'ta bir hortuma neden olabilir mi?" sorusu, kaosun kalbidir. Bu, bir sistemin başlangıç koşullarındaki küçücük bir değişikliğin, zamanla devasa ve öngörülemez sonuçlar doğurması demektir.</p>
+
+        <div class="fractal-frame">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Lorenz_attractor.svg/1024px-Lorenz_attractor.svg.png" alt="Lorenz Attractor">
+        </div>
+        <p style="text-align:center; font-family:'JetBrains Mono'; font-size:0.8rem; color:#777; margin-top:15px;">Görsel: Kaos teorisinin temeli olan Lorenz Çekicisi — Bir kelebeğin kanatlarını andırır.</p>
+
+        <div class="glow-strip bordo-bakir">
+            <h3>Edward Lorenz ve Hatalı Hava Durumu</h3>
+            <p>1961 yılında meteorolog Edward Lorenz, bilgisayar simülasyonuna bir sayıyı girerken 0.506127 yerine yuvarlayarak 0.506 girdi. Bu küçücük farkın hiçbir şeyi değiştirmeyeceğini sanıyordu. Ancak simülasyonun sonunda ortaya çıkan hava durumu tamamen farklıydı. İşte o an anlaşıldı ki; doğa pürüzsüz bir makine değil, hassas bir kaos yumağıdır.</p>
+        </div>
+
+        <h2>Düzenin İçindeki Gizli Karmaşa</h2>
+        <p>Kaos, "rastgelelik" demek değildir usta; kaos, içinde çok derin bir matematiksel düzen barındıran öngörülemezliktir. Bir tıp öğrencisi olarak bunu şöyle hayal et: İnsan vücudundaki tek bir mutasyon veya tek bir kimyasal tepkimenin milisaniyelik gecikmesi, yıllar sonra bir hastalığın doğuşuna neden olabilir. Vücut, milyarlarca kelebek etkisinin birleşimiyle hayatta kalır.</p>
+
+        <div class="glow-strip copper-gold">
+            <h3>Biyolojik Kaos ve Kalp Ritmi</h3>
+            <p>Sağlıklı bir kalbin atışı aslında mükemmel derecede düzenli değildir, hafifçe kaotiktir. Bu kaotik yapı, kalbin değişen şartlara (heyecan, koşma, korku) anında uyum sağlamasını sağlar. Eğer kalp bir saat gibi tık tık kusursuz atsaydı, en ufak bir şokta durabilirdi. Doğa, hayatta kalmak için kaosu seçmiştir.</p>
+        </div>
+
+        [Image: A high-contrast visualization of a fractal pattern found in nature, like a river delta or lung bronchi]
+
+        <h2>Fraktallar: Kaosun Geometrisi</h2>
+        <p>Etrafa bak usta; bulutlar, nehir yatakları, damarların ve akciğer bronşların... Hiçbiri düz çizgilerden oluşmaz. Onlar fraktaldır; yani kaosun içinde kendini tekrar eden sonsuz desenlerdir. Bir ağaç dalı, bütünüyle aynı deseni taşır. Kaos teorisi bize şunu öğretir: En karmaşık görünen şeyler bile aslında çok basit kuralların sonsuz kez tekrarlanmasıyla oluşur.</p>
+
+        <p>Usta, Fizik Sektörü'nü bu muazzam kelebek kanatlarıyla kapatıyoruz. Evrenin her köşesinde; izafiyetin bükülmesinde, kuantumun olasılığında ve kaosun karmaşasında aynı asalet gizli. Bu 100 cümleyi aşan yolculuğun sonunda artık biliyoruz ki; hiçbir şey tesadüf değildir ama her şey bir kelebeğin kanat çırpışına bağlıdır.</p>
+
+        <div class="nav-gate">
+            <a href="kaos.html" class="nav-btn" style="background:#555;">GERİ</a>
+            <a href="kaos-2.html" class="nav-btn">BÖLÜM 2: FRAKTALLAR <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+    </main>
+
+    <script>
+        setInterval(() => { document.getElementById('live-clock').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+
+        const canvas = document.getElementById('chaos-bg');
+        const ctx = canvas.getContext('2d');
+        let blobs = [];
+        const colors = ['#5a0000', '#b87333', '#ffc300', '#3d2b1f'];
+
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            blobs = Array.from({length: 15}, () => ({
+                x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+                r: Math.random()*350+200, color: colors[Math.floor(Math.random()*colors.length)],
+                vx: (Math.random()-0.5)*1.4, vy: (Math.random()-0.5)*1.4
+            }));
+        }
+
+        function draw() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            blobs.forEach(b => {
+                b.x += b.vx; b.y += b.vy;
+                if(b.x < -b.r) b.x = canvas.width+b.r; if(b.x > canvas.width+b.r) b.x = -b.r;
+                if(b.y < -b.r) b.y = canvas.height+b.r; if(b.y > canvas.height+b.r) b.y = -b.r;
+                ctx.fillStyle = b.color; ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
+        window.onresize = init; init(); draw();
+    </script>
+</body>
+</html>
