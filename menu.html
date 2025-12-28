@@ -2,227 +2,151 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Azura Nexus | Elite Command</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Azura Nexus | Professional Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&family=JetBrains+Mono:wght@800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bordo: #5a0000;      /* Bordo & Ceviz Paleti */
-            --ceviz: #3d2b1f;      
-            --koyu-yesil: #0a2f1f; /* Koyu Yeşil & Altın Paleti */
-            --altin: #b8860b;      
-            --lacivert: #001f3f;   /* Lacivert & Bakır Paleti */
-            --bakir: #b87333;      
-            --krem-koyu: #f2ead3;  /* Ana Arka Plan */
-            --krem-card: #faf7ed;
-            --text-size: 16px;
+            /* Aydınlık Mod Değişkenleri */
+            --bg: #f8f9fa; --card-bg: #ffffff; --text: #1a1a1a;
+            --primary: #5a0000; --accent: #b87333; --border: rgba(0,0,0,0.05);
         }
 
-        body.dark-mode {
-            --krem-koyu: #120a0a;
-            --krem-card: #1c1313;
-            --ceviz: #f2ead3;
+        [data-theme="dark"] {
+            /* Karanlık Mod Değişkenleri */
+            --bg: #0a0a0b; --card-bg: #161618; --text: #e0e0e0;
+            --border: rgba(255,255,255,0.05);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        body { background: var(--bg); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text); overflow-x: hidden; }
+
+        /* --- ÜST PANEL --- */
+        .top-bar { padding: 25px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; background: var(--bg); }
+        .brand { font-family: 'JetBrains Mono'; font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; color: var(--primary); }
+        .clock-widget { background: var(--primary); color: #fff; padding: 8px 15px; border-radius: 20px; font-family: 'JetBrains Mono'; font-weight: 800; font-size: 0.9rem; box-shadow: 0 10px 20px rgba(90,0,0,0.2); }
+
+        .container { padding: 20px 25px; max-width: 600px; margin: 0 auto; }
+
+        /* --- GÜNÜN SÖZÜ --- */
+        .quote-box { background: var(--card-bg); padding: 25px; border-radius: 35px; border: 1px solid var(--border); margin-bottom: 30px; position: relative; overflow: hidden; }
+        .quote-box::before { content: '“'; position: absolute; top: -10px; left: 20px; font-size: 5rem; opacity: 0.1; font-family: serif; }
+        .quote-text { font-size: 1rem; font-weight: 600; font-style: italic; line-height: 1.5; opacity: 0.9; }
+
+        /* --- MODAL (KİŞİLİK TESTİ) --- */
+        #test-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); visibility: hidden; opacity: 0; }
+        .modal-content { background: var(--card-bg); width: 90%; max-width: 450px; padding: 40px; border-radius: 50px; text-align: center; transform: scale(0.9); }
+        .show-modal { visibility: visible !important; opacity: 1 !important; }
+        .show-modal .modal-content { transform: scale(1); }
+
+        /* --- KATEGORİ KARTLARI (PROFESSIONAL) --- */
+        .menu-grid { display: flex; flex-direction: column; gap: 15px; }
+        .nexus-card { 
+            background: var(--card-bg); padding: 25px; border-radius: 40px; 
+            display: flex; align-items: center; gap: 20px; text-decoration: none; color: inherit;
+            border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            position: relative;
+        }
+        .nexus-card:hover { transform: translateY(-8px) scale(1.02); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
         
-        body { 
-            background: var(--krem-koyu); 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            font-size: var(--text-size);
-            color: var(--ceviz); 
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+        .card-icon { width: 65px; height: 65px; border-radius: 22px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .card-info h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 4px; }
+        .card-info p { font-size: 0.85rem; opacity: 0.6; font-weight: 500; }
+        .chevron { margin-left: auto; opacity: 0.3; }
 
-        canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
-
-        /* --- ÜST ŞERİT (DERİN BORDO & ALTIN) --- */
-        .header {
-            background: var(--bordo);
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 3px solid var(--altin);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        .brand { color: #fff; font-family: 'JetBrains Mono'; font-weight: 800; font-size: 1.4rem; letter-spacing: -1px; }
-
-        .header-tools { display: flex; gap: 10px; align-items: center; }
-        
-        .live-clock {
-            background: rgba(0,0,0,0.3);
-            color: var(--altin);
-            padding: 5px 12px;
-            border-radius: 50px;
-            font-family: 'JetBrains Mono';
-            font-size: 0.8rem;
-            border: 1px solid var(--altin);
-        }
-
-        /* --- ANA KONTEYNER --- */
-        .container { position: relative; z-index: 10; padding: 25px 20px; max-width: 500px; margin: 0 auto; }
-
-        .hero h1 { font-size: 2.2rem; font-weight: 800; color: var(--ceviz); letter-spacing: -2px; line-height: 0.95; margin-bottom: 25px; }
-
-        /* --- 5 KATEGORİ SİSTEMİ --- */
-        .menu-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 100px; }
-
-        .card {
-            background: var(--krem-card);
-            padding: 18px 22px;
-            border-radius: 30px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            text-decoration: none;
-            color: inherit;
-            border: 1px solid rgba(128,0,0,0.05);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.03);
-        }
-
-        .card:active { transform: scale(0.96); background: #fff; }
-
-        .card-icon {
-            width: 52px; height: 52px; border-radius: 18px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.3rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .card-info h2 { font-size: 1.15rem; font-weight: 800; color: var(--ceviz); }
-        .card-info p { font-size: 0.75rem; opacity: 0.6; font-weight: 500; }
-
-        .chevron { margin-left: auto; color: var(--altin); opacity: 0.4; }
-
-        /* --- ERİŞİLEBİLİRLİK PANELİ --- */
-        .access-bar {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: var(--bordo);
-            padding: 10px 25px;
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            z-index: 1000;
-            border: 1px solid var(--altin);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-        }
-
-        .access-btn {
-            background: none; border: none; color: #fff;
-            font-size: 1rem; cursor: pointer;
-            display: flex; align-items: center; gap: 5px;
-        }
-
-        .access-btn:active { color: var(--altin); transform: scale(1.1); }
-
+        /* --- RENK GRADIENTLERİ --- */
+        .bg-medical { background: linear-gradient(135deg, #5a0000, #a50016); }
+        .bg-physic { background: linear-gradient(135deg, #001f3f, #003366); }
+        .bg-math { background: linear-gradient(135deg, #3d2b1f, #b87333); }
+        .bg-mind { background: linear-gradient(135deg, #1a237e, #4a148c); }
     </style>
 </head>
-<body>
+<body data-theme="light">
 
-    <canvas id="particles"></canvas>
-
-    <header class="header">
-        <div class="brand">AZURA</div>
-        <div class="header-tools">
-            <div class="live-clock" id="clock">00:00:00</div>
-            <div style="color: #fff; cursor: pointer;" onclick="document.body.classList.toggle('dark-mode')">
-                <i class="fa-solid fa-circle-half-stroke"></i>
-            </div>
+    <div id="test-modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 15px;">Zihin Kapısı 🧠</h2>
+            <p style="margin-bottom: 25px; opacity: 0.7;">Azura'ya girmeden önce, bugün hangi frekanstasın? 10 soruluk kısa bir analiz ile profilini belirleyelim.</p>
+            <button onclick="startTest()" style="background: var(--primary); color: #fff; border: none; padding: 18px 40px; border-radius: 30px; font-weight: 800; cursor: pointer;">TESTİ BAŞLAT</button>
         </div>
+    </div>
+
+    <header class="top-bar">
+        <div class="brand">AZURA.HUB</div>
+        <div class="clock-widget" id="nexus-clock">00:00:00</div>
     </header>
 
     <div class="container">
-        <div class="hero">
-            <h1>Dijital<br>Kontrol Merkezi.</h1>
+        <div class="quote-box">
+            <p class="quote-text" id="daily-quote">"Evrenin gizemini çözmek istiyorsanız; enerji, frekans ve titreşim cinsinden düşünün." - Nikola Tesla</p>
         </div>
 
-        <nav class="menu-list">
-            <a href="medical.html" class="card" style="border-left: 5px solid var(--bordo);">
-                <div class="card-icon" style="background: var(--ceviz); color: var(--bordo);"><i class="fa-solid fa-notes-medical"></i></div>
-                <div class="card-info"><h2>Tıp & Klinik</h2><p>Akademik Arşiv</p></div>
+        <nav class="menu-grid">
+            <a href="medical.html" class="nexus-card">
+                <div class="card-icon bg-medical"><i class="fa-solid fa-heart-pulse"></i></div>
+                <div class="card-info"><h3>Tıp & Klinik 🫀</h3><p>Akademik Arşiv & Tanı</p></div>
                 <i class="fa-solid fa-chevron-right chevron"></i>
             </a>
 
-            <a href="physic.html" class="card" style="border-left: 5px solid var(--koyu-yesil);">
-                <div class="card-icon" style="background: var(--koyu-yesil); color: var(--altin);"><i class="fa-solid fa-atom"></i></div>
-                <div class="card-info"><h2>Fizik Sektörü</h2><p>Kozmoloji Kapıları</p></div>
-                <i class="fa-solid fa-chevron-right chevron" style="color: var(--altin);"></i>
-            </a>
-
-            <a href="gastronomy.html" class="card" style="border-left: 5px solid var(--lacivert);">
-                <div class="card-icon" style="background: var(--lacivert); color: var(--bakir);"><i class="fa-solid fa-utensils"></i></div>
-                <div class="card-info"><h2>Gastronomi</h2><p>Mutfak Mirası</p></div>
-                <i class="fa-solid fa-chevron-right chevron" style="color: var(--bakir);"></i>
-            </a>
-
-            <a href="games.html" class="card" style="border-left: 5px solid var(--bordo);">
-                <div class="card-icon" style="background: var(--bordo); color: var(--altin);"><i class="fa-solid fa-brain"></i></div>
-                <div class="card-info"><h2>Zihin Lab</h2><p>Simülasyonlar</p></div>
+            <a href="physic.html" class="nexus-card">
+                <div class="card-icon bg-physic"><i class="fa-solid fa-atom"></i></div>
+                <div class="card-info"><h3>Fizik Sektörü ⚛️</h3><p>Kozmoloji & Kuantum</p></div>
                 <i class="fa-solid fa-chevron-right chevron"></i>
             </a>
 
-            <a href="settings.html" class="card" style="border-left: 5px solid var(--ceviz);">
-                <div class="card-icon" style="background: var(--ceviz); color: var(--bakir);"><i class="fa-solid fa-sliders"></i></div>
-                <div class="card-info"><h2>Sistem Çekirdeği</h2><p>Ağ Ayarları</p></div>
-                <i class="fa-solid fa-chevron-right chevron" style="color: var(--bakir);"></i>
+            <a href="math.html" class="nexus-card">
+                <div class="card-icon bg-math"><i class="fa-solid fa-square-root-variable"></i></div>
+                <div class="card-info"><h3>Matematik 📐</h3><p>Denklemler & Analiz</p></div>
+                <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+
+            <a href="games.html" class="nexus-card">
+                <div class="card-icon bg-mind"><i class="fa-solid fa-brain"></i></div>
+                <div class="card-info"><h3>Zihin Lab 👁️</h3><p>Simülasyonlar & Testler</p></div>
+                <i class="fa-solid fa-chevron-right chevron"></i>
             </a>
         </nav>
     </div>
 
-    <div class="access-bar">
-        <button class="access-btn" onclick="adjustFont(1.1)"><i class="fa-solid fa-plus"></i></button>
-        <button class="access-btn" onclick="adjustFont(0.9)"><i class="fa-solid fa-minus"></i></button>
-        <button class="access-btn" onclick="resetFont()"><i class="fa-solid fa-rotate-left"></i></button>
-    </div>
-
     <script>
-        function updateClock() {
-            document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR');
+        // Saat ve Otomatik Tema Kontrolü
+        function updateNexus() {
+            const now = new Date();
+            const hours = now.getHours();
+            document.getElementById('nexus-clock').innerText = now.toLocaleTimeString('tr-TR');
+            
+            // 19:00 - 06:00 arası otomatik karanlık mod
+            if (hours >= 19 || hours <= 6) {
+                document.body.setAttribute('data-theme', 'dark');
+            } else {
+                document.body.setAttribute('data-theme', 'light');
+            }
         }
-        setInterval(updateClock, 1000); updateClock();
+        setInterval(updateNexus, 1000);
+        updateNexus();
 
-        let fontSize = 16;
-        function adjustFont(scale) {
-            fontSize *= scale;
-            document.documentElement.style.setProperty('--text-size', fontSize + 'px');
-        }
-        function resetFont() {
-            fontSize = 16;
-            document.documentElement.style.setProperty('--text-size', '16px');
+        // Giriş Modalı Kontrolü
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('test-modal').classList.add('show-modal');
+            }, 500);
+        };
+
+        function startTest() {
+            document.getElementById('test-modal').classList.remove('show-modal');
+            // Buraya test sayfanızın yönlendirmesi gelecek
+            alert("Analiz Motoru Hazırlanıyor... Hoş geldin Usta!");
         }
 
-        const canvas = document.getElementById('particles');
-        const ctx = canvas.getContext('2d');
-        let dots = [];
-
-        function init() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            dots = Array.from({length: 45}, () => ({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                r: Math.random() * 2,
-                v: Math.random() * 0.2 + 0.1
-            }));
-        }
-
-        function draw() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.fillStyle = '#b8860b'; 
-            dots.forEach(d => {
-                d.y -= d.v; if(d.y < -5) d.y = canvas.height + 5;
-                ctx.globalAlpha = 0.2;
-                ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI*2); ctx.fill();
-            });
-            requestAnimationFrame(draw);
-        }
-        window.onresize = init; init(); draw();
+        // Rastgele Günün Sözü (Matematik/Fizik Ağırlıklı)
+        const quotes = [
+            "Matematik, Tanrı'nın evreni yazdığı dildir. - Galileo",
+            "Mantık sizi A'dan B'ye götürür, hayal gücü her yere. - Einstein",
+            "Kaos, düzenin henüz keşfedilmemiş halidir.",
+            "Bir şeyi basitçe anlatamıyorsan, yeterince anlamamışsın demektir."
+        ];
+        document.getElementById('daily-quote').innerText = `"${quotes[Math.floor(Math.random()*quotes.length)]}"`;
     </script>
 </body>
 </html>
