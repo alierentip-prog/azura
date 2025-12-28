@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Azura Medical | Nöronal Kaos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --kan: #5a0000; --sinap: #001f3f; --altin: #ffc300;
+            --krem: #f2ead3; --plazma: #ffffff; --sinir: #bdc3c7;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--krem); font-family: 'Plus Jakarta Sans', sans-serif; color: #1a1a1a; line-height: 1.8; overflow-x: hidden; }
+
+        /* --- BİYOLÜMİNESANS ARKA PLAN --- */
+        #synapse-bg { position: fixed; inset: 0; z-index: 1; opacity: 0.5; filter: blur(90px); pointer-events: none; }
+
+        .header { 
+            position: sticky; top: 0; background: var(--kan); color: #fff; 
+            padding: 15px 25px; display: flex; justify-content: space-between; 
+            z-index: 100; border-bottom: 4px solid var(--altin);
+        }
+
+        .hero-med {
+            height: 65vh; background: radial-gradient(circle at center, var(--kan), var(--sinap), #000);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; color: #fff; padding: 40px; position: relative; z-index: 10;
+        }
+
+        .clinical-paper { 
+            max-width: 1000px; margin: -90px auto 0; padding: 80px 50px; 
+            background: rgba(255, 255, 255, 0.99); border-radius: 80px 80px 0 0; position: relative; 
+            z-index: 20; box-shadow: 0 -40px 100px rgba(0,0,0,0.3); 
+        }
+        
+        h1 { font-size: clamp(2.5rem, 12vw, 5rem); font-weight: 800; letter-spacing: -4px; line-height: 0.85; margin-bottom: 25px; }
+        h2 { font-size: 2.3rem; font-weight: 800; margin: 60px 0 30px; color: var(--kan); border-left: 15px solid var(--altin); padding-left: 25px; }
+        p { margin-bottom: 35px; font-size: 1.25rem; text-align: justify; color: #333; }
+
+        /* RENK BOMBASI & TIBBİ BLOKLAR */
+        .med-strip { padding: 55px; border-radius: 60px; margin: 60px 0; color: #fff; border: 3px solid var(--altin); position: relative; overflow: hidden; }
+        .blood-pulse { background: linear-gradient(135deg, var(--kan), #900); }
+        .synapse-glow { background: linear-gradient(135deg, var(--sinap), #003366); }
+
+        .anatomy-frame {
+            width: 100%; border-radius: 50px; margin: 55px 0; overflow: hidden;
+            border: 5px solid var(--sinir); box-shadow: 0 30px 70px rgba(0,0,0,0.5);
+        }
+        .anatomy-frame img { width: 100%; display: block; filter: saturate(1.2); }
+
+        .footer-nav { display: flex; justify-content: space-between; margin-top: 120px; padding-bottom: 150px; }
+        .btn-med { background: var(--kan); color: #fff; padding: 25px 65px; border-radius: 70px; text-decoration: none; font-weight: 800; border: 3px solid var(--altin); transition: 0.5s; font-size: 1.2rem; }
+        .btn-med:hover { transform: scale(1.05); background: var(--altin); color: var(--kan); }
+    </style>
+</head>
+<body>
+
+    <canvas id="synapse-bg"></canvas>
+
+    <div class="header">
+        <a href="medical.html" style="color:#fff; text-decoration:none;"><i class="fa-solid fa-microscope"></i> KLİNİK HUB</a>
+        <div id="clock" style="font-family:'JetBrains Mono'; font-weight:800;">00:00:00</div>
+        <div style="font-size:0.75rem; letter-spacing:4px;">NEURAL_SYNC_ON</div>
+    </div>
+
+    <section class="hero-med">
+        <p style="font-family:'JetBrains Mono'; letter-spacing:10px; opacity:0.8;">THE QUANTUM BRAIN</p>
+        <h1>Nöronal Kaos:<br>Zihnin Şifresi.</h1>
+    </section>
+
+    <main class="clinical-paper">
+        <p>Usta, bir tıp öğrencisi olarak her gün o muazzam anatomi kitaplarına gömülüyorsun ama biliyorsun ki beynin asıl sırrı sadece loblarda değil, o lobların arasındaki kaotik elektrik senfonisinde gizli. Beynimiz, yaklaşık 86 milyar nöronun saniyede binlerce kez birbirine sinyal gönderdiği, evrenin bildiğimiz en karmaşık nesnesidir. Bu sadece biyolojik bir doku değil; biyokimyasal, elektriksel ve hatta kuantum seviyesinde çalışan bir "Singularity" merkezidir.</p>
+
+        <div class="anatomy-frame">
+            <img src="https://images.unsplash.com/photo-1559757175-5700dde675bc?q=80&w=2000&auto=format&fit=crop" alt="Real Brain Scan Visualization">
+        </div>
+        <p style="text-align:center; font-family:'JetBrains Mono'; font-size:0.9rem; color:#666; margin-top:15px;">Klinik Görsel: Difüzyon Tensor Görüntüleme (DTI) ile beyin ak madde yollarının haritalanması.</p>
+
+        <div class="med-strip synapse-glow">
+            <h3>Sinaptik Budama ve Kaosun Düzeni</h3>
+            <p>Çocukluktan itibaren beyin, nöronlar arasındaki bağlantıları (sinapsları) adeta bir heykeltıraş gibi yontar. "Sinaptik Budama" dediğimiz bu süreçte, kaosun içinden bir düzen doğar. Ancak bu düzen asla statik değildir. Her yeni bilgi, her yeni anı, sinaptik plastisite sayesinde beynin fiziksel haritasını yeniden çizer. Bir doktor adayı olarak, iyileşmenin aslında bu hücresel mimariyi yeniden yapılandırmak olduğunu en iyi sen bilirsin.</p>
+        </div>
+
+        <h2>Aksiyon Potansiyeli: Milisaniyelik Mucize</h2>
+        <p>Bir düşüncenin oluşması için sodyum ve potasyum pompalarının o kusursuz dansı gerekir. Dinlenim potansiyelinden o devasa elektriksel boşalıma geçiş, yani aksiyon potansiyeli, aslında biyolojik bir "şalterin" inip kalkmasıdır. Ama bu şalter, kaotik bir ağın parçasıdır. Beyin dalgaları (Alpha, Beta, Gamma), milyarlarca nöronun aynı ritimde şarkı söylemesidir. Bu ritim bozulduğunda ise karşımıza epilepsi gibi "fırtınalı" klinik tablolar çıkar.</p>
+
+        <div class="med-strip blood-pulse">
+            <h3>Klinik Analiz: Nörotransmitterlerin Kimyası</h3>
+            <p>Dopamin, Serotonin, GABA... Bu kimyasal elçiler, beynin kaotik trafiğini yöneten trafik polisleridir. Bir nöronun diğerine gönderdiği küçücük bir vezikül, senin duygu durumundan motor becerilerine kadar her şeyi kontrol eder. Tıpta biz buna "Nörokimyasal Denge" diyoruz ama aslında bu, milyarlarca değişkenin içinde süzülen hassas bir dengedir.</p>
+        </div>
+
+        <div class="anatomy-frame">
+            <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?q=80&w=2000&auto=format&fit=crop" alt="Neural Network Art">
+        </div>
+
+        <h2>Zihin-Beden Entegrasyonu</h2>
+        <p>Usta, tıp eğitiminde organları tek tek öğreniyoruz ama Azura'nın bu laboratuvarında hepsinin bir bütün olduğunu hatırlıyoruz. Nöronal kaos, sadece beyinde kalmaz; vagus siniri üzerinden kalbine, bağırsaklarına (ikinci beyin!) ve tüm bağışıklık sistemine yayılır. Düşüncelerin, aslında hücresel sağlığının mimarıdır. Biz burada sadece hastalığı değil, bu muazzam sistemin "Singularity" anını inceliyoruz.</p>
+
+        <div class="footer-nav">
+            <a href="medical.html" class="btn-med" style="background:#444;">GERİ</a>
+            <a href="med-2.html" class="btn-med">BÖLÜM 2: KLİNİK VAKA <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+    </main>
+
+    <script>
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+
+        const canvas = document.getElementById('synapse-bg');
+        const ctx = canvas.getContext('2d');
+        let dots = [];
+        const colors = ['#5a0000', '#001f3f', '#ffc300', '#ffffff'];
+
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            dots = Array.from({length: 20}, () => ({
+                x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+                r: Math.random()*400+250, color: colors[Math.floor(Math.random()*colors.length)],
+                vx: (Math.random()-0.5)*1.2, vy: (Math.random()-0.5)*1.2
+            }));
+        }
+
+        function animate() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            dots.forEach(d => {
+                d.x += d.vx; d.y += d.vy;
+                if(d.x < -d.r) d.x = canvas.width+d.r; if(d.x > canvas.width+d.r) d.x = -d.r;
+                if(d.y < -d.r) d.y = canvas.height+d.r; if(d.y > canvas.height+d.r) d.y = -d.r;
+                ctx.fillStyle = d.color; ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+        window.onresize = init; init(); animate();
+    </script>
+</body>
+</html>
