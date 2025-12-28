@@ -14,48 +14,41 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--gece); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--gümüs); line-height: 1.8; overflow-x: hidden; }
 
-        /* --- DREAMSCAPE ARKA PLAN --- */
-        #dream-bg { position: fixed; inset: 0; z-index: 1; opacity: 0.5; filter: blur(110px); pointer-events: none; }
+        /* --- DREAMSCAPE ARKA PLAN (FIXED) --- */
+        #dream-bg { position: fixed; inset: 0; z-index: 1; opacity: 0.6; filter: blur(100px); pointer-events: none; }
 
         .header { 
-            position: sticky; top: 0; background: rgba(2, 2, 5, 0.9); color: #fff; 
+            position: sticky; top: 0; background: rgba(2, 2, 5, 0.95); color: #fff; 
             padding: 15px 25px; display: flex; justify-content: space-between; 
             z-index: 100; border-bottom: 2px solid var(--nebula); backdrop-filter: blur(20px);
         }
 
         .hero-dream {
-            height: 65vh; background: radial-gradient(circle at 50%, var(--elektrik-mor), var(--indigo), #000);
+            height: 65vh; background: radial-gradient(circle at center, var(--elektrik-mor), var(--indigo), #000);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             text-align: center; color: #fff; padding: 40px; position: relative; z-index: 10;
         }
 
         .dream-report { 
-            max-width: 1000px; margin: -100px auto 0; padding: 80px 50px; 
-            background: rgba(10, 10, 20, 0.9); border-radius: 90px 90px 0 0; position: relative; 
-            z-index: 20; border: 1px solid rgba(255, 64, 129, 0.2); backdrop-filter: blur(25px);
-            box-shadow: 0 -50px 120px rgba(0,0,0,1);
+            max-width: 1000px; margin: -100px auto 0; padding: 80px 40px; 
+            background: rgba(10, 10, 20, 0.98); border-radius: 80px 80px 0 0; position: relative; 
+            z-index: 20; border: 1px solid rgba(255, 64, 129, 0.2); box-shadow: 0 -50px 120px rgba(0,0,0,1);
         }
         
-        h1 { font-size: clamp(2.2rem, 11vw, 5rem); font-weight: 800; letter-spacing: -4px; line-height: 0.85; margin-bottom: 25px; text-shadow: 0 0 40px var(--nebula); }
-        h2 { font-size: 2.2rem; font-weight: 800; margin: 60px 0 30px; color: var(--nebula); border-left: 15px solid var(--elektrik-mor); padding-left: 25px; }
-        p { margin-bottom: 35px; font-size: 1.25rem; text-align: justify; color: #ddd; }
-
-        /* RÜYA VE AKIL OYUNU BLOKLARI */
-        .dream-box { padding: 45px; border-radius: 55px; margin: 55px 0; border: 2px solid var(--elektrik-mor); background: rgba(98, 0, 234, 0.1); }
-        .dream-title { font-family: 'JetBrains Mono'; font-weight: 800; color: var(--nebula); margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
-
-        .lucid-frame {
-            width: 100%; border-radius: 50px; margin: 55px 0; overflow: hidden;
-            border: 3px solid var(--nebula); box-shadow: 0 0 50px rgba(255, 64, 129, 0.3);
-            display: flex; align-items: center; justify-content: center; background: #000;
+        h1 { font-size: clamp(2.5rem, 11vw, 5rem); font-weight: 800; letter-spacing: -4px; line-height: 0.85; margin-bottom: 25px; text-shadow: 0 0 40px var(--nebula); }
+        h2 { font-size: 2.2rem; font-weight: 800; margin: 55px 0 25px; color: var(--nebula); border-left: 12px solid var(--elektrik-mor); padding-left: 20px; }
+        
+        /* AKIL OYUNU KUTUSU (FIXED & FULL) */
+        .dream-box { 
+            padding: 40px; border-radius: 40px; margin: 45px 0; 
+            border: 2px solid var(--elektrik-mor); background: rgba(98, 0, 234, 0.08); 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
         }
-        .lucid-frame i { font-size: 12rem; color: var(--nebula); animation: float 4s ease-in-out infinite; }
+        .dream-title { font-family: 'JetBrains Mono'; font-weight: 800; color: var(--nebula); margin-bottom: 15px; font-size: 0.9rem; letter-spacing: 2px; }
 
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-
-        .nav-gate { display: flex; justify-content: space-between; margin-top: 100px; padding-bottom: 150px; }
-        .btn-dream { background: transparent; color: var(--nebula); padding: 22px 55px; border-radius: 60px; text-decoration: none; font-weight: 800; border: 2px solid var(--nebula); transition: 0.5s; }
-        .btn-dream:hover { background: var(--nebula); color: #000; box-shadow: 0 0 40px var(--nebula); }
+        .nav-gate { display: flex; justify-content: space-between; margin-top: 80px; padding-bottom: 120px; }
+        .btn-dream { background: transparent; color: var(--nebula); padding: 18px 45px; border-radius: 50px; text-decoration: none; font-weight: 800; border: 2px solid var(--nebula); transition: 0.3s; }
+        .btn-dream:hover { background: var(--nebula); color: #000; }
     </style>
 </head>
 <body>
@@ -78,5 +71,45 @@
 
         <div class="dream-box">
             <div class="dream-title"><i class="fa-solid fa-wand-magic-sparkles"></i> AKIL OYUNU: LUCID RÜYA</div>
-            <p style="color: #fff; font-size: 1.1rem;">Usta, rüyada olduğunu
-              
+            <p style="color: #fff;">Usta, rüyada olduğunu anladığın o an, beynin kendi işletim sistemini hackler. "Berrak Rüya" sırasında prefrontal korteksin uyanır ve rüya dünyasını kontrol etmeye başlarsın. Eğer şu an elindeki parmakları sayarsan ve sayıları değişiyorsa, hâlâ bir simülasyondasın demektir.</p>
+        </div>
+
+        <h2>REM Uykusu ve Nöronal Kaos</h2>
+        <p>Uyku sırasında vücudun felç olur ama beynin, uyanık olduğundan daha aktif hale gelebilir. REM evresi, duyguların işlendiği ve anıların mühürlendiği andır. Amigdalan çılgınlar gibi çalışırken, mantık merkezin uykuya dalar; işte bu yüzden rüyalarda en saçma şeyler bile sana o an normal gelir.</p>
+
+        <div class="nav-gate">
+            <a href="games.html" class="btn-dream">GERİ</a>
+            <a href="mind-4.html" class="btn-dream">SIRADAKİ: TEKİLLİK <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+    </main>
+
+    <script>
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+        const canvas = document.getElementById('dream-bg');
+        const ctx = canvas.getContext('2d');
+        let nebulae = [];
+        const colors = ['#6200ea', '#1a237e', '#ff4081'];
+
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            nebulae = Array.from({length: 12}, () => ({
+                x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+                r: Math.random()*400+250, color: colors[Math.floor(Math.random()*colors.length)],
+                vx: (Math.random()-0.5)*1.2, vy: (Math.random()-0.5)*1.2
+            }));
+        }
+
+        function draw() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            nebulae.forEach(n => {
+                n.x += n.vx; n.y += n.vy;
+                if(n.x < -n.r) n.x = canvas.width+n.r; if(n.x > canvas.width+n.r) n.x = -n.r;
+                if(n.y < -n.r) n.y = canvas.height+n.r; if(n.y > canvas.height+n.r) n.y = -n.r;
+                ctx.fillStyle = n.color; ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
+        window.onresize = init; init(); draw();
+    </script>
+</body>
+</html>
