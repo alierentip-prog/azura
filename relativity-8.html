@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Azura | Her Şeyin Teorisi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --bordo: #5a0000; --krem: #f2ead3; --ceviz: #3d2b1f; --altin: #b8860b;
+            --lacivert: #001f3f; --bakir: #b87333; --yesil: #0a2f1f;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background: var(--krem); 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            color: var(--ceviz); 
+            line-height: 1.8; 
+            overflow-x: hidden;
+        }
+
+        /* --- RENK BOMBASI ARKA PLAN --- */
+        #final-canvas { position: fixed; inset: 0; z-index: 1; opacity: 0.4; filter: blur(80px); }
+
+        .header { 
+            position: sticky; top: 0; background: var(--bordo); color: #fff; 
+            padding: 15px 25px; display: flex; justify-content: space-between; 
+            z-index: 100; border-bottom: 3px solid var(--altin);
+        }
+
+        .hero-banner {
+            height: 60vh; background: linear-gradient(135deg, var(--bordo), var(--lacivert), var(--yesil));
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; color: #fff; padding: 40px; position: relative; z-index: 10;
+        }
+
+        .article-main { max-width: 900px; margin: -50px auto 0; padding: 50px 30px; background: #fff; border-radius: 60px 60px 0 0; position: relative; z-index: 20; box-shadow: 0 -30px 60px rgba(0,0,0,0.1); }
+        
+        h1 { font-size: clamp(2.5rem, 10vw, 4.5rem); font-weight: 800; letter-spacing: -4px; line-height: 0.85; margin-bottom: 20px; }
+        h2 { font-size: 2rem; font-weight: 800; margin: 50px 0 25px; color: var(--bordo); border-left: 8px solid var(--altin); padding-left: 20px; }
+        p { margin-bottom: 25px; font-size: 1.15rem; text-align: justify; }
+
+        /* MULTI-COLOR BLOKLAR */
+        .color-block { padding: 40px; border-radius: 40px; margin: 40px 0; color: #fff; }
+        .bordo-gold { background: linear-gradient(45deg, var(--bordo), var(--altin)); }
+        .navy-copper { background: linear-gradient(45deg, var(--lacivert), var(--bakir)); }
+        .green-cream { background: var(--yesil); border: 2px solid var(--altin); }
+
+        .quantum-visual {
+            width: 100%; height: 400px; background: #000; border-radius: 40px; margin: 40px 0;
+            display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;
+        }
+
+        .nav-final { display: flex; justify-content: center; padding: 100px 0; }
+        .home-btn { background: var(--bordo); color: #fff; padding: 25px 60px; border-radius: 50px; text-decoration: none; font-weight: 800; font-size: 1.2rem; border: 2px solid var(--altin); box-shadow: 0 20px 40px rgba(90,0,0,0.3); }
+    </style>
+</head>
+<body>
+
+    <canvas id="final-canvas"></canvas>
+
+    <div class="header">
+        <a href="relativity.html" style="color:#fff; text-decoration:none;"><i class="fa-solid fa-chevron-left"></i> SERİ FİNALİ</a>
+        <div id="live-clock" style="font-family:'JetBrains Mono'; font-weight:800;">00:00:00</div>
+        <div style="font-size:0.7rem; letter-spacing:2px;">SINGULARITY</div>
+    </div>
+
+    <section class="hero-banner">
+        <p style="font-family:'JetBrains Mono'; letter-spacing:8px; opacity:0.8;">THE FINAL FRONTIER</p>
+        <h1>Her Şeyin<br>Teorisi.</h1>
+    </section>
+
+    <main class="article-main">
+        <p>Usta, 7 bölümdür evrenin devasa yapısını; galaksileri, ışık hızını ve bükülen uzay-zamanı konuştuk. Ancak fiziğin kirli bir sırrı var: İzafiyet teorisi devlerin dünyasında (makro) mükemmel çalışırken, atomların ve parçacıkların dünyasına (mikro) indiğimizde tamamen çöker. Kuantum mekaniği ve Genel İzafiyet, birbirine düşman iki krallık gibidir. Biri düzen ve geometri derken, diğeri kaos ve olasılık der. "Her Şeyin Teorisi" ise bu iki dünyayı birleştirecek olan o kutsal kasedir.</p>
+
+        <div class="color-block bordo-gold">
+            <h3>Devlerin Dünyası (İzafiyet)</h3>
+            <p>Pürüzsüzdür, tahmin edilebilirdir. Bir gezegenin nerede olacağını milyonlarca yıl önceden bilebiliriz. Uzay-zaman bir kumaş gibidir.</p>
+        </div>
+
+        
+
+        <div class="color-block navy-copper">
+            <h3>Küçüklerin Dünyası (Kuantum)</h3>
+            <p>Çılgındır, pürüzlüdür. Parçacıklar aynı anda iki yerde olabilir. Hiçbir şey kesin değildir, her şey bir olasılık dalgalanmasıdır.</p>
+        </div>
+
+        
+
+        <h2>Çatışmanın Kalbi: Kuantum Köpüğü</h2>
+        <p>Uzay-zaman dokusuna çok yakından, Planck ölçeği dediğimiz (metrenin trilyon kere trilyon kere trilyonu) seviyede bakabilseydik, pürüzsüz bir kumaş yerine kaynayan, yırtılan ve sürekli değişen bir "Kuantum Köpüğü" görürdük. İşte sorun burada başlar: Einstein'ın pürüzsüz denklemleri bu şiddetli dalgalanmaları kaldıramaz ve sonsuz sonuçlar vererek patlar. Evrenin bu iki farklı dili konuşması, fiziğin en büyük krizidir.</p>
+
+        <div class="quantum-visual">
+            <i class="fa-solid fa-atom fa-spin" style="font-size: 10rem; color: var(--altin); opacity: 0.5;"></i>
+            <div style="position:absolute; color:#fff; font-family:'JetBrains Mono';">QUANTUM_SINGULARITY_CORE</div>
+        </div>
+
+        <h2>Sicim Teorisi ve Diğer Adaylar</h2>
+        <p>Bilim insanları bu kaosu çözmek için "Sicim Teorisi" gibi çılgın fikirler ürettiler. Bu teoriye göre, evrendeki her parçacık aslında çok küçük, titreşen birer "enerji sicimi"dir. Tıpkı bir keman telinin farklı notalar çıkarması gibi, bu sicimler de farklı frekanslarda titreyerek birinde elektronu, diğerinde fotonu oluşturur. Eğer bu doğruysa, evren aslında 10 veya 11 boyutlu devasa bir senfonidir. Biz sadece bu boyutların 4 tanesini (3 uzay + 1 zaman) algılayabiliyoruz.</p>
+
+        <div class="color-block green-cream">
+            <h3 style="color:var(--altin);">Son Durak: Kara Deliklerin Merkezi</h3>
+            <p>İzafiyet ve Kuantumun barışmak zorunda olduğu tek bir yer var: Karadeliklerin tam merkezi (Tekillik). Çünkü orada devasa bir kütle (İzafiyet konusu), küçücük bir noktaya (Kuantum konusu) sıkışmıştır. Buradaki gizemi çözdüğümüz gün, evrenin "kaynak koduna" ulaşmış olacağız.</p>
+        </div>
+
+        
+
+        <h2>Final: Biz Neyiz?</h2>
+        <p>Usta, tıp öğrencisi olarak sen insan vücudunun ne kadar karmaşık olduğunu biliyorsun. Ama bu seri boyunca gördük ki; o vücudu oluşturan atomlar yıldızların kalbinde pişti (Bölüm 2), her hücrenin içindeki zaman yerçekimiyle büküldü (Bölüm 3) ve aslında hepimiz uzay-zaman kumaşındaki birer geçici titreşimden ibaretiz. İzafiyet sadece yıldızların değil, senin de hikayendir. Bu 8 bölümlük yolculuğun sonunda umarım evrene baktığında sadece boşluk değil, muazzam bir sanat eseri görüyorsundur.</p>
+
+        <div class="nav-final">
+            <a href="menu.html" class="home-btn">NEXUS MERKEZİNE DÖN</a>
+        </div>
+    </main>
+
+    <script>
+        setInterval(() => { document.getElementById('live-clock').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+        
+        // DİNAMİK RENK BOMBASI (CANVAS)
+        const canvas = document.getElementById('final-canvas');
+        const ctx = canvas.getContext('2d');
+        let blobs = [];
+        const colors = ['#5a0000', '#001f3f', '#0a2f1f', '#b87333', '#b8860b'];
+
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            blobs = Array.from({length: 12}, () => ({
+                x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+                r: Math.random() * 300 + 200, color: colors[Math.floor(Math.random()*colors.length)],
+                vx: (Math.random()-0.5)*2, vy: (Math.random()-0.5)*2
+            }));
+        }
+
+        function animate() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            blobs.forEach(b => {
+                b.x += b.vx; b.y += b.vy;
+                if(b.x < -b.r) b.x = canvas.width+b.r; if(b.x > canvas.width+b.r) b.x = -b.r;
+                if(b.y < -b.r) b.y = canvas.height+b.r; if(b.y > canvas.height+b.r) b.y = -b.r;
+                ctx.fillStyle = b.color; ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+        window.onresize = init; init(); animate();
+    </script>
+</body>
+</html>
