@@ -2,224 +2,189 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Azura Nexus | Elite Bordo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Azura Nexus</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;800&family=JetBrains+Mono:wght@800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bordo: #800000; /* Asil Bordo */
-            --krem: #fdfaf5;  /* Yumuşak Krem Arka Plan */
+            --bordo: #800000;
+            --krem-koyu: #f5f5dc; /* Koyu krem rengi */
+            --krem-acik: #fdfaf5;
             --text: #2c1810;
-            --glass: rgba(255, 255, 255, 0.4);
-            --card-shadow: 0 20px 40px rgba(128, 0, 0, 0.05);
         }
 
-        /* GECE MODU */
         body.dark-mode {
-            --krem: #1a0f0f;
-            --text: #fdfaf5;
-            --glass: rgba(0, 0, 0, 0.4);
+            --krem-koyu: #1a0f0f;
+            --krem-acik: #251a1a;
+            --text: #f5f5dc;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        body { background: var(--krem); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text); overflow: hidden; height: 100vh; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background: var(--krem-koyu); 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            color: var(--text); 
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
 
-        /* --- ARKA PLAN MOTORU: TOZLAR VE BALONLAR --- */
-        #dust-canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
+        canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
 
-        .app-container { position: relative; z-index: 10; height: 100vh; display: flex; flex-direction: column; }
-
-        /* --- ÜST ŞERİT (BORDO) --- */
-        .top-bar {
+        /* --- ÜST ŞERİT (TAM MOBİL UYUMLU) --- */
+        .header {
             background: var(--bordo);
-            height: 90px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 50px;
-            color: white;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            border-bottom: 4px solid rgba(255,255,255,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        .azura-brand { font-family: 'JetBrains Mono'; font-weight: 800; font-size: 2.2rem; letter-spacing: -2px; cursor: pointer; }
-        .azura-brand:hover { transform: scale(1.05); text-shadow: 0 0 20px rgba(255,255,255,0.5); }
+
+        .brand { color: #fff; font-family: 'JetBrains Mono'; font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
         
-        .nav-tools { display: flex; gap: 20px; align-items: center; }
-        .tool-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 10px 20px; border-radius: 50px; cursor: pointer; font-size: 0.8rem; font-weight: 800; font-family: 'JetBrains Mono'; }
-        .tool-btn:hover { background: white; color: var(--bordo); }
-
-        /* --- ANA GRID --- */
-        .nexus-grid {
-            flex-grow: 1;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-template-rows: repeat(2, 1fr);
-            gap: 25px;
-            padding: 40px;
-            max-width: 1600px;
-            margin: 0 auto;
-            width: 100%;
+        .header-actions { display: flex; gap: 10px; }
+        .circle-btn {
+            width: 40px; height: 40px; border-radius: 50%;
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 0.9rem;
         }
 
-        .bubble-card {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            border-radius: 60px; /* Çok yumuşak köşeler */
-            border: 2px solid #fff;
-            padding: 40px;
+        /* --- ANA İÇERİK --- */
+        .container { position: relative; z-index: 10; padding: 25px 20px; }
+
+        .hero-text { margin-bottom: 30px; }
+        .hero-text h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: -2px; line-height: 1; margin-bottom: 5px; }
+        .hero-text p { font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--bordo); letter-spacing: 3px; text-transform: uppercase; }
+
+        /* --- MOBİL KART SİSTEMİ --- */
+        .grid { display: flex; flex-direction: column; gap: 15px; }
+
+        .gate-card {
+            background: var(--krem-acik);
+            padding: 25px;
+            border-radius: 30px; /* Balon kıvamında yumuşak köşeler */
+            border: 1px solid rgba(128, 0, 0, 0.1);
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
             text-decoration: none;
             color: inherit;
-            box-shadow: var(--card-shadow);
-            position: relative;
-            overflow: hidden;
+            transition: 0.3s;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
         }
 
-        .bubble-card:hover { transform: translateY(-15px) scale(1.03); background: #fff; box-shadow: 0 40px 80px rgba(128,0,0,0.1); }
-        
-        /* Kart Gradyant Yazı Efekti */
-        .bubble-card h2 { 
-            font-size: 2rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 10px;
-            background: linear-gradient(45deg, var(--bordo), #ff4b2b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .gate-card:active { transform: scale(0.96); background: #fff; }
+
+        .icon-box {
+            width: 60px; height: 60px; border-radius: 20px;
+            background: #fff; border: 1px solid var(--bordo);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; color: var(--bordo);
+            box-shadow: 0 5px 15px rgba(128,0,0,0.05);
         }
 
-        .bubble-card i { font-size: 2.5rem; color: var(--bordo); margin-bottom: 20px; opacity: 0.8; }
-        .bubble-card p { font-size: 0.95rem; opacity: 0.7; line-height: 1.6; }
+        .info h2 { font-size: 1.3rem; font-weight: 800; color: var(--bordo); margin-bottom: 2px; }
+        .info p { font-size: 0.85rem; opacity: 0.7; font-weight: 500; }
 
-        .span-2 { grid-column: span 2; }
-        .tall { grid-row: span 2; }
+        .chevron { margin-left: auto; color: var(--bordo); opacity: 0.3; }
 
-        /* --- ERİŞİLEBİLİRLİK PANELİ --- */
-        #access-panel {
-            position: fixed; right: -300px; top: 120px; background: white; 
-            padding: 30px; border-radius: 30px 0 0 30px; border: 2px solid var(--bordo);
-            z-index: 100; transition: 0.5s;
-        }
-        #access-panel.open { right: 0; }
-
-        /* MOBİL UYUM */
-        @media (max-width: 1100px) {
-            .nexus-grid { grid-template-columns: 1fr; grid-template-rows: auto; overflow-y: auto; }
-            .span-2, .tall { grid-column: span 1; grid-row: span 1; }
-        }
     </style>
 </head>
 <body>
 
-    <canvas id="dust-canvas"></canvas>
+    <canvas id="canvas"></canvas>
 
-    <div class="app-container">
-        <header class="top-bar">
-            <div class="azura-brand" onclick="location.reload()">AZURA</div>
-            <div id="live-clock" style="font-family: 'JetBrains Mono'; font-weight: 400; font-size: 1.1rem; opacity: 0.8;">00:00:00</div>
-            <div class="nav-tools">
-                <button class="tool-btn" onclick="toggleDarkMode()"><i class="fa-solid fa-moon"></i> GECE MODU</button>
-                <button class="tool-btn" onclick="toggleAccess()"><i class="fa-solid fa-universal-access"></i> ERİŞİLEBİLİRLİK</button>
-            </div>
-        </header>
+    <header class="header">
+        <div class="brand">AZURA</div>
+        <div class="header-actions">
+            <div class="circle-btn" onclick="document.body.classList.toggle('dark-mode')"><i class="fa-solid fa-moon"></i></div>
+            <div class="circle-btn"><i class="fa-solid fa-clock"></i></div>
+        </div>
+    </header>
 
-        <main class="nexus-grid">
-            <a href="medical.html" class="bubble-card span-2">
-                <i class="fa-solid fa-stethoscope"></i>
-                <div>
+    <div class="container">
+        <div class="hero-text">
+            <p>Nexus Command Center</p>
+            <h1>Hoş Geldin, Rafık. 🩺</h1>
+        </div>
+
+        <div class="grid">
+            <a href="medical.html" class="gate-card">
+                <div class="icon-box"><i class="fa-solid fa-notes-medical"></i></div>
+                <div class="info">
                     <h2>Tıp & Klinik</h2>
-                    <p>En kapsamlı klinik arşiv ve nörolojik veritabanı. Akademik bilginin zirvesi.</p>
+                    <p>Vaka analizleri ve klinik arşiv.</p>
                 </div>
+                <i class="fa-solid fa-chevron-right chevron"></i>
             </a>
 
-            <a href="physic.html" class="bubble-card tall">
-                <i class="fa-solid fa-atom"></i>
-                <div>
+            <a href="physic.html" class="gate-card">
+                <div class="icon-box"><i class="fa-solid fa-atom"></i></div>
+                <div class="info">
                     <h2>Fizik & Evren</h2>
-                    <p>Kuantum mekaniği ve uzay-zaman teorileri üzerine devasa bir dijital yolculuk.</p>
+                    <p>Kuantum ve Kozmoloji kapıları.</p>
                 </div>
-                <div style="font-size: 8rem; opacity: 0.03; position: absolute; right: -20px; bottom: -20px;">🌌</div>
+                <i class="fa-solid fa-chevron-right chevron"></i>
             </a>
 
-            <a href="games.html" class="bubble-card">
-                <i class="fa-solid fa-brain"></i>
-                <div>
+            <a href="gastronomy.html" class="gate-card">
+                <div class="icon-box"><i class="fa-solid fa-utensils"></i></div>
+                <div class="info">
+                    <h2>Gastronomi</h2>
+                    <p>Antep mutfak mirası analizi.</p>
+                </div>
+                <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+
+            <a href="games.html" class="gate-card">
+                <div class="icon-box"><i class="fa-solid fa-brain"></i></div>
+                <div class="info">
                     <h2>Zihin Lab</h2>
-                    <p>Yüksek hızlı kognitif testler.</p>
+                    <p>Zeka ve kognitif simülasyonlar.</p>
                 </div>
+                <i class="fa-solid fa-chevron-right chevron"></i>
             </a>
-
-            <a href="gastronomy.html" class="bubble-card span-2">
-                <i class="fa-solid fa-utensils"></i>
-                <div>
-                    <h2>Gaziantep Gastronomi</h2>
-                    <p>Gaziantep'in kadim mutfak kültürünün moleküler yapısı ve tarif arşivi.</p>
-                </div>
-            </a>
-
-            <a href="settings.html" class="bubble-card">
-                <i class="fa-solid fa-microchip"></i>
-                <div>
-                    <h2>Sistem</h2>
-                    <p>Çekirdek ayarlar.</p>
-                </div>
-            </a>
-        </main>
-    </div>
-
-    <div id="access-panel">
-        <h3 style="margin-bottom: 20px;">Erişilebilirlik</h3>
-        <button class="tool-btn" style="color: black; margin-bottom: 10px; width: 100%;" onclick="adjustText(1)">Yazı Büyüt +</button>
-        <button class="tool-btn" style="color: black; margin-bottom: 10px; width: 100%;" onclick="adjustText(-1)">Yazı Küçült -</button>
-        <button class="tool-btn" style="color: black; width: 100%;" onclick="toggleAccess()">Kapat</button>
+        </div>
     </div>
 
     <script>
-        // SAAT
-        setInterval(() => { document.getElementById('live-clock').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
-
-        // MODLAR VE PANELLER
-        function toggleDarkMode() { document.body.classList.toggle('dark-mode'); }
-        function toggleAccess() { document.getElementById('access-panel').classList.toggle('open'); }
-        
-        let fontSize = 16;
-        function adjustText(n) { fontSize += n; document.body.style.fontSize = fontSize + 'px'; }
-
-        // TOZLAR VE BALONLAR MOTORU
-        const canvas = document.getElementById('dust-canvas');
+        const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         let dots = [];
 
         function init() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            dots = [];
-            for(let i=0; i<150; i++) {
-                dots.push({
-                    x: Math.random()*canvas.width, y: Math.random()*canvas.height,
-                    r: Math.random()*(i<15 ? 180 : 4),
-                    c: ['#800000', '#fdfaf5', '#ff4b2b', '#ffffff'][i%4],
-                    vx: (Math.random()-0.5)*0.5, vy: (Math.random()-0.5)*0.5,
-                    op: Math.random()*0.3
-                });
-            }
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            dots = Array.from({length: 80}, () => ({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 3,
+                v: Math.random() * 0.5 + 0.2
+            }));
         }
 
-        function animate() {
+        function draw() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
+            ctx.fillStyle = '#800000';
             dots.forEach(d => {
-                d.x += d.vx; d.y += d.vy;
-                if(d.x < -d.r) d.x = canvas.width+d.r; if(d.x > canvas.width+d.r) d.x = -d.r;
-                if(d.y < -d.r) d.y = canvas.height+d.r; if(d.y > canvas.height+d.r) d.y = -d.r;
-
-                let g = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.r);
-                g.addColorStop(0, d.c); g.addColorStop(1, 'transparent');
-                ctx.globalAlpha = d.op; ctx.fillStyle = g;
-                ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI*2); ctx.fill();
+                d.y -= d.v;
+                if(d.y < -10) d.y = canvas.height + 10;
+                ctx.globalAlpha = 0.2;
+                ctx.beginPath();
+                ctx.arc(d.x, d.y, d.r, 0, Math.PI*2);
+                ctx.fill();
             });
-            requestAnimationFrame(animate);
+            requestAnimationFrame(draw);
         }
-        window.onresize = init; init(); animate();
+
+        window.onresize = init;
+        init(); draw();
     </script>
 </body>
 </html>
