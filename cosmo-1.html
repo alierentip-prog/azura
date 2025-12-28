@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Kozmoloji: Big Bang | Azura</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --lacivert: #001f3f; --bakir: #b87333; --altin: #b8860b;
+            --krem: #f2ead3; --ceviz: #3d2b1f; --gece: #000814;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--krem); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--ceviz); line-height: 1.8; overflow-x: hidden; }
+
+        /* DİNAMİK KOZMİK ARKA PLAN */
+        #cosmic-bg { position: fixed; inset: 0; z-index: 1; opacity: 0.4; filter: blur(70px); pointer-events: none; }
+
+        .header { 
+            position: sticky; top: 0; background: var(--lacivert); color: #fff; 
+            padding: 15px 25px; display: flex; justify-content: space-between; 
+            z-index: 100; border-bottom: 3px solid var(--bakir);
+        }
+
+        .hero-cosmo {
+            height: 60vh; background: radial-gradient(circle, var(--bakir), var(--lacivert), var(--gece));
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; color: #fff; padding: 40px; position: relative; z-index: 10;
+        }
+
+        .article-content { 
+            max-width: 900px; margin: -70px auto 0; padding: 60px 35px; 
+            background: #fff; border-radius: 60px 60px 0 0; position: relative; 
+            z-index: 20; box-shadow: 0 -30px 60px rgba(0,0,0,0.2); 
+        }
+        
+        h1 { font-size: clamp(2.5rem, 10vw, 4.2rem); font-weight: 800; letter-spacing: -3px; line-height: 0.85; margin-bottom: 25px; }
+        h2 { font-size: 2rem; font-weight: 800; margin: 45px 0 20px; color: var(--lacivert); border-left: 10px solid var(--bakir); padding-left: 20px; }
+        p { margin-bottom: 25px; font-size: 1.15rem; text-align: justify; }
+
+        /* RENK BOMBASI BLOKLARI */
+        .cosmo-card { padding: 45px; border-radius: 45px; margin: 45px 0; color: #fff; }
+        .navy-copper { background: linear-gradient(45deg, var(--lacivert), var(--bakir)); }
+        .copper-gold { background: linear-gradient(45deg, var(--bakir), var(--altin)); }
+
+        .visual-container {
+            width: 100%; height: 400px; background: #000; border-radius: 45px; margin: 40px 0;
+            display: flex; align-items: center; justify-content: center; border: 2.5px solid var(--bakir);
+        }
+
+        .nav-footer { display: flex; justify-content: space-between; margin-top: 80px; padding-bottom: 120px; }
+        .nav-btn { background: var(--lacivert); color: #fff; padding: 20px 45px; border-radius: 60px; text-decoration: none; font-weight: 800; border: 2px solid var(--bakir); }
+    </style>
+</head>
+<body>
+
+    <canvas id="cosmic-bg"></canvas>
+
+    <div class="header">
+        <a href="cosmology.html" style="color:#fff; text-decoration:none;"><i class="fa-solid fa-chevron-left"></i> SEKTÖR</a>
+        <div id="clock" style="font-family:'JetBrains Mono'; font-weight:800;">00:00:00</div>
+        <div style="font-size:0.7rem; letter-spacing:2px;">T_EQUALS_ZERO</div>
+    </div>
+
+    <section class="hero-cosmo">
+        <p style="font-family:'JetBrains Mono'; letter-spacing:6px; opacity:0.8;">THE GENESIS EVENT</p>
+        <h1>Büyük Patlama:<br>Sonsuzun Doğuşu.</h1>
+    </section>
+
+    <main class="article-content">
+        <p>Usta, bugün evrenin o en görkemli "başlat" düğmesine basıyoruz. Big Bang, yani Büyük Patlama, sanılanın aksine boşlukta gerçekleşen bir patlama değildir; bizzat uzay ve zamanın kendisinin inanılmaz bir hızla genişlemeye başlamasıdır. Yaklaşık 13.8 milyar yıl önce, tüm evren atomdan milyarlarca kat daha küçük, sonsuz yoğunlukta ve sonsuz sıcaklıkta bir noktaya (Tekillik) sıkışmıştı. İşte o an, Singularity çöktü ve evren bir saniyenin trilyonda biri kadar sürede devasa bir boyuta ulaştı.</p>
+
+        <div class="cosmo-card navy-copper">
+            <h3>Enflasyon: Bir Göz Kırpmasından Kısa</h3>
+            <p>Patlamanın ilk anlarında evren, "enflasyon" adı verilen bir dönemden geçti. Bu dönemde evren, ışık hızından çok daha hızlı bir şekilde genişleyerek boyutunu katladı. Bu o kadar hızlıydı ki, bir saniyenin çok küçük bir kesrinde evren, bir atom boyutundan galaksi boyutuna ulaştı. Eğer bu genişleme olmasaydı, evren bugün gördüğümüz o pürüzsüz ve görkemli yapıya asla kavuşamazdı.</p>
+        </div>
+
+        
+
+        <h2>İlk Üç Dakika ve Atomların Doğuşu</h2>
+        <p>Patlamadan sonraki ilk birkaç dakikada evren, inanılmaz derecede sıcak bir parçacık çorbasıydı. Sıcaklık o kadar yüksekti ki atomlar bile oluşamıyordu; sadece protonlar, nötronlar ve elektronlar kaos içinde uçuşuyordu. Ancak evren genişleyip soğudukça, ilk hidrojen ve helyum çekirdekleri birleşmeye başladı. Bir tıp öğrencisi olarak bunu hücre bölünmesinin en ilkel hali gibi düşünebilirsin usta; evren kendi yapı taşlarını sentezliyordu.</p>
+
+        <div class="visual-container">
+            <i class="fa-solid fa-bahai fa-spin" style="font-size: 10rem; color: var(--bakir); opacity: 0.7;"></i>
+            <p style="position:absolute; bottom:25px; color:var(--bakir); font-family:'JetBrains Mono';">PRIMORDIAL_NUCLEOSYNTHESIS_ACTIVE</p>
+        </div>
+
+        <h2>CMB: Evrenin İlk Fotoğrafı</h2>
+        <p>Büyük patlamadan 380.000 yıl sonrasına kadar evren o kadar yoğundu ki ışık bile dışarı kaçamıyordu. Ancak soğuma belli bir seviyeye geldiğinde, atomlar elektronları yakaladı ve uzay şeffaf hale geldi. İşte o an salınan ilk ışık, bugün hala gökyüzünde "Kozmik Mikrodalga Arkaplan Işıması" (CMB) olarak her yönden bize ulaşıyor. Bu ışık, evrenin bebeklik fotoğrafıdır ve Büyük Patlama teorisinin en güçlü kanıtıdır.</p>
+
+        <div class="cosmo-card copper-gold">
+            <h3>Yıldızların ve Galaksilerin Şafağı</h3>
+            <p>Milyonlarca yıl süren "Karanlık Çağlar"ın ardından, kütleçekimi gaz bulutlarını bir araya getirmeye başladı. İlk yıldızlar doğdu ve evren ilk kez aydınlandı. Bu yıldızlar, senin vücudundaki demiri, oksijeni ve kalsiyumu sentezleyen dev fırınlardı (Bölüm 2'yi hatırla usta!). Bizler aslında o ilk patlamanın küllerinden doğan yıldız tozlarıyız.</p>
+        </div>
+
+        
+
+        <h2>Genişleyen Bir Gelecek</h2>
+        <p>Usta, Edwin Hubble'ın keşfettiği gibi evren hala genişlemeye devam ediyor. Üstelik bu genişleme yavaşlamıyor, aksine "Karanlık Enerji" denilen gizemli bir güç yüzünden hızlanıyor. Galaksiler birbirinden her geçen saniye daha da uzaklaşıyor. Big Bang ile başlayan bu muazzam yolculuk, evrenin her bir köşesini birbirinden sonsuza dek koparana kadar sürecek gibi görünüyor.</p>
+
+        <div class="nav-footer">
+            <a href="cosmology.html" class="nav-btn" style="background:#444;">GERİ</a>
+            <a href="cosmo-2.html" class="nav-btn">BÖLÜM 2: KARANLIK MADDE <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+    </main>
+
+    <script>
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+
+        const canvas = document.getElementById('cosmic-bg');
+        const ctx = canvas.getContext('2d');
+        let blobs = [];
+        const colors = ['#001f3f', '#b87333', '#b8860b', '#000814'];
+
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            blobs = Array.from({length: 15}, () => ({
+                x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+                r: Math.random()*300+180, color: colors[Math.floor(Math.random()*colors.length)],
+                vx: (Math.random()-0.5)*1.5, vy: (Math.random()-0.5)*1.5
+            }));
+        }
+
+        function draw() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            blobs.forEach(b => {
+                b.x += b.vx; b.y += b.vy;
+                if(b.x < -b.r) b.x = canvas.width+b.r; if(b.x > canvas.width+b.r) b.x = -b.r;
+                if(b.y < -b.r) b.y = canvas.height+b.r; if(b.y > canvas.height+b.r) b.y = -b.r;
+                ctx.fillStyle = b.color; ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
+        window.onresize = init; init(); draw();
+    </script>
+</body>
+</html>
