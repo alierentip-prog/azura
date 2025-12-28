@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Azura Lab | Bellek Mimarisi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --gece-mavi: #001220; --cam-gobegi: #00f2ff; --antik-altin: #c5a059;
+            --krem: #f2ead3; --ceviz: #3d2b1f; --gümüs: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--gece-mavi); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--gümüs); line-height: 1.8; overflow-x: hidden; }
+
+        /* --- NÖRONAL AĞ ARKA PLANI --- */
+        #memory-bg { position: fixed; inset: 0; z-index: 1; opacity: 0.5; filter: blur(80px); pointer-events: none; }
+
+        .header { 
+            position: sticky; top: 0; background: rgba(0, 18, 32, 0.95); color: #fff; 
+            padding: 15px 25px; display: flex; justify-content: space-between; 
+            z-index: 100; border-bottom: 2px solid var(--cam-gobegi); backdrop-filter: blur(15px);
+        }
+
+        .hero-memory {
+            height: 60vh; background: radial-gradient(circle at 70%, var(--cam-gobegi), var(--gece-mavi), #000);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; color: #fff; padding: 40px; position: relative; z-index: 10;
+        }
+
+        .lab-content { 
+            max-width: 1000px; margin: -100px auto 0; padding: 80px 50px; 
+            background: rgba(255, 255, 255, 0.03); border-radius: 80px 80px 0 0; position: relative; 
+            z-index: 20; border: 1px solid rgba(0, 242, 255, 0.1); backdrop-filter: blur(20px);
+            box-shadow: 0 -50px 100px rgba(0,0,0,0.9);
+        }
+        
+        h1 { font-size: clamp(2.2rem, 11vw, 4.8rem); font-weight: 800; letter-spacing: -4px; line-height: 0.85; margin-bottom: 25px; text-shadow: 0 0 30px var(--cam-gobegi); }
+        h2 { font-size: 2.2rem; font-weight: 800; margin: 60px 0 30px; color: var(--cam-gobegi); border-left: 15px solid var(--antik-altin); padding-left: 25px; }
+        p { margin-bottom: 35px; font-size: 1.25rem; text-align: justify; color: #bbb; }
+
+        /* AKIL OYUNU KUTULARI */
+        .game-box { padding: 45px; border-radius: 55px; margin: 55px 0; border: 2px solid var(--cam-gobegi); background: rgba(0, 242, 255, 0.05); }
+        .game-title { font-family: 'JetBrains Mono'; font-weight: 800; color: var(--cam-gobegi); margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+
+        .memory-visual {
+            width: 100%; border-radius: 50px; margin: 55px 0; overflow: hidden;
+            border: 3px solid var(--antik-altin); box-shadow: 0 0 40px rgba(197, 160, 89, 0.2);
+        }
+        .memory-visual img { width: 100%; display: block; opacity: 0.85; }
+
+        .nav-gate { display: flex; justify-content: space-between; margin-top: 100px; padding-bottom: 150px; }
+        .btn-lab { background: transparent; color: var(--cam-gobegi); padding: 22px 55px; border-radius: 60px; text-decoration: none; font-weight: 800; border: 2px solid var(--cam-gobegi); transition: 0.5s; }
+    </style>
+</head>
+<body>
+
+    <canvas id="memory-bg"></canvas>
+
+    <div class="header">
+        <a href="games.html" style="color:#fff; text-decoration:none;"><i class="fa-solid fa-database"></i> VERİ BANKASI</a>
+        <div id="clock" style="font-family:'JetBrains Mono'; font-weight:800;">00:00:00</div>
+        <div style="font-size:0.75rem; letter-spacing:4px;">STORAGE_LEVEL_99</div>
+    </div>
+
+    <section class="hero-memory">
+        <p style="font-family:'JetBrains Mono'; letter-spacing:10px; opacity:0.8;">THE ARCHIVE OF SELF</p>
+        <h1>Bellek:<br>Anı Mimarisi.</h1>
+    </section>
+
+    <main class="lab-content">
+        <p>Usta, zihnin en derin odasına hoş geldin. Bellek, sandığın gibi bir kütüphane veya sabit bir disk değildir. Bir anıyı hatırladığında, onu bir raftan çekip çıkarmazsın; o anıyı o saniye içinde nöronlarınla **yeniden inşa edersin**. Bu yüzden her hatırlayışında anı biraz değişir. Bellek, geçmişin bir kaydı değil, geleceği simüle etmek için kullanılan bir veri setidir.</p>
+
+        <div class="game-box">
+            <div class="game-title"><i class="fa-solid fa-vial"></i> AKIL OYUNU: YALANCI BELLEK</div>
+            <p style="color: #fff; font-size: 1.1rem;">Usta, beynin aslında çok kolay kandırılabilir. "Mandela Etkisi"ni hatırla. Hiç yaşanmamış bir olayı, binlerce kişi aynı detaylarla hatırlayabilir. Çünkü beyin, eksik olan anı parçalarını mantıklı görünen "uydurmalarla" doldurur. Bir tıp öğrencisi olarak bunu, amnezi hastalarında gördüğümüz "konfabulasyon"un hafif bir hali gibi düşünebilirsin.</p>
+        </div>
+
+        <h2>Hipokampüs: Şehrin Haritacısı</h2>
+        <p>Anılarının ana giriş kapısı hipokampüstür. Kısa süreli anılar burada işlenir ve eğer beyin onları "değerli" bulursa uyku sırasında kortekse, yani kalıcı depolama alanına transfer edilir. Bu transfer sırasında beyin, gereksiz verileri siler (sinaptik budama) ve sadece senin hayatta kalmana veya öğrenmene yarayacak "özü" tutar. Ders çalışırken uyumanın önemi de tam olarak bu biyolojik dosyalama işlemidir.</p>
+
+        <div class="memory-visual">
+            <img src="https://images.unsplash.com/photo-1507413245164-6160d8298b31?q=80&w=2000&auto=format&fit=crop" alt="Abstract Neural Connections">
+        </div>
+
+        <div class="game-box">
+            <div class="game-title"><i class="fa-solid fa-puzzle-piece"></i> TEST: ODAKLANMA KÖRLÜĞÜ</div>
+            <p style="color: #fff; font-size: 1.1rem;">Şu an bu metni okurken odandaki saatin sesini veya ayağındaki çorabın dokusunu hissetmiyordun. Beynin, "önemsiz" gördüğü bu verileri bilinçaltına itti. Bellek, sadece odaklandığın şeyi kaydeder. Bir doktor olarak muayene sırasında hastanın sadece anlattıklarına değil, beyninin "filtrelediği" o minik detaylara da odaklanman gerekir.</p>
+        </div>
+
+        <h2>Duygusal Bellek: Neden Bazı Anılar Silinmez?</h2>
+        <p>Amigdala, hipokampüsün hemen yanındadır ve anılara "duygu etiketi" yapıştırır. Korku, heyecan veya büyük bir hüzün içeren anılar, beynine adeta kazınır. Bu yüzden ilk aşkını veya en büyük korkunu asla unutmazsın. Bu, evrimsel bir güvenlik mekanizmasıdır; beyin sana "bu tehlikeliydi, bir daha yapma" der. Tıpta TSSB (Travma Sonrası Stres Bozukluğu) dediğimiz durum, beynin bu etiketleme sisteminin aşırı çalışmasıdır.</p>
+
+        <div class="nav-gate">
+            <a href="mind-1.html" class="btn-lab">GERİ</a>
+            <a href="mind-3.html" class="btn-lab">BÖLÜM 3: BİLİNÇ KATMANLARI <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+    </main>
+
+    <script>
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+
+        const canvas = document.getElementById('memory-bg');
+        const ctx = canvas.getContext('2d');
+        let pulses = [];
+        const colors = ['#00f2ff', '#c5a059', '#001220'];
+
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            pulses = Array.from({length: 15}, () => ({
+                x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+                r: Math.random()*450+300, color: colors[Math.floor(Math.random()*colors.length)],
+                vx: (Math.random()-0.5)*1.2, vy: (Math.random()-0.5)*1.2
+            }));
+        }
+
+        function draw() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            pulses.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < -p.r) p.x = canvas.width+p.r; if(p.x > canvas.width+p.r) p.x = -p.r;
+                if(p.y < -p.r) p.y = canvas.height+p.r; if(p.y > canvas.height+p.r) p.y = -p.r;
+                ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
+        window.onresize = init; init(); draw();
+    </script>
+</body>
+</html>
