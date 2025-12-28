@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Kozmoloji: Karanlık Madde | Azura</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --lacivert: #001f3f; --bakir: #b87333; --gümüs: #bdc3c7;
+            --krem: #f2ead3; --ceviz: #3d2b1f; --gece: #000814;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--krem); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--ceviz); line-height: 1.8; overflow-x: hidden; }
+
+        /* GÖRÜNMEZ MADDE ARKA PLAN EFEKTİ */
+        #dark-matter-bg { position: fixed; inset: 0; z-index: 1; opacity: 0.45; filter: blur(90px); pointer-events: none; }
+
+        .header { 
+            position: sticky; top: 0; background: var(--lacivert); color: #fff; 
+            padding: 15px 25px; display: flex; justify-content: space-between; 
+            z-index: 100; border-bottom: 3px solid var(--gümüs);
+        }
+
+        .hero-banner {
+            height: 60vh; background: radial-gradient(circle at 70%, var(--lacivert), var(--gece), #000);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; color: #fff; padding: 40px; position: relative; z-index: 10;
+        }
+
+        .article-main { 
+            max-width: 900px; margin: -80px auto 0; padding: 70px 40px; 
+            background: rgba(255, 255, 255, 0.98); border-radius: 70px 70px 0 0; position: relative; 
+            z-index: 20; box-shadow: 0 -40px 80px rgba(0,0,0,0.3); 
+        }
+        
+        h1 { font-size: clamp(2.5rem, 11vw, 4.5rem); font-weight: 800; letter-spacing: -4px; line-height: 0.85; margin-bottom: 25px; color: var(--lacivert); }
+        h2 { font-size: 2.1rem; font-weight: 800; margin: 50px 0 25px; color: var(--lacivert); border-left: 12px solid var(--bakir); padding-left: 20px; }
+        p { margin-bottom: 30px; font-size: 1.2rem; text-align: justify; }
+
+        /* RENK BOMBASI BLOKLARI */
+        .info-strip { padding: 45px; border-radius: 50px; margin: 50px 0; color: #fff; }
+        .navy-silver { background: linear-gradient(135deg, var(--lacivert), var(--gümüs)); color: var(--gece); }
+        .dark-copper { background: linear-gradient(135deg, #000, var(--bakir)); }
+
+        .viz-frame {
+            width: 100%; height: 450px; background: #000; border-radius: 50px; margin: 50px 0;
+            display: flex; align-items: center; justify-content: center; border: 2px dashed var(--gümüs);
+        }
+
+        .nav-control { display: flex; justify-content: space-between; margin-top: 100px; padding-bottom: 150px; }
+        .nav-btn { background: var(--lacivert); color: #fff; padding: 22px 55px; border-radius: 60px; text-decoration: none; font-weight: 800; border: 2px solid var(--bakir); transition: 0.4s; }
+    </style>
+</head>
+<body>
+
+    <canvas id="dark-matter-bg"></canvas>
+
+    <div class="header">
+        <a href="cosmology.html" style="color:#fff; text-decoration:none;"><i class="fa-solid fa-arrow-left"></i> SEKTÖR</a>
+        <div id="clock" style="font-family:'JetBrains Mono'; font-weight:800;">00:00:00</div>
+        <div style="font-size:0.7rem; letter-spacing:3px;">MISSING_MASS_FOUND</div>
+    </div>
+
+    <section class="hero-banner">
+        <p style="font-family:'JetBrains Mono'; letter-spacing:8px; opacity:0.8;">THE GHOST IN THE COSMOS</p>
+        <h1>Karanlık Madde:<br>Görünmez İskelet.</h1>
+    </section>
+
+    <main class="article-main">
+        <p>Usta, evreni bir şehre benzetirsek, galaksiler ve yıldızlar o şehrin ışıklarıdır. Ancak bu ışıkların havada asılı kalmasını sağlayan, dokunamadığımız ve göremediğimiz devasa bir betonarme yapı var: Karanlık Madde. Evrenin sadece %5'i gördüğümüz atomlardan oluşur. Geri kalan %27'lik devasa bir kısım ise hiçbir ışıkla etkileşime girmeyen, sadece kütleçekimiyle varlığını hissettiren bu gizemli maddeye aittir.</p>
+
+        <div class="info-strip navy-silver">
+            <h3>Vera Rubin'in Keşfi: Galaksiler Neden Dağılmıyor?</h3>
+            <p>1970'lerde astronom Vera Rubin, galaksilerin dönüş hızlarını ölçerken bir gariplik fark etti. Galaksilerin dışındaki yıldızlar, merkezdekilerle neredeyse aynı hızda dönüyordu. Fizik kurallarına göre, bu hızda dönen bir galaksinin yıldızları dışarı savrulmalıydı. Tek bir açıklama vardı: Galaksiyi bir arada tutan, ama bizim göremediğimiz devasa bir kütle orada gizleniyordu.</p>
+        </div>
+
+        [Image: Illustration of a galaxy rotation curve comparing observed vs predicted speeds]
+
+        <h2>Gravitasyonel Merceklenme: Işığın Bükülmesi</h2>
+        <p>Göremediğimiz bir şeyi nasıl kanıtlarız? Einstein'ın Genel İzafiyet Teorisi burada imdadımıza yetişiyor (Bölüm 3'ü hatırla usta!). Karanlık madde uzayı öylesine büker ki, arkasından gelen uzak galaksilerin ışığı bir mercekten geçer gibi eğrilir. Biz boş bir uzay parçasında bu ışık bükülmelerini gördüğümüzde, orada karanlık maddenin devasa bir yığın oluşturduğunu anlıyoruz.</p>
+
+        <div class="viz-frame">
+            <i class="fa-solid fa-circle-nodes fa-fade" style="font-size: 10rem; color: var(--gümüs); opacity: 0.6;"></i>
+            <p style="position:absolute; bottom:30px; color:var(--gümüs); font-family:'JetBrains Mono';">DARK_MATTERY_HALO_MAPPING</p>
+        </div>
+
+        <h2>WIMPler: Hayalet Parçacıklar</h2>
+        <p>Peki usta, bu madde neden yapılmış? En güçlü adayımız WIMP (Zayıf Etkileşimli Ağır Parçacıklar). Bu parçacıklar şu an senin vücudunun içinden, hatta dünyanın içinden hiçbir şeye çarpmadan geçip gidiyorlar. Bir tıp öğrencisi olarak bunu, vücutta hiçbir iz bırakmayan ama tüm anatomiyi ayakta tutan bir "fantom iskelet" gibi düşünebilirsin.</p>
+
+        <div class="info-strip dark-copper">
+            <h3>Kozmik Ağ: Evrenin Örümcek Ağı</h3>
+            <p>Karanlık madde, evrenin en büyük ölçekli yapısını oluşturur. Gazlar ve galaksiler, bu görünmez ağın iplikçikleri boyunca birikirler. Eğer karanlık madde olmasaydı, evrendeki gazlar asla yoğunlaşıp yıldızları ve dolayısıyla bizi oluşturamazdı. Biz varlığımızı, göremediğimiz bu devasa yapıya borçluyuz.</p>
+        </div>
+
+        [Image: Large scale structure of the universe simulation showing the cosmic web]
+
+        <h2>Karanlık Madde Olmadan Bir Gelecek?</h2>
+        <p>Bilim insanları hala laboratuvarlarda bu parçacığı yakalamaya çalışıyorlar. Eğer karanlık maddenin sırrını çözebilirsek, kütleçekimini kontrol etmenin ve belki de evrenin en derin sırlarını anlamanın anahtarını bulmuş olacağız. Evrenin bu sessiz ve görünmez hakimi, keşfedilmeyi bekleyen en büyük kıtamızdır.</p>
+
+        <div class="nav-control">
+            <a href="cosmo-1.html" class="nav-btn" style="background:#333;">GERİ</a>
+            <a href="cosmo-3.html" class="nav-btn">BÖLÜM 3: BÜYÜK ÇÖKÜŞ <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+    </main>
+
+    <script>
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+
+        const canvas = document.getElementById('dark-matter-bg');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const colors = ['#001f3f', '#bdc3c7', '#000814', '#b87333'];
+
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            particles = Array.from({length: 20}, () => ({
+                x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+                r: Math.random()*350+200, color: colors[Math.floor(Math.random()*colors.length)],
+                vx: (Math.random()-0.5)*1.1, vy: (Math.random()-0.5)*1.1
+            }));
+        }
+
+        function animate() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < -p.r) p.x = canvas.width+p.r; if(p.x > canvas.width+p.r) p.x = -p.r;
+                if(p.y < -p.r) p.y = canvas.height+p.r; if(p.y > canvas.height+p.r) p.y = -p.r;
+                ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+        window.onresize = init; init(); animate();
+    </script>
+</body>
+</html>
