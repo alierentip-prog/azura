@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Azura Nexus | Elite Control</title>
+    <title>Azura Nexus | Elite Command</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&family=JetBrains+Mono:wght@800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bordo: #5a0000;
-            --krem-koyu: #f2ead3;
+            --bordo: #5a0000;      /* Bordo & Ceviz Paleti */
+            --ceviz: #3d2b1f;      
+            --koyu-yesil: #0a2f1f; /* Koyu Yeşil & Altın Paleti */
+            --altin: #b8860b;      
+            --lacivert: #001f3f;   /* Lacivert & Bakır Paleti */
+            --bakir: #b87333;      
+            --krem-koyu: #f2ead3;  /* Ana Arka Plan */
             --krem-card: #faf7ed;
-            --ceviz: #3d2b1f;
-            --altin: #b8860b;
             --text-size: 16px;
         }
 
@@ -22,7 +25,7 @@
             --ceviz: #f2ead3;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         
         body { 
             background: var(--krem-koyu); 
@@ -31,15 +34,14 @@
             color: var(--ceviz); 
             min-height: 100vh;
             overflow-x: hidden;
-            transition: font-size 0.2s;
         }
 
         canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
 
-        /* --- ÜST ŞERİT (BORDO & ALTIN) --- */
+        /* --- ÜST ŞERİT (DERİN BORDO & ALTIN) --- */
         .header {
             background: var(--bordo);
-            padding: 15px 20px;
+            padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -47,64 +49,62 @@
             top: 0;
             z-index: 100;
             border-bottom: 3px solid var(--altin);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
-        .brand { color: #fff; font-family: 'JetBrains Mono'; font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
+        .brand { color: #fff; font-family: 'JetBrains Mono'; font-weight: 800; font-size: 1.4rem; letter-spacing: -1px; }
 
         .header-tools { display: flex; gap: 10px; align-items: center; }
         
         .live-clock {
             background: rgba(0,0,0,0.3);
             color: var(--altin);
-            padding: 6px 15px;
+            padding: 5px 12px;
             border-radius: 50px;
             font-family: 'JetBrains Mono';
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             border: 1px solid var(--altin);
         }
 
         /* --- ANA KONTEYNER --- */
         .container { position: relative; z-index: 10; padding: 25px 20px; max-width: 500px; margin: 0 auto; }
 
-        .hero h1 { font-size: 2.2rem; font-weight: 800; color: var(--ceviz); letter-spacing: -2px; line-height: 1; margin-bottom: 25px; }
+        .hero h1 { font-size: 2.2rem; font-weight: 800; color: var(--ceviz); letter-spacing: -2px; line-height: 0.95; margin-bottom: 25px; }
 
         /* --- 5 KATEGORİ SİSTEMİ --- */
         .menu-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 100px; }
 
         .card {
             background: var(--krem-card);
-            padding: 20px;
-            border-radius: 25px;
+            padding: 18px 22px;
+            border-radius: 30px;
             display: flex;
             align-items: center;
             gap: 15px;
             text-decoration: none;
             color: inherit;
             border: 1px solid rgba(128,0,0,0.05);
-            transition: 0.3s cubic-bezier(0.2, 0, 0.2, 1);
             box-shadow: 0 8px 15px rgba(0,0,0,0.03);
         }
 
-        .card:active { transform: scale(0.96); background: #fff; border-color: var(--altin); }
+        .card:active { transform: scale(0.96); background: #fff; }
 
         .card-icon {
-            width: 55px; height: 55px; border-radius: 18px;
-            background: var(--bordo); color: var(--altin);
+            width: 52px; height: 52px; border-radius: 18px;
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.4rem; box-shadow: 0 5px 15px rgba(90,0,0,0.2);
+            font-size: 1.3rem; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-        .card-info h2 { font-size: 1.2rem; font-weight: 800; color: var(--ceviz); }
-        .card-info p { font-size: 0.8rem; opacity: 0.6; }
+        .card-info h2 { font-size: 1.15rem; font-weight: 800; color: var(--ceviz); }
+        .card-info p { font-size: 0.75rem; opacity: 0.6; font-weight: 500; }
 
         .chevron { margin-left: auto; color: var(--altin); opacity: 0.4; }
 
-        /* --- ERİŞİLEBİLİRLİK PANELİ (AKTİF) --- */
+        /* --- ERİŞİLEBİLİRLİK PANELİ --- */
         .access-bar {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             background: var(--bordo);
-            padding: 12px 25px;
+            padding: 10px 25px;
             border-radius: 50px;
             display: flex;
             align-items: center;
@@ -116,17 +116,17 @@
 
         .access-btn {
             background: none; border: none; color: #fff;
-            font-size: 1.1rem; cursor: pointer; transition: 0.2s;
+            font-size: 1rem; cursor: pointer;
             display: flex; align-items: center; gap: 5px;
         }
 
-        .access-btn:active { color: var(--altin); transform: scale(1.2); }
+        .access-btn:active { color: var(--altin); transform: scale(1.1); }
 
     </style>
 </head>
 <body>
 
-    <canvas id="dust-particles"></canvas>
+    <canvas id="particles"></canvas>
 
     <header class="header">
         <div class="brand">AZURA</div>
@@ -140,62 +140,57 @@
 
     <div class="container">
         <div class="hero">
-            <h1>Dijital Sektörler.</h1>
+            <h1>Dijital<br>Kontrol Merkezi.</h1>
         </div>
 
         <nav class="menu-list">
-            <a href="medical.html" class="card">
-                <div class="card-icon"><i class="fa-solid fa-notes-medical"></i></div>
-                <div class="card-info"><h2>Tıp & Klinik</h2><p>Akademik Vaka Analizleri</p></div>
+            <a href="medical.html" class="card" style="border-left: 5px solid var(--bordo);">
+                <div class="card-icon" style="background: var(--ceviz); color: var(--bordo);"><i class="fa-solid fa-notes-medical"></i></div>
+                <div class="card-info"><h2>Tıp & Klinik</h2><p>Akademik Arşiv</p></div>
                 <i class="fa-solid fa-chevron-right chevron"></i>
             </a>
 
-            <a href="physic.html" class="card">
-                <div class="card-icon"><i class="fa-solid fa-atom"></i></div>
-                <div class="card-info"><h2>Fizik Sektörü</h2><p>Kuantum ve Kozmoloji</p></div>
+            <a href="physic.html" class="card" style="border-left: 5px solid var(--koyu-yesil);">
+                <div class="card-icon" style="background: var(--koyu-yesil); color: var(--altin);"><i class="fa-solid fa-atom"></i></div>
+                <div class="card-info"><h2>Fizik Sektörü</h2><p>Kozmoloji Kapıları</p></div>
+                <i class="fa-solid fa-chevron-right chevron" style="color: var(--altin);"></i>
+            </a>
+
+            <a href="gastronomy.html" class="card" style="border-left: 5px solid var(--lacivert);">
+                <div class="card-icon" style="background: var(--lacivert); color: var(--bakir);"><i class="fa-solid fa-utensils"></i></div>
+                <div class="card-info"><h2>Gastronomi</h2><p>Mutfak Mirası</p></div>
+                <i class="fa-solid fa-chevron-right chevron" style="color: var(--bakir);"></i>
+            </a>
+
+            <a href="games.html" class="card" style="border-left: 5px solid var(--bordo);">
+                <div class="card-icon" style="background: var(--bordo); color: var(--altin);"><i class="fa-solid fa-brain"></i></div>
+                <div class="card-info"><h2>Zihin Lab</h2><p>Simülasyonlar</p></div>
                 <i class="fa-solid fa-chevron-right chevron"></i>
             </a>
 
-            <a href="gastronomy.html" class="card">
-                <div class="card-icon"><i class="fa-solid fa-utensils"></i></div>
-                <div class="card-info"><h2>Gastronomi</h2><p>Mutfak Mirası ve Kimya</p></div>
-                <i class="fa-solid fa-chevron-right chevron"></i>
-            </a>
-
-            <a href="games.html" class="card">
-                <div class="card-icon"><i class="fa-solid fa-brain"></i></div>
-                <div class="card-info"><h2>Zihin Laboratuvarı</h2><p>Bilişsel Simülasyonlar</p></div>
-                <i class="fa-solid fa-chevron-right chevron"></i>
-            </a>
-
-            <a href="settings.html" class="card">
-                <div class="card-icon"><i class="fa-solid fa-sliders"></i></div>
-                <div class="card-info"><h2>Sistem Çekirdeği</h2><p>Ağ ve Güvenlik Ayarları</p></div>
-                <i class="fa-solid fa-chevron-right chevron"></i>
+            <a href="settings.html" class="card" style="border-left: 5px solid var(--ceviz);">
+                <div class="card-icon" style="background: var(--ceviz); color: var(--bakir);"><i class="fa-solid fa-sliders"></i></div>
+                <div class="card-info"><h2>Sistem Çekirdeği</h2><p>Ağ Ayarları</p></div>
+                <i class="fa-solid fa-chevron-right chevron" style="color: var(--bakir);"></i>
             </a>
         </nav>
     </div>
 
     <div class="access-bar">
-        <button class="access-btn" onclick="adjustFont(1.2)"><i class="fa-solid fa-plus"></i>A</button>
-        <button class="access-btn" onclick="adjustFont(0.8)"><i class="fa-solid fa-minus"></i>A</button>
+        <button class="access-btn" onclick="adjustFont(1.1)"><i class="fa-solid fa-plus"></i></button>
+        <button class="access-btn" onclick="adjustFont(0.9)"><i class="fa-solid fa-minus"></i></button>
         <button class="access-btn" onclick="resetFont()"><i class="fa-solid fa-rotate-left"></i></button>
     </div>
 
     <script>
-        // CANLI SAAT
         function updateClock() {
             document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR');
         }
-        setInterval(updateClock, 1000);
-        updateClock();
+        setInterval(updateClock, 1000); updateClock();
 
-        // ERİŞİLEBİLİRLİK FONKSİYONLARI
         let fontSize = 16;
         function adjustFont(scale) {
             fontSize *= scale;
-            if(fontSize > 30) fontSize = 30;
-            if(fontSize < 12) fontSize = 12;
             document.documentElement.style.setProperty('--text-size', fontSize + 'px');
         }
         function resetFont() {
@@ -203,14 +198,13 @@
             document.documentElement.style.setProperty('--text-size', '16px');
         }
 
-        // ALTIN TOZU PARÇACIKLARI
-        const canvas = document.getElementById('dust-particles');
+        const canvas = document.getElementById('particles');
         const ctx = canvas.getContext('2d');
         let dots = [];
 
         function init() {
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            dots = Array.from({length: 40}, () => ({
+            dots = Array.from({length: 45}, () => ({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
                 r: Math.random() * 2,
