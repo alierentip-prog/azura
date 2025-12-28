@@ -3,255 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura | Event Horizon</title>
+    <title>Azura | Oyun Portalı</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
     <style>
         :root { 
-            --bg: #020617; 
-            --p-cyan: #22d3ee; 
-            --p-purple: #818cf8;
-            --p-rose: #f43f5e;
+            --bg-mesh: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 33%, #faf5ff 66%, #fff1f2 100%);
+            --glass: rgba(255, 255, 255, 0.6);
+            --p-indigo: #6366f1;
+            --p-cyan: #22d3ee;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            background: var(--bg); color: #fff; 
+            background: var(--bg-mesh); 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            overflow: hidden; 
+            min-height: 100vh; background-attachment: fixed;
         }
 
-        #game-container { position: relative; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
-        canvas { background: #000; box-shadow: 0 0 50px rgba(34, 211, 238, 0.2); border-radius: 20px; }
+        /* --- ARKA PLAN SİS EFEKTİ --- */
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; filter: blur(60px); }
 
-        /* UI PANEL */
-        .ui-layer { 
-            position: absolute; top: 40px; left: 40px; right: 40px; 
-            display: flex; justify-content: space-between; pointer-events: none; 
-        }
-        .stat-card { 
-            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); 
-            padding: 15px 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); 
-        }
-        .label { font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--p-cyan); letter-spacing: 2px; display: block; }
-        .value { font-size: 1.5rem; font-weight: 800; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 5%; position: relative; z-index: 10; }
 
-        /* MENU OVERLAYS */
-        .overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(2, 6, 23, 0.95); z-index: 1000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+        .back-nav { 
+            display: inline-flex; align-items: center; gap: 10px; margin-bottom: 30px; 
+            text-decoration: none; color: var(--p-indigo); font-family: 'JetBrains Mono'; 
+            font-weight: 800; background: #fff; padding: 12px 25px; border-radius: 50px; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: 0.3s;
         }
-        .modal { max-width: 500px; padding: 40px; }
-        .btn {
-            background: var(--p-cyan); color: #000; border: none; padding: 18px 50px;
-            border-radius: 50px; font-size: 1.2rem; font-weight: 800; cursor: pointer;
-            margin-top: 30px; transition: 0.3s;
+        .back-nav:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(99,102,241,0.2); }
+
+        header { text-align: center; margin-bottom: 50px; }
+        .hero-title { font-size: 3rem; font-weight: 800; letter-spacing: -2px; color: #1e293b; }
+
+        /* --- OYUN SEÇİM GRİDİ --- */
+        .game-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; margin-bottom: 50px; }
+        .game-card {
+            background: var(--glass); backdrop-filter: blur(10px); padding: 30px; border-radius: 35px;
+            border: 2px solid #fff; cursor: pointer; transition: 0.4s; text-align: center;
         }
-        .btn:hover { transform: scale(1.1); box-shadow: 0 0 30px var(--p-cyan); }
+        .game-card:hover { transform: translateY(-10px); background: #fff; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        .game-card i { font-size: 2.5rem; color: var(--p-indigo); margin-bottom: 15px; }
+        .game-card h3 { font-size: 1.4rem; font-weight: 800; margin-bottom: 10px; }
+        .game-card p { font-size: 0.9rem; color: #64748b; }
+
+        /* --- OYUN EKRANI (PERDE) --- */
+        #game-viewport { 
+            display: none; background: #fff; border-radius: 50px; padding: 40px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.1); min-height: 500px;
+            flex-direction: column; align-items: center; justify-content: center;
+            position: relative; animation: slideUp 0.5s ease;
+        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .close-game { position: absolute; top: 20px; right: 30px; cursor: pointer; font-size: 1.5rem; color: #94a3b8; }
+
+        /* OYUN ÖZEL STİLLERİ: MAYIN TARLASI */
+        #minesweeper-board { display: grid; gap: 4px; background: #e2e8f0; padding: 10px; border-radius: 15px; }
+        .m-cell { width: 35px; height: 35px; background: #cbd5e1; display: flex; align-items: center; justify-content: center; font-weight: 800; cursor: pointer; border-radius: 5px; }
+        .m-cell.revealed { background: #f1f5f9; cursor: default; }
+        .m-cell.mine { background: #ef4444; color: #fff; }
+
     </style>
 </head>
 <body>
 
-    <div id="game-container">
-        <div class="ui-layer">
-            <div class="stat-card">
-                <span class="label">STAGE</span>
-                <span id="ui-stage" class="value">1</span>
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="container">
+        <a href="menu.html" class="back-nav"><i class="fa-solid fa-arrow-left"></i> NEXUS</a>
+        
+        <header>
+            <h1 class="hero-title">Zihin Portalı</h1>
+            <p style="color: #64748b; font-weight: 600;">Stratejik odaklanma ve eğlence bir arada.</p>
+        </header>
+
+        <div class="game-grid" id="selection-grid">
+            <div class="game-card" onclick="loadGame('minesweeper')">
+                <i class="fa-solid fa-bomb"></i>
+                <h3>Mayın Tarlası</h3>
+                <p>Klasik mantık ve strateji testi.</p>
             </div>
-            <div class="stat-card">
-                <span class="label">VELOCITY</span>
-                <span id="ui-speed" class="value">0</span>
+            <div class="game-card" onclick="loadGame('maze')">
+                <i class="fa-solid fa-route"></i>
+                <h3>Labirent</h3>
+                <p>Görsel yol bulma ve hız simülasyonu.</p>
             </div>
-            <div class="stat-card">
-                <span class="label">SCORE</span>
-                <span id="ui-score" class="value">0</span>
+            <div class="game-card" style="opacity: 0.6; cursor: not-allowed;">
+                <i class="fa-solid fa-chess"></i>
+                <h3>Satranç (Yakında)</h3>
+                <p>Derin strateji ve rasyonel hamleler.</p>
+            </div>
+            <div class="game-card" style="opacity: 0.6; cursor: not-allowed;">
+                <i class="fa-solid fa-clone"></i>
+                <h3>Solitaire (Yakında)</h3>
+                <p>Sabır ve düzen odaklı kart oyunu.</p>
+            </div>
+            <div class="game-card" style="opacity: 0.6; cursor: not-allowed;">
+                <i class="fa-solid fa-cube"></i>
+                <h3>3D 1. Şahıs (Hazırlanıyor)</h3>
+                <p>Üç boyutlu uzayda keşif ve aksiyon.</p>
             </div>
         </div>
 
-        <canvas id="gameCanvas"></canvas>
-
-        <div id="start-screen" class="overlay">
-            <div class="modal">
-                <h1 style="font-size: 3.5rem; margin-bottom: 20px;">EVENT HORIZON</h1>
-                <p style="color: var(--p-cyan); letter-spacing: 4px;">AZURA LABORATORY SIMULATION</p>
-                <p style="margin-top: 20px; color: #94a3b8;">Veri çekirdeğini yönetin. Engelleri (Kırmızı) aşın ve 1000 birim ilerleyerek bir sonraki aşamaya geçin.</p>
-                <button class="btn" onclick="startGame()">SİSTEMİ BAŞLAT</button>
-            </div>
-        </div>
-
-        <div id="result-screen" class="overlay" style="display: none;">
-            <div class="modal">
-                <h1 id="result-title" style="font-size: 3rem;">STAGE COMPLETE</h1>
-                <p id="result-body" style="font-size: 1.2rem; margin-top: 20px;"></p>
-                <button id="result-btn" class="btn">DEVAM ET</button>
-            </div>
+        <div id="game-viewport">
+            <div class="close-game" onclick="closeGame()"><i class="fa-solid fa-xmark"></i> Kapat</div>
+            <div id="game-content"></div>
         </div>
     </div>
 
     <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const uiStage = document.getElementById('ui-stage');
-        const uiScore = document.getElementById('ui-score');
-        const uiSpeed = document.getElementById('ui-speed');
+        // --- Hub Mantığı ---
+        const selectionGrid = document.getElementById('selection-grid');
+        const viewport = document.getElementById('game-viewport');
+        const content = document.getElementById('game-content');
 
-        let stage = 1;
-        let score = 0;
-        let isGameRunning = false;
-        let player, obstacles, animationId;
+        function loadGame(gameType) {
+            selectionGrid.style.display = 'none';
+            viewport.style.display = 'flex';
+            content.innerHTML = '';
 
-        function setCanvasSize() {
-            canvas.width = window.innerWidth * 0.8;
-            canvas.height = window.innerHeight * 0.7;
-        }
-        window.addEventListener('resize', setCanvasSize);
-        setCanvasSize();
-
-        class Player {
-            constructor() {
-                this.width = 40;
-                this.height = 40;
-                this.x = 50;
-                this.y = canvas.height / 2;
-                this.color = '#22d3ee';
-            }
-            draw() {
-                ctx.shadowBlur = 15;
-                ctx.shadowColor = this.color;
-                ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.roundRect(this.x, this.y, this.width, this.height, 10);
-                ctx.fill();
-                ctx.shadowBlur = 0;
-            }
+            if(gameType === 'minesweeper') initMinesweeper();
+            if(gameType === 'maze') content.innerHTML = '<h2 style="color: #6366f1;">Labirent Modülü Hazırlanıyor...</h2><p>Bir sonraki güncellemede 3D motoruyla eklenecektir.</p>';
         }
 
-        class Obstacle {
-            constructor(speed) {
-                this.width = 30 + Math.random() * 50;
-                this.height = 100 + Math.random() * 200;
-                this.x = canvas.width;
-                this.y = Math.random() > 0.5 ? 0 : canvas.height - this.height;
-                this.speed = speed;
-                this.color = '#f43f5e';
-            }
-            update() {
-                this.x -= this.speed;
-            }
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = this.color;
-                ctx.fillRect(this.x, this.y, this.width, this.height);
-                ctx.shadowBlur = 0;
-            }
+        function closeGame() {
+            selectionGrid.style.display = 'grid';
+            viewport.style.display = 'none';
         }
 
-        function startGame() {
-            document.getElementById('start-screen').style.display = 'none';
-            document.getElementById('result-screen').style.display = 'none';
-            player = new Player();
-            obstacles = [];
-            score = 0;
-            isGameRunning = true;
-            loop();
-        }
+        // --- Mayın Tarlası Motoru ---
+        function initMinesweeper() {
+            const size = 10;
+            const mines = 15;
+            let board = Array(size * size).fill(0);
+            let minePositions = [];
 
-        function loop() {
-            if (!isGameRunning) return;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Player movement
-            player.draw();
-
-            // Obstacle logic
-            const currentSpeed = 5 + (stage * 2);
-            uiSpeed.innerText = currentSpeed * 10;
-
-            if (Math.random() < 0.02 + (stage * 0.01)) {
-                obstacles.push(new Obstacle(currentSpeed));
+            while(minePositions.length < mines) {
+                let r = Math.floor(Math.random() * (size * size));
+                if(!minePositions.includes(r)) minePositions.push(r);
             }
+            minePositions.forEach(p => board[p] = 'M');
 
-            obstacles.forEach((obs, index) => {
-                obs.update();
-                obs.draw();
+            const boardEl = document.createElement('div');
+            boardEl.id = 'minesweeper-board';
+            boardEl.style.gridTemplateColumns = `repeat(${size}, 35px)`;
 
-                // Collision Detection
-                if (player.x < obs.x + obs.width &&
-                    player.x + player.width > obs.x &&
-                    player.y < obs.y + obs.height &&
-                    player.y + player.height > obs.y) {
-                    gameOver();
-                }
-
-                if (obs.x + obs.width < 0) obstacles.splice(index, 1);
+            board.forEach((cell, i) => {
+                const cellEl = document.createElement('div');
+                cellEl.className = 'm-cell';
+                cellEl.onclick = () => {
+                    if(cell === 'M') {
+                        cellEl.classList.add('mine');
+                        cellEl.innerHTML = '<i class="fa-solid fa-bomb"></i>';
+                        alert("OYUN BİTTİ!");
+                        closeGame();
+                    } else {
+                        cellEl.classList.add('revealed');
+                        cellEl.innerText = '0'; // Basit versiyon
+                    }
+                };
+                boardEl.appendChild(cellEl);
             });
-
-            score += 1;
-            uiScore.innerText = score;
-
-            if (score >= 1000) {
-                victory();
-            } else {
-                animationId = requestAnimationFrame(loop);
-            }
+            content.appendChild(boardEl);
         }
 
-        function gameOver() {
-            isGameRunning = false;
-            cancelAnimationFrame(animationId);
-            showResult("BAĞLANTI KOPTU", "Sistem hatası. Mevcut aşamayı tekrar deneyin.", "YENİDEN DENE", startGame);
+        // --- Arka Plan Sis Efekti ---
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let clouds = [];
+        function initClouds() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            for(let i=0; i<6; i++) clouds.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                r: Math.random() * 300 + 200,
+                color: ['rgba(186, 230, 253, 0.4)', 'rgba(251, 207, 232, 0.3)', 'rgba(167, 139, 250, 0.2)'][i%3],
+                vx: Math.random() * 0.5 - 0.25,
+                vy: Math.random() * 0.5 - 0.25
+            });
         }
-
-        function victory() {
-            isGameRunning = false;
-            cancelAnimationFrame(animationId);
-            if (stage < 4) {
-                showResult(`STAGE ${stage} TAMAMLANDI`, "Bir sonraki derinlik seviyesine aktarılıyorsunuz.", "STAGE " + (stage + 1), () => {
-                    stage++;
-                    uiStage.innerText = stage;
-                    startGame();
-                });
-            } else {
-                showResult("ZİRVEYE ULAŞILDI", "Azura sistemindeki tüm engeller aşıldı.", "BAŞTAN BAŞLA", () => {
-                    stage = 1;
-                    uiStage.innerText = stage;
-                    startGame();
-                });
-            }
+        function drawClouds() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            clouds.forEach(c => {
+                c.x += c.vx; c.y += c.vy;
+                if(c.x<0 || c.x>canvas.width) c.vx *= -1;
+                if(c.y<0 || c.y>canvas.height) c.vy *= -1;
+                let g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.r);
+                g.addColorStop(0, c.color); g.addColorStop(1, 'transparent');
+                ctx.fillStyle = g; ctx.beginPath(); ctx.arc(c.x, c.y, c.r, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(drawClouds);
         }
-
-        function showResult(title, body, btnText, action) {
-            const screen = document.getElementById('result-screen');
-            document.getElementById('result-title').innerText = title;
-            document.getElementById('result-body').innerText = body;
-            const btn = document.getElementById('result-btn');
-            btn.innerText = btnText;
-            btn.onclick = action;
-            screen.style.display = 'flex';
-        }
-
-        // Controls
-        window.addEventListener('mousemove', (e) => {
-            if (isGameRunning) {
-                const rect = canvas.getBoundingClientRect();
-                let targetY = e.clientY - rect.top - player.height / 2;
-                player.y = Math.max(0, Math.min(canvas.height - player.height, targetY));
-            }
-        });
-
-        // Touch for Mobile
-        window.addEventListener('touchmove', (e) => {
-            if (isGameRunning) {
-                const rect = canvas.getBoundingClientRect();
-                let targetY = e.touches[0].clientY - rect.top - player.height / 2;
-                player.y = Math.max(0, Math.min(canvas.height - player.height, targetY));
-            }
-            e.preventDefault();
-        }, {passive: false});
-
+        initClouds(); drawClouds();
     </script>
 </body>
 </html>
