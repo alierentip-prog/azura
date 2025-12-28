@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Kuantum: Süperpozisyon | Azura</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --lacivert: #001f3f; --altin: #b8860b; --bakir: #b87333;
+            --krem: #f2ead3; --ceviz: #3d2b1f; --bordo: #5a0000;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--krem); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--ceviz); line-height: 1.8; overflow-x: hidden; }
+
+        /* ARKA PLAN DİNAMİK EFEKT */
+        #superpos-bg { position: fixed; inset: 0; z-index: 1; opacity: 0.35; filter: blur(70px); pointer-events: none; }
+
+        .header { 
+            position: sticky; top: 0; background: var(--lacivert); color: #fff; 
+            padding: 15px 25px; display: flex; justify-content: space-between; 
+            z-index: 100; border-bottom: 3px solid var(--altin);
+        }
+
+        .hero-banner {
+            height: 55vh; background: linear-gradient(135deg, var(--lacivert), var(--bakir), var(--bordo));
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; color: #fff; padding: 40px; position: relative; z-index: 10;
+        }
+
+        .article-wrap { 
+            max-width: 900px; margin: -60px auto 0; padding: 60px 30px; 
+            background: #fff; border-radius: 60px 60px 0 0; position: relative; 
+            z-index: 20; box-shadow: 0 -30px 60px rgba(0,0,0,0.15); 
+        }
+        
+        h1 { font-size: clamp(2.5rem, 10vw, 4rem); font-weight: 800; letter-spacing: -3px; line-height: 0.9; margin-bottom: 20px; }
+        h2 { font-size: 2rem; font-weight: 800; margin: 45px 0 20px; color: var(--lacivert); border-left: 10px solid var(--bakir); padding-left: 20px; }
+        p { margin-bottom: 25px; font-size: 1.15rem; text-align: justify; }
+
+        /* RENK BOMBASI BLOKLARI */
+        .glow-box { padding: 40px; border-radius: 40px; margin: 40px 0; color: #fff; position: relative; }
+        .navy-gold { background: linear-gradient(45deg, var(--lacivert), var(--altin)); }
+        .copper-dark { background: linear-gradient(45deg, var(--bakir), var(--ceviz)); }
+
+        .quantum-canvas-area {
+            width: 100%; height: 350px; background: #001220; border-radius: 40px; margin: 40px 0;
+            display: flex; align-items: center; justify-content: center; border: 2px solid var(--bakir);
+        }
+
+        .nav-control { display: flex; justify-content: space-between; margin-top: 80px; padding-bottom: 120px; }
+        .nav-btn { background: var(--lacivert); color: #fff; padding: 20px 45px; border-radius: 50px; text-decoration: none; font-weight: 800; border: 2px solid var(--altin); transition: 0.3s; }
+        .nav-btn:hover { background: var(--altin); color: var(--lacivert); }
+    </style>
+</head>
+<body>
+
+    <canvas id="superpos-bg"></canvas>
+
+    <div class="header">
+        <a href="quantum.html" style="color:#fff; text-decoration:none;"><i class="fa-solid fa-chevron-left"></i> SEKTÖR</a>
+        <div id="clock" style="font-family:'JetBrains Mono'; font-weight:800;">00:00:00</div>
+        <div style="font-size:0.7rem; letter-spacing:2px;">COHERENCE_LEVEL</div>
+    </div>
+
+    <section class="hero-banner">
+        <p style="font-family:'JetBrains Mono'; letter-spacing:6px; opacity:0.8;">QUANTUM SECTOR 02</p>
+        <h1>Süperpozisyon:<br>İhtimaller Bulutu.</h1>
+    </section>
+
+    <main class="article-wrap">
+        <p>Usta, Bölüm 1'de parçacıkların aslında birer dalga olduğunu gördük. Şimdi bu dalganın bize sunduğu en çılgın hediyeye bakıyoruz: Süperpozisyon. Klasik dünyada bir para havaya atıldığında ya yazı gelir ya tura. Ancak kuantum dünyasında, para havada dönerken ne yazıdır ne tura; o aynı anda hem yazı hem turadır. Parçacık, biz ona bakıp "Neredesin?" diyene kadar tüm ihtimallerin bir toplamı (süperpozisyonu) olarak var olur.</p>
+
+        <div class="glow-box navy-gold">
+            <h3>Gerçekliğin Yazı-Turası</h3>
+            <p>Bir atom çekirdeği etrafındaki elektronu düşün usta. O elektron belirli bir yörüngede dönen bir gezegen gibi değildir. O, çekirdeğin etrafında her yerde aynı anda bulunan bir "olasılık bulutu"dur. Biz ölçüm yaptığımız an, bu bulut "çöker" ve elektron tek bir noktada belirir. Ölçümden önce ise o, evrenin sunduğu tüm koordinatlarda eş zamanlı olarak mevcuttur.</p>
+        </div>
+
+        
+
+        <h2>Dalga Fonksiyonunun Çöküşü</h2>
+        <p>Fizikçiler buna "Dalga Fonksiyonu" (Psi - Ψ) derler. Bu fonksiyon, bir parçacığın olabileceği tüm hallerin matematiksel bir listesidir. Biz sisteme müdahale ettiğimizde, bu liste tek bir maddeye iner. Tıp fakültesindeki bir sınav sonucunu düşün usta; sen zarfı açana kadar hem geçtin hem kaldın durumundasın. Zarfı açtığın an gerçeklik tek bir yöne kilitlenir. Kuantum dünyasında bu bir metafor değil, fiziksel bir zorunluluktur.</p>
+
+        <div class="quantum-canvas-area">
+            <i class="fa-solid fa-bahai fa-spin" style="font-size: 8rem; color: var(--altin); opacity: 0.7;"></i>
+            <p style="position:absolute; bottom:20px; color:var(--altin); font-family:'JetBrains Mono';">SUPERPOSITION_DYNAMICS_v2</p>
+        </div>
+
+        <h2>Kuantum Bilgisayarları Nasıl Çalışır?</h2>
+        <p>İşte usta, bu süperpozisyon olayı bugünkü teknolojinin zirvesi olan Kuantum Bilgisayarlarının yakıtıdır. Klasik bir bilgisayardaki bitler ya 0'dır ya 1. Ama kuantum bilgisayarındaki "Qubit"ler (Kuantum Bitleri), süperpozisyon sayesinde aynı anda hem 0 hem 1 olabilirler. Bu sayede, devasa bir şifreyi çözmek için tüm kombinasyonları aynı anda deneyebilirler. Klasik bir bilgisayarın milyonlarca yılda yapacağı hesabı, süperpozisyonun gücüyle saniyeler içinde bitirebilirler.</p>
+
+        
+
+        <div class="glow-box copper-dark">
+            <h3>Biyolojik Süperpozisyon ve Fotosentez</h3>
+            <p>Doğa bu kuantum hilesini bizden çok daha önce keşfetti usta. Fotosentez yapan bitkiler, güneşten gelen fotonu klorofilin merkezine ulaştırmak için kuantum süperpozisyonu kullanırlar. Foton, merkeze giden tüm yolları aynı anda "deneyerek" en verimli yolu bulur. Eğer bitkiler klasik fizik kullansaydı, enerji kaybı yüzünden dünyada yaşam bu kadar yeşil ve verimli olmazdı.</p>
+        </div>
+
+        <h2>Gözlem ve Gerçeklik Arasındaki Bağ</h2>
+        <p>Süperpozisyon bize evrenin pasif bir izleyicisi olmadığımızı, aktif bir kurucusu olduğumuzu fısıldar. Bir parçacığın hangi durumda olacağına bizim gözlemimiz karar veriyorsa, gerçeklik dediğimiz şey bizden bağımsız bir "dış dünya" mıdır, yoksa bizimle etkileşime giren bir olasılıklar denizi mi? Bu soru, fiziği bitirip felsefeyi başlatan noktadır. Sen bir doktor olarak bir hücreye baktığında, aslında o hücrenin milyarlarca kuantum olasılığını tek bir biyolojik gerçeğe sabitliyorsun.</p>
+
+        <div class="nav-control">
+            <a href="quantum-1.html" class="nav-btn" style="background:#888;">GERİ</a>
+            <a href="quantum-3.html" class="nav-btn">BÖLÜM 3: DOLANIKLIK <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+    </main>
+
+    <script>
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+
+        const canvas = document.getElementById('superpos-bg');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const colors = ['#001f3f', '#b8860b', '#b87333', '#5a0000'];
+
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            particles = Array.from({length: 18}, () => ({
+                x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+                r: Math.random()*280+180, color: colors[Math.floor(Math.random()*colors.length)],
+                vx: (Math.random()-0.5)*1.2, vy: (Math.random()-0.5)*1.2
+            }));
+        }
+
+        function animate() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < -p.r) p.x = canvas.width+p.r; if(p.x > canvas.width+p.r) p.x = -p.r;
+                if(p.y < -p.r) p.y = canvas.height+p.r; if(p.y > canvas.height+p.r) p.y = -p.r;
+                ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+        window.onresize = init; init(); animate();
+    </script>
+</body>
+</html>
