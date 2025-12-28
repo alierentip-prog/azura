@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Azura Nexus</title>
+    <title>Azura Nexus | Kontrol Merkezi</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bordo: #800000;
-            --krem-koyu: #f5f5dc; /* Koyu krem rengi */
-            --krem-acik: #fdfaf5;
-            --text: #2c1810;
+            --bordo: #5a0000; /* Gerçek derin bordo */
+            --krem-koyu: #f2ead3; /* Daha doygun koyu krem */
+            --krem-acik: #faf7ed;
+            --text: #1a0f0f;
         }
 
         body.dark-mode {
-            --krem-koyu: #1a0f0f;
-            --krem-acik: #251a1a;
-            --text: #f5f5dc;
+            --krem-koyu: #120a0a;
+            --krem-acik: #1c1313;
+            --text: #f2ead3;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -32,159 +32,184 @@
 
         canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
 
-        /* --- ÜST ŞERİT (TAM MOBİL UYUMLU) --- */
+        /* --- ÜST ŞERİT (GERÇEK BORDO) --- */
         .header {
             background: var(--bordo);
-            padding: 15px 20px;
+            padding: 15px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            border-bottom: 2px solid rgba(255,255,255,0.1);
         }
 
-        .brand { color: #fff; font-family: 'JetBrains Mono'; font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
+        .brand { color: #fff; font-family: 'JetBrains Mono'; font-weight: 800; font-size: 1.6rem; letter-spacing: -1px; }
         
-        .header-actions { display: flex; gap: 10px; }
+        .header-tools { display: flex; gap: 12px; align-items: center; }
+        .clock-pill { 
+            background: rgba(255,255,255,0.1); 
+            color: #fff; 
+            padding: 6px 12px; 
+            border-radius: 50px; 
+            font-family: 'JetBrains Mono'; 
+            font-size: 0.85rem;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
         .circle-btn {
-            width: 40px; height: 40px; border-radius: 50%;
+            width: 38px; height: 38px; border-radius: 50%;
             background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
             color: #fff; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 0.9rem;
+            cursor: pointer;
         }
 
-        /* --- ANA İÇERİK --- */
-        .container { position: relative; z-index: 10; padding: 25px 20px; }
+        /* --- İÇERİK --- */
+        .container { position: relative; z-index: 10; padding: 30px 20px; max-width: 500px; margin: 0 auto; }
 
-        .hero-text { margin-bottom: 30px; }
-        .hero-text h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: -2px; line-height: 1; margin-bottom: 5px; }
-        .hero-text p { font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--bordo); letter-spacing: 3px; text-transform: uppercase; }
+        .welcome-area { margin-bottom: 35px; }
+        .welcome-area p { font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--bordo); letter-spacing: 4px; font-weight: 800; text-transform: uppercase; }
+        .welcome-area h1 { font-size: 2.4rem; font-weight: 800; letter-spacing: -2px; line-height: 1; margin-top: 5px; }
+        
+        /* CANLI SAAT (BÜYÜK) */
+        .main-clock { font-family: 'JetBrains Mono'; font-size: 1.2rem; font-weight: 800; margin-top: 10px; color: var(--bordo); opacity: 0.6; }
 
-        /* --- MOBİL KART SİSTEMİ --- */
-        .grid { display: flex; flex-direction: column; gap: 15px; }
+        /* --- KARTLAR --- */
+        .menu-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
 
-        .gate-card {
+        .menu-card {
             background: var(--krem-acik);
-            padding: 25px;
-            border-radius: 30px; /* Balon kıvamında yumuşak köşeler */
-            border: 1px solid rgba(128, 0, 0, 0.1);
+            padding: 22px;
+            border-radius: 35px; 
+            border: 1.5px solid rgba(90, 0, 0, 0.08);
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 18px;
             text-decoration: none;
             color: inherit;
-            transition: 0.3s;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+            transition: 0.3s cubic-bezier(0.2, 0, 0.2, 1);
+            box-shadow: 0 10px 25px rgba(90,0,0,0.02);
         }
 
-        .gate-card:active { transform: scale(0.96); background: #fff; }
+        .menu-card:active { transform: scale(0.97); background: #fff; border-color: var(--bordo); }
 
-        .icon-box {
-            width: 60px; height: 60px; border-radius: 20px;
-            background: #fff; border: 1px solid var(--bordo);
+        .icon-wrap {
+            width: 55px; height: 55px; border-radius: 20px;
+            background: var(--bordo); color: #fff;
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.5rem; color: var(--bordo);
-            box-shadow: 0 5px 15px rgba(128,0,0,0.05);
+            font-size: 1.4rem; box-shadow: 0 8px 15px rgba(90,0,0,0.2);
         }
 
-        .info h2 { font-size: 1.3rem; font-weight: 800; color: var(--bordo); margin-bottom: 2px; }
-        .info p { font-size: 0.85rem; opacity: 0.7; font-weight: 500; }
+        .card-info h2 { font-size: 1.25rem; font-weight: 800; color: var(--text); }
+        .card-info p { font-size: 0.8rem; opacity: 0.5; font-weight: 500; }
 
-        .chevron { margin-left: auto; color: var(--bordo); opacity: 0.3; }
+        .arrow-right { margin-left: auto; color: var(--bordo); opacity: 0.2; font-size: 1.1rem; }
 
     </style>
 </head>
 <body>
 
-    <canvas id="canvas"></canvas>
+    <canvas id="dust"></canvas>
 
     <header class="header">
         <div class="brand">AZURA</div>
-        <div class="header-actions">
+        <div class="header-tools">
+            <div class="clock-pill" id="header-clock">00:00:00</div>
             <div class="circle-btn" onclick="document.body.classList.toggle('dark-mode')"><i class="fa-solid fa-moon"></i></div>
-            <div class="circle-btn"><i class="fa-solid fa-clock"></i></div>
         </div>
     </header>
 
     <div class="container">
-        <div class="hero-text">
-            <p>Nexus Command Center</p>
-            <h1>Hoş Geldin, Rafık. 🩺</h1>
+        <div class="welcome-area">
+            <p>Sistem Çekirdeği</p>
+            <h1>Kontrol Paneli.</h1>
+            <div class="main-clock" id="main-clock">00:00:00</div>
         </div>
 
-        <div class="grid">
-            <a href="medical.html" class="gate-card">
-                <div class="icon-box"><i class="fa-solid fa-notes-medical"></i></div>
-                <div class="info">
+        <nav class="menu-grid">
+            <a href="medical.html" class="menu-card">
+                <div class="icon-wrap"><i class="fa-solid fa-notes-medical"></i></div>
+                <div class="card-info">
                     <h2>Tıp & Klinik</h2>
-                    <p>Vaka analizleri ve klinik arşiv.</p>
+                    <p>Akademik vaka ve veritabanı.</p>
                 </div>
-                <i class="fa-solid fa-chevron-right chevron"></i>
+                <i class="fa-solid fa-chevron-right arrow-right"></i>
             </a>
 
-            <a href="physic.html" class="gate-card">
-                <div class="icon-box"><i class="fa-solid fa-atom"></i></div>
-                <div class="info">
-                    <h2>Fizik & Evren</h2>
-                    <p>Kuantum ve Kozmoloji kapıları.</p>
+            <a href="physic.html" class="menu-card">
+                <div class="icon-wrap"><i class="fa-solid fa-atom"></i></div>
+                <div class="card-info">
+                    <h2>Fizik Sektörü</h2>
+                    <p>Kozmoloji ve Kuantum kapıları.</p>
                 </div>
-                <i class="fa-solid fa-chevron-right chevron"></i>
+                <i class="fa-solid fa-chevron-right arrow-right"></i>
             </a>
 
-            <a href="gastronomy.html" class="gate-card">
-                <div class="icon-box"><i class="fa-solid fa-utensils"></i></div>
-                <div class="info">
+            <a href="gastronomy.html" class="menu-card">
+                <div class="icon-wrap"><i class="fa-solid fa-utensils"></i></div>
+                <div class="card-info">
                     <h2>Gastronomi</h2>
-                    <p>Antep mutfak mirası analizi.</p>
+                    <p>Mutfak kültürü ve kimyası.</p>
                 </div>
-                <i class="fa-solid fa-chevron-right chevron"></i>
+                <i class="fa-solid fa-chevron-right arrow-right"></i>
             </a>
 
-            <a href="games.html" class="gate-card">
-                <div class="icon-box"><i class="fa-solid fa-brain"></i></div>
-                <div class="info">
-                    <h2>Zihin Lab</h2>
-                    <p>Zeka ve kognitif simülasyonlar.</p>
+            <a href="games.html" class="menu-card">
+                <div class="icon-wrap"><i class="fa-solid fa-brain"></i></div>
+                <div class="card-info">
+                    <h2>Zihin Laboratuvarı</h2>
+                    <p>Kognitif testler ve eğitim.</p>
                 </div>
-                <i class="fa-solid fa-chevron-right chevron"></i>
+                <i class="fa-solid fa-chevron-right arrow-right"></i>
             </a>
-        </div>
+        </nav>
     </div>
 
     <script>
-        const canvas = document.getElementById('canvas');
+        // CANLI SAAT FONKSİYONU
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('tr-TR', { hour12: false });
+            document.getElementById('header-clock').innerText = timeStr;
+            document.getElementById('main-clock').innerText = timeStr;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // ARKA PLAN TOZ PARÇACIKLARI
+        const canvas = document.getElementById('dust');
         const ctx = canvas.getContext('2d');
-        let dots = [];
+        let points = [];
 
         function init() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            dots = Array.from({length: 80}, () => ({
+            points = Array.from({length: 50}, () => ({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
-                r: Math.random() * 3,
-                v: Math.random() * 0.5 + 0.2
+                r: Math.random() * 2 + 1,
+                v: Math.random() * 0.3 + 0.1
             }));
         }
 
-        function draw() {
+        function animate() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.fillStyle = '#800000';
-            dots.forEach(d => {
-                d.y -= d.v;
-                if(d.y < -10) d.y = canvas.height + 10;
-                ctx.globalAlpha = 0.2;
+            ctx.fillStyle = '#5a0000';
+            points.forEach(p => {
+                p.y -= p.v;
+                if(p.y < -5) p.y = canvas.height + 5;
+                ctx.globalAlpha = 0.15;
                 ctx.beginPath();
-                ctx.arc(d.x, d.y, d.r, 0, Math.PI*2);
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
                 ctx.fill();
             });
-            requestAnimationFrame(draw);
+            requestAnimationFrame(animate);
         }
 
         window.onresize = init;
-        init(); draw();
+        init(); animate();
     </script>
 </body>
 </html>
