@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>İzafiyet: E=mc² | Azura</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --bordo: #5a0000; --krem: #f2ead3; --ceviz: #3d2b1f; --altin: #b8860b; }
+        body { background: var(--krem); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--ceviz); line-height: 1.8; overflow-x: hidden; }
+        
+        /* --- ELITE HEADER --- */
+        .sticky-header { 
+            position: sticky; top: 0; background: var(--bordo); color: #fff; 
+            padding: 15px 25px; display: flex; justify-content: space-between; 
+            z-index: 100; border-bottom: 3px solid var(--altin);
+        }
+
+        .content-container { max-width: 850px; margin: 40px auto; padding: 0 25px; }
+        
+        /* --- TYPOGRAPHY --- */
+        .meta { font-family: 'JetBrains Mono'; color: var(--bordo); font-size: 0.75rem; letter-spacing: 4px; font-weight: 800; margin-bottom: 10px; }
+        h1 { font-size: clamp(2.2rem, 8vw, 3.8rem); font-weight: 800; letter-spacing: -3px; line-height: 0.9; margin-bottom: 30px; color: var(--bordo); }
+        h2 { font-size: 1.7rem; font-weight: 800; margin-top: 45px; margin-bottom: 20px; color: var(--bordo); }
+        p { margin-bottom: 22px; font-size: 1.1rem; text-align: justify; }
+
+        /* --- VISUAL ELEMENTS --- */
+        .illustration-box { 
+            background: #fff; border-radius: 45px; padding: 40px; 
+            margin: 45px 0; border: 1.5px solid rgba(90,0,0,0.15); 
+            box-shadow: 0 25px 50px rgba(90,0,0,0.05); text-align: center;
+        }
+        .formula-hero {
+            font-family: 'JetBrains Mono', monospace; font-size: 3.5rem; font-weight: 800;
+            background: linear-gradient(45deg, var(--bordo), var(--altin));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin: 20px 0;
+        }
+        .deep-note { 
+            background: var(--bordo); color: #fff; padding: 35px; 
+            border-radius: 40px; margin: 40px 0; border-left: 10px solid var(--altin);
+        }
+
+        /* --- NAVIGATION --- */
+        .nav-footer { display: flex; justify-content: space-between; margin-top: 70px; padding-bottom: 100px; }
+        .btn { background: var(--bordo); color: #fff; padding: 18px 35px; border-radius: 50px; text-decoration: none; font-weight: 800; font-size: 0.9rem; }
+    </style>
+</head>
+<body>
+
+    <div class="sticky-header">
+        <a href="relativity.html" style="color:#fff; text-decoration:none;"><i class="fa-solid fa-chevron-left"></i> SEKTÖRLER</a>
+        <div style="font-family:'JetBrains Mono'; font-weight:800;" id="timer">00:00:00</div>
+        <div style="font-size:0.75rem; opacity:0.8;">BÖLÜM 02</div>
+    </div>
+
+    <main class="content-container">
+        <div class="meta">MASS-ENERGY EQUIVALENCE</div>
+        <h1>E=mc²: Maddenin Gizli Gücü.</h1>
+
+        <p>Bölüm 1'de zamanın ne kadar esnek olduğunu gördük. Şimdi ise evrenin en meşhur denkleminin içine, madde ve enerjinin aslında aynı şey olduğu gerçeğine dalıyoruz. Albert Einstein, 1905'in sonlarında yayımladığı bir ek makaleyle dünyayı sarsacak o cümleyi kurdu: "Bir cismin kütlesi, onun enerji içeriğinin bir ölçüsüdür." Bu, sadece bir matematiksel eşitlik değil; etrafımızda gördüğümüz her taşın, her ağacın ve hatta senin vücudundaki her atomun aslında hapsedilmiş devasa bir enerji yığını olduğu anlamına gelir.</p>
+
+        <div class="illustration-box">
+            <div class="formula-hero">E = mc²</div>
+            <p style="font-weight: 700; color: var(--ceviz);">Enerji = Kütle × Işık Hızının Karesi</p>
+        </div>
+
+        <h2>Denklemi Parçalara Ayıralım</h2>
+        <p>Peki bu denklem bize tam olarak ne anlatıyor? <b>E</b> harfi enerjiyi temsil eder, birimi Joule'dür. <b>m</b> harfi kütledir, yani senin ağırlığın gibi düşünebilirsin. İşin püf noktası ise <b>c²</b> kısmında saklı. Işık hızı (c) saniyede yaklaşık 300.000 kilometredir. Bunun karesini aldığında ortaya çıkan sayı o kadar devasadır ki, küçücük bir kütleyi bile bu sayıyla çarptığında ortaya çıkan enerji miktarı akıl almaz boyutlara ulaşır. Bu yüzden, sadece birkaç gram maddeyi tamamen enerjiye dönüştürebilseydik, koca bir şehri aylarca aydınlatacak gücü elde edebilirdik.</p>
+
+        
+
+        <h2>Güneş Neden Parlar?</h2>
+        <p>Güneş her saniye 600 milyon ton hidrojeni helyuma dönüştürür. Ancak bu işlem sırasında bir tuhaflık olur: Oluşan helyum, başlangıçtaki hidrojenden biraz daha hafiftir. Aradaki o küçücük kütle farkı neye dönüşür? Tabii ki enerjiye! İşte E=mc² sayesinde Güneşimiz her saniye milyonlarca atom bombası gücünde enerji yayar ve bizi ısıtır. Eğer Einstein bu denklemi bulmasaydı, yıldızların yakıtını asla anlayamazdık. Evrenin bu en temel fırını, kütleyi ışığa ve ısıya dönüştürerek yaşamı mümkün kılar.</p>
+
+        <div class="deep-note">
+            <b>Zirve Bilgi:</b> Senin vücudun yaklaşık 70-80 kg ise, eğer tüm kütleni %100 verimle enerjiye dönüştürebilseydin, yaklaşık 7.2 × 10¹⁸ Joule enerji açığa çıkardı. Bu, dünyanın en büyük nükleer bombasından binlerce kat daha güçlü bir patlama demektir. Hepimiz aslında yürüyen birer enerji deposuyuz!
+        </div>
+
+        <h2>Tıbbi Teknoloji ve E=mc²</h2>
+        <p>Sen bir tıp öğrencisi olarak bu denklemi her gün hastanelerde görüyorsun usta. PET (Pozitron Emisyon Tomografisi) tarayıcıları tamamen bu ilkeye dayanır. Vücuda enjekte edilen radyoaktif madde, elektronlarla çarpışan pozitronlar yayar. Bu iki parçacık birbirini yok ettiğinde kütleleri tamamen enerjiye, yani gama ışınlarına dönüşür. Tarayıcı bu ışınları yakalar ve vücudun iç haritasını çıkarır. Yani Einstein olmasaydı, bugün kanser teşhisinde kullandığımız o muazzam cihazlar da olmayacaktı.</p>
+
+        
+
+        <h2>Kütlenin Hızla Artması</h2>
+        <p>Bölüm 1 ile bağlantı kurarsak; bir cismi hızlandırdığında ona enerji verirsin. E=mc²'ye göre enerji ve kütle aynı şey olduğu için, cismin enerjisi arttıkça kütlesi de artmaya başlar. Işık hızına çok yaklaştığında cisim o kadar ağırlaşır ki, onu daha fazla hızlandırmak için sonsuz bir enerjiye ihtiyaç duyarsın. İşte bu yüzden evrende hiçbir kütleli cisim ışık hızını geçemez; çünkü hızlandıkça kendi ağırlığının altında ezilir ve hızlanamaz hale gelir.</p>
+
+        <div class="nav-footer">
+            <a href="relativity-1.html" class="btn" style="background:#888;"><i class="fa-solid fa-chevron-left"></i> ÖNCEKİ</a>
+            <a href="relativity-3.html" class="nav-btn btn">BÖLÜM 3: UZAY-ZAMAN <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+    </main>
+
+    <script>
+        function updateTime() {
+            document.getElementById('timer').innerText = new Date().toLocaleTimeString('tr-TR');
+        }
+        setInterval(updateTime, 1000); updateTime();
+    </script>
+</body>
+</html>
