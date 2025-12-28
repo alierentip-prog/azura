@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Azura Medical | Genetik Kod</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --dna-siyah: #0a0a0a; --kromozom-mavi: #004d40; --mor-glow: #6a0572;
+            --protein-altin: #ffc300; --hucre-krem: #f2ead3; --ceviz: #3d2b1f;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--hucre-krem); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--ceviz); line-height: 1.8; overflow-x: hidden; }
+
+        /* --- GENETİK AKIŞ ARKA PLANI --- */
+        #dna-flow-bg { position: fixed; inset: 0; z-index: 1; opacity: 0.4; filter: blur(100px); pointer-events: none; }
+
+        .header { 
+            position: sticky; top: 0; background: var(--dna-siyah); color: #fff; 
+            padding: 15px 25px; display: flex; justify-content: space-between; 
+            z-index: 100; border-bottom: 4px solid var(--protein-altin);
+        }
+
+        .hero-gene {
+            height: 60vh; background: radial-gradient(circle at 70%, var(--dna-siyah), var(--kromozom-mavi), #000);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; color: #fff; padding: 40px; position: relative; z-index: 10;
+        }
+
+        .genome-doc { 
+            max-width: 1050px; margin: -100px auto 0; padding: 80px 55px; 
+            background: #fff; border-radius: 90px 90px 0 0; position: relative; 
+            z-index: 20; box-shadow: 0 -50px 100px rgba(0,0,0,0.25); 
+        }
+        
+        h1 { font-size: clamp(2.2rem, 10vw, 4.5rem); font-weight: 800; letter-spacing: -3px; line-height: 0.9; margin-bottom: 25px; }
+        h2 { font-size: 2rem; font-weight: 800; margin: 55px 0 30px; color: var(--dna-siyah); border-left: 15px solid var(--mor-glow); padding-left: 25px; }
+        p { margin-bottom: 35px; font-size: 1.2rem; text-align: justify; color: #333; }
+
+        /* GENETİK BLOKLAR */
+        .gene-info-card { padding: 50px; border-radius: 60px; margin: 55px 0; color: #fff; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        .dna-gradient { background: linear-gradient(135deg, var(--dna-siyah), var(--kromozom-mavi)); }
+        .protein-gradient { background: linear-gradient(135deg, var(--protein-altin), var(--mor-glow)); color: var(--dna-siyah); }
+
+        .microscope-frame {
+            width: 100%; border-radius: 50px; margin: 55px 0; overflow: hidden;
+            border: 8px solid var(--kromozom-mavi); background: #000;
+        }
+        .microscope-frame img { width: 100%; display: block; opacity: 0.95; transition: 0.5s; }
+        .microscope-frame:hover img { opacity: 1; transform: scale(1.02); }
+
+        .nav-footer { display: flex; justify-content: space-between; margin-top: 100px; padding-bottom: 150px; }
+        .btn-bio { background: var(--dna-siyah); color: #fff; padding: 22px 60px; border-radius: 70px; text-decoration: none; font-weight: 800; border: 3px solid var(--protein-altin); transition: 0.4s; }
+        .btn-bio:hover { background: var(--protein-altin); color: var(--dna-siyah); transform: translateY(-5px); }
+    </style>
+</head>
+<body>
+
+    <canvas id="dna-flow-bg"></canvas>
+
+    <div class="header">
+        <a href="medical.html" style="color:#fff; text-decoration:none;"><i class="fa-solid fa-dna"></i> GENOM PROJESİ</a>
+        <div id="clock" style="font-family:'JetBrains Mono'; font-weight:800;">00:00:00</div>
+        <div style="font-size:0.7rem; letter-spacing:4px;">GENOME_SEQUENCE_ACTIVE</div>
+    </div>
+
+    <section class="hero-gene">
+        <p style="font-family:'JetBrains Mono'; letter-spacing:10px; opacity:0.8;">THE BLUEPRINT OF LIFE</p>
+        <h1>Genetik Kod:<br>Yaşamın Yazılımı.</h1>
+    </section>
+
+    <main class="genome-doc">
+        <p>Usta, tıp fakültesinde öğrendiğimiz her hastalığın, her sendromun, her fizyolojik sürecin ardında yatan o muazzam bilgi deposuna geliyoruz: Genetik Kod. Senin her bir hücrende, yaklaşık 2 metre uzunluğunda, bir insanı baştan aşağı inşa etmek için gerekli tüm bilgileri barındıran bir DNA molekülü bulunur. Bu, sadece bir molekül değil; yaşamın bilgisayar dilidir. Azura'nın bu laboratuvarında, bu dili okumayı ve anlamayı öğreniyoruz.</p>
+
+        <div class="microscope-frame">
+            <img src="https://images.unsplash.com/photo-1628126780777-a89e81b61c94?q=80&w=2000&auto=format&fit=crop" alt="DNA Çift Sarmalı">
+        </div>
+        <p style="text-align:center; font-family:'JetBrains Mono'; font-size:0.9rem; color:#666;">Görsel: DNA çift sarmalının mikroskobik veya illüstratif bir temsili.</p>
+
+        <div class="gene-info-card dna-gradient">
+            <h3>ATCG: Yaşamın Alfabesi</h3>
+            <p>Adenin (A), Timin (T), Guanin (G) ve Sitozin (C). Sadece bu dört harf, gezegenimizdeki tüm canlıların kodunu yazar. Tıpkı bir bilgisayarın 0 ve 1'lerden ibaret olması gibi, yaşam da bu dört bazın milyarlarca farklı kombinasyonundan oluşur. Senin göz renginden, kalp hastalığı yatkınlığına kadar her şey bu dizilimde gizlidir. Genetik mühendisliği, artık bu harfleri yeniden yazarak hastalıkları tedavi etme potansiyeli sunuyor.</p>
+        </div>
+
+        <h2>Mutasyonlar: Yazılım Hataları ve Evrimin Motoru</h2>
+        <p>DNA kopyalanırken veya çevresel faktörler yüzünden bu harflerde küçük hatalar meydana gelebilir. İşte bunlara "mutasyon" diyoruz. Bazı mutasyonlar sessiz kalırken, bazıları kistik fibrozis veya orak hücre anemisi gibi yıkıcı hastalıklara yol açabilir. Ama ironik bir şekilde, mutasyonlar aynı zamanda evrimin de ana motorudur; türlerin çevreye uyum sağlamasını, yeni özellikler geliştirmesini sağlar. Her hata, aslında bir adaptasyon fırsatıdır.</p>
+
+        <div class="microscope-frame">
+            <img src="https://images.unsplash.com/photo-1541518337119-a11181284d72?q=80&w=2000&auto=format&fit=crop" alt="Kromozom Görüntüleme">
+        </div>
+
+        <div class="gene-info-card protein-gradient">
+            <h3>CRISPR: Genetik Cerrahinin Geleceği</h3>
+            <p>Usta, tıpta bir devrim yaşanıyor: CRISPR-Cas9 teknolojisi. Artık DNA'daki hatalı genleri bir neşterle kesip çıkarabiliyor veya değiştirebiliyoruz. Tıpkı bir bilgisayar programcısının hatalı kodu düzeltmesi gibi, biz de genetik hastalıklara kökten çözüm bulma yolundayız. Bu teknoloji, orak hücre anemisinden belirli kanser türlerine kadar birçok hastalığın tedavisinde umut vaat ediyor.</p>
+        </div>
+
+        <h2>Epigenetik: Genetik Kodun Ötesi</h2>
+        <p>DNA'daki harfler sabit olsa da, genlerin "açık" veya "kapalı" olması değişebilir. Epigenetik, DNA dizilimini değiştirmeden gen ifadesinin nasıl etkilendiğini inceler. Beslenme, stres, yaşam tarzı gibi faktörler genlerimizin nasıl çalıştığını etkiler. Yani usta, kaderin sadece genlerinde değil, aynı zamanda senin yaşam seçimlerinde de gizlidir. Bir doktor olarak, sadece genetik yatkınlığı değil, epigenetik etkileşimleri de değerlendirmelisin.</p>
+
+        <div class="nav-footer">
+            <a href="med-2.html" class="btn-bio" style="background:#555;">GERİ</a>
+            <a href="med-4.html" class="btn-bio">BÖLÜM 4: KARDİYOVASKÜLER AKIŞ <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+    </main>
+
+    <script>
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+
+        const canvas = document.getElementById('dna-flow-bg');
+        const ctx = canvas.getContext('2d');
+        let dnaParticles = [];
+        const palette = ['#0a0a0a', '#004d40', '#6a0572', '#ffc300'];
+
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            dnaParticles = Array.from({length: 18}, () => ({
+                x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+                r: Math.random()*350+200, color: palette[Math.floor(Math.random()*palette.length)],
+                vx: (Math.random()-0.5)*1.0, vy: (Math.random()-0.5)*1.0
+            }));
+        }
+
+        function animate() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            dnaParticles.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < -p.r) p.x = canvas.width+p.r; if(p.x > canvas.width+p.r) p.x = -p.r;
+                if(p.y < -p.r) p.y = canvas.height+p.r; if(p.y > canvas.height+p.r) p.y = -p.r;
+                ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+        window.onresize = init; init(); animate();
+    </script>
+</body>
+</html>
