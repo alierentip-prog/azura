@@ -2,43 +2,50 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura | Advanced 3D Maze</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Azura | Mobile 3D Maze</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
     <style>
         :root { --p-indigo: #6366f1; --p-cyan: #22d3ee; --p-rose: #f43f5e; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #020617; font-family: 'Plus Jakarta Sans', sans-serif; overflow: hidden; height: 100vh; }
+        * { margin: 0; padding: 0; box-sizing: border-box; touch-action: none; }
+        body { background: #000; font-family: sans-serif; overflow: hidden; height: 100vh; width: 100vw; }
 
-        #game-view { position: relative; width: 100%; height: 100%; background: #000; }
+        #game-view { position: relative; width: 100%; height: 100%; }
+        canvas { display: block; width: 100%; height: 100%; }
 
-        /* --- GELİŞMİŞ ŞEFFAF KONSOL --- */
-        #game-console {
-            position: absolute; bottom: 30px; left: 30px; width: 350px; height: 220px;
-            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px);
-            border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 20px; color: #fff; font-family: 'JetBrains Mono', monospace;
-            z-index: 200; display: flex; flex-direction: column; box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        /* --- MOBIL KONTROL KATMANI --- */
+        .mobile-controls {
+            position: absolute; bottom: 20px; left: 0; right: 0;
+            display: flex; justify-content: space-between; padding: 0 30px;
+            z-index: 500; pointer-events: none;
         }
-        .console-header { color: var(--p-cyan); font-weight: 800; font-size: 0.7rem; letter-spacing: 2px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; margin-bottom: 10px; }
-        #console-logs { flex-grow: 1; overflow: hidden; display: flex; flex-direction: column-reverse; font-size: 0.8rem; }
-        .log-entry { margin-bottom: 5px; animation: logIn 0.3s ease-out; }
-        .log-warn { color: var(--p-rose); font-weight: bold; }
-        @keyframes logIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+        .joy-pad {
+            width: 140px; height: 140px; background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px); border-radius: 50%;
+            display: grid; grid-template-areas: ". up ." "left . right" ". down .";
+            pointer-events: auto; border: 1px solid rgba(255,255,255,0.2);
+        }
+        .btn-m {
+            width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 1.2rem; background: rgba(255,255,255,0.1); border-radius: 50%;
+        }
+        .btn-m:active { background: var(--p-cyan); color: #000; }
+        
+        /* Şeffaf Konsol (Küçültüldü) */
+        #game-console {
+            position: absolute; top: 100px; left: 20px; width: 200px; height: 120px;
+            background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
+            border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
+            padding: 10px; color: #fff; font-family: monospace; font-size: 0.7rem;
+            z-index: 200; overflow: hidden; pointer-events: none;
+        }
 
-        /* MINIMAP & UI */
-        #minimap { position: absolute; top: 30px; right: 30px; width: 180px; height: 180px; background: rgba(0,0,0,0.6); border: 2px solid var(--p-indigo); border-radius: 30px; z-index: 100; }
-        .ui-top { position: absolute; top: 30px; left: 30px; z-index: 100; display: flex; gap: 20px; }
-        .ui-box { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding: 15px 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); color: #fff; }
-
-        /* FLAŞ EFEKTİ (ÖLÜM ANI) */
-        #death-flash { position: fixed; inset: 0; background: var(--p-rose); z-index: 2000; display: none; opacity: 0; }
-
-        #start-screen { position: absolute; inset: 0; background: #020617; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 3000; }
-        .btn-start { background: var(--p-indigo); color: white; border: none; padding: 20px 60px; border-radius: 50px; font-size: 1.2rem; font-weight: 800; cursor: pointer; transition: 0.3s; }
-        .btn-start:hover { transform: scale(1.05); box-shadow: 0 0 40px var(--p-indigo); }
+        #minimap { position: absolute; top: 20px; right: 20px; width: 100px; height: 100px; background: rgba(0,0,0,0.6); border: 1px solid var(--p-indigo); border-radius: 15px; z-index: 100; }
+        
+        #death-flash { position: fixed; inset: 0; background: var(--p-rose); z-index: 2000; display: none; }
+        #start-screen { position: absolute; inset: 0; background: #020617; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 3000; text-align: center; padding: 20px; }
+        .btn-start { background: var(--p-indigo); color: white; border: none; padding: 15px 40px; border-radius: 50px; font-weight: 800; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -46,23 +53,24 @@
     <div id="death-flash"></div>
 
     <div id="game-view">
-        <div class="ui-top">
-            <div class="ui-box"><span style="font-size: 0.7rem; color: var(--p-cyan); display: block;">STATUS</span><span id="ui-status">SİSTEM_STABİL</span></div>
-            <div class="ui-box"><span style="font-size: 0.7rem; color: var(--p-cyan); display: block;">VERİ_AKTIRIMI</span><span id="ui-progress">0%</span></div>
-        </div>
-
-        <div id="game-console">
-            <div class="console-header">AZURA_MAZE_PROTOCOL_V2.0</div>
-            <div id="console-logs"></div>
-        </div>
-
         <canvas id="raycasterCanvas"></canvas>
         <canvas id="minimap"></canvas>
 
+        <div id="game-console"><div id="console-logs"></div></div>
+
+        <div class="mobile-controls">
+            <div class="joy-pad">
+                <div class="btn-m" style="grid-area: up" ontouchstart="keys.w=true" ontouchend="keys.w=false"><i class="fa-solid fa-chevron-up"></i></div>
+                <div class="btn-m" style="grid-area: left" ontouchstart="keys.a=true" ontouchend="keys.a=false"><i class="fa-solid fa-rotate-left"></i></div>
+                <div class="btn-m" style="grid-area: right" ontouchstart="keys.d=true" ontouchend="keys.d=false"><i class="fa-solid fa-rotate-right"></i></div>
+                <div class="btn-m" style="grid-area: down" ontouchstart="keys.s=true" ontouchend="keys.s=false"><i class="fa-solid fa-chevron-down"></i></div>
+            </div>
+        </div>
+
         <div id="start-screen">
-            <h1 style="font-size: 4rem; color: #fff; margin-bottom: 10px; letter-spacing: -3px;">KOGNİTİF LABİRENT</h1>
-            <p style="color: #64748b; margin-bottom: 30px;">Uyarı: Bazı kapılar sistem çökmesine (reset) neden olur.</p>
-            <button class="btn-start" onclick="startGame()">SİMÜLASYONU BAŞLAT</button>
+            <h1 style="color: #fff; margin-bottom: 10px;">AZURA MOBILE 3D</h1>
+            <p style="color: #64748b; margin-bottom: 20px; font-size: 0.9rem;">Telefonu yan çevirmeniz önerilir.</p>
+            <button class="btn-start" onclick="startGame()">BAŞLAT</button>
         </div>
     </div>
 
@@ -73,8 +81,6 @@
         const mCtx = mCanvas.getContext('2d');
         const logs = document.getElementById('console-logs');
 
-        // --- DEVASA HARİTA (20x20) ---
-        // 1: Duvar, 0: Yol, 2: Reset Kapısı (Ölüm), 3: Bitiş
         const world = [
             [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
             [1,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,1],
@@ -102,43 +108,35 @@
         let player = { x: 1.5, y: 1.5, dir: 0 };
         const keys = { w: false, s: false, a: false, d: false };
 
-        function addLog(msg, type = '') {
+        function addLog(msg) {
             const div = document.createElement('div');
-            div.className = `log-entry ${type}`;
             div.innerText = `> ${msg}`;
             logs.prepend(div);
-            if(logs.children.length > 8) logs.removeChild(logs.lastChild);
+            if(logs.children.length > 5) logs.removeChild(logs.lastChild);
         }
 
         function startGame() {
             document.getElementById('start-screen').style.display = 'none';
-            init();
-            addLog("Nöral simülasyon aktif.");
-            addLog("Uyarı: '2' nolu kapılar sistem resetleyici içerir.", "log-warn");
+            resize();
+            addLog("Mobil Protokol Başlatıldı.");
             loop();
         }
 
-        function init() {
+        function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            mCanvas.width = 180; mCanvas.height = 180;
+            mCanvas.width = 100; mCanvas.height = 100;
         }
 
         function handleDeath() {
             const flash = document.getElementById('death-flash');
-            flash.style.display = 'block';
-            flash.style.opacity = '1';
-            addLog("KRİTİK HATA: SİSTEM RESETLENDİ!", "log-warn");
-            
-            setTimeout(() => {
-                flash.style.opacity = '0';
-                setTimeout(() => flash.style.display = 'none', 300);
-                player = { x: 1.5, y: 1.5, dir: 0 };
-            }, 200);
+            flash.style.display = 'block'; flash.style.opacity = '1';
+            addLog("HATA: RESET!");
+            setTimeout(() => { flash.style.opacity = '0'; flash.style.display = 'none'; player = { x: 1.5, y: 1.5, dir: 0 }; }, 200);
         }
 
         function update() {
-            const moveStep = 0.06;
+            const moveStep = 0.05;
             const rotStep = 0.04;
             let nx = player.x, ny = player.y;
 
@@ -151,51 +149,38 @@
             const cellType = world[gridY][gridX];
 
             if(cellType === 0) { player.x = nx; player.y = ny; }
-            else if(cellType === 2) { handleDeath(); }
-            else if(cellType === 3) { 
-                addLog("ZİRVEYE ULAŞILDI!"); 
-                alert("Simülasyon Tamamlandı!"); 
-                location.reload(); 
-            }
-
-            // UI Güncelleme
-            let progress = Math.min(100, Math.round((player.x + player.y) / (mapSize * 2) * 100));
-            document.getElementById('ui-progress').innerText = progress + "%";
-            if(Math.random() < 0.02) addLog(`X:${player.x.toFixed(1)} Y:${player.y.toFixed(1)} tarandı.`);
+            else if(cellType === 2) handleDeath();
+            else if(cellType === 3) { alert("BAŞARDIN!"); location.reload(); }
         }
 
         function draw() {
-            // Tavan ve Zemin
             ctx.fillStyle = "#0f172a"; ctx.fillRect(0, 0, canvas.width, canvas.height/2);
-            ctx.fillStyle = "#020617"; ctx.fillRect(0, canvas.height/2, canvas.width, canvas.height/2);
+            ctx.fillStyle = "#000"; ctx.fillRect(0, canvas.height/2, canvas.width, canvas.height/2);
 
             const fov = Math.PI / 3;
-            for(let i=0; i<canvas.width; i++) {
+            const res = 4; // Mobil performans için çözünürlüğü optimize ettim
+            for(let i=0; i<canvas.width; i+=res) {
                 let rayDir = (player.dir - fov/2) + (i / canvas.width) * fov;
                 let dist = 0, hit = false, hitType = 0;
-                while(!hit && dist < 15) {
-                    dist += 0.02;
+                while(!hit && dist < 12) {
+                    dist += 0.05;
                     let rx = player.x + Math.cos(rayDir) * dist;
                     let ry = player.y + Math.sin(rayDir) * dist;
                     hitType = world[Math.floor(ry)][Math.floor(rx)];
-                    if(hitType === 1 || hitType === 2 || hitType === 3) hit = true;
+                    if(hitType >= 1) hit = true;
                 }
                 dist *= Math.cos(rayDir - player.dir);
                 let wallH = (canvas.height / dist);
-                
-                // Renk Belirleme
-                let color = [34, 211, 238]; // Cyan (Normal Duvar)
-                if(hitType === 2) color = [244, 63, 94]; // Kırmızı (Ölüm Kapısı)
-                if(hitType === 3) color = [16, 185, 129]; // Yeşil (Bitiş)
-                
-                let shade = Math.max(0, 1 - dist/12);
+                let color = [34, 211, 238];
+                if(hitType === 2) color = [244, 63, 94];
+                if(hitType === 3) color = [16, 185, 129];
+                let shade = Math.max(0, 1 - dist/10);
                 ctx.fillStyle = `rgb(${color[0]*shade}, ${color[1]*shade}, ${color[2]*shade})`;
-                ctx.fillRect(i, (canvas.height-wallH)/2, 1, wallH);
+                ctx.fillRect(i, (canvas.height-wallH)/2, res, wallH);
             }
 
-            // Minimap
-            mCtx.fillStyle = "#000"; mCtx.fillRect(0,0,180,180);
-            const cellSize = 180 / mapSize;
+            mCtx.fillStyle = "#000"; mCtx.fillRect(0,0,100,100);
+            const cellSize = 5;
             for(let y=0; y<mapSize; y++) {
                 for(let x=0; x<mapSize; x++) {
                     if(world[y][x] === 1) mCtx.fillStyle = "#1e293b";
@@ -205,12 +190,10 @@
                     mCtx.fillRect(x*cellSize, y*cellSize, cellSize-1, cellSize-1);
                 }
             }
-            mCtx.fillStyle = "#fff";
-            mCtx.beginPath(); mCtx.arc(player.x*cellSize, player.y*cellSize, 3, 0, Math.PI*2); mCtx.fill();
+            mCtx.fillStyle = "#fff"; mCtx.beginPath(); mCtx.arc(player.x*cellSize, player.y*cellSize, 2, 0, Math.PI*2); mCtx.fill();
         }
 
-        window.onkeydown = (e) => keys[e.key.toLowerCase()] = true;
-        window.onkeyup = (e) => keys[e.key.toLowerCase()] = false;
+        window.addEventListener('resize', resize);
         function loop() { update(); draw(); requestAnimationFrame(loop); }
     </script>
 </body>
