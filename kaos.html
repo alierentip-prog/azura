@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Azura | Kaos Sektörü</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&family=JetBrains+Mono:wght@800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --bordo: #5a0000; --bakir: #b87333; 
+            --krem-koyu: #f2ead3; --ceviz: #3d2b1f; 
+            --altin: #b8860b;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--krem-koyu); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--ceviz); }
+        
+        /* --- ELITE HEADER (BORDO & BAKIR) --- */
+        .header { 
+            background: var(--bordo); padding: 15px; display: flex; 
+            justify-content: space-between; align-items: center; color: #fff; 
+            border-bottom: 3px solid var(--bakir); box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .container { padding: 30px 20px; max-width: 600px; margin: 0 auto; }
+        .hero h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -2px; line-height: 0.9; margin-bottom: 35px; color: var(--bordo); }
+
+        /* --- KAOS KAPILARI --- */
+        .kaos-list { display: flex; flex-direction: column; gap: 15px; }
+        .gate-card { 
+            background: #faf7ed; padding: 25px; border-radius: 40px; 
+            display: flex; align-items: center; gap: 20px; text-decoration: none; color: inherit;
+            border: 2px solid rgba(90,0,0,0.1); transition: 0.4s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+        }
+        .gate-card:hover { transform: translateY(-8px); border-color: var(--bakir); background: #fff; }
+        
+        .icon-circle { 
+            background: var(--bordo); color: var(--bakir); 
+            width: 60px; height: 60px; border-radius: 20px; 
+            display: flex; align-items: center; justify-content: center; font-size: 1.5rem; 
+            box-shadow: 0 8px 15px rgba(90,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="physic.html" style="color:#fff;"><i class="fa-solid fa-chevron-left"></i></a>
+        <div style="font-family:'JetBrains Mono'; font-weight:800;" id="clock">00:00:00</div>
+        <div style="font-size:0.7rem; letter-spacing:2px;">CHAOS_ENGINE</div>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <p style="font-family:'JetBrains Mono'; color:var(--bordo); font-size:0.7rem; letter-spacing:4px; font-weight:800;">ORDER IN DISORDER</p>
+            <h1>Karmaşanın<br>Matematiği. 🌀</h1>
+        </div>
+
+        <nav class="kaos-list">
+            <a href="kaos-1.html" class="gate-card">
+                <div class="icon-circle"><i class="fa-solid fa-wind"></i></div>
+                <div><h3>Kelebek Etkisi</h3><p>Küçük başlangıçlar, devasa sonuçlar.</p></div>
+            </a>
+            <a href="kaos-2.html" class="gate-card">
+                <div class="icon-circle" style="background:var(--bakir); color:#fff;"><i class="fa-solid fa-snowflake"></i></div>
+                <div><h3>Fraktal Geometri</h3><p>Sonsuzluğun kendini tekrar eden deseni.</p></div>
+            </a>
+            <a href="kaos-3.html" class="gate-card">
+                <div class="icon-circle" style="background:var(--ceviz); color:var(--altin);"><i class="fa-solid fa-hurricane"></i></div>
+                <div><h3>Tuhaf Çekiciler</h3><p>Kaosun içindeki gizli yörüngeler.</p></div>
+            </a>
+            <a href="kaos-4.html" class="gate-card">
+                <div class="icon-circle" style="background:var(--altin); color:var(--bordo);"><i class="fa-solid fa-dna"></i></div>
+                <div><h3>Biyolojik Kaos</h3><p>Kalp atışından nöron ağlarına.</p></div>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+    </script>
+</body>
+</html>
