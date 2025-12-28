@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azura Medical | Klinik Arşiv</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --soft-blue: #f0f9ff; --soft-pink: #fdf2f8;
+            --text: #1e293b; --accent: #6366f1; --glass: rgba(255, 255, 255, 0.6);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: linear-gradient(135deg, var(--soft-blue), var(--soft-pink));
+            color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh; overflow-x: hidden;
+        }
+
+        #bg-canvas { position: fixed; inset: 0; z-index: -1; filter: blur(50px); opacity: 0.7; }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 50px 5%; position: relative; z-index: 10; }
+
+        /* --- NAVİGASYON --- */
+        .back-nav { 
+            display: inline-flex; align-items: center; gap: 10px; margin-bottom: 40px; 
+            text-decoration: none; color: var(--accent); font-family: 'JetBrains Mono'; 
+            font-weight: 800; background: var(--glass); padding: 12px 25px; 
+            border-radius: 50px; border: 1px solid #fff; transition: 0.3s;
+        }
+        .back-nav:hover { transform: translateX(-10px); background: #fff; }
+
+        header { margin-bottom: 60px; }
+        .page-title { font-size: 3rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 10px; }
+        .page-subtitle { color: #64748b; font-size: 1.1rem; font-weight: 500; }
+
+        /* --- KLİNİK KARTLAR --- */
+        .medical-entry {
+            background: var(--glass); backdrop-filter: blur(15px);
+            padding: 40px; border-radius: 40px; border: 2px solid #fff;
+            margin-bottom: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            transition: 0.3s;
+        }
+        .medical-entry:hover { transform: scale(1.01); background: #fff; }
+
+        .entry-tag { 
+            display: inline-block; padding: 6px 15px; background: #e0f2fe; 
+            color: #0369a1; border-radius: 12px; font-size: 0.75rem; 
+            font-weight: 800; text-transform: uppercase; margin-bottom: 20px;
+        }
+        .entry-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 15px; color: #0f172a; }
+        .entry-content { line-height: 1.8; color: #475569; font-size: 1.05rem; }
+        
+        .entry-content b { color: var(--accent); }
+
+        /* EMOJİ VE İKON DETAYLARI */
+        .icon-circle { 
+            width: 60px; height: 60px; background: #fff; border-radius: 20px; 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 1.8rem; color: var(--accent); margin-bottom: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        footer { text-align: center; padding: 60px 0; opacity: 0.3; font-family: 'JetBrains Mono'; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <div class="container">
+        <a href="menu.html" class="back-nav"><i class="fa-solid fa-arrow-left"></i> NEXUS</a>
+        
+        <header>
+            <h1 class="page-title">Klinik Arşiv 🩺</h1>
+            <p class="page-subtitle">Tıp biliminin pratik ve teorik kesişim noktası.</p>
+        </header>
+
+        <div class="medical-entry">
+            <div class="icon-circle"><i class="fa-solid fa-brain"></i></div>
+            <span class="entry-tag">Nöroloji & Klinik</span>
+            <h2 class="entry-title">Nöroplastisite ve Adaptasyon</h2>
+            <p class="entry-content">
+                Beynin yeni deneyimlere yanıt olarak sinaptik bağlantılarını yeniden organize etme yeteneği, 
+                klinik rehabilitasyonun temelini oluşturur. <b>Hebb Teorisi</b> uyarınca; "Birlikte ateşlenen nöronlar, birlikte bağlanır." 
+                Bu süreç, öğrenme ve hafıza mekanizmalarının yanı sıra travma sonrası iyileşmede kritik rol oynar.
+            </p>
+        </div>
+
+        <div class="medical-entry">
+            <div class="icon-circle"><i class="fa-solid fa-microscope"></i></div>
+            <span class="entry-tag">Genetik & Patoloji</span>
+            <h2 class="entry-title">Kişiselleştirilmiş Tıp (Farmakogenetik)</h2>
+            <p class="entry-content">
+                Her bireyin genetik yapısı, ilaçlara verdiği yanıtı belirler. <b>CRISPR-Cas9</b> gibi teknolojilerle 
+                genom düzenleme, nadir hastalıkların tedavisinde yeni bir çığır açmaktadır. Klinik yaklaşımlar artık 
+                "herkese tek tedavi" modelinden, bireyin genetik profiline özgü müdahalelere evrilmektedir.
+            </p>
+        </div>
+
+        <div class="medical-entry">
+            <div class="icon-circle"><i class="fa-solid fa-heart-pulse"></i></div>
+            <span class="entry-tag">Kardiyoloji</span>
+            <h2 class="entry-title">Kardiyovasküler Dinamikler</h2>
+            <p class="entry-content">
+                Kalbin hemodinamik performansı, fizik kanunları (Poiseuille Yasası) ile biyolojik ihtiyaçların 
+                mükemmel dengesidir. <b>Vasküler direnç</b> ve <b>kardiyak debi</b> arasındaki ilişki, 
+                sistemik perfüzyonun sürdürülmesinde hayati öneme sahiptir.
+            </p>
+        </div>
+
+        <footer>AZURA_MEDICAL // MEDICAL_STUDENT_ARCHIVE</footer>
+    </div>
+
+    <script>
+        // SİS MOTORU (Aynı Huzurlu Akış)
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let clouds = [];
+        const colors = ['#bae6fd', '#fbcfe8', '#e9d5ff'];
+
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            clouds = [];
+            for(let i=0; i<5; i++) {
+                clouds.push({
+                    x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+                    r: Math.random() * 500 + 400, color: colors[i % colors.length],
+                    vx: Math.random() * 0.3 - 0.15, vy: Math.random() * 0.3 - 0.15
+                });
+            }
+        }
+        function animate() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            clouds.forEach(c => {
+                c.x += c.vx; c.y += c.vy;
+                if(c.x + c.r < 0) c.x = canvas.width + c.r; if(c.x - c.r > canvas.width) c.x = -c.r;
+                if(c.y + c.r < 0) c.y = canvas.height + c.r; if(c.y - c.r > canvas.height) c.y = -c.r;
+                let g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.r);
+                g.addColorStop(0, c.color); g.addColorStop(1, 'transparent');
+                ctx.fillStyle = g; ctx.beginPath(); ctx.arc(c.x, c.y, c.r, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+        window.addEventListener('resize', init); init(); animate();
+    </script>
+</body>
+</html>
