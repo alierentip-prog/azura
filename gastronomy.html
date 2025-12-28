@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Azura | Gastronomi Sektörü</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&family=JetBrains+Mono:wght@800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --bakir: #b87333; --bordo: #5a0000; 
+            --ceviz: #3d2b1f; --krem-koyu: #f2ead3; 
+            --altin: #b8860b;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--krem-koyu); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--ceviz); }
+        
+        /* --- ELITE HEADER (BAKIR & BORDO) --- */
+        .header { 
+            background: var(--bordo); padding: 15px; display: flex; 
+            justify-content: space-between; align-items: center; color: #fff; 
+            border-bottom: 3px solid var(--bakir); box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .container { padding: 30px 20px; max-width: 600px; margin: 0 auto; }
+        .hero h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -2px; line-height: 0.9; margin-bottom: 35px; color: var(--bordo); }
+
+        /* --- MUTFAK KAPILARI --- */
+        .gastro-list { display: flex; flex-direction: column; gap: 15px; }
+        .gate-card { 
+            background: #faf7ed; padding: 25px; border-radius: 40px; 
+            display: flex; align-items: center; gap: 20px; text-decoration: none; color: inherit;
+            border: 2px solid rgba(184,115,51,0.1); transition: 0.4s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+        }
+        .gate-card:hover { transform: translateY(-8px); border-color: var(--bakir); background: #fff; }
+        
+        .icon-circle { 
+            background: var(--bakir); color: #fff; 
+            width: 60px; height: 60px; border-radius: 20px; 
+            display: flex; align-items: center; justify-content: center; font-size: 1.5rem; 
+            box-shadow: 0 8px 15px rgba(184,115,51,0.2);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="menu.html" style="color:#fff;"><i class="fa-solid fa-chevron-left"></i></a>
+        <div style="font-family:'JetBrains Mono'; font-weight:800;" id="clock">00:00:00</div>
+        <div style="font-size:0.7rem; letter-spacing:2px;">GASTRO_DEPT</div>
+    </header>
+
+    <div class="container">
+        <div class="hero">
+            <p style="font-family:'JetBrains Mono'; color:var(--bakir); font-size:0.7rem; letter-spacing:4px; font-weight:800;">FLAVOR & SCIENCE</p>
+            <h1>Lezzetin<br>Matematiği. 🥘</h1>
+        </div>
+
+        <nav class="gastro-list">
+            <a href="gastro-1.html" class="gate-card">
+                <div class="icon-circle"><i class="fa-solid fa-fire-burner"></i></div>
+                <div><h3>Bakırın Isı Kimyası</h3><p>Neden Antep yemeği bakırda güzel?</p></div>
+            </a>
+            <a href="gastro-2.html" class="gate-card">
+                <div class="icon-circle" style="background:var(--bordo);"><i class="fa-solid fa-pepper-hot"></i></div>
+                <div><h3>Baharatın Kuantumu</h3><p>İsot ve acının nörolojik etkisi.</p></div>
+            </a>
+            <a href="gastro-3.html" class="gate-card">
+                <div class="icon-circle" style="background:var(--ceviz);"><i class="fa-solid fa-wheat-awn"></i></div>
+                <div><h3>Baklava Katmanları</h3><p>40 katmanlı bir mühendislik harikası.</p></div>
+            </a>
+            <a href="gastro-4.html" class="gate-card">
+                <div class="icon-circle" style="background:var(--altin);"><i class="fa-solid fa-cloud-meatball"></i></div>
+                <div><h3>Kebabın Anatomisi</h3><p>Ateş ve etin mükemmel dengesi.</p></div>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+    </script>
+</body>
+</html>
