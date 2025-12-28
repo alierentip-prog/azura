@@ -3,122 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura | Ana Menü</title>
+    <title>Azura | Nexus Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
     <style>
         :root { 
-            --bg: #f8fafc; 
-            --text: #0f172a; 
-            --p-blue: #2563eb; 
-            --p-red: #ef4444; 
-            --p-green: #10b981; 
-            --p-orange: #f59e0b; 
-            --p-purple: #8b5cf6; 
-            --p-indigo: #6366f1;
+            --bg-deep: #0f172a; 
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --text-main: #f1f5f9; 
+            --text-muted: #94a3b8;
+            --p-blue: #3b82f6; --p-red: #ef4444; --p-green: #10b981; 
+            --p-orange: #f59e0b; --p-purple: #8b5cf6; --p-indigo: #6366f1;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         
         body { 
-            background: var(--bg); color: var(--text); 
+            background: var(--bg-deep); color: var(--text-main); 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            min-height: 100vh;
+            min-height: 100vh; overflow-x: hidden;
         }
 
-        /* --- ARKA PLAN KATMANI (TIKLAMAYI ENGELLEMEZ) --- */
-        .bg-layer-wrapper { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            z-index: 1; pointer-events: none; 
-        }
-        .orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.1; animation: float 30s infinite alternate; }
-        .orb-1 { top: -10%; right: -5%; width: 600px; height: 600px; background: var(--p-blue); }
-        .orb-2 { bottom: -15%; left: -5%; width: 550px; height: 550px; background: var(--p-purple); }
-        @keyframes float { 0% { transform: translate(0,0); } 100% { transform: translate(-60px, 60px); } }
+        /* --- DİNAMİK ARKA PLAN --- */
+        .bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.2; animation: float 30s infinite alternate; }
+        .orb-1 { top: -10%; left: -5%; width: 600px; height: 600px; background: var(--p-indigo); }
+        .orb-2 { bottom: -10%; right: -5%; width: 500px; height: 500px; background: var(--p-blue); }
+        @keyframes float { 0% { transform: translate(0,0); } 100% { transform: translate(-80px, 80px); } }
 
-        /* --- ANA İÇERİK --- */
-        .main-wrapper { 
-            position: relative; 
-            z-index: 100; 
-            padding: 80px 8%;
-        }
+        /* --- ANA KONTEYNER --- */
+        .main-wrapper { position: relative; z-index: 10; padding: 60px 8%; max-width: 1600px; margin: 0 auto; }
 
-        header { margin-bottom: 80px; text-align: left; }
-        .brand { font-size: 1.2rem; font-family: 'JetBrains Mono'; color: var(--p-blue); font-weight: 800; letter-spacing: 5px; margin-bottom: 15px; }
-        .hero-title { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 800; letter-spacing: -3px; line-height: 1.1; }
+        header { margin-bottom: 80px; text-align: center; }
+        .brand-logo { font-family: 'JetBrains Mono'; font-size: 1.1rem; letter-spacing: 8px; color: var(--p-blue); margin-bottom: 20px; font-weight: 800; }
+        .hero-title { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 800; letter-spacing: -4px; color: #fff; }
 
         /* --- KATEGORİ GRİDİ --- */
-        .category-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
-            gap: 30px; 
-        }
+        .category-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
 
-        .cat-link { text-decoration: none; color: inherit; display: block; cursor: pointer; }
+        .cat-link { text-decoration: none; color: inherit; display: block; height: 100%; }
 
         .cat-card {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(20px);
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
             padding: 50px 40px;
-            border-radius: 45px;
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            position: relative;
-            overflow: hidden;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; flex-direction: column; justify-content: flex-start;
+            position: relative; overflow: hidden;
         }
 
+        /* Kart Hover Efektleri */
         .cat-card:hover {
-            transform: translateY(-15px);
-            background: #fff;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.06);
+            transform: translateY(-15px) scale(1.02);
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
         }
 
-        /* Renk Kodları */
-        .cat-card.physics { border-left: 12px solid var(--p-purple); }
-        .cat-card.medical { border-left: 12px solid var(--p-red); }
-        .cat-card.tech { border-left: 12px solid var(--p-green); }
-        .cat-card.gastro { border-left: 12px solid var(--p-orange); }
-        .cat-card.music { border-left: 12px solid var(--p-blue); }
-        .cat-card.mind { border-left: 12px solid var(--p-indigo); }
-        .cat-card.bio { border-left: 12px solid var(--p-green); }
-        .cat-card.history { border-left: 12px solid var(--p-orange); }
-        .cat-card.strategy { border-left: 12px solid var(--p-blue); }
-        .cat-card.life { border-left: 12px solid var(--p-red); }
-        .cat-card.lab { border-left: 12px solid #000; background: rgba(0,0,0,0.02); }
+        .cat-card::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 5px;
+            transition: 0.4s; opacity: 0.5;
+        }
 
-        .cat-card i { font-size: 2.5rem; margin-bottom: 25px; color: var(--text); opacity: 0.8; }
-        .cat-card h2 { font-size: 2rem; font-weight: 800; margin-bottom: 15px; letter-spacing: -1px; }
-        .cat-card p { font-size: 1.15rem; color: #64748b; line-height: 1.6; }
+        /* Kategori Renk Atamaları */
+        .cat-card.physics:hover { border-bottom: 4px solid var(--p-purple); box-shadow: 0 20px 50px rgba(139, 92, 246, 0.2); }
+        .cat-card.medical:hover { border-bottom: 4px solid var(--p-red); box-shadow: 0 20px 50px rgba(239, 68, 68, 0.2); }
+        .cat-card.tech:hover { border-bottom: 4px solid var(--p-green); box-shadow: 0 20px 50px rgba(16, 185, 129, 0.2); }
+        .cat-card.gastro:hover { border-bottom: 4px solid var(--p-orange); box-shadow: 0 20px 50px rgba(245, 158, 11, 0.2); }
+        .cat-card.music:hover { border-bottom: 4px solid var(--p-blue); box-shadow: 0 20px 50px rgba(37, 99, 235, 0.2); }
+        .cat-card.strategy:hover { border-bottom: 4px solid #fff; box-shadow: 0 20px 50px rgba(255, 255, 255, 0.1); }
+        .cat-card.lab { background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(0, 0, 0, 0)); }
+
+        .cat-card i { font-size: 2.5rem; margin-bottom: 30px; color: #fff; transition: 0.3s; }
+        .cat-card:hover i { transform: scale(1.2) rotate(-5deg); color: var(--p-blue); }
+
+        .cat-card h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 15px; letter-spacing: -1px; color: #fff; }
+        .cat-card p { font-size: 1.1rem; color: var(--text-muted); line-height: 1.6; }
 
         @media (max-width: 768px) {
-            .main-wrapper { padding: 50px 5%; }
+            .main-wrapper { padding: 40px 5%; }
             .category-grid { grid-template-columns: 1fr; }
-            .cat-card { padding: 40px 30px; }
+            .cat-card { padding: 40px 30px; border-radius: 40px; }
         }
 
-        footer { text-align: center; padding: 100px 0; font-family: 'JetBrains Mono'; opacity: 0.4; letter-spacing: 5px; font-size: 0.8rem; }
+        footer { text-align: center; padding: 100px 0; font-family: 'JetBrains Mono'; opacity: 0.3; letter-spacing: 5px; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
-    <div class="bg-layer-wrapper">
+    <div class="bg-canvas">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
+        <canvas id="particles"></canvas>
     </div>
 
     <div class="main-wrapper">
         <header>
-            <div class="brand">AZURA PROJECT // 2025</div>
-            <h1 class="hero-title">Bilgi ve Keşif Portalı</h1>
+            <div class="brand-logo">AZURA PROJECT // NEXUS</div>
+            <h1 class="hero-title">Keşfin Sınırlarını Zorlayın</h1>
         </header>
 
         <div class="category-grid">
-
             <a href="physic.html" class="cat-link">
                 <div class="cat-card physics">
                     <i class="fa-solid fa-atom"></i>
@@ -147,7 +135,7 @@
                 <div class="cat-card gastro">
                     <i class="fa-solid fa-utensils"></i>
                     <h2>Gastronomi</h2>
-                    <p>Mutfak kimyası ve kadim mutfak mirasının bilimsel analizi.</p>
+                    <p>Mutfak kimyası ve Gaziantep mutfak mirasının bilimsel analizi.</p>
                 </div>
             </a>
 
@@ -203,13 +191,42 @@
                 <div class="cat-card lab">
                     <i class="fa-solid fa-gamepad"></i>
                     <h2>Zihin Laboratuvarı</h2>
-                    <p>Bilişsel odaklanma ve stratejik düşünmeyi geliştiren interaktif oyunlar.</p>
+                    <p>Stratejik karar alma ve bilişsel yetenek simülasyonları.</p>
                 </div>
             </a>
-
         </div>
 
-        <footer>AZURA_PROJECT // CORE_NEXUS // VER 1.2</footer>
+        <footer>© 2025 AZURA PROJECT // ALL RIGHTS RESERVED</footer>
     </div>
+
+    <script>
+        const canvas = document.getElementById('particles');
+        const ctx = canvas.getContext('2d');
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', init);
+        init();
+        const particles = Array.from({ length: 80 }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            size: Math.random() * 2,
+            speedX: Math.random() * 0.5 - 0.25,
+            speedY: Math.random() * 0.5 - 0.25
+        }));
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.speedX; p.y += p.speedY;
+                if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
+                ctx.fillStyle = 'rgba(255,255,255,0.15)';
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+    </script>
 </body>
 </html>
