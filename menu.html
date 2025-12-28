@@ -3,148 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Azura Nexus | Aydınlık Gelecek</title>
+    <title>Azura Ether | Dijital Huzur</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <style>
         :root {
-            --soft-blue: #e0f2fe; --soft-pink: #fdf2f8; --soft-mint: #f0fdf4;
-            --text: #1e293b; --muted: #64748b; --accent: #6366f1;
-            --glass: rgba(255, 255, 255, 0.45);
+            --p-blue: #e0f2fe; --p-pink: #fdf2f8; --p-mint: #f0fdf4;
+            --accent: #6366f1; --white: #ffffff; --text: #1e293b;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body { 
-            background: linear-gradient(135deg, var(--soft-blue), var(--soft-pink), var(--soft-mint));
-            background-attachment: fixed; color: var(--text);
-            font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden;
+            background: #fff; font-family: 'Plus Jakarta Sans', sans-serif; 
+            overflow-x: hidden; color: var(--text); min-height: 100vh;
         }
 
-        /* --- CANLI İPEKSİ SİS --- */
-        #bg-canvas { position: fixed; inset: 0; z-index: -1; filter: blur(60px); opacity: 0.8; }
+        /* --- GÖRSEL ŞÖLEN KATMANI --- */
+        #main-canvas { position: fixed; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(to bottom, #fff, var(--p-blue)); }
 
-        .wrapper { position: relative; z-index: 10; padding: 40px 5%; max-width: 1400px; margin: 0 auto; }
+        .app-container { position: relative; z-index: 10; padding: 30px; max-width: 1400px; margin: 0 auto; }
 
-        /* --- ÜST BAR: SAAT VE DURUM --- */
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 60px; }
-        .digital-clock { font-family: 'JetBrains Mono'; font-weight: 800; font-size: 1.2rem; color: var(--accent); background: var(--glass); padding: 10px 25px; border-radius: 50px; border: 1px solid #fff; }
-        .profile-badge { display: flex; align-items: center; gap: 12px; background: var(--glass); padding: 8px 20px; border-radius: 50px; border: 1px solid #fff; }
+        /* --- ÜST PANEL --- */
+        .top-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 50px; }
+        .clock-box { background: rgba(255,255,255,0.7); backdrop-filter: blur(10px); padding: 15px 30px; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); border: 1px solid #fff; }
+        #clock { font-family: 'JetBrains Mono'; font-weight: 800; color: var(--accent); }
 
-        /* --- HERO --- */
-        header { text-align: center; margin-bottom: 80px; }
-        .hero-tag { font-family: 'JetBrains Mono'; font-size: 0.8rem; letter-spacing: 6px; color: var(--accent); text-transform: uppercase; margin-bottom: 20px; display: block; }
-        .hero-title { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 800; letter-spacing: -3px; line-height: 1; margin-bottom: 20px; }
-        .hero-title span { color: var(--accent); }
+        /* --- HUZURLU BAŞLIK --- */
+        .hero { text-align: center; margin-bottom: 80px; padding: 40px 0; }
+        .hero h1 { font-size: clamp(3rem, 10vw, 5rem); font-weight: 800; letter-spacing: -4px; line-height: 0.9; margin-bottom: 20px; }
+        .hero p { font-family: 'JetBrains Mono'; letter-spacing: 5px; color: var(--accent); font-size: 0.8rem; text-transform: uppercase; }
 
-        /* --- KATEGORİ KARTLARI --- */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
-        .card {
-            background: var(--glass); backdrop-filter: blur(20px);
-            padding: 45px 35px; border-radius: 45px; border: 2px solid #fff;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            text-decoration: none; color: inherit; position: relative; overflow: hidden;
-            display: flex; flex-direction: column; align-items: center; text-align: center;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.02);
+        /* --- KÜÇÜK KARELER VE BALONLAR (Grid) --- */
+        .content-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; }
+        
+        .bubble-card {
+            background: rgba(255,255,255,0.6); backdrop-filter: blur(20px);
+            border-radius: 50px; border: 2px solid #fff; padding: 50px 40px;
+            text-decoration: none; color: inherit; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; text-align: center;
         }
-        .card:hover { transform: translateY(-15px) scale(1.02); background: #fff; box-shadow: 0 40px 80px rgba(99,102,241,0.1); }
-        .card i { font-size: 3rem; margin-bottom: 25px; color: var(--accent); transition: 0.4s; }
-        .card h3 { font-size: 1.6rem; font-weight: 800; margin-bottom: 12px; }
-        .card p { font-size: 1rem; color: var(--muted); line-height: 1.6; }
-        .emoji-badge { position: absolute; top: 20px; right: 25px; font-size: 1.5rem; opacity: 0.6; }
+        .bubble-card:hover { transform: translateY(-20px) scale(1.05); background: #fff; box-shadow: 0 40px 100px rgba(0,0,0,0.05); }
+        .bubble-card i { font-size: 3.5rem; color: var(--accent); margin-bottom: 25px; }
+        .bubble-card h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 15px; }
+        
+        /* Kart İçi Küçük Balonlar */
+        .inner-bubble { position: absolute; background: var(--p-blue); border-radius: 50%; opacity: 0.4; z-index: -1; }
 
-        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } .hero-title { font-size: 2.8rem; } }
+        /* --- DEV BİLGİ YIĞINI MODAL SİSTEMİ (Örnek Bölüm) --- */
+        .data-dump {
+            background: #fff; border-radius: 60px; padding: 80px 10%; margin-top: 100px;
+            box-shadow: 0 -50px 100px rgba(0,0,0,0.02);
+        }
+        .data-dump h2 { font-size: 3rem; margin-bottom: 40px; letter-spacing: -2px; }
+        .data-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; line-height: 1.8; text-align: justify; }
+
+        @media (max-width: 800px) { .data-columns { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-    <canvas id="bg-canvas"></canvas>
+    <canvas id="main-canvas"></canvas>
 
-    <div class="wrapper">
-        <div class="top-bar">
-            <div id="clock" class="digital-clock">00:00:00</div>
-            <div class="profile-badge">
-                <span style="font-weight: 800; font-size: 0.9rem;">Dr. AZURA</span>
-                <span style="font-size: 1.2rem;">🩺</span>
-            </div>
-        </div>
+    <div class="app-container">
+        <nav class="top-nav">
+            <div class="clock-box"><span id="clock">00:00:00</span></div>
+            <div style="font-weight: 800;">AZURA_ETHER <span style="color: var(--accent);">●</span></div>
+        </nav>
 
-        <header>
-            <span class="hero-tag">Welcome to Clinical Nexus</span>
-            <h1 class="hero-title">Zihin ve <span>Bilim</span><br>Laboratuvarı</h1>
+        <header class="hero">
+            <p>Clinical & Theoretical Research</p>
+            <h1>Tatlı Bir<span>Bilim</span><br>Rüyası.</h1>
         </header>
 
-        <div class="grid">
-            <a href="medical.html" class="card">
-                <span class="emoji-badge">🧬</span>
-                <i class="fa-solid fa-stethoscopes"></i>
-                <h3>Klinik Bilimler</h3>
-                <p>Tıp dünyasından vaka analizleri ve nörolojik derinlikler.</p>
+        <div class="content-grid">
+            <a href="medical.html" class="bubble-card">
+                <div class="inner-bubble" style="width: 100px; height: 100px; top: -20px; right: -20px;"></div>
+                <i class="fa-solid fa-heart-pulse"></i>
+                <h3>Tıp & Klinik 🩺</h3>
+                <p>Erişilebilir ve huzurlu tıbbi dökümantasyonlar.</p>
             </a>
 
-            <a href="physic.html" class="card">
-                <span class="emoji-badge">🌌</span>
+            <a href="physic.html" class="bubble-card">
+                <div class="inner-bubble" style="width: 80px; height: 80px; bottom: -10px; left: -10px;"></div>
                 <i class="fa-solid fa-atom"></i>
-                <h3>Fizik & Evren</h3>
-                <p>Kuantum mekaniğinden kozmik genişlemeye atomik yolculuk.</p>
+                <h3>Fizik & Evren 🌌</h3>
+                <p>Kozmik bilgilerin en tatlı ve anlaşılır hali.</p>
             </a>
 
-            <a href="games.html" class="card">
-                <span class="emoji-badge">🕹️</span>
-                <i class="fa-solid fa-brain"></i>
-                <h3>Zihin Oyunları</h3>
-                <p>Kognitif kapasiteyi zorlayan interaktif simülasyonlar.</p>
-            </a>
-
-            <a href="gastronomy.html" class="card">
-                <span class="emoji-badge">🍽️</span>
+            <a href="gastronomy.html" class="bubble-card">
+                <div class="inner-bubble" style="width: 120px; height: 120px; top: 50%; left: -40px;"></div>
                 <i class="fa-solid fa-utensils"></i>
-                <h3>Gastronomi</h3>
-                <p>Mutfak kimyası ve Gaziantep mutfak mirası analizi.</p>
+                <h3>Gastronomi 🍽️</h3>
+                <p>Antep mutfağının moleküler ve kültürel mirası.</p>
             </a>
         </div>
 
-        <footer style="text-align: center; padding: 100px 0; opacity: 0.4; font-family: 'JetBrains Mono'; font-size: 0.8rem; letter-spacing: 5px;">
-            AZURA PROJECT // DISCOVER THE LIGHT
-        </footer>
+        <section class="data-dump">
+            <h2>Kognitif Bilimler Ansiklopedisi 🧠</h2>
+            <div class="data-columns">
+                <div>
+                    <p><b>Nörobilim ve Gelecek:</b> İnsan beyni, evrendeki en karmaşık yapı olarak kabul edilir. Milyarlarca nöronun yarattığı bu ağ, sadece biyolojik bir işlemci değil, aynı zamanda bilincin evidir. Azura projesi kapsamında, bu ağın çalışma prensiplerini "Ether" tasarımıyla basitleştiriyoruz.</p>
+                    <p>Görsel algıdan motor becerilere kadar her süreç, beynin farklı loblarında milisaniyeler içinde işlenir. <i>Frontal Lob</i>, karar verme mekanizmamızın kaptan köşküdür.</p>
+                </div>
+                <div>
+                    <p><b>Veri ve Kullanılabilirlik:</b> Karmaşık bilgilerin "erişilebilir" olması için görsel hiyerarşi şarttır. Biz burada yumuşak renk geçişleri (gradients) ve okunaklı tipografi kullanarak, ağır akademik metinleri huzurlu bir okuma deneyimine dönüştürdük.</p>
+                    <p>Her bir hücre, her bir balon aslında bir veri paketidir. Bilgiye ulaşmak artık yorucu bir iş değil, bulutlar arasında bir gezintidir.</p>
+                </div>
+            </div>
+        </section>
     </div>
 
     <script>
-        // --- SAAT FONKSİYONU ---
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clock').innerText = now.toLocaleTimeString('tr-TR');
-        }
-        setInterval(updateClock, 1000); updateClock();
+        // --- SAAT ---
+        setInterval(() => {
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR');
+        }, 1000);
 
-        // --- İPEKSİ SİS MOTORU ---
-        const canvas = document.getElementById('bg-canvas');
+        // --- GÖRSEL ŞÖLEN MOTORU (Tozlar ve Balonlar) ---
+        const canvas = document.getElementById('main-canvas');
         const ctx = canvas.getContext('2d');
-        let clouds = [];
-        const colors = ['#bae6fd', '#fbcfe8', '#bbf7d0', '#ddd6fe'];
+        let particles = [];
 
         function init() {
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            clouds = [];
-            for(let i=0; i<6; i++) {
-                clouds.push({
-                    x: Math.random() * canvas.width, y: Math.random() * canvas.height,
-                    r: Math.random() * 400 + 300, color: colors[i % colors.length],
-                    vx: Math.random() * 0.4 - 0.2, vy: Math.random() * 0.4 - 0.2
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            // Toz Zerreleri ve Yüzen Balonlar Karışık
+            for(let i=0; i<100; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: Math.random() * (i < 10 ? 150 : 3), // 10 tanesi büyük balon, kalanı küçük toz
+                    color: ['#bae6fd', '#fbcfe8', '#bbf7d0', '#ddd6fe'][i % 4],
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    opacity: Math.random() * 0.5
                 });
             }
         }
+
         function animate() {
-            ctx.clearRect(0,0,canvas.width, canvas.height);
-            clouds.forEach(c => {
-                c.x += c.vx; c.y += c.vy;
-                if(c.x + c.r < 0) c.x = canvas.width + c.r; if(c.x - c.r > canvas.width) c.x = -c.r;
-                if(c.y + c.r < 0) c.y = canvas.height + c.r; if(c.y - c.r > canvas.height) c.y = -c.r;
-                let g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.r);
-                g.addColorStop(0, c.color); g.addColorStop(1, 'transparent');
-                ctx.fillStyle = g; ctx.beginPath(); ctx.arc(c.x, c.y, c.r, 0, Math.PI*2); ctx.fill();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < -p.r) p.x = canvas.width + p.r;
+                if(p.x > canvas.width + p.r) p.x = -p.r;
+                if(p.y < -p.r) p.y = canvas.height + p.r;
+                if(p.y > canvas.height + p.r) p.y = -p.r;
+
+                let g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
+                g.addColorStop(0, p.color);
+                g.addColorStop(1, 'transparent');
+                ctx.globalAlpha = p.opacity;
+                ctx.fillStyle = g;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fill();
             });
             requestAnimationFrame(animate);
         }
-        window.addEventListener('resize', init); init(); animate();
+        window.addEventListener('resize', init);
+        init(); animate();
     </script>
 </body>
 </html>
