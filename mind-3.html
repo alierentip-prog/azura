@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Azura Lab | Bilinç Katmanları</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --elektrik-mor: #6200ea; --indigo: #1a237e; --nebula: #ff4081;
+            --gece: #020205; --gümüs: #e0e0e0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--gece); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--gümüs); line-height: 1.8; overflow-x: hidden; }
+
+        /* --- DREAMSCAPE ARKA PLAN --- */
+        #dream-bg { position: fixed; inset: 0; z-index: 1; opacity: 0.5; filter: blur(110px); pointer-events: none; }
+
+        .header { 
+            position: sticky; top: 0; background: rgba(2, 2, 5, 0.9); color: #fff; 
+            padding: 15px 25px; display: flex; justify-content: space-between; 
+            z-index: 100; border-bottom: 2px solid var(--nebula); backdrop-filter: blur(20px);
+        }
+
+        .hero-dream {
+            height: 65vh; background: radial-gradient(circle at 50%, var(--elektrik-mor), var(--indigo), #000);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; color: #fff; padding: 40px; position: relative; z-index: 10;
+        }
+
+        .dream-report { 
+            max-width: 1000px; margin: -100px auto 0; padding: 80px 50px; 
+            background: rgba(10, 10, 20, 0.9); border-radius: 90px 90px 0 0; position: relative; 
+            z-index: 20; border: 1px solid rgba(255, 64, 129, 0.2); backdrop-filter: blur(25px);
+            box-shadow: 0 -50px 120px rgba(0,0,0,1);
+        }
+        
+        h1 { font-size: clamp(2.2rem, 11vw, 5rem); font-weight: 800; letter-spacing: -4px; line-height: 0.85; margin-bottom: 25px; text-shadow: 0 0 40px var(--nebula); }
+        h2 { font-size: 2.2rem; font-weight: 800; margin: 60px 0 30px; color: var(--nebula); border-left: 15px solid var(--elektrik-mor); padding-left: 25px; }
+        p { margin-bottom: 35px; font-size: 1.25rem; text-align: justify; color: #ddd; }
+
+        /* RÜYA VE AKIL OYUNU BLOKLARI */
+        .dream-box { padding: 45px; border-radius: 55px; margin: 55px 0; border: 2px solid var(--elektrik-mor); background: rgba(98, 0, 234, 0.1); }
+        .dream-title { font-family: 'JetBrains Mono'; font-weight: 800; color: var(--nebula); margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+
+        .lucid-frame {
+            width: 100%; border-radius: 50px; margin: 55px 0; overflow: hidden;
+            border: 3px solid var(--nebula); box-shadow: 0 0 50px rgba(255, 64, 129, 0.3);
+            display: flex; align-items: center; justify-content: center; background: #000;
+        }
+        .lucid-frame i { font-size: 12rem; color: var(--nebula); animation: float 4s ease-in-out infinite; }
+
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+        .nav-gate { display: flex; justify-content: space-between; margin-top: 100px; padding-bottom: 150px; }
+        .btn-dream { background: transparent; color: var(--nebula); padding: 22px 55px; border-radius: 60px; text-decoration: none; font-weight: 800; border: 2px solid var(--nebula); transition: 0.5s; }
+        .btn-dream:hover { background: var(--nebula); color: #000; box-shadow: 0 0 40px var(--nebula); }
+    </style>
+</head>
+<body>
+
+    <canvas id="dream-bg"></canvas>
+
+    <div class="header">
+        <a href="games.html" style="color:#fff; text-decoration:none;"><i class="fa-solid fa-moon"></i> GECE SEKTÖRÜ</a>
+        <div id="clock" style="font-family:'JetBrains Mono'; font-weight:800;">00:00:00</div>
+        <div style="font-size:0.75rem; letter-spacing:4px;">REMSLEEP_DETECTION</div>
+    </div>
+
+    <section class="hero-dream">
+        <p style="font-family:'JetBrains Mono'; letter-spacing:10px; opacity:0.8;">THE ARCHITECTURE OF DREAMS</p>
+        <h1>Bilinç:<br>Gece Seansı.</h1>
+    </section>
+
+    <main class="dream-report">
+        <p>Usta, Azura Zihin Laboratuvarı'nın en gizemli odasındayız. Bilinç, sadece uyanıkken yaptıklarımızdan ibaret değildir. Her gece başını yastığa koyduğunda, beynin dış dünyayla bağını keser ve seni milyarlarca nöronun inşa ettiği sanal bir evrene, rüyalara fırlatır. Bu, biyolojik bir "Singularity" anıdır; çünkü rüyadayken beynin, gerçeklik ile kurgu arasındaki farkı ayırt edemez.</p>
+
+        <div class="dream-box">
+            <div class="dream-title"><i class="fa-solid fa-wand-magic-sparkles"></i> AKIL OYUNU: LUCID RÜYA</div>
+            <p style="color: #fff; font-size: 1.1rem;">Usta, rüyada olduğunu
+              
