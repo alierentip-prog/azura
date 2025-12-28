@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>İzafiyet: İkizler Paradoksu | Azura</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --bordo: #5a0000; --krem: #f2ead3; --ceviz: #3d2b1f; --altin: #b8860b;
+            --lacivert: #001f3f; --bakir: #b87333;
+        }
+        body { background: var(--krem); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--ceviz); line-height: 1.8; }
+        
+        .header { 
+            position: sticky; top: 0; background: var(--bordo); color: #fff; 
+            padding: 15px 25px; display: flex; justify-content: space-between; 
+            z-index: 100; border-bottom: 3px solid var(--altin);
+        }
+
+        .article-body { max-width: 900px; margin: 40px auto; padding: 0 25px; }
+        
+        h1 { font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 800; letter-spacing: -3px; line-height: 1; color: var(--bordo); margin-bottom: 30px; }
+        h2 { font-size: 1.8rem; font-weight: 800; margin-top: 50px; color: var(--lacivert); }
+        p { margin-bottom: 25px; font-size: 1.1rem; text-align: justify; }
+
+        /* ÖZEL DÜZEN KUTULARI */
+        .scenario-box { 
+            background: #fff; border-radius: 40px; padding: 40px; 
+            margin: 50px 0; border: 2px solid var(--altin); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        .medical-insight { 
+            background: var(--ceviz); color: var(--krem); padding: 35px; 
+            border-radius: 35px; margin: 40px 0; border-right: 10px solid var(--bakir);
+        }
+
+        .visual-split { 
+            display: flex; gap: 20px; margin: 40px 0; 
+        }
+        .visual-part { 
+            flex: 1; height: 200px; background: var(--bordo); border-radius: 30px; 
+            display: flex; align-items: center; justify-content: center; color: #fff; text-align: center; padding: 20px;
+        }
+
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 80px; padding-bottom: 120px; }
+        .nav-link { background: var(--bordo); color: #fff; padding: 18px 40px; border-radius: 50px; text-decoration: none; font-weight: 800; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="relativity.html" style="color:#fff; text-decoration:none;"><i class="fa-solid fa-chevron-left"></i> SERİ</a>
+        <div style="font-family:'JetBrains Mono'; font-weight:800;" id="live-clock">00:00:00</div>
+        <div style="font-size:0.75rem; opacity:0.8;">BÖLÜM 06 / 08</div>
+    </div>
+
+    <main class="article-body">
+        <p style="font-family:'JetBrains Mono'; color:var(--bordo); font-size:0.8rem; letter-spacing:5px; font-weight:800;">BIOLOGICAL TIME DILATION</p>
+        <h1>İkizler Paradoksu:<br>Zamanın İki Yüzü.</h1>
+
+        <p>Usta, İzafiyet teorisinin en meşhur "düşünce deneyi" ile karşı karşıyayız. Bu senaryo, zamanın sadece bir rakam değil, bizzat hücrelerimizin yaşlanma hızı olduğunu kanıtlar. Hayal et: İki tane tek yumurta ikizi var. Ahmet ve Mehmet. Bu iki kardeşin biyolojik yapıları, DNA'ları ve hücre bölünme hızları tamamen aynı. Ahmet dünyada kalıyor, Mehmet ise ışık hızının %95'ine ulaşabilen bir uzay gemisiyle Alpha Centauri yıldızına doğru yola çıkıyor.</p>
+
+        <div class="visual-split">
+            <div class="visual-part" style="background: var(--ceviz);">
+                <i class="fa-solid fa-house-user" style="font-size: 2rem; margin-bottom: 10px;"></i><br>
+                <b>Ahmet:</b><br>Dünya Referans Noktası
+            </div>
+            <div class="visual-part" style="background: var(--bakir);">
+                <i class="fa-solid fa-rocket" style="font-size: 2rem; margin-bottom: 10px;"></i><br>
+                <b>Mehmet:</b><br>Relativistik Yolcu
+            </div>
+        </div>
+
+        <h2>Ayrılık ve Dönüş</h2>
+        <p>Mehmet uzayda 10 yıl (kendi saatine göre) seyahat edip dünyaya geri döndüğünde, kapıdan çıktığı an hayatının şokunu yaşar. Mehmet sadece 10 yıl yaşlanmıştır, belki biraz sakalı uzamıştır. Ama dünyadaki kardeşi Ahmet, tam 32 yıl yaşlanmıştır! Ahmet emekli olmuş, saçları ağarmış, torun sahibi olmuştur. Mehmet için zaman normal akmış, kalbi normal hızda atmış, hücreleri normal hızda bölünmüştür. Ama Ahmet'in referans sistemine göre Mehmet'in saniyeleri sakız gibi uzamıştır.</p>
+
+        
+
+        <div class="medical-insight">
+            <b>Tıbbi Bakış Açısı:</b> Bir tıp öğrencisi olarak şunu düşün usta; Mehmet'in vücudundaki telomerlerin kısalma hızı, mitokondriyal yaşlanma ve protein sentezi, Ahmet'e göre yavaşlamıştır. Zamanın genleşmesi sadece saati değil, biyokimyayı da yavaşlatır. Mehmet aslında geleceğe seyahat etmiştir.
+        </div>
+
+        <h2>Peki Paradoks Nerede?</h2>
+        <p>İşte kafaları karıştıran nokta: İzafiyet der ki, hareket görelidir. Mehmet'e göre dünya ondan uzaklaşmaktadır. O zaman Mehmet "Ben değil, Ahmet hareket etti, onun daha genç kalması gerekirdi" diyebilir mi? Cevap hayır. Çünkü Mehmet seyahati bitirmek için yön değiştirmek, yavaşlamak ve tekrar hızlanmak (ivmelenmek) zorundadır. Bu ivme, simetriyi bozar. Evren kimin gerçekten "yolculuk yaptığını" bilir. Mehmet, uzay-zaman dokusunda Ahmet'e göre daha uzun ve eğri bir yol kat etmiştir.</p>
+
+        <div class="scenario-box">
+            <h3 style="color:var(--bordo); margin-bottom:15px;"><i class="fa-solid fa-hourglass-half"></i> Zaman Yolculuğu Mümkün mü?</h3>
+            <p>Bu senaryo bize şunu söyler: Geleceğe gitmek fiziksel olarak mümkündür. Eğer yeterince hızlı bir gemi yaparsak, dünyada 1000 yıl geçerken biz sadece 1 hafta yaşayarak "geleceğe" inebiliriz. Ancak bu tek yönlü bir bilettir. Geri dönmek için ışık hızından hızlı gitmek gerekir, bu da (şimdilik) imkansızdır.</p>
+        </div>
+
+        <h2>Hücresel Seviyede Zaman</h2>
+        <p>Bu paradoks sadece makro düzeyde değil, atomik düzeyde de yaşanır. Kozmik ışınlarla dünyaya çarpan parçacıklar (muonlar), laboratuvarda ömürleri çok kısa olmasına rağmen, ışık hızına yakın hareket ettikleri için atmosferi aşacak kadar uzun yaşarlar. Onlar için zaman o kadar yavaş akar ki, ölmeden önce yere ulaşmayı başarırlar. Bizim için saniyeler geçerken, o minik parçacıklar için sadece bir an geçer.</p>
+
+        <div class="nav-buttons">
+            <a href="relativity-5.html" class="nav-link" style="background:#888;"><i class="fa-solid fa-chevron-left"></i> ÖNCEKİ</a>
+            <a href="relativity-7.html" class="nav-link">BÖLÜM 7: DALGALAR <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+    </main>
+
+    <script>
+        function updateTime() {
+            document.getElementById('live-clock').innerText = new Date().toLocaleTimeString('tr-TR');
+        }
+        setInterval(updateTime, 1000); updateTime();
+    </script>
+</body>
+</html>
