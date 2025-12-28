@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Azura | İzafiyet Serisi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&family=JetBrains+Mono:wght@800&display=swap" rel="stylesheet">
+    <style>
+        :root { --bordo: #5a0000; --ceviz: #3d2b1f; --krem-koyu: #f2ead3; --altin: #b8860b; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--krem-koyu); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--ceviz); }
+        .header { background: var(--bordo); padding: 15px; display: flex; align-items: center; color: #fff; border-bottom: 3px solid var(--altin); }
+        .container { padding: 30px 20px; max-width: 600px; margin: 0 auto; }
+        .hero h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -2px; line-height: 0.9; margin-bottom: 30px; }
+        .chapter-list { display: flex; flex-direction: column; gap: 15px; }
+        .chapter-card { 
+            background: #faf7ed; padding: 20px; border-radius: 30px; display: flex; 
+            align-items: center; gap: 15px; text-decoration: none; color: inherit;
+            border: 1.5px solid rgba(90,0,0,0.1); transition: 0.3s;
+        }
+        .chapter-card:hover { transform: scale(1.02); border-color: var(--bordo); }
+        .num { background: var(--bordo); color: #fff; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="physic.html" style="color:#fff; margin-right:15px;"><i class="fa-solid fa-arrow-left"></i></a>
+        <div style="font-family:'JetBrains Mono'; font-weight:800;">RELATIVITY_SEQUENCE</div>
+    </header>
+    <div class="container">
+        <div class="hero"><h1>Zaman ve Mekan<br>Yolculuğu.</h1></div>
+        <nav class="chapter-list">
+            <a href="relativity-1.html" class="chapter-card"><div class="num">1</div><div><h3>Zamanın Genleşmesi</h3><p>Hız arttıkça zaman neden yavaşlar?</p></div></a>
+            <a href="relativity-2.html" class="chapter-card"><div class="num">2</div><div><h3>E=mc² Derinliği</h3><p>Maddenin enerjiye dönüşümü.</p></div></a>
+            <a href="relativity-3.html" class="chapter-card"><div class="num">3</div><div><h3>Kütleçekim ve Bükülme</h3><p>Uzay-zaman kumaşı.</p></div></a>
+            <a href="relativity-4.html" class="chapter-card"><div class="num">4</div><div><h3>Işık Hızı Sınırı</h3><p>Neden daha hızlı gidemeyiz?</p></div></a>
+            <a href="relativity-5.html" class="chapter-card"><div class="num">5</div><div><h3>Olay Ufku</h3><p>Kara deliklerin kapısı.</p></div></a>
+            <a href="relativity-6.html" class="chapter-card"><div class="num">6</div><div><h3>İkizler Paradoksu</h3><p>Zaman yolculuğunun matematiği.</p></div></a>
+            <a href="relativity-7.html" class="chapter-card"><div class="num">7</div><div><h3>Gravitasyonel Dalgalar</h3><p>Evrenin ilk çığlığı.</p></div></a>
+            <a href="relativity-8.html" class="chapter-card"><div class="num">8</div><div><h3>Kuantum Kesişimi</h3><p>Her Şeyin Teorisi'ne doğru.</p></div></a>
+        </nav>
+    </div>
+</body>
+</html>
