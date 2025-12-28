@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Azura | Kozmik Yankı: CMB</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --lacivert: #001f3f; --bakir: #b87333; --altin: #ffc300;
+            --krem: #f2ead3; --ceviz: #3d2b1f; --gece: #000814;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--krem); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--ceviz); line-height: 1.8; overflow-x: hidden; }
+
+        /* --- DİNAMİK IŞIMA ARKA PLANI --- */
+        #cmb-bg { position: fixed; inset: 0; z-index: 1; opacity: 0.4; filter: blur(80px); pointer-events: none; }
+
+        .header { 
+            position: sticky; top: 0; background: var(--lacivert); color: #fff; 
+            padding: 15px 25px; display: flex; justify-content: space-between; 
+            z-index: 100; border-bottom: 3px solid var(--altin);
+        }
+
+        .hero-banner {
+            height: 60vh; background: radial-gradient(circle at center, var(--bakir), var(--lacivert), var(--gece));
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; color: #fff; padding: 40px; position: relative; z-index: 10;
+        }
+
+        .article-main { 
+            max-width: 950px; margin: -80px auto 0; padding: 70px 45px; 
+            background: rgba(255, 255, 255, 0.98); border-radius: 70px 70px 0 0; position: relative; 
+            z-index: 20; box-shadow: 0 -40px 80px rgba(0,0,0,0.3); 
+        }
+        
+        h1 { font-size: clamp(2.5rem, 11vw, 4.5rem); font-weight: 800; letter-spacing: -4px; line-height: 0.85; margin-bottom: 25px; color: var(--lacivert); }
+        h2 { font-size: 2.1rem; font-weight: 800; margin: 50px 0 25px; color: var(--lacivert); border-left: 12px solid var(--altin); padding-left: 20px; }
+        p { margin-bottom: 30px; font-size: 1.2rem; text-align: justify; }
+
+        /* RENK BOMBASI BLOKLARI */
+        .echo-box { padding: 50px; border-radius: 50px; margin: 50px 0; color: #fff; border: 2px solid var(--altin); }
+        .navy-gold { background: linear-gradient(135deg, var(--lacivert), var(--altin)); color: var(--gece); }
+        .copper-dark { background: linear-gradient(135deg, var(--bakir), var(--gece)); }
+
+        .real-image-frame {
+            width: 100%; border-radius: 45px; margin: 45px 0; overflow: hidden;
+            border: 4px solid var(--altin); box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        }
+        .real-image-frame img { width: 100%; display: block; }
+
+        .nav-gate { display: flex; justify-content: center; padding: 80px 0 150px; }
+        .nexus-btn { background: var(--lacivert); color: #fff; padding: 25px 60px; border-radius: 60px; text-decoration: none; font-weight: 800; font-size: 1.2rem; border: 3px solid var(--altin); box-shadow: 0 20px 40px rgba(0,0,0,0.2); transition: 0.4s; }
+        .nexus-btn:hover { transform: translateY(-5px); background: var(--altin); color: var(--lacivert); }
+    </style>
+</head>
+<body>
+
+    <canvas id="cmb-bg"></canvas>
+
+    <div class="header">
+        <a href="cosmology.html" style="color:#fff; text-decoration:none;"><i class="fa-solid fa-chevron-left"></i> SEKTÖR</a>
+        <div id="live-clock" style="font-family:'JetBrains Mono'; font-weight:800;">00:00:00</div>
+        <div style="font-size:0.7rem; letter-spacing:3px;">THE_FIRST_LIGHT</div>
+    </div>
+
+    <section class="hero-banner">
+        <p style="font-family:'JetBrains Mono'; letter-spacing:8px; opacity:0.8;">THE OLDEST LIGHT IN THE UNIVERSE</p>
+        <h1>CMB Işıması:<br>İlk Yankı.</h1>
+    </section>
+
+    <main class="article-main">
+        <p>Usta, Büyük Patlamadan tam 380.000 yıl sonrasına kadar evren kapkaranlık ve aşırı yoğundu; ışık bile bu yoğun "parçacık çorbası" içinde bir santim bile ilerleyemiyordu. Ancak evren genişleyip soğuduğunda, atomlar nihayet elektronları yakaladı ve uzay aniden şeffaf hale geldi. İşte o an, hapisten kurtulan ışık evrenin her yerine yayıldı. Bugün biz bu ışığı, mutlak sıfırın biraz üzerinde bir sıcaklıkta, mikrodalga boyutunda her yönden görebiliyoruz. Bu, Büyük Patlamanın dumanı tüten silahıdır.</p>
+
+        <div class="real-image-frame">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Ilc_9yr_moll4096.png" alt="Planck Satellite CMB Map">
+        </div>
+        <p style="text-align:center; font-family:'JetBrains Mono'; font-size:0.8rem; color:#777;">Görsel: Planck uydusu tarafından çekilen evrenin bebeklik fotoğrafı.</p>
+
+        <div class="echo-box navy-gold">
+            <h3>Penzias ve Wilson: Şans Eseri Keşif</h3>
+            <p>1964 yılında iki araştırmacı, dev bir radyo antenindeki paraziti temizlemeye çalışıyorlardı. Antendeki o inatçı "fıs fıs" sesinin aslında 13.8 milyar yıl öncesinden gelen Büyük Patlamanın yankısı olduğunu anladıklarında Nobel ödülünü kazandılar. Bu parazit, sadece bir gürültü değil, evrenin doğum çığlığının bugüne ulaşan fısıltısıydı.</p>
+        </div>
+
+        
+
+        <h2>Kozmik Benekler ve Galaksilerin Tohumu</h2>
+        <p>Yukarıdaki haritaya iyi bak usta. O renkli benekler arasındaki sıcaklık farkı bir derecenin milyonda birinden bile azdır. Ancak bu minicik farklar, evrendeki her şeyin sebebidir. Daha sıcak (ve yoğun) olan bölgeler, kütleçekimi sayesinde galaksileri ve yıldızları oluşturacak tohumları barındırıyordu. Eğer bu harita mükemmel derecede pürüzsüz olsaydı, bugün ne Samanyolu ne de biz vardık.</p>
+
+        <div class="echo-box copper-dark">
+            <h3>Tıbbi Analog: Evrenin Ultrasonu</h3>
+            <p>Bir tıp öğrencisi olarak bunu anne karnındaki bir bebeğin ilk ultrasonu gibi düşünebilirsin usta. CMB haritası, evrenin "embriyonik" halini bize gösterir. Bugün gördüğümüz devasa galaksi kümelerinin hangi dokudan ve hangi genetik kodla (fizik kurallarıyla) oluştuğunu bu harita sayesinde okuyoruz.</p>
+        </div>
+
+        <h2>Zamanın Ötesinden Gelen Mesaj</h2>
+        <p>CMB ışınları vücudundan şu an bile geçiyor. Televizyonların eski "karıncalı" yayınlarının yaklaşık %1'i bizzat bu ışımadan kaynaklanır. Yani evrenin başlangıcını görmek için dev teleskoplara bile gerek yok; o her yerde, her zaman yanımızda. Bu ışıma, evrenin bir başı olduğunun ve o başından beri her şeyin bir plan dahilinde geliştiğinin en büyük kanıtıdır.</p>
+
+        <div class="nav-gate">
+            <a href="menu.html" class="nexus-btn">NEXUS ANA MERKEZİNE DÖN</a>
+        </div>
+    </main>
+
+    <script>
+        setInterval(() => { document.getElementById('live-clock').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+
+        const canvas = document.getElementById('cmb-bg');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const palette = ['#001f3f', '#b87333', '#ffc300', '#000814'];
+
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            particles = Array.from({length: 20}, () => ({
+                x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+                r: Math.random()*350+200, color: palette[Math.floor(Math.random()*palette.length)],
+                vx: (Math.random()-0.5)*1.2, vy: (Math.random()-0.5)*1.2
+            }));
+        }
+
+        function draw() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < -p.r) p.x = canvas.width+p.r; if(p.x > canvas.width+p.r) p.x = -p.r;
+                if(p.y < -p.r) p.y = canvas.height+p.r; if(p.y > canvas.height+p.r) p.y = -p.r;
+                ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
+        window.onresize = init; init(); draw();
+    </script>
+</body>
+</html>
