@@ -3,230 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Azura Nexus | The Infinity Interface</title>
+    <title>Azura Nexus | Neural Overdrive</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;800&family=JetBrains+Mono:wght@800&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 1. CSS KATMANI: TASARIMIN OMURGASI --- */
         :root {
-            --p-indigo: #6366f1; --p-cyan: #22d3ee; --p-rose: #f43f5e;
-            --p-emerald: #10b981; --p-amber: #f59e0b; --bg: #ffffff;
-            --glass: rgba(255, 255, 255, 0.4); --glass-thick: rgba(255, 255, 255, 0.8);
-            --shadow: 0 20px 50px rgba(0,0,0,0.05); --neon-glow: 0 0 20px rgba(99,102,241,0.2);
+            --accent: #6366f1; --cyan: #22d3ee; --rose: #f43f5e;
+            --bg: #ffffff; --card: rgba(255, 255, 255, 0.6);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body { 
             background: var(--bg); font-family: 'Plus Jakarta Sans', sans-serif; 
-            color: #0f172a; overflow: hidden; height: 100vh; width: 100vw;
-            user-select: none; -webkit-font-smoothing: antialiased;
+            overflow: hidden; height: 100vh; color: #1e293b;
         }
 
-        /* --- ARKA PLAN MOTORU (CANVAS) --- */
-        #render-surface { position: fixed; inset: 0; z-index: 1; background: radial-gradient(circle at center, #fff, #f8fafc); }
-
-        /* --- ANA KAPSAYICI --- */
-        .nexus-layout {
-            position: relative; z-index: 10; height: 100vh; display: flex; flex-direction: column;
-            padding: 30px; gap: 25px; max-width: 1600px; margin: 0 auto;
+        /* --- QUANTUM BACKGROUND ENGINE --- */
+        #quantum-canvas {
+            position: fixed; inset: 0; z-index: 1;
+            background: radial-gradient(circle at 50% 50%, #fff, #f0f9ff, #fff);
         }
 
-        /* --- DASHBOARD HEADER --- */
+        .interface-wrapper {
+            position: relative; z-index: 10; height: 100vh;
+            display: flex; flex-direction: column; padding: 40px;
+            gap: 30px; max-width: 1800px; margin: 0 auto;
+        }
+
+        /* --- ULTRASONIC HEADER --- */
         .nexus-header {
             display: flex; justify-content: space-between; align-items: center;
-            background: var(--glass); backdrop-filter: blur(30px);
-            padding: 20px 40px; border-radius: 40px; border: 2px solid #fff;
-            box-shadow: var(--shadow); animation: slideDown 0.8s ease;
+            background: var(--card); backdrop-filter: blur(40px);
+            padding: 25px 50px; border-radius: 40px; border: 1px solid rgba(255,255,255,0.8);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.03);
         }
-        @keyframes slideDown { from { transform: translateY(-100px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-        .brand { font-family: 'JetBrains Mono'; font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
-        .brand span { color: var(--p-indigo); text-shadow: var(--neon-glow); }
+        .brand-zone { display: flex; align-items: center; gap: 20px; }
+        .logo-sphere { width: 50px; height: 50px; background: linear-gradient(45deg, var(--accent), var(--cyan)); border-radius: 50%; box-shadow: 0 0 30px rgba(99,102,241,0.4); animation: rotate 10s linear infinite; }
+        @keyframes rotate { 100% { transform: rotate(360deg); } }
+        
+        .brand-text { font-family: 'JetBrains Mono'; font-weight: 800; font-size: 1.8rem; letter-spacing: -2px; }
+        .brand-text span { color: var(--accent); }
 
-        .system-metrics { display: flex; gap: 20px; font-family: 'JetBrains Mono'; font-size: 0.8rem; font-weight: 700; }
-        .metric-item { background: #fff; padding: 10px 20px; border-radius: 50px; border: 1px solid rgba(0,0,0,0.05); display: flex; align-items: center; gap: 8px; }
-        .pulse-dot { width: 8px; height: 8px; background: var(--p-emerald); border-radius: 50%; animation: pulse 1s infinite; }
+        .system-clock { font-family: 'JetBrains Mono'; font-size: 1.4rem; font-weight: 800; color: #64748b; }
 
-        /* --- İNTERAKTİF GRID SİSTEMİ --- */
+        /* --- THE NEXUS GRID (THE SHOW) --- */
         .nexus-grid {
             display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr);
-            gap: 20px; flex-grow: 1; perspective: 1000px;
+            gap: 25px; flex-grow: 1;
         }
 
-        .tile {
-            background: var(--glass); backdrop-filter: blur(20px); border: 2px solid #fff;
-            border-radius: 50px; padding: 40px; text-decoration: none; color: inherit;
+        .nexus-tile {
+            background: var(--card); backdrop-filter: blur(30px);
+            border: 2px solid #fff; border-radius: 50px;
+            padding: 50px; position: relative; overflow: hidden;
             display: flex; flex-direction: column; justify-content: space-between;
-            transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1); position: relative;
-            overflow: hidden; box-shadow: var(--shadow);
+            transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+            text-decoration: none; color: inherit;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.02);
         }
 
-        /* Hover Mekanikleri */
-        .tile:hover { transform: translateY(-15px) rotateX(5deg); background: #fff; border-color: var(--p-indigo); box-shadow: 0 40px 100px rgba(0,0,0,0.08); }
-        .tile::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(99,102,241,0.08) 0%, transparent 60%); opacity: 0; transition: opacity 0.3s; }
-        .tile:hover::after { opacity: 1; }
-
-        /* Kart İçeriği */
-        .tile-icon { width: 65px; height: 65px; background: #fff; border-radius: 22px; display: flex; align-items: center; justify-content: center; font-size: 2rem; box-shadow: 0 10px 20px rgba(0,0,0,0.03); margin-bottom: 20px; }
-        .tile-title { font-size: 1.8rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 10px; }
-        .tile-desc { font-size: 0.95rem; color: #64748b; line-height: 1.5; font-weight: 500; }
-        
-        .tile-meta { font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--p-indigo); letter-spacing: 2px; text-transform: uppercase; margin-top: auto; }
-
-        /* Özel Grid Yerleşimleri */
-        .span-2 { grid-column: span 2; }
-        .span-h-2 { grid-row: span 2; }
-
-        /* --- GÖRSEL EFEKTLER: TOZLAR VE BALONLAR --- */
-        .floating-elements { position: absolute; pointer-events: none; }
-
-        /* --- MOBİL UYUM --- */
-        @media (max-width: 1000px) {
-            .nexus-grid { grid-template-columns: 1fr; grid-template-rows: auto; overflow-y: auto; padding-bottom: 50px; }
-            .span-2, .span-h-2 { grid-column: span 1; grid-row: span 1; }
-            .nexus-header { padding: 15px 20px; }
-            .system-metrics { display: none; }
+        .nexus-tile:hover {
+            transform: translateY(-20px) scale(1.02);
+            background: #fff; border-color: var(--accent);
+            box-shadow: 0 50px 100px rgba(99,102,241,0.1);
         }
+
+        /* İnteraktif Işık Süzmesi */
+        .nexus-tile::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(600px circle at var(--x) var(--y), rgba(99,102,241,0.1), transparent 40%);
+            opacity: 0; transition: opacity 0.5s;
+        }
+        .nexus-tile:hover::before { opacity: 1; }
+
+        .tile-icon {
+            width: 80px; height: 80px; background: #fff; border-radius: 25px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5rem; color: var(--accent);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+            margin-bottom: 30px; transition: 0.5s;
+        }
+        .nexus-tile:hover .tile-icon { transform: rotateY(360deg); background: var(--accent); color: #fff; }
+
+        .tile-content h2 { font-size: 2.5rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 15px; line-height: 1; }
+        .tile-content p { font-size: 1rem; color: #64748b; font-weight: 500; line-height: 1.6; }
+
+        .tile-id { font-family: 'JetBrains Mono'; font-size: 0.7rem; letter-spacing: 4px; color: var(--accent); margin-top: auto; opacity: 0.5; }
+
+        /* Kart Varyasyonları */
+        .wide { grid-column: span 2; }
+        .tall { grid-row: span 2; }
+
+        /* --- FLOATING BALLS --- */
+        .bg-ball { position: absolute; border-radius: 50%; pointer-events: none; filter: blur(60px); opacity: 0.4; animation: float 20s infinite alternate; }
+        @keyframes float { 0% { transform: translate(0,0); } 100% { transform: translate(100px, 100px); } }
+
     </style>
 </head>
 <body>
 
-    <canvas id="render-surface"></canvas>
+    <canvas id="quantum-canvas"></canvas>
 
-    <div class="nexus-layout">
+    <div class="interface-wrapper">
         <header class="nexus-header">
-            <div class="brand">AZURA<span>.INFINITY</span></div>
-            <div class="system-metrics">
-                <div class="metric-item"><div class="pulse-dot"></div> NEURAL_SYNC: 99.8%</div>
-                <div class="metric-item" id="realtime-clock">00:00:00</div>
-                <div class="metric-item"><i class="fa-solid fa-wind" style="color: var(--p-cyan)"></i> 24°C GZT</div>
+            <div class="brand-zone">
+                <div class="logo-sphere"></div>
+                <div class="brand-text">AZURA<span>.X</span></div>
+            </div>
+            <div class="system-clock" id="clock">00:00:00</div>
+            <div style="font-family: 'JetBrains Mono'; font-size: 0.7rem; border: 1px solid #ddd; padding: 10px 20px; border-radius: 50px;">
+                SERVER_STATUS: <span style="color: var(--accent);">STABLE</span>
             </div>
         </header>
 
         <div class="nexus-grid">
-            <a href="medical.html" class="tile span-2" style="--p-color: var(--p-indigo)">
-                <div class="tile-icon" style="color: var(--p-indigo)"><i class="fa-solid fa-dna"></i></div>
-                <div class="content">
-                    <div class="tile-meta">Clinical Archives // Level 01</div>
-                    <h2 class="tile-title">Klinik & Tıbbi Bilimler</h2>
-                    <p class="tile-desc">Nöroloji, genetik ve patoloji üzerine devasa veri havuzu. Klinik vakaların ve akademik notların en temiz hali.</p>
+            <a href="medical.html" class="nexus-tile wide">
+                <div class="tile-icon"><i class="fa-solid fa-notes-medical"></i></div>
+                <div class="tile-content">
+                    <h2 style="color: var(--accent);">Tıp & Klinik</h2>
+                    <p>Nöral ağların derinliklerinden klinik vaka analizlerine uzanan, tıbbi bilginin en saf ve kapsamlı dijital arşivi.</p>
                 </div>
-                <div style="position: absolute; right: -20px; bottom: -20px; font-size: 15rem; opacity: 0.03;">🧬</div>
+                <div class="tile-id">DATA_SOURCE_01 // CLINICAL</div>
             </a>
 
-            <a href="physic.html" class="tile" style="--p-color: var(--p-cyan)">
-                <div class="tile-icon" style="color: var(--p-cyan)"><i class="fa-solid fa-atom"></i></div>
-                <div class="content">
-                    <div class="tile-meta">Cosmos // Theory</div>
-                    <h2 class="tile-title">Fizik & Evren</h2>
-                    <p class="tile-desc">Kuantumdan kozmolojiye uzanan fiziksel yasaların ansiklopedisi.</p>
+            <a href="physic.html" class="nexus-tile tall">
+                <div class="tile-icon" style="color: var(--cyan);"><i class="fa-solid fa-atom"></i></div>
+                <div class="tile-content">
+                    <h2>Fizik &<br>Evren</h2>
+                    <p>Uzay-zaman sürekliliği, kuantum mekaniği ve entropi üzerine teorik bir yolculuk.</p>
                 </div>
+                <div class="tile-id" style="color: var(--cyan);">DATA_SOURCE_02 // COSMOS</div>
             </a>
 
-            <a href="games.html" class="tile span-h-2" style="--p-color: var(--p-rose)">
-                <div class="tile-icon" style="color: var(--p-rose)"><i class="fa-solid fa-brain"></i></div>
-                <div class="content">
-                    <div class="tile-meta">Cognitive Testing</div>
-                    <h2 class="tile-title">Zihin<br>Laboratuvarı</h2>
-                    <p class="tile-desc">İnteraktif simülasyonlar, kognitif testler ve yüksek hızlı zeka oyunları.</p>
-                    <div style="margin-top: 40px; font-size: 5rem; text-align: center;">🕹️</div>
+            <a href="games.html" class="nexus-tile">
+                <div class="tile-icon" style="color: var(--rose);"><i class="fa-solid fa-brain"></i></div>
+                <div class="tile-content">
+                    <h2>Zihin Lab</h2>
+                    <p>Kognitif yetenekleri test eden yüksek hızlı simülasyonlar.</p>
                 </div>
+                <div class="tile-id" style="color: var(--rose);">CORE_03 // NEURAL</div>
             </a>
 
-            <a href="gastronomy.html" class="tile span-2" style="--p-color: var(--p-emerald)">
-                <div class="tile-icon" style="color: var(--p-emerald)"><i class="fa-solid fa-utensils"></i></div>
-                <div class="content">
-                    <div class="tile-meta">Culinary Heritage</div>
-                    <h2 class="tile-title">Moleküler Gastronomi</h2>
-                    <p class="tile-desc">Gaziantep mutfağının moleküler yapısı ve kadim tariflerin kimyasal analizleri. Bir şehirden fazlası.</p>
+            <a href="gastronomy.html" class="nexus-tile wide">
+                <div class="tile-icon" style="color: #10b981;"><i class="fa-solid fa-utensils"></i></div>
+                <div class="tile-content">
+                    <h2>Gaziantep Gastronomi</h2>
+                    <p>Kadim mutfak kültürünün moleküler analizleri ve gastronominin bilimsel mirası.</p>
                 </div>
+                <div class="tile-id" style="color: #10b981;">DATA_SOURCE_04 // ANTEP</div>
             </a>
 
-            <a href="strategy.html" class="tile" style="--p-color: var(--p-amber)">
-                <div class="tile-icon" style="color: var(--p-amber)"><i class="fa-solid fa-chess-knight"></i></div>
-                <div class="content">
-                    <div class="tile-meta">Game Theory</div>
-                    <h2 class="tile-title">Strateji</h2>
-                    <p class="tile-desc">Karar teorileri ve karmaşık sistem analizleri.</p>
+            <a href="about.html" class="nexus-tile">
+                <div class="tile-icon"><i class="fa-solid fa-microchip"></i></div>
+                <div class="tile-content">
+                    <h2>Azura AI</h2>
+                    <p>Sistem çekirdeği ve gelecek vizyonu.</p>
                 </div>
+                <div class="tile-id">CORE_05 // SYSTEM</div>
             </a>
         </div>
     </div>
 
     <script>
-        /* --- JAVASCRIPT MOTORU: INFINITY ENGINE --- */
-        
-        // 1. Dinamik Saat Motoru
-        function syncClock() {
-            const now = new Date();
-            document.getElementById('realtime-clock').innerText = now.toLocaleTimeString('tr-TR', {hour12: false});
-        }
-        setInterval(syncClock, 1000); syncClock();
+        // 1. Clock Engine
+        setInterval(() => {
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR');
+        }, 1000);
 
-        // 2. Mouse/Touch Takip Motoru (Hover Efekti İçin)
-        document.querySelectorAll('.tile').forEach(tile => {
+        // 2. Interactive Light Engine
+        document.querySelectorAll('.nexus-tile').forEach(tile => {
             tile.onmousemove = e => {
                 const rect = tile.getBoundingClientRect();
-                const x = ((e.clientX - rect.left) / rect.width) * 100;
-                const y = ((e.clientY - rect.top) / rect.height) * 100;
-                tile.style.setProperty('--x', `${x}%`);
-                tile.style.setProperty('--y', `${y}%`);
+                tile.style.setProperty('--x', `${e.clientX - rect.left}px`);
+                tile.style.setProperty('--y', `${e.clientY - rect.top}px`);
             };
         });
 
-        // 3. Grafik Render Motoru (Tozlar ve Balonlar)
-        const canvas = document.getElementById('render-surface');
+        // 3. Particle System (The Ether)
+        const canvas = document.getElementById('quantum-canvas');
         const ctx = canvas.getContext('2d');
-        let elements = [];
+        let particles = [];
 
-        class FlowElement {
-            constructor() { this.init(); }
-            init() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.r = Math.random() * (Math.random() > 0.9 ? 150 : 5); // Bazıları dev balon
-                this.color = ['#e0f2fe', '#fdf2f8', '#f0fdf4', '#eef2ff', '#fff1f2'][Math.floor(Math.random()*5)];
-                this.vx = (Math.random() - 0.5) * 0.4;
-                this.vy = (Math.random() - 0.5) * 0.4;
-                this.alpha = Math.random() * 0.6;
-            }
-            draw() {
-                this.x += this.vx; this.y += this.vy;
-                if(this.x < -this.r) this.x = canvas.width + this.r;
-                if(this.x > canvas.width + this.r) this.x = -this.r;
-                if(this.y < -p.r) this.y = canvas.height + this.r;
-
-                ctx.globalAlpha = this.alpha;
-                let grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.r);
-                grad.addColorStop(0, this.color);
-                grad.addColorStop(1, 'transparent');
-                ctx.fillStyle = grad;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        function setupCanvas() {
+        function init() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            elements = [];
-            for(let i=0; i<150; i++) elements.push(new FlowElement());
+            particles = [];
+            for(let i=0; i<200; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    r: Math.random() * (i < 10 ? 120 : 3),
+                    color: ['#e0f2fe', '#fdf2f8', '#f0fdf4', '#eef2ff'][i % 4],
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    op: Math.random() * 0.6
+                });
+            }
         }
 
-        function runRenderLoop() {
+        function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            elements.forEach(el => el.draw());
-            requestAnimationFrame(runRenderLoop);
+            particles.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < -p.r) p.x = canvas.width + p.r;
+                if(p.x > canvas.width + p.r) p.x = -p.r;
+                if(p.y < -p.r) p.y = canvas.height + p.r;
+                if(p.y > canvas.height + p.r) p.y = -p.r;
+
+                ctx.globalAlpha = p.op;
+                let g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
+                g.addColorStop(0, p.color);
+                g.addColorStop(1, 'transparent');
+                ctx.fillStyle = g;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            requestAnimationFrame(animate);
         }
 
-        window.addEventListener('resize', setupCanvas);
-        setupCanvas(); runRenderLoop();
-
-        // 4. Console Log Art
-        console.log("%c AZURA NEXUS INITIALIZED ", "background: #6366f1; color: #fff; font-weight: 800; padding: 5px 10px; border-radius: 5px;");
+        window.onresize = init;
+        init(); animate();
     </script>
 </body>
 </html>
