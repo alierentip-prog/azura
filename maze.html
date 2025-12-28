@@ -3,233 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Azura | The Lost Signal</title>
+    <title>Azura | Quantum Breach</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --neon: #22d3ee; --danger: #f43f5e; --bg: #020617; }
-        * { margin: 0; padding: 0; box-sizing: border-box; touch-action: none; -webkit-user-select: none; }
-        
-        body { background: var(--bg); font-family: 'Segoe UI', sans-serif; overflow: hidden; height: 100vh; color: #fff; }
-
-        /* Oyun Sahnesi */
-        #render-canvas { width: 100%; height: 100%; display: block; }
-
-        /* UI Overlay */
-        .hud { position: absolute; inset: 0; pointer-events: none; z-index: 10; }
-        
-        /* Sol Üst: Durum */
-        .status-panel { position: absolute; top: 20px; left: 20px; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); padding: 15px; border-left: 3px solid var(--neon); border-radius: 0 15px 15px 0; }
-        .status-panel h2 { font-size: 10px; letter-spacing: 2px; color: var(--neon); opacity: 0.8; }
-        .status-panel p { font-family: monospace; font-size: 18px; font-weight: bold; }
-
-        /* Sağ Üst: Minimap */
-        #minimap-container { position: absolute; top: 20px; right: 20px; width: 120px; height: 120px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.5); overflow: hidden; }
-        #minimap { width: 100%; height: 100%; opacity: 0.8; }
-
-        /* Sol Alt: Joystick Alanı (Görsel Yardımcı) */
-        .joystick-zone { position: absolute; bottom: 40px; left: 40px; width: 120px; height: 120px; border-radius: 50%; border: 2px dashed rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; }
-        .joystick-stick { width: 40px; height: 40px; background: var(--neon); border-radius: 50%; box-shadow: 0 0 20px var(--neon); opacity: 0.5; transition: transform 0.1s; }
-
-        /* Sağ Alt: Aksiyon Mesajları */
-        #action-log { position: absolute; bottom: 40px; right: 40px; text-align: right; font-family: monospace; font-size: 12px; color: var(--neon); }
-
-        /* Başlangıç Ekranı */
-        #overlay { position: fixed; inset: 0; background: var(--bg); z-index: 100; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.5s; }
-        .start-btn { background: none; border: 2px solid var(--neon); color: var(--neon); padding: 15px 40px; border-radius: 50px; font-size: 20px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .start-btn:hover { background: var(--neon); color: var(--bg); box-shadow: 0 0 30px var(--neon); }
-
-        /* Ölüm Flaşı */
-        #flash { position: fixed; inset: 0; background: var(--danger); z-index: 200; display: none; }
+        :root { --neon: #22d3ee; --bg: #020617; }
+        * { margin: 0; padding: 0; box-sizing: border-box; touch-action: none; }
+        body { background: var(--bg); overflow: hidden; height: 100vh; color: #fff; font-family: sans-serif; }
+        #game-canvas { width: 100%; height: 100%; display: block; }
+        .hud { position: absolute; inset: 0; pointer-events: none; z-index: 100; padding: 25px; }
+        .status-box { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); padding: 15px; border-radius: 15px; border-left: 4px solid var(--neon); width: fit-content; }
+        #logs { position: absolute; bottom: 180px; left: 25px; font-family: monospace; font-size: 11px; color: var(--neon); }
+        .joystick-zone { position: absolute; bottom: 40px; left: 40px; width: 120px; height: 120px; border: 2px dashed rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        #stick { width: 45px; height: 45px; background: var(--neon); border-radius: 50%; box-shadow: 0 0 20px var(--neon); opacity: 0.6; }
+        #minimap { position: absolute; top: 25px; right: 25px; width: 120px; height: 120px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.5); }
+        #start-screen { position: fixed; inset: 0; background: var(--bg); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .btn-start { background: none; border: 2px solid var(--neon); color: var(--neon); padding: 15px 45px; border-radius: 50px; font-size: 1.5rem; font-weight: 800; cursor: pointer; }
+        #death-flash { position: fixed; inset: 0; background: #f43f5e; z-index: 2000; display: none; }
     </style>
 </head>
 <body>
-
-<div id="flash"></div>
-
-<div id="overlay">
-    <h1 style="font-size: 3rem; margin-bottom: 10px; letter-spacing: -2px;">AZURA</h1>
-    <p style="color: #64748b; margin-bottom: 30px;">LOST SIGNAL // PROTOCOL 2.0</p>
-    <button class="start-btn" onclick="initGame()">SİSTEMİ BAŞLAT</button>
-</div>
-
-<div class="hud">
-    <div class="status-panel">
-        <h2>SİNYAL GÜCÜ</h2>
-        <p id="dist-display">--m</p>
+    <div id="death-flash"></div>
+    <div id="start-screen">
+        <h1 style="font-size: 3rem; margin-bottom: 20px;">QUANTUM BREACH</h1>
+        <button class="btn-start" onclick="initSimulation()">LINK START</button>
     </div>
-    
-    <div id="minimap-container">
+    <div class="hud">
+        <div class="status-box"><h2>DIST_TO_CORE</h2><p id="ui-dist">--m</p></div>
         <canvas id="minimap"></canvas>
+        <div id="logs"></div>
+        <div class="joystick-zone"><div id="stick"></div></div>
     </div>
+    <canvas id="game-canvas"></canvas>
 
-    <div class="joystick-zone">
-        <div id="stick" class="joystick-stick"></div>
-    </div>
+    <script src="games-core.js"></script>
+    <script src="world-data.js"></script>
+    <script src="render-engine.js"></script>
+    <script src="physics-loop.js"></script>
 
-    <div id="action-log">
-        <div id="logs">Sistem bekleniyor...</div>
-    </div>
-</div>
-
-<canvas id="render-canvas"></canvas>
-
-<script>
-    const canvas = document.getElementById('render-canvas');
-    const ctx = canvas.getContext('2d');
-    const mCanvas = document.getElementById('minimap');
-    const mCtx = mCanvas.getContext('2d');
-
-    // Karmaşık Profesyonel Harita (0: Yol, 1: Duvar, 2: Ölüm, 3: Bitiş)
-    const map = [
-        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-        [1,0,0,0,0,0,0,0,0,1,0,0,0,0,3,1],
-        [1,0,1,1,1,1,1,1,0,1,0,1,1,1,1,1],
-        [1,0,1,0,0,0,0,0,0,1,0,0,0,0,0,1],
-        [1,0,1,0,1,1,1,1,1,1,1,1,1,1,0,1],
-        [1,0,1,0,1,0,0,0,0,0,0,0,0,1,0,1],
-        [1,0,0,0,1,0,1,1,1,2,1,1,0,1,0,1],
-        [1,1,1,0,1,0,1,0,0,0,0,1,0,1,0,1],
-        [1,0,0,0,0,0,1,0,1,1,0,1,0,0,0,1],
-        [1,0,1,1,1,1,1,0,1,1,0,1,1,1,0,1],
-        [1,0,0,0,0,0,0,0,0,1,0,0,0,1,0,1],
-        [1,1,1,1,1,2,1,1,0,1,1,1,0,1,0,1],
-        [1,0,0,0,1,0,0,1,0,0,0,1,0,1,0,1],
-        [1,0,1,0,1,1,0,1,1,1,0,1,0,1,0,1],
-        [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-        [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
-    ];
-    const mapSize = 16;
-    let player = { x: 1.5, y: 1.5, dir: 0, v: 0, r: 0 };
-    
-    // Mobil Kontrol Değişkenleri
-    let touchData = { active: false, startX: 0, startY: 0, curX: 0, curY: 0 };
-
-    function addLog(msg) {
-        const l = document.getElementById('logs');
-        l.innerHTML = `> ${msg}<br>` + l.innerHTML.split('<br>').slice(0,2).join('<br>');
-    }
-
-    function initGame() {
-        document.getElementById('overlay').style.opacity = '0';
-        setTimeout(() => document.getElementById('overlay').style.display = 'none', 500);
-        resize();
-        addLog("Nöral link kuruldu.");
-        requestAnimationFrame(loop);
-    }
-
-    function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        mCanvas.width = 120;
-        mCanvas.height = 120;
-    }
-
-    // Touch Eventleri (Gerçek Mobil Kontrol)
-    window.addEventListener('touchstart', e => {
-        touchData.active = true;
-        touchData.startX = e.touches[0].clientX;
-        touchData.startY = e.touches[0].clientY;
-    });
-
-    window.addEventListener('touchmove', e => {
-        if(!touchData.active) return;
-        touchData.curX = e.touches[0].clientX;
-        touchData.curY = e.touches[0].clientY;
-        
-        const dx = touchData.curX - touchData.startX;
-        const dy = touchData.curY - touchData.startY;
-        
-        // Joystick görseli
-        const dist = Math.min(Math.sqrt(dx*dx + dy*dy), 50);
-        const angle = Math.atan2(dy, dx);
-        document.getElementById('stick').style.transform = `translate(${Math.cos(angle)*dist}px, ${Math.sin(angle)*dist}px)`;
-        
-        // Hareket değerleri
-        player.v = -Math.sin(angle) * (dist/50) * 0.08;
-        player.r = Math.cos(angle) * (dist/50) * 0.05;
-    });
-
-    window.addEventListener('touchend', () => {
-        touchData.active = false;
-        player.v = 0; player.r = 0;
-        document.getElementById('stick').style.transform = `translate(0,0)`;
-    });
-
-    // Klavye Desteği (PC için)
-    const keys = {};
-    window.onkeydown = e => keys[e.key.toLowerCase()] = true;
-    window.onkeyup = e => keys[e.key.toLowerCase()] = false;
-
-    function update() {
-        // PC Kontrolleri
-        if(keys.w) player.v = 0.08;
-        if(keys.s) player.v = -0.08;
-        if(keys.a) player.r = -0.05;
-        if(keys.d) player.r = 0.05;
-        if(!touchData.active && !keys.w && !keys.s) player.v *= 0.8;
-        if(!touchData.active && !keys.a && !keys.d) player.r *= 0.8;
-
-        player.dir += player.r;
-        let nx = player.x + Math.cos(player.dir) * player.v;
-        let ny = player.y + Math.sin(player.dir) * player.v;
-
-        const cell = map[Math.floor(ny)][Math.floor(nx)];
-        if(cell === 0 || cell === 3) { player.x = nx; player.y = ny; }
-        else if(cell === 2) { 
-            document.getElementById('flash').style.display = 'block';
-            setTimeout(() => { document.getElementById('flash').style.display = 'none'; player.x = 1.5; player.y = 1.5; }, 100);
-            addLog("KRİTİK HATA: RESET");
+    <script>
+        function initSimulation() {
+            document.getElementById('start-screen').style.display = 'none';
+            AzuraEngine.renderer.init('game-canvas');
+            AzuraEngine.initControls();
+            AzuraEngine.state.isRunning = true;
+            AzuraEngine.log("Neural Link: Established");
+            AzuraEngine.mainLoop();
         }
-        
-        if(cell === 3) { alert("SİNYAL BULUNDU!"); location.reload(); }
-
-        // HUD Update
-        const d = Math.sqrt(Math.pow(14.5-player.x,2) + Math.pow(1.5-player.y,2));
-        document.getElementById('dist-display').innerText = d.toFixed(1) + "m";
-    }
-
-    function draw() {
-        // Raycasting Render
-        const res = 2; // Performans dengesi
-        for(let i=0; i<canvas.width; i+=res) {
-            let angle = (player.dir - 0.5) + (i/canvas.width);
-            let dist = 0, hit = 0;
-            while(hit === 0 && dist < 15) {
-                dist += 0.05;
-                let rx = player.x + Math.cos(angle)*dist;
-                let ry = player.y + Math.sin(angle)*dist;
-                if(map[Math.floor(ry)][Math.floor(rx)] > 0) hit = map[Math.floor(ry)][Math.floor(rx)];
-            }
-            
-            dist *= Math.cos(angle - player.dir);
-            let h = canvas.height / dist;
-            let shade = Math.min(1, 1.5/dist) * 255;
-            
-            // Duvar Tipi Renklendirme
-            if(hit === 1) ctx.fillStyle = `rgb(0, ${shade*0.8}, ${shade})`; // Neon Duvar
-            else if(hit === 2) ctx.fillStyle = `rgb(${shade}, 0, 0)`; // Ölüm Kapısı
-            else if(hit === 3) ctx.fillStyle = `rgb(0, ${shade}, 0)`; // Bitiş
-            
-            ctx.fillRect(i, (canvas.height-h)/2, res, h);
-        }
-
-        // Minimap Render
-        mCtx.fillStyle = '#000'; mCtx.fillRect(0,0,120,120);
-        const s = 120/mapSize;
-        for(let y=0; y<mapSize; y++) {
-            for(let x=0; x<mapSize; x++) {
-                if(map[y][x] === 1) mCtx.fillStyle = '#1e293b';
-                else if(map[y][x] === 2) mCtx.fillStyle = var(--danger);
-                else continue;
-                mCtx.fillRect(x*s, y*s, s-1, s-1);
-            }
-        }
-        mCtx.fillStyle = '#22d3ee'; mCtx.beginPath();
-        mCtx.arc(player.x*s, player.y*s, 3, 0, 7); mCtx.fill();
-    }
-
-    function loop() { update(); draw(); requestAnimationFrame(loop); }
-    window.onresize = resize;
-</script>
+        window.onresize = () => AzuraEngine.renderer.resize();
+    </script>
 </body>
 </html>
