@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Kuantum: Dalga mı, Parçacık mı? | Azura</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --koyu-yesil: #0a2f1f; --altin: #b8860b; --bakir: #b87333;
+            --krem: #f2ead3; --ceviz: #3d2b1f; --bordo: #5a0000;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--krem); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--ceviz); line-height: 1.8; overflow-x: hidden; }
+
+        /* ARKA PLAN DİNAMİK EFEKT */
+        #quantum-bg { position: fixed; inset: 0; z-index: 1; opacity: 0.3; filter: blur(60px); pointer-events: none; }
+
+        .header { 
+            position: sticky; top: 0; background: var(--koyu-yesil); color: #fff; 
+            padding: 15px 25px; display: flex; justify-content: space-between; 
+            z-index: 100; border-bottom: 3px solid var(--altin);
+        }
+
+        .hero-section {
+            height: 55vh; background: linear-gradient(135deg, var(--koyu-yesil), var(--altin), var(--bakir));
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; color: #fff; padding: 40px; position: relative; z-index: 10;
+        }
+
+        .main-content { 
+            max-width: 900px; margin: -60px auto 0; padding: 60px 30px; 
+            background: #fff; border-radius: 60px 60px 0 0; position: relative; 
+            z-index: 20; box-shadow: 0 -30px 60px rgba(0,0,0,0.1); 
+        }
+        
+        h1 { font-size: clamp(2.5rem, 10vw, 4rem); font-weight: 800; letter-spacing: -3px; line-height: 0.9; margin-bottom: 20px; }
+        h2 { font-size: 2rem; font-weight: 800; margin: 45px 0 20px; color: var(--koyu-yesil); border-left: 10px solid var(--altin); padding-left: 20px; }
+        p { margin-bottom: 25px; font-size: 1.15rem; text-align: justify; }
+
+        /* RENK BOMBASI BLOKLARI */
+        .insight-box { padding: 40px; border-radius: 40px; margin: 40px 0; color: #fff; position: relative; overflow: hidden; }
+        .green-gold { background: linear-gradient(45deg, var(--koyu-yesil), var(--altin)); }
+        .copper-bordo { background: linear-gradient(45deg, var(--bakir), var(--bordo)); }
+
+        .visual-frame {
+            width: 100%; height: 350px; background: #000; border-radius: 40px; margin: 40px 0;
+            display: flex; align-items: center; justify-content: center; border: 2px solid var(--altin);
+        }
+
+        .nav-footer { display: flex; justify-content: space-between; margin-top: 80px; padding-bottom: 120px; }
+        .nav-btn { background: var(--koyu-yesil); color: #fff; padding: 20px 45px; border-radius: 50px; text-decoration: none; font-weight: 800; border: 2px solid var(--altin); }
+    </style>
+</head>
+<body>
+
+    <canvas id="quantum-bg"></canvas>
+
+    <div class="header">
+        <a href="quantum.html" style="color:#fff; text-decoration:none;"><i class="fa-solid fa-chevron-left"></i> SEKTÖR</a>
+        <div id="clock" style="font-family:'JetBrains Mono'; font-weight:800;">00:00:00</div>
+        <div style="font-size:0.7rem; letter-spacing:2px;">WAVE_FUNCTION</div>
+    </div>
+
+    <section class="hero-section">
+        <p style="font-family:'JetBrains Mono'; letter-spacing:6px; opacity:0.8;">QUANTUM SECTOR 01</p>
+        <h1>İkili Doğa:<br>Sonsuz Dans.</h1>
+    </section>
+
+    <main class="main-content">
+        <p>Usta, Kuantum mekaniğinin o pofuduk ama kafa yakan dünyasına hoş geldin. Klasik dünyada bir şey ya parçacıktır (bir bilye gibi) ya da dalgadır (su yüzeyindeki halkalar gibi). Ancak atom altı seviyeye indiğimizde evren bize "neden ikisi birden olmasın?" diye sorar. Bu, fiziğin en büyük şoklarından biridir: Işık ve elektronlar gibi temel yapılar, nasıl gözlemlendiklerine bağlı olarak hem parçacık hem de dalga gibi davranırlar.</p>
+
+        <div class="insight-box green-gold">
+            <h3>Çift Yarık Deneyi: Gerçekliğin Kırılması</h3>
+            <p>Eğer bir duvara iki delik açıp elektron fırlatırsan, onların arkadaki ekranda iki çizgi oluşturmasını beklersin. Ama kuantum dünyasında elektronlar bir dalga gibi davranıp "girişim deseni" oluştururlar. İşin en çılgın kısmı şu: Eğer hangi delikten geçtiğini görmek için bir dedektör koyarsan, elektronlar izlendiklerini "anlar" ve anında parçacık gibi davranmaya başlarlar. Sırf sen bakıyorsun diye evren kurallarını değiştirir!</p>
+        </div>
+
+        
+
+        <h2>Gözlemcinin Gücü</h2>
+        <p>Bu deney bize şunu söyler: Gözlem dediğimiz eylem, gerçekliğin bizzat kendisini inşa eder. Bir tıp öğrencisi olarak bunu şöyle hayal et usta; vücudundaki bir elektronun nerede olduğu, sen ona bakana kadar belirli değildir. O bir "olasılık bulutu" içindedir. Sen ölçüm yaptığın an, o bulut çöker ve elektron tek bir noktada belirir. Evren, biz ona bakmadığımız sürece bir hayaletler ve olasılıklar pusudur.</p>
+
+        <div class="visual-frame">
+            <i class="fa-solid fa-water fa-beat" style="font-size: 8rem; color: var(--altin); opacity: 0.6;"></i>
+            <p style="position:absolute; bottom:20px; color:var(--altin); font-family:'JetBrains Mono';">DUALITY_WAVE_SIMULATION</p>
+        </div>
+
+        <h2>Fotonların Gizemli Yolculuğu</h2>
+        <p>Işık hızında giden fotonlar için zaman yoktur demiştik. Kuantum seviyesinde bu durum daha da garipleşir. Bir foton aynı anda binlerce farklı yoldan gidip hedefine ulaşabilir. Biz onun hangi yolu seçtiğini asla bilemeyiz, çünkü o tüm yolları aynı anda "denemiştir". Bu durum, kuantum bilgisayarlarının temelidir. Klasik bir bilgisayar labirentte tek tek yolları denerken, kuantum sistemleri tüm yolları aynı anda tarar. İşte bu, parçacığın dalga doğasının bize sunduğu muazzam bir güçtür.</p>
+
+        <div class="insight-box copper-bordo">
+            <h3>De Broglie Hipotezi</h3>
+            <p>Sadece ışık veya elektronlar değil usta; aslında senin vücudun da bir dalga boyuna sahip! Ancak kütlen o kadar büyük ki, dalga boyun fark edilemeyecek kadar küçüktür. Eğer yeterince küçük olsaydın, sen de kapıların altından bir dalga gibi süzülüp geçebilirdin. Evren aslında titreşen devasa bir enerji okyanusudur.</p>
+        </div>
+
+        
+
+        <h2>Kuantum Tıbbına Doğru mu?</h2>
+        <p>Bugün kullandığın MR (Manyetik Rezonans) cihazları, aslında atom çekirdeklerinin kuantum özelliklerini (spin) kullanarak çalışır. Vücudundaki hidrojen atomlarının kuantum hallerini değiştirerek o görüntüleri elde ederiz. Yani sen her gün hastanede kuantum mekaniğinin bu "ikili doğasını" hastalarını iyileştirmek için kullanıyorsun. Gelecekte, kuantum seviyesindeki ilaç tasarımlarıyla, hücrelerin içindeki moleküler dansı doğrudan kontrol edebileceğiz.</p>
+
+        <div class="nav-footer">
+            <a href="quantum.html" class="nav-btn" style="background:#888;">GERİ</a>
+            <a href="quantum-2.html" class="nav-btn">BÖLÜM 2: SÜPERPOZİSYON <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+    </main>
+
+    <script>
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+
+        const canvas = document.getElementById('quantum-bg');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const colors = ['#0a2f1f', '#b8860b', '#b87333', '#5a0000'];
+
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            particles = Array.from({length: 15}, () => ({
+                x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+                r: Math.random()*250+150, color: colors[Math.floor(Math.random()*colors.length)],
+                vx: (Math.random()-0.5)*1.5, vy: (Math.random()-0.5)*1.5
+            }));
+        }
+
+        function animate() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < -p.r) p.x = canvas.width+p.r; if(p.x > canvas.width+p.r) p.x = -p.r;
+                if(p.y < -p.r) p.y = canvas.height+p.r; if(p.y > canvas.height+p.r) p.y = -p.r;
+                ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+        window.onresize = init; init(); animate();
+    </script>
+</body>
+</html>
