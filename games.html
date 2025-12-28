@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Azura | Zihin Laboratuvarı</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&family=JetBrains+Mono:wght@800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --indigo: #1a237e; --mor: #4a148c; --gümüs: #e0e0e0;
+            --neon-mavi: #00d2ff; --gece: #050505;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--gece); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--gümüs); overflow-x: hidden; }
+        
+        /* --- MENTAL NEON HEADER --- */
+        .header { 
+            background: rgba(26, 35, 126, 0.9); padding: 20px; display: flex; 
+            justify-content: space-between; align-items: center; color: #fff; 
+            border-bottom: 2px solid var(--neon-mavi); backdrop-filter: blur(10px);
+        }
+
+        .container { padding: 40px 25px; max-width: 650px; margin: 0 auto; position: relative; z-index: 10; }
+        .hero-title h1 { font-size: 3.5rem; font-weight: 800; letter-spacing: -3px; line-height: 0.85; margin-bottom: 45px; color: #fff; text-shadow: 0 0 20px var(--neon-mavi); }
+
+        /* --- MENTAL GATE CARDS --- */
+        .mind-gates { display: flex; flex-direction: column; gap: 20px; }
+        .mind-card { 
+            background: rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 40px; 
+            display: flex; align-items: center; gap: 25px; text-decoration: none; color: inherit;
+            border: 1px solid rgba(255,255,255,0.1); transition: 0.5s;
+            backdrop-filter: blur(5px);
+        }
+        .mind-card:hover { 
+            transform: translateX(15px); background: rgba(0, 210, 255, 0.1); 
+            border-color: var(--neon-mavi); box-shadow: 0 0 40px rgba(0, 210, 255, 0.2);
+        }
+        
+        .mind-icon { 
+            background: linear-gradient(135deg, var(--indigo), var(--mor)); 
+            color: #fff; width: 80px; height: 80px; border-radius: 30px; 
+            display: flex; align-items: center; justify-content: center; font-size: 2rem; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="menu.html" style="color:#fff;"><i class="fa-solid fa-brain"></i></a>
+        <div style="font-family:'JetBrains Mono'; font-weight:800;" id="timer">00:00:00</div>
+        <div style="font-size:0.75rem; letter-spacing:3px;">NEURAL_DASHBOARD</div>
+    </header>
+
+    <div class="container">
+        <div class="hero-title">
+            <p style="font-family:'JetBrains Mono'; color:var(--neon-mavi); font-size:0.8rem; letter-spacing:6px; font-weight:800; margin-bottom:15px;">COGNITIVE FRONTIER</p>
+            <h1>Zihin<br>Laboratuvarı. 👁️</h1>
+        </div>
+
+        <nav class="mind-gates">
+            <a href="mind-1.html" class="mind-card">
+                <div class="mind-icon"><i class="fa-solid fa-eye"></i></div>
+                <div><h3>Bilişsel Yanılsamalar</h3><p>Beynin seni kandırma sanatı.</p></div>
+            </a>
+            <a href="mind-2.html" class="mind-card">
+                <div class="mind-icon" style="background:var(--mor);"><i class="fa-solid fa-database"></i></div>
+                <div><h3>Bellek Mimarisi</h3><p>Anılar nasıl saklanır ve silinir?</p></div>
+            </a>
+            <a href="mind-3.html" class="mind-card">
+                <div class="mind-icon" style="background:var(--indigo);"><i class="fa-solid fa-wave-square"></i></div>
+                <div><h3>Bilinç Katmanları</h3><p>Rüyalardan derin meditasyona.</p></div>
+            </a>
+            <a href="mind-4.html" class="mind-card">
+                <div class="mind-icon" style="background:var(--neon-mavi); color:#000;"><i class="fa-solid fa-microchip"></i></div>
+                <div><h3>Yapay vs Biyolojik</h3><p>Zekanın geleceği ve Singularity.</p></div>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        setInterval(() => { document.getElementById('timer').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+    </script>
+</body>
+</html>
