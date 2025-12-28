@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azura | 3D Nöral Labirent</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --p-indigo: #6366f1; --p-cyan: #22d3ee; --bg: #0f172a; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background: #f0f9ff; 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            overflow: hidden; 
+            height: 100vh; display: flex; flex-direction: column;
+        }
+
+        /* --- OYUN ALANI --- */
+        #game-view { 
+            position: relative; width: 100%; flex-grow: 1; 
+            background: #000; overflow: hidden;
+            cursor: crosshair;
+        }
+
+        /* UI KATMANI */
+        .ui-overlay {
+            position: absolute; top: 20px; left: 20px; right: 20px;
+            display: flex; justify-content: space-between; pointer-events: none;
+            z-index: 100;
+        }
+        .ui-box {
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
+            padding: 15px 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; text-align: center;
+        }
+        .ui-label { font-size: 0.7rem; font-family: 'JetBrains Mono'; letter-spacing: 2px; color: var(--p-cyan); display: block; }
+        .ui-val { font-size: 1.5rem; font-weight: 800; }
+
+        /* MINIMAP */
+        #minimap {
+            position: absolute; bottom: 20px; right: 20px;
+            width: 150px; height: 150px;
+            background: rgba(0,0,0,0.5); border: 2px solid var(--p-indigo);
+            border-radius: 20px; overflow: hidden; z-index: 100;
+        }
+
+        /* KONTROL PANELİ */
+        .controls-hint {
+            position: absolute; bottom: 20px; left: 20px;
+            background: rgba(255,255,255,0.8); padding: 15px 25px;
+            border-radius: 20px; color: #1e293b; font-weight: 600;
+        }
+
+        #start-screen {
+            position: absolute; inset: 0; background: rgba(15, 23, 42, 0.95);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 1000; text-align: center;
+        }
+        .btn-start {
+            background: var(--p-indigo); color: white; border: none;
+            padding: 20px 60px; border-radius: 50px; font-size: 1.2rem;
+            font-weight: 800; cursor: pointer; margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-view">
+        <div class="ui-overlay">
+            <div class="ui-box">
+                <span class="ui-label">STAGE</span>
+                <span class="ui-val">1 - NÖRAL AĞ</span>
+            </div>
+            <div class="ui-box">
+                <span class="ui-label">HEDEF MESAFESİ</span>
+                <span id="dist-val" class="ui-val">--</span>
+            </div>
+        </div>
+
+        <canvas id="raycasterCanvas"></canvas>
+        <canvas id="minimap"></canvas>
+
+        <div class="controls-hint">
+            <i class="fa-solid fa-keyboard"></i> W-A-S-D: Hareket | <i class="fa-solid fa-mouse"></i> Fare: Yön
+        </div>
+
+        <div id="start-screen">
+            <h1 style="font-size: 3rem; color: #fff; margin-bottom: 20px;">NÖRAL LABİRENT 3D</h1>
+            <p style="color: var(--p-cyan); font-weight: 600;">Azura Strateji Simülasyonuna Hoş Geldiniz.</p>
+            <button class="btn-start" onclick="startGame()">SİSTEMİ BAŞLAT</button>
+            <a href="games.html" style="color: #94a3b8; margin-top: 20px; text-decoration: none;">Laboratuvara Geri Dön</a>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('raycasterCanvas');
+        const ctx = canvas.getContext('2d');
+        const mCanvas = document.getElementById('minimap');
+        const mCtx = mCanvas.getContext('2d');
+
+        // --- LABİRENT HARİTASI (1 = Duvar, 0 = Yol) ---
+        const map = [
+            [1,1,1,1,1,1,1,1,1,1],
+            [1,0,0,0,1,0,0,0,0,1],
+            [1,0,1,0,0,0,1,1,0,1],
+            [1,0,1,1,1,0,0,1,0,1],
+            [1,0,0,0,1,1,0,1,0,1],
+            [1,1,1,0,0,0,0,1,0,1],
+            [1,0,0,0,1,1,1,1,0,1],
+            [1,0,1,0,0,0,0,0,0,1],
+            [1,0,1,1,1,1,1,1,0,1],
+            [1,1,1,1,1,1,1,1,1,1]
+        ];
+        const mapSize = 10;
+        const targetPos = {x: 8.5, y: 8.5};
+
+        // --- OYUNCU DURUMU ---
+        let player = { x: 1.5, y: 1.5, dir: 0, speed: 0, rotSpeed: 0 };
+        const keys = { w: false, s: false, a: false, d: false };
+
+        function startGame() {
+            document.getElementById('start-screen').style.display = 'none';
+            init();
+            loop();
+        }
+
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            mCanvas.width = 150;
+            mCanvas.height = 150;
+        }
+
+        function loop() {
+            update();
+            draw();
+            requestAnimationFrame(loop);
+        }
+
+        function update() {
+            // Hareket Mantığı
+            const moveStep = 0.05;
+            const rotStep = 0.03;
+
+            if(keys.w) {
+                let nx = player.x + Math.cos(player.dir) * moveStep;
+                let ny = player.y + Math.sin(player.dir) * moveStep;
+                if(map[Math.floor(ny)][Math.floor(nx)] === 0) { player.x = nx; player.y = ny; }
+            }
+            if(keys.s) {
+                let nx = player.x - Math.cos(player.dir) * moveStep;
+                let ny = player.y - Math.sin(player.dir) * moveStep;
+                if(map[Math.floor(ny)][Math.floor(nx)] === 0) { player.x = nx; player.y = ny; }
+            }
+            if(keys.a) player.dir -= rotStep;
+            if(keys.d) player.dir += rotStep;
+
+            // Mesafe Hesaplama
+            let d = Math.sqrt(Math.pow(targetPos.x - player.x, 2) + Math.pow(targetPos.y - player.y, 2));
+            document.getElementById('dist-val').innerText = d.toFixed(1) + "m";
+            
+            if(d < 0.5) { alert("LABİRENT TAMAMLANDI!"); location.reload(); }
+        }
+
+        function draw() {
+            // 1. Zemin ve Tavan Çizimi
+            ctx.fillStyle = "#1e293b"; // Tavan
+            ctx.fillRect(0, 0, canvas.width, canvas.height/2);
+            ctx.fillStyle = "#0f172a"; // Zemin
+            ctx.fillRect(0, canvas.height/2, canvas.width, canvas.height/2);
+
+            // 2. Raycasting (3D Duvar Çizimi)
+            const numRays = canvas.width;
+            const fov = Math.PI / 3;
+
+            for(let i=0; i<numRays; i++) {
+                let rayDir = (player.dir - fov/2) + (i / numRays) * fov;
+                let dist = 0;
+                let step = 0.02;
+                let hit = false;
+
+                while(!hit && dist < 15) {
+                    dist += step;
+                    let rx = player.x + Math.cos(rayDir) * dist;
+                    let ry = player.y + Math.sin(rayDir) * dist;
+                    if(map[Math.floor(ry)][Math.floor(rx)] === 1) hit = true;
+                }
+
+                // Balıkgözü düzeltme
+                dist *= Math.cos(rayDir - player.dir);
+
+                let wallHeight = (canvas.height / dist);
+                
+                // Renk derinliği (Uzaklık karartması)
+                let brightness = Math.max(0, 255 - dist * 20);
+                ctx.fillStyle = `rgb(${brightness/2}, ${brightness/1.5}, ${brightness})`;
+                ctx.fillRect(i, (canvas.height - wallHeight)/2, 1, wallHeight);
+            }
+
+            // 3. Minimap Çizimi
+            mCtx.fillStyle = "#000"; mCtx.fillRect(0,0,150,150);
+            const cellSize = 150 / mapSize;
+            for(let y=0; y<mapSize; y++){
+                for(let x=0; x<mapSize; x++){
+                    if(map[y][x] === 1) { mCtx.fillStyle = "#334155"; mCtx.fillRect(x*cellSize, y*cellSize, cellSize, cellSize); }
+                }
+            }
+            // Oyuncu Minimap
+            mCtx.fillStyle = "var(--p-cyan)";
+            mCtx.beginPath();
+            mCtx.arc(player.x * cellSize, player.y * cellSize, 4, 0, Math.PI*2);
+            mCtx.fill();
+        }
+
+        // Kontroller
+        window.onkeydown = (e) => keys[e.key.toLowerCase()] = true;
+        window.onkeyup = (e) => keys[e.key.toLowerCase()] = false;
+
+    </script>
+</body>
+</html>
