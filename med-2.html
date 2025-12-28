@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Azura Medical | Klinik Vaka Arşivi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --vaskuler-bordo: #7a0012; --steril-beyaz: #f8f9fa; --antrasit: #1a1a1b;
+            --bakir: #b87333; --plazma: #eef2f7; --doktor-mavi: #003366;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--plazma); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--antrasit); line-height: 1.8; overflow-x: hidden; }
+
+        /* --- KLİNİK ATMOSFER ARKA PLANI --- */
+        #clinic-bg { position: fixed; inset: 0; z-index: 1; opacity: 0.3; filter: blur(80px); pointer-events: none; }
+
+        .header { 
+            position: sticky; top: 0; background: var(--antrasit); color: #fff; 
+            padding: 15px 25px; display: flex; justify-content: space-between; 
+            z-index: 100; border-bottom: 4px solid var(--vaskuler-bordo);
+        }
+
+        .hero-clinic {
+            height: 60vh; background: linear-gradient(135deg, var(--antrasit), var(--doktor-mavi), var(--vaskuler-bordo));
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; color: #fff; padding: 40px; position: relative; z-index: 10;
+        }
+
+        .case-file { 
+            max-width: 1050px; margin: -100px auto 0; padding: 80px 55px; 
+            background: #fff; border-radius: 90px 90px 0 0; position: relative; 
+            z-index: 20; box-shadow: 0 -50px 100px rgba(0,0,0,0.25); 
+        }
+        
+        h1 { font-size: clamp(2.2rem, 10vw, 4.5rem); font-weight: 800; letter-spacing: -3px; line-height: 0.9; margin-bottom: 25px; }
+        h2 { font-size: 2rem; font-weight: 800; margin: 55px 0 30px; color: var(--vaskuler-bordo); border-left: 15px solid var(--doktor-mavi); padding-left: 25px; }
+        p { margin-bottom: 35px; font-size: 1.2rem; text-align: justify; color: #2c3e50; }
+
+        /* VAKA BLOKLARI */
+        .diagnosis-card { padding: 50px; border-radius: 60px; margin: 55px 0; color: #fff; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        .bordo-gradient { background: linear-gradient(135deg, var(--vaskuler-bordo), #a50016); }
+        .blue-gradient { background: linear-gradient(135deg, var(--doktor-mavi), #00509d); }
+
+        .xray-frame {
+            width: 100%; border-radius: 50px; margin: 55px 0; overflow: hidden;
+            border: 8px solid var(--antrasit); background: #000;
+        }
+        .xray-frame img { width: 100%; display: block; opacity: 0.9; transition: 0.5s; }
+        .xray-frame:hover img { opacity: 1; transform: scale(1.02); }
+
+        .nav-footer { display: flex; justify-content: space-between; margin-top: 100px; padding-bottom: 150px; }
+        .btn-lab { background: var(--antrasit); color: #fff; padding: 22px 60px; border-radius: 70px; text-decoration: none; font-weight: 800; border: 3px solid var(--vaskuler-bordo); transition: 0.4s; }
+        .btn-lab:hover { background: var(--vaskuler-bordo); transform: translateY(-5px); }
+    </style>
+</head>
+<body>
+
+    <canvas id="clinic-bg"></canvas>
+
+    <div class="header">
+        <a href="medical.html" style="color:#fff; text-decoration:none;"><i class="fa-solid fa-folder-open"></i> ARŞİV</a>
+        <div id="clock" style="font-family:'JetBrains Mono'; font-weight:800;">00:00:00</div>
+        <div style="font-size:0.7rem; letter-spacing:4px;">DIFFERENTIAL_DX_ON</div>
+    </div>
+
+    <section class="hero-clinic">
+        <p style="font-family:'JetBrains Mono'; letter-spacing:10px; opacity:0.8;">DIAGNOSTIC INTELLIGENCE</p>
+        <h1>Klinik Vaka:<br>Dedektiflik Sanatı.</h1>
+    </section>
+
+    <main class="case-file">
+        <p>Usta, tıp sadece ezberlenen semptomlar yığını değildir; her hasta, çözülmeyi bekleyen kaotik bir bulmacadır. Bir doktorun en güçlü silahı, laboratuvar sonuçları veya MR cihazları değil, "Diferansiyel Tanı" (Ayırıcı Tanı) yeteneğidir. Binlerce olasılığı eleyip tek bir gerçeğe ulaşmak, tıbbın en saf Singularity anıdır. Bugün burada, semptomların ötesindeki o gizli mekanizmaları inceliyoruz.</p>
+
+        <div class="xray-frame">
+            <img src="https://images.unsplash.com/photo-1530210124550-912dc1381cb8?q=80&w=2000&auto=format&fit=crop" alt="Radyolojik Görüntüleme">
+        </div>
+        <p style="text-align:center; font-family:'JetBrains Mono'; font-size:0.9rem; color:#666;">Görsel: Göğüs Radyografisi (CXR) üzerinden patolojik bulguların analizi.</p>
+
+        <div class="diagnosis-card bordo-gradient">
+            <h3>Anamnez: Hikayenin Gücü</h3>
+            <p>Hastanın söylediği her kelime, aslında birer veri girişidir. "Göğsümde bir baskı var" cümlesi; bir anjina pektoris mi, yoksa basit bir kas ağrısı mı? İyi bir klinisyen, hastanın sadece sesini değil, vücut dilini, gözlerinin rengini ve nefes alış ritmini de okur. Tıp fakültesinde öğrendiğin o klasik "Semioloji", burada senin pusulan olur.</p>
+        </div>
+
+        <h2>Sessiz Katiller: Patofizyolojinin İzinde</h2>
+        <p>Bazen vücut, en büyük felaketleri en sessiz şekilde yaşar. Bir hipertansiyonun böbreklerde yarattığı o yavaş yıkım veya bir tümörün sinsice büyümesi... Patoloji laboratuvarındaki o lamlar, aslında birer suç mahallidir. Biz burada, hücrelerin neden isyan ettiğini ve bu isyanın tüm organizmayı nasıl bir kaosa sürüklediğini moleküler düzeyde analiz ediyoruz.</p>
+
+        <div class="xray-frame">
+            <img src="https://images.unsplash.com/photo-1579154235602-36d7975feaa8?q=80&w=2000&auto=format&fit=crop" alt="Mikroskobik Hücre Analizi">
+        </div>
+
+        <div class="diagnosis-card blue-gradient">
+            <h3>Klinik Akıl Yürütme: Ockham'ın Usturası</h3>
+            <p>"Eğer toynak sesleri duyuyorsan, önce atları düşün, zebraları değil." Tıbbın bu altın kuralı, bizi karmaşadan kurtarır. Ancak usta, Azura'nın bu laboratuvarında biz o nadir zebraları da arıyoruz. En karmaşık vakalarda bile en basit ve en zarif açıklamaya ulaşmak, tıbbın estetik yanıdır.</p>
+        </div>
+
+        <h2>Geleceğin Tıbbı: Genomik Teşhis</h2>
+        <p>Artık sadece semptomlara bakmıyoruz usta. Hastanın genetik haritasını çıkarıp, hangi ilaca nasıl tepki vereceğini önceden biliyoruz (Farmakogenomik). Bu, "Kişiselleştirilmiş Tıp" devrimidir. Her insanın biyolojik kaosu kendine özeldir ve tedavisi de o kaosa uyumlu bir "Singularity" tasarımı olmalıdır.</p>
+
+        <div class="nav-footer">
+            <a href="med-1.html" class="btn-lab" style="background:#555;">GERİ</a>
+            <a href="med-3.html" class="btn-lab">BÖLÜM 3: GENETİK KOD <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+    </main>
+
+    <script>
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+
+        const canvas = document.getElementById('clinic-bg');
+        const ctx = canvas.getContext('2d');
+        let dots = [];
+        const colors = ['#7a0012', '#003366', '#1a1a1b', '#ffffff'];
+
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            dots = Array.from({length: 15}, () => ({
+                x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+                r: Math.random()*450+300, color: colors[Math.floor(Math.random()*colors.length)],
+                vx: (Math.random()-0.5)*0.8, vy: (Math.random()-0.5)*0.8
+            }));
+        }
+
+        function animate() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            dots.forEach(d => {
+                d.x += d.vx; d.y += d.vy;
+                if(d.x < -d.r) d.x = canvas.width+d.r; if(d.x > canvas.width+d.r) d.x = -d.r;
+                if(d.y < -d.r) d.y = canvas.height+d.r; if(d.y > canvas.height+d.r) d.y = -d.r;
+                ctx.fillStyle = d.color; ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+        window.onresize = init; init(); animate();
+    </script>
+</body>
+</html>
