@@ -3,223 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura Nexus | Universal Knowledge Hub</title>
+    <title>Azura | Ana Menü</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Plus+Jakarta+Sans:wght@300;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --bg: #f0f9ff;
-            --text: #0f172a;
-            --primary: #0ea5e9;
+        :root { 
+            --bg: #f8fafc; 
+            --text: #0f172a; 
+            --p-blue: #2563eb; 
+            --p-red: #ef4444; 
+            --p-green: #10b981; 
+            --p-orange: #f59e0b; 
+            --p-purple: #8b5cf6; 
+            --p-indigo: #6366f1;
         }
-
+        
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         
         body { 
             background: var(--bg); color: var(--text); 
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            overflow-x: hidden;
+            font-family: 'Plus Jakarta Sans', sans-serif; 
             min-height: 100vh;
         }
 
-        /* --- ARKA PLAN (Z-INDEX: -1 ve Pointer Events: None) --- */
-        /* Bu kısım tıklamayı engellememesi için özel ayarlandı */
-        .background-wrapper {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; overflow: hidden; pointer-events: none;
+        /* --- ARKA PLAN KATMANI (TIKLAMAYI ENGELLEMEZ) --- */
+        .bg-layer-wrapper { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            z-index: 1; pointer-events: none; 
         }
-        
-        .orb {
-            position: absolute; border-radius: 50%;
-            filter: blur(80px); opacity: 0.35;
-            animation: float-orb 20s infinite ease-in-out alternate;
-        }
-        .orb-1 { top: -10%; left: -5%; width: 500px; height: 500px; background: rgba(14, 165, 233, 0.4); }
-        .orb-2 { bottom: -10%; right: -5%; width: 600px; height: 600px; background: rgba(139, 92, 246, 0.3); animation-delay: -5s; }
-        .orb-3 { top: 40%; left: 20%; width: 350px; height: 350px; background: rgba(245, 158, 11, 0.2); animation-delay: -10s; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.1; animation: float 30s infinite alternate; }
+        .orb-1 { top: -10%; right: -5%; width: 600px; height: 600px; background: var(--p-blue); }
+        .orb-2 { bottom: -15%; left: -5%; width: 550px; height: 550px; background: var(--p-purple); }
+        @keyframes float { 0% { transform: translate(0,0); } 100% { transform: translate(-60px, 60px); } }
 
-        @keyframes float-orb {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(60px, -60px) scale(1.1); }
-        }
-
-        #dust-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-
-        /* --- ANA İÇERİK (Z-INDEX: 10) --- */
-        .container { 
-            max-width: 1400px; margin: 0 auto; padding: 60px 20px; 
-            position: relative; z-index: 10; 
-        }
-        
-        header { text-align: center; margin-bottom: 80px; }
-        .brand { 
-            font-family: 'Syncopate', sans-serif; 
-            font-size: clamp(2rem, 6vw, 4rem); 
-            letter-spacing: 15px; 
-            color: var(--primary); 
-            margin-bottom: 20px;
-            text-shadow: 0 10px 30px rgba(14, 165, 233, 0.2);
-        }
-        .status { 
-            font-family: 'JetBrains Mono'; 
-            font-size: 0.8rem; 
-            opacity: 0.6; 
-            letter-spacing: 6px; 
-            text-transform: uppercase; 
-        }
-
-        /* Kart Izgarası (Z-INDEX: 20) */
-        .nexus-grid {
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px;
-            position: relative;
-            z-index: 20;
-        }
-
-        /* Kart Tasarımı */
-        .category-card {
-            background: rgba(255, 255, 255, 0.65); 
-            backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.5); 
-            padding: 55px 40px; 
-            border-radius: 40px;
-            text-decoration: none; 
-            color: inherit; 
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex; 
-            flex-direction: column; 
+        /* --- ANA İÇERİK --- */
+        .main-wrapper { 
             position: relative; 
+            z-index: 100; 
+            padding: 80px 8%;
+        }
+
+        header { margin-bottom: 80px; text-align: left; }
+        .brand { font-size: 1.2rem; font-family: 'JetBrains Mono'; color: var(--p-blue); font-weight: 800; letter-spacing: 5px; margin-bottom: 15px; }
+        .hero-title { font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 800; letter-spacing: -3px; line-height: 1.1; }
+
+        /* --- KATEGORİ GRİDİ --- */
+        .category-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); 
+            gap: 30px; 
+        }
+
+        .cat-link { text-decoration: none; color: inherit; display: block; cursor: pointer; }
+
+        .cat-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            padding: 50px 40px;
+            border-radius: 45px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            position: relative;
             overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.03);
-            cursor: pointer;
-        }
-        
-        /* Hover Efekti */
-        .category-card:hover { 
-            transform: translateY(-15px) scale(1.03); 
-            border-color: var(--primary); 
-            box-shadow: 0 30px 60px rgba(14, 165, 233, 0.15);
-            background: rgba(255, 255, 255, 0.9);
         }
 
-        .card-stripe { 
-            position: absolute; left: 0; top: 0; width: 8px; height: 100%; 
-            transition: 0.3s;
+        .cat-card:hover {
+            transform: translateY(-15px);
+            background: #fff;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.06);
         }
-        
-        .cat-icon { font-size: 2.8rem; margin-bottom: 30px; transition: 0.4s; }
-        .category-card:hover .cat-icon { transform: rotate(-10deg) scale(1.1); }
-        
-        .cat-title { font-size: 1.7rem; font-weight: 800; margin-bottom: 15px; letter-spacing: -1px; }
-        .cat-info { font-size: 1rem; color: #64748b; line-height: 1.7; font-weight: 400; }
 
-        footer { 
-            margin-top: 150px; text-align: center; 
-            font-family: 'JetBrains Mono'; font-size: 0.8rem; 
-            opacity: 0.5; letter-spacing: 5px; 
-        }
+        /* Renk Kodları */
+        .cat-card.physics { border-left: 12px solid var(--p-purple); }
+        .cat-card.medical { border-left: 12px solid var(--p-red); }
+        .cat-card.tech { border-left: 12px solid var(--p-green); }
+        .cat-card.gastro { border-left: 12px solid var(--p-orange); }
+        .cat-card.music { border-left: 12px solid var(--p-blue); }
+        .cat-card.mind { border-left: 12px solid var(--p-indigo); }
+        .cat-card.bio { border-left: 12px solid var(--p-green); }
+        .cat-card.history { border-left: 12px solid var(--p-orange); }
+        .cat-card.strategy { border-left: 12px solid var(--p-blue); }
+        .cat-card.life { border-left: 12px solid var(--p-red); }
+        .cat-card.lab { border-left: 12px solid #000; background: rgba(0,0,0,0.02); }
+
+        .cat-card i { font-size: 2.5rem; margin-bottom: 25px; color: var(--text); opacity: 0.8; }
+        .cat-card h2 { font-size: 2rem; font-weight: 800; margin-bottom: 15px; letter-spacing: -1px; }
+        .cat-card p { font-size: 1.15rem; color: #64748b; line-height: 1.6; }
 
         @media (max-width: 768px) {
-            .nexus-grid { grid-template-columns: 1fr; }
-            .brand { letter-spacing: 5px; }
+            .main-wrapper { padding: 50px 5%; }
+            .category-grid { grid-template-columns: 1fr; }
+            .cat-card { padding: 40px 30px; }
         }
+
+        footer { text-align: center; padding: 100px 0; font-family: 'JetBrains Mono'; opacity: 0.4; letter-spacing: 5px; font-size: 0.8rem; }
     </style>
 </head>
 <body>
 
-    <div class="background-wrapper">
-        <div class="soft-orb orb-1"></div>
-        <div class="soft-orb orb-2"></div>
-        <div class="soft-orb orb-3"></div>
-        <canvas id="dust-canvas"></canvas>
+    <div class="bg-layer-wrapper">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
     </div>
 
-    <div class="container">
+    <div class="main-wrapper">
         <header>
-            <h1 class="brand">AZURA NEXUS</h1>
-            <p class="status">UNIVERSAL_KNOWLEDGE_BASE // 10 CORE SECTORS</p>
+            <div class="brand">AZURA PROJECT // 2025</div>
+            <h1 class="hero-title">Bilgi ve Keşif Portalı</h1>
         </header>
 
-        <div class="nexus-grid" id="mainGrid">
-            </div>
+        <div class="category-grid">
 
-        <footer>© 2025 AZURA PROJECT // DESIGNED FOR EXCELLENCE</footer>
+            <a href="physic.html" class="cat-link">
+                <div class="cat-card physics">
+                    <i class="fa-solid fa-atom"></i>
+                    <h2>Fizik ve Evren</h2>
+                    <p>Kozmik yasalar, kuantum teorileri ve evrenin derin mimarisi.</p>
+                </div>
+            </a>
+
+            <a href="clinical.html" class="cat-link">
+                <div class="cat-card medical">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                    <h2>Tıp ve Klinik</h2>
+                    <p>İnsan anatomisi, fizyoloji ve klinik bilimlerin detaylı arşivi.</p>
+                </div>
+            </a>
+
+            <a href="tech.html" class="cat-link">
+                <div class="cat-card tech">
+                    <i class="fa-solid fa-microchip"></i>
+                    <h2>Teknoloji ve AI</h2>
+                    <p>Yapay zeka, robotik sistemler ve siber geleceğin kodları.</p>
+                </div>
+            </a>
+
+            <a href="gastronomy.html" class="cat-link">
+                <div class="cat-card gastro">
+                    <i class="fa-solid fa-utensils"></i>
+                    <h2>Gastronomi</h2>
+                    <p>Mutfak kimyası ve kadim mutfak mirasının bilimsel analizi.</p>
+                </div>
+            </a>
+
+            <a href="music.html" class="cat-link">
+                <div class="cat-card music">
+                    <i class="fa-solid fa-music"></i>
+                    <h2>Müzik Teorisi</h2>
+                    <p>Ses dalgalarının fiziği ve armonik yapıların matematiği.</p>
+                </div>
+            </a>
+
+            <a href="psychology.html" class="cat-link">
+                <div class="cat-card mind">
+                    <i class="fa-solid fa-brain"></i>
+                    <h2>Zihin ve Psikoloji</h2>
+                    <p>Bilişsel süreçler, nöropsikoloji ve insan davranışının kökeni.</p>
+                </div>
+            </a>
+
+            <a href="biology.html" class="cat-link">
+                <div class="cat-card bio">
+                    <i class="fa-solid fa-dna"></i>
+                    <h2>Doğa ve Biyoloji</h2>
+                    <p>Genetik kodlar, ekosistemler ve biyolojik çeşitliliğin haritasi.</p>
+                </div>
+            </a>
+
+            <a href="history.html" class="cat-link">
+                <div class="cat-card history">
+                    <i class="fa-solid fa-landmark"></i>
+                    <h2>Tarih ve Arkeoloji</h2>
+                    <p>Medeniyetlerin yükselişi ve zamanın tozlu sayfalarındaki izler.</p>
+                </div>
+            </a>
+
+            <a href="strategy.html" class="cat-link">
+                <div class="cat-card strategy">
+                    <i class="fa-solid fa-chess"></i>
+                    <h2>Strateji ve Finans</h2>
+                    <p>Karar teorileri, oyun teorisi ve küresel ekonomi dinamikleri.</p>
+                </div>
+            </a>
+
+            <a href="life.html" class="cat-link">
+                <div class="cat-card life">
+                    <i class="fa-solid fa-bullseye"></i>
+                    <h2>Yaşam ve Performans</h2>
+                    <p>Biyohacking, disiplin, verimlilik ve zirve performans bilimi.</p>
+                </div>
+            </a>
+
+            <a href="games.html" class="cat-link">
+                <div class="cat-card lab">
+                    <i class="fa-solid fa-gamepad"></i>
+                    <h2>Zihin Laboratuvarı</h2>
+                    <p>Bilişsel odaklanma ve stratejik düşünmeyi geliştiren interaktif oyunlar.</p>
+                </div>
+            </a>
+
+        </div>
+
+        <footer>AZURA_PROJECT // CORE_NEXUS // VER 1.2</footer>
     </div>
-
-    <script>
-        // --- 10 ANA SEKTÖR VE DOSYA BAĞLANTILARI ---
-        const sectors = [
-            { n: "Fizik ve Evren", i: "fa-atom", c: "#8b5cf6", link: "physic.html", d: "Kozmik yasalar, kuantum teorileri ve evrenin derin mimarisi." },
-            { n: "Tıp ve Klinik", i: "fa-heart-pulse", c: "#f43f5e", link: "anatomy.html", d: "İnsan anatomisi, fizyoloji ve klinik bilimlerin detaylı arşivi." },
-            { n: "Teknoloji ve AI", i: "fa-microchip", c: "#10b981", link: "tech.html", d: "Yapay zeka, robotik sistemler ve siber geleceğin kodları." },
-            { n: "Gastronomi", i: "fa-utensils", c: "#f59e0b", link: "gastronomy.html", d: "Mutfak kimyası ve Gaziantep mutfak mirasının bilimsel analizi." },
-            { n: "Müzik Teorisi", i: "fa-music", c: "#6366f1", link: "music.html", d: "Ses dalgalarının fiziği ve armonik yapıların matematiği." },
-            { n: "Zihin ve Psikoloji", i: "fa-brain", c: "#ec4899", link: "mind.html", d: "Bilişsel süreçler, nöropsikoloji ve insan davranışının kökeni." },
-            { n: "Doğa ve Biyoloji", i: "fa-dna", c: "#22c55e", link: "biology.html", d: "Genetik kodlar, ekosistemler ve biyolojik çeşitliliğin haritası." },
-            { n: "Tarih ve Arkeoloji", i: "fa-landmark", c: "#d97706", link: "history.html", d: "Medeniyetlerin yükselişi ve zamanın tozlu sayfalarındaki izler." },
-            { n: "Strateji ve Finans", i: "fa-chess", c: "#3b82f6", link: "strategy.html", d: "Karar teorileri, oyun teorisi ve küresel ekonomi dinamikleri." },
-            { n: "Yaşam ve Performans", i: "fa-bullseye", c: "#ef4444", link: "life.html", d: "Biyohacking, disiplin, verimlilik ve zirve performans bilimi." }
-        ];
-
-        const grid = document.getElementById('mainGrid');
-
-        sectors.forEach(s => {
-            const card = document.createElement('a');
-            card.href = s.link;
-            card.className = 'category-card';
-            card.innerHTML = `
-                <div class="card-stripe" style="background: ${s.c}"></div>
-                <i class="fa-solid ${s.i} cat-icon" style="color: ${s.c}"></i>
-                <h2 class="cat-title">${s.n}</h2>
-                <p class="cat-info">${s.d}</p>
-            `;
-            grid.appendChild(card);
-        });
-
-        // --- DİNAMİK TOZ EFEKTİ (CANVAS ENGINE) ---
-        const canvas = document.getElementById('dust-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 1.5 + 0.5;
-                this.vx = Math.random() * 0.5 - 0.25;
-                this.vy = Math.random() * 0.5 - 0.25;
-                this.opacity = Math.random() * 0.5;
-            }
-            update() {
-                this.x += this.vx; this.y += this.vy;
-                if(this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                if(this.y < 0 || this.y > canvas.height) this.vy *= -1;
-            }
-            draw() {
-                ctx.fillStyle = `rgba(14, 165, 233, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        for(let i=0; i<85; i++) particles.push(new Particle());
-
-        function animate() {
-            ctx.clearRect(0,0,canvas.width,canvas.height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animate);
-        }
-        animate();
-    </script>
 </body>
 </html>
