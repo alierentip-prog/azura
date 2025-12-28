@@ -3,262 +3,255 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura | Zihin Laboratuvarı: Nöral Optimizasyon</title>
+    <title>Azura | Event Horizon</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
     <style>
         :root { 
-            --bg-deep: #0f172a; 
-            --p-indigo: #6366f1; 
+            --bg: #020617; 
             --p-cyan: #22d3ee; 
+            --p-purple: #818cf8;
             --p-rose: #f43f5e;
-            --glass: rgba(255, 255, 255, 0.03);
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
-            background: var(--bg-deep); color: #f1f5f9; 
+            background: var(--bg); color: #fff; 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            min-height: 100vh; overflow: hidden;
+            overflow: hidden; 
         }
 
-        /* --- ARKA PLAN --- */
-        .bg-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-        .orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.15; animation: float 25s infinite alternate; }
-        .orb-1 { top: -10%; left: -10%; width: 600px; height: 600px; background: var(--p-indigo); }
-        .orb-2 { bottom: -10%; right: -10%; width: 500px; height: 500px; background: var(--p-cyan); }
-        @keyframes float { 0% { transform: translate(0,0); } 100% { transform: translate(-60px, 60px); } }
+        #game-container { position: relative; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; }
+        canvas { background: #000; box-shadow: 0 0 50px rgba(34, 211, 238, 0.2); border-radius: 20px; }
 
-        /* --- OYUN ALANI --- */
-        .container { max-width: 1000px; margin: 0 auto; padding: 40px 5%; height: 100vh; display: flex; flex-direction: column; }
-        
-        .header-ui { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .stat-box { background: var(--glass); padding: 15px 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); font-family: 'JetBrains Mono'; font-weight: 800; }
-        .stat-label { color: var(--p-cyan); font-size: 0.8rem; display: block; margin-bottom: 5px; }
-
-        /* SAHNELER */
-        .stage { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100%; }
-        .stage.active { display: flex; animation: fadeIn 0.5s ease; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* IZGARA MOTORU */
-        .grid-container { 
-            display: grid; gap: 10px; background: rgba(255,255,255,0.02); 
-            padding: 20px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.05);
-            position: relative;
+        /* UI PANEL */
+        .ui-layer { 
+            position: absolute; top: 40px; left: 40px; right: 40px; 
+            display: flex; justify-content: space-between; pointer-events: none; 
         }
-        .cell { 
-            width: 60px; height: 60px; background: rgba(255,255,255,0.05); 
-            border-radius: 12px; transition: 0.3s; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+        .stat-card { 
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); 
+            padding: 15px 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); 
         }
-        .cell:hover { background: rgba(255,255,255,0.1); }
-        .cell.player { background: var(--p-indigo); box-shadow: 0 0 20px var(--p-indigo); z-index: 10; }
-        .cell.target { background: var(--p-cyan); color: #000; animation: pulse 1.5s infinite; }
-        .cell.wall { background: #1e293b; cursor: not-allowed; }
-        .cell.trap { background: rgba(244, 63, 94, 0.2); }
+        .label { font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--p-cyan); letter-spacing: 2px; display: block; }
+        .value { font-size: 1.5rem; font-weight: 800; }
 
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-
-        /* UI ELEMENTS */
-        .overlay { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(15, 23, 42, 0.95); z-index: 1000; 
-            display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+        /* MENU OVERLAYS */
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(2, 6, 23, 0.95); z-index: 1000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
         }
-        .btn-action { 
-            background: var(--p-indigo); color: white; border: none; padding: 20px 60px; 
-            border-radius: 50px; font-size: 1.2rem; font-weight: 800; cursor: pointer; margin-top: 30px;
-            transition: 0.3s;
+        .modal { max-width: 500px; padding: 40px; }
+        .btn {
+            background: var(--p-cyan); color: #000; border: none; padding: 18px 50px;
+            border-radius: 50px; font-size: 1.2rem; font-weight: 800; cursor: pointer;
+            margin-top: 30px; transition: 0.3s;
         }
-        .btn-action:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(99, 102, 241, 0.4); }
-
-        .energy-bar { width: 100%; height: 6px; background: rgba(255,255,255,0.1); margin-top: 20px; border-radius: 10px; overflow: hidden; }
-        .energy-fill { height: 100%; background: var(--p-cyan); width: 100%; transition: 0.3s; }
+        .btn:hover { transform: scale(1.1); box-shadow: 0 0 30px var(--p-cyan); }
     </style>
 </head>
 <body>
 
-    <div class="bg-layer"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
-
-    <div class="container">
-        <div class="header-ui">
-            <div class="stat-box"><span class="stat-label">STAGE</span><span id="ui-stage">1</span></div>
-            <div class="stat-box" id="energy-box" style="display:none;"><span class="stat-label">NEURAL ENERGY</span><span id="ui-energy">100</span></div>
-            <div class="stat-box"><span class="stat-label">COGNITIVE SCORE</span><span id="ui-score">0</span></div>
+    <div id="game-container">
+        <div class="ui-layer">
+            <div class="stat-card">
+                <span class="label">STAGE</span>
+                <span id="ui-stage" class="value">1</span>
+            </div>
+            <div class="stat-card">
+                <span class="label">VELOCITY</span>
+                <span id="ui-speed" class="value">0</span>
+            </div>
+            <div class="stat-card">
+                <span class="label">SCORE</span>
+                <span id="ui-score" class="value">0</span>
+            </div>
         </div>
 
-        <div id="stage-1" class="stage active">
-            <h1 style="font-size: 3rem; margin-bottom: 20px;">Nöral Optimizasyon</h1>
-            <p style="color: #94a3b8; margin-bottom: 40px; text-align: center; max-width: 600px;">
-                Zihinsel sinapsları optimize edin. Veri paketini (Indigo) hedef terminale (Cyan) ulaştırın.
-            </p>
-            <div class="grid-container" id="grid-1" style="grid-template-columns: repeat(5, 60px);"></div>
-            <p style="margin-top: 30px; font-family: 'JetBrains Mono'; font-size: 0.9rem; color: var(--p-indigo);">YÖN TUŞLARI VEYA TIKLAMA İLE HAREKET EDİN</p>
+        <canvas id="gameCanvas"></canvas>
+
+        <div id="start-screen" class="overlay">
+            <div class="modal">
+                <h1 style="font-size: 3.5rem; margin-bottom: 20px;">EVENT HORIZON</h1>
+                <p style="color: var(--p-cyan); letter-spacing: 4px;">AZURA LABORATORY SIMULATION</p>
+                <p style="margin-top: 20px; color: #94a3b8;">Veri çekirdeğini yönetin. Engelleri (Kırmızı) aşın ve 1000 birim ilerleyerek bir sonraki aşamaya geçin.</p>
+                <button class="btn" onclick="startGame()">SİSTEMİ BAŞLAT</button>
+            </div>
         </div>
 
-        <div id="stage-2" class="stage">
-            <h2 style="color: var(--p-cyan); margin-bottom: 20px;">Stage 2: Enerji Kısıtı</h2>
-            <div class="grid-container" id="grid-2" style="grid-template-columns: repeat(6, 60px);"></div>
-            <div class="energy-bar"><div id="energy-fill-2" class="energy-fill"></div></div>
+        <div id="result-screen" class="overlay" style="display: none;">
+            <div class="modal">
+                <h1 id="result-title" style="font-size: 3rem;">STAGE COMPLETE</h1>
+                <p id="result-body" style="font-size: 1.2rem; margin-top: 20px;"></p>
+                <button id="result-btn" class="btn">DEVAM ET</button>
+            </div>
         </div>
-
-        <div id="stage-3" class="stage">
-            <h2 style="color: var(--p-rose); margin-bottom: 20px;">Stage 3: Nöral Gürültü</h2>
-            <div class="grid-container" id="grid-3" style="grid-template-columns: repeat(8, 50px);"></div>
-            <div class="energy-bar"><div id="energy-fill-3" class="energy-fill"></div></div>
-        </div>
-    </div>
-
-    <div id="msg-overlay" class="overlay">
-        <h1 id="msg-title" style="font-size: 4rem;">BAŞARILI</h1>
-        <p id="msg-body" style="font-size: 1.5rem; margin-top: 20px;"></p>
-        <button id="msg-btn" class="btn-action">DEVAM ET</button>
     </div>
 
     <script>
-        let currentStage = 1;
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const uiStage = document.getElementById('ui-stage');
+        const uiScore = document.getElementById('ui-score');
+        const uiSpeed = document.getElementById('ui-speed');
+
+        let stage = 1;
         let score = 0;
-        let energy = 100;
-        let playerPos = { x: 0, y: 0 };
-        let gameActive = false;
+        let isGameRunning = false;
+        let player, obstacles, animationId;
 
-        const levels = {
-            1: { size: 5, target: {x: 4, y: 4}, walls: [6, 7, 12, 18], energy: null },
-            2: { size: 6, target: {x: 5, y: 5}, walls: [7, 8, 14, 15, 20, 21, 26], energy: 15 },
-            3: { size: 8, target: {x: 7, y: 7}, walls: [9, 10, 11, 25, 26, 33, 34, 45, 52, 53], energy: 25 }
-        };
-
-        function initStage(num) {
-            const config = levels[num];
-            const grid = document.getElementById(`grid-${num}`);
-            grid.innerHTML = '';
-            playerPos = { x: 0, y: 0 };
-            energy = config.energy || 100;
-            
-            document.getElementById('ui-stage').innerText = num;
-            if(config.energy) document.getElementById('energy-box').style.display = 'block';
-
-            for (let i = 0; i < config.size * config.size; i++) {
-                const cell = document.createElement('div');
-                cell.classList.add('cell');
-                const x = i % config.size;
-                const y = Math.floor(i / config.size);
-                
-                if (config.walls.includes(i)) cell.classList.add('wall');
-                if (x === config.target.x && y === config.target.y) {
-                    cell.classList.add('target');
-                    cell.innerHTML = '<i class="fa-solid fa-satellite-dish"></i>';
-                }
-                if (x === 0 && y === 0) cell.classList.add('player');
-                
-                cell.onclick = () => movePlayer(x, y, config);
-                grid.appendChild(cell);
-            }
-            gameActive = true;
-            updateUI();
+        function setCanvasSize() {
+            canvas.width = window.innerWidth * 0.8;
+            canvas.height = window.innerHeight * 0.7;
         }
+        window.addEventListener('resize', setCanvasSize);
+        setCanvasSize();
 
-        function movePlayer(nx, ny, config) {
-            if(!gameActive) return;
-            
-            // Sadece bitişik hücrelere hareket izni
-            const dx = Math.abs(nx - playerPos.x);
-            const dy = Math.abs(ny - playerPos.y);
-            
-            if ((dx === 1 && dy === 0) || (dx === 0 && dy === 1)) {
-                const index = ny * config.size + nx;
-                if (config.walls.includes(index)) return;
-
-                // Eski konumu temizle
-                const cells = document.querySelectorAll(`#grid-${currentStage} .cell`);
-                cells[playerPos.y * config.size + playerPos.x].classList.remove('player');
-
-                // Yeni konuma geç
-                playerPos = { x: nx, y: ny };
-                cells[ny * config.size + nx].classList.add('player');
-
-                // Enerji düşür
-                if(config.energy) {
-                    energy--;
-                    updateUI();
-                    if(energy <= 0) gameOver("Enerji tükendi. Sinapslar koptu.");
-                }
-
-                // Hedef kontrolü
-                if (nx === config.target.x && ny === config.target.y) {
-                    stageSuccess();
-                }
+        class Player {
+            constructor() {
+                this.width = 40;
+                this.height = 40;
+                this.x = 50;
+                this.y = canvas.height / 2;
+                this.color = '#22d3ee';
+            }
+            draw() {
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = this.color;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.roundRect(this.x, this.y, this.width, this.height, 10);
+                ctx.fill();
+                ctx.shadowBlur = 0;
             }
         }
 
-        function updateUI() {
-            document.getElementById('ui-energy').innerText = energy;
-            document.getElementById('ui-score').innerText = score;
-            const fill = document.getElementById(`energy-fill-${currentStage}`);
-            if(fill) fill.style.width = (energy / levels[currentStage].energy * 100) + "%";
+        class Obstacle {
+            constructor(speed) {
+                this.width = 30 + Math.random() * 50;
+                this.height = 100 + Math.random() * 200;
+                this.x = canvas.width;
+                this.y = Math.random() > 0.5 ? 0 : canvas.height - this.height;
+                this.speed = speed;
+                this.color = '#f43f5e';
+            }
+            update() {
+                this.x -= this.speed;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = this.color;
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+                ctx.shadowBlur = 0;
+            }
         }
 
-        function stageSuccess() {
-            gameActive = false;
-            score += (currentStage * 100) + energy;
-            const overlay = document.getElementById('msg-overlay');
-            const btn = document.getElementById('msg-btn');
+        function startGame() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'none';
+            player = new Player();
+            obstacles = [];
+            score = 0;
+            isGameRunning = true;
+            loop();
+        }
+
+        function loop() {
+            if (!isGameRunning) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            overlay.style.display = 'flex';
-            document.getElementById('msg-title').innerText = "STABİLİZASYON BAŞARILI";
-            document.getElementById('msg-body').innerText = `Veri paketi aktarıldı. Kazanılan Skor: ${score}`;
-            
-            btn.onclick = () => {
-                overlay.style.display = 'none';
-                if(currentStage < 3) {
-                    document.getElementById(`stage-${currentStage}`).classList.remove('active');
-                    currentStage++;
-                    document.getElementById(`stage-${currentStage}`).classList.add('active');
-                    initStage(currentStage);
-                } else {
-                    document.getElementById('msg-title').innerText = "AZURA_TERMINAL_COMPLETE";
-                    document.getElementById('msg-body').innerText = "Tüm nöral ağlar optimize edildi. Zirve Performans sağlandı.";
-                    btn.innerText = "YENİDEN BAŞLAT";
-                    btn.onclick = () => location.reload();
+            // Player movement
+            player.draw();
+
+            // Obstacle logic
+            const currentSpeed = 5 + (stage * 2);
+            uiSpeed.innerText = currentSpeed * 10;
+
+            if (Math.random() < 0.02 + (stage * 0.01)) {
+                obstacles.push(new Obstacle(currentSpeed));
+            }
+
+            obstacles.forEach((obs, index) => {
+                obs.update();
+                obs.draw();
+
+                // Collision Detection
+                if (player.x < obs.x + obs.width &&
+                    player.x + player.width > obs.x &&
+                    player.y < obs.y + obs.height &&
+                    player.y + player.height > obs.y) {
+                    gameOver();
                 }
-            };
+
+                if (obs.x + obs.width < 0) obstacles.splice(index, 1);
+            });
+
+            score += 1;
+            uiScore.innerText = score;
+
+            if (score >= 1000) {
+                victory();
+            } else {
+                animationId = requestAnimationFrame(loop);
+            }
         }
 
-        function gameOver(reason) {
-            gameActive = false;
-            const overlay = document.getElementById('msg-overlay');
-            overlay.style.display = 'flex';
-            document.getElementById('msg-title').innerText = "SİSTEM ÇÖKTÜ";
-            document.getElementById('msg-title').style.color = "var(--p-rose)";
-            document.getElementById('msg-body').innerText = reason;
-            const btn = document.getElementById('msg-btn');
-            btn.innerText = "YENİDEN DENE";
-            btn.onclick = () => {
-                overlay.style.display = 'none';
-                initStage(currentStage);
-            };
+        function gameOver() {
+            isGameRunning = false;
+            cancelAnimationFrame(animationId);
+            showResult("BAĞLANTI KOPTU", "Sistem hatası. Mevcut aşamayı tekrar deneyin.", "YENİDEN DENE", startGame);
         }
 
-        // Klavye desteği
-        window.addEventListener('keydown', (e) => {
-            if(!gameActive) return;
-            const config = levels[currentStage];
-            let nx = playerPos.x;
-            let ny = playerPos.y;
-            if(e.key === "ArrowUp") ny--;
-            if(e.key === "ArrowDown") ny++;
-            if(e.key === "ArrowLeft") nx--;
-            if(e.key === "ArrowRight") nx++;
-            
-            if(nx >= 0 && nx < config.size && ny >= 0 && ny < config.size) {
-                movePlayer(nx, ny, config);
+        function victory() {
+            isGameRunning = false;
+            cancelAnimationFrame(animationId);
+            if (stage < 4) {
+                showResult(`STAGE ${stage} TAMAMLANDI`, "Bir sonraki derinlik seviyesine aktarılıyorsunuz.", "STAGE " + (stage + 1), () => {
+                    stage++;
+                    uiStage.innerText = stage;
+                    startGame();
+                });
+            } else {
+                showResult("ZİRVEYE ULAŞILDI", "Azura sistemindeki tüm engeller aşıldı.", "BAŞTAN BAŞLA", () => {
+                    stage = 1;
+                    uiStage.innerText = stage;
+                    startGame();
+                });
+            }
+        }
+
+        function showResult(title, body, btnText, action) {
+            const screen = document.getElementById('result-screen');
+            document.getElementById('result-title').innerText = title;
+            document.getElementById('result-body').innerText = body;
+            const btn = document.getElementById('result-btn');
+            btn.innerText = btnText;
+            btn.onclick = action;
+            screen.style.display = 'flex';
+        }
+
+        // Controls
+        window.addEventListener('mousemove', (e) => {
+            if (isGameRunning) {
+                const rect = canvas.getBoundingClientRect();
+                let targetY = e.clientY - rect.top - player.height / 2;
+                player.y = Math.max(0, Math.min(canvas.height - player.height, targetY));
             }
         });
 
-        initStage(1);
+        // Touch for Mobile
+        window.addEventListener('touchmove', (e) => {
+            if (isGameRunning) {
+                const rect = canvas.getBoundingClientRect();
+                let targetY = e.touches[0].clientY - rect.top - player.height / 2;
+                player.y = Math.max(0, Math.min(canvas.height - player.height, targetY));
+            }
+            e.preventDefault();
+        }, {passive: false});
+
     </script>
 </body>
 </html>
