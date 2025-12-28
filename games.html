@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azura | Zihin ve Mantık Laboratuvarı</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --bg: #f8fafc; --text: #0f172a; --primary: #6366f1; --accent: #ec4899; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background: var(--bg); color: var(--text); 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            min-height: 100vh; overflow-x: hidden;
+        }
+
+        .bg-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        .orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.15; animation: float 25s infinite alternate; }
+        .orb-1 { top: -5%; right: -5%; width: 500px; height: 500px; background: var(--primary); }
+        .orb-2 { bottom: -10%; left: -5%; width: 450px; height: 450px; background: var(--accent); }
+        @keyframes float { 0% { transform: translate(0,0); } 100% { transform: translate(-50px, 50px); } }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 60px 8%; position: relative; z-index: 100; }
+        
+        .back-nav { 
+            display: inline-flex; align-items: center; gap: 10px; margin-bottom: 50px; 
+            text-decoration: none; color: var(--primary); font-family: 'JetBrains Mono'; 
+            font-weight: bold; background: rgba(255,255,255,0.9); padding: 15px 30px; 
+            border-radius: 60px; border: 1px solid rgba(99, 102, 241, 0.1); 
+            font-size: 1.1rem; transition: 0.3s;
+        }
+        .back-nav:hover { background: var(--primary); color: #fff; transform: translateY(-3px); }
+
+        header { margin-bottom: 50px; text-align: center; }
+        .cat-title { font-size: clamp(2rem, 6vw, 3.5rem); font-weight: 800; letter-spacing: -2px; }
+
+        /* OYUN ALANI (PERDE) */
+        .game-perde { 
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(40px); 
+            padding: 60px; border-radius: 60px; 
+            border: 1px solid rgba(255,255,255,0.6); 
+            box-shadow: 0 40px 100px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .game-stats { display: flex; justify-content: center; gap: 40px; margin-bottom: 40px; font-family: 'JetBrains Mono'; font-size: 1.5rem; font-weight: 800; }
+        .stat-val { color: var(--primary); }
+
+        /* MATRİS DÜZENİ */
+        .matrix-grid { 
+            display: grid; grid-template-columns: repeat(4, 80px); gap: 15px; 
+            justify-content: center; margin: 0 auto;
+        }
+
+        .tile { 
+            width: 80px; height: 80px; background: #e2e8f0; border-radius: 15px; 
+            cursor: pointer; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tile.active { background: var(--primary); transform: scale(0.95); box-shadow: 0 0 20px var(--primary); }
+        .tile.correct { background: #10b981; }
+        .tile.wrong { background: #ef4444; }
+
+        .game-controls { margin-top: 50px; }
+        .btn-start { 
+            background: var(--primary); color: white; border: none; 
+            padding: 20px 50px; border-radius: 60px; font-size: 1.5rem; 
+            font-weight: 800; cursor: pointer; transition: 0.3s;
+        }
+        .btn-start:hover { transform: scale(1.05); box-shadow: 0 20px 40px rgba(99, 102, 241, 0.3); }
+
+        @media (max-width: 600px) {
+            .matrix-grid { grid-template-columns: repeat(4, 65px); gap: 10px; }
+            .tile { width: 65px; height: 65px; }
+            .game-perde { padding: 40px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-layer"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
+
+    <div class="container">
+        <a href="menu.html" class="back-nav"><i class="fa-solid fa-arrow-left"></i> NEXUS</a>
+        
+        <header>
+            <h1 class="cat-title">Hafıza Matrisi Simülasyonu</h1>
+            <p style="font-size: 1.2rem; color: #64748b; margin-top: 10px;">Bilişsel odaklanma ve görsel strateji testi.</p>
+        </header>
+
+        <main class="game-perde">
+            <div class="game-stats">
+                <div>SEVİYE: <span id="level" class="stat-val">1</span></div>
+                <div>PUAN: <span id="score" class="stat-val">0</span></div>
+            </div>
+
+            <div class="matrix-grid" id="grid">
+                </div>
+
+            <div class="game-controls">
+                <button class="btn-start" id="start-btn">SİMÜLASYONU BAŞLAT</button>
+            </div>
+        </main>
+
+        <footer style="margin-top: 80px; text-align: center; font-family: 'JetBrains Mono'; opacity: 0.5;">AZURA_LABS // COGNITIVE_TOOLS</footer>
+    </div>
+
+    <script>
+        const grid = document.getElementById('grid');
+        const startBtn = document.getElementById('start-btn');
+        const levelEl = document.getElementById('level');
+        const scoreEl = document.getElementById('score');
+
+        let level = 1;
+        let score = 0;
+        let sequence = [];
+        let playerSequence = [];
+        let isPlaying = false;
+
+        // Izgarayı oluştur
+        for (let i = 0; i < 16; i++) {
+            const tile = document.createElement('div');
+            tile.classList.add('tile');
+            tile.dataset.index = i;
+            tile.addEventListener('click', () => handleTileClick(i));
+            grid.appendChild(tile);
+        }
+
+        const tiles = document.querySelectorAll('.tile');
+
+        function startGame() {
+            if (isPlaying) return;
+            isPlaying = true;
+            startBtn.style.display = 'none';
+            nextLevel();
+        }
+
+        function nextLevel() {
+            playerSequence = [];
+            sequence = [];
+            const tileCount = 3 + Math.floor(level / 2);
+            
+            // Rastgele hücreler seç
+            while(sequence.length < tileCount) {
+                let r = Math.floor(Math.random() * 16);
+                if(sequence.indexOf(r) === -1) sequence.push(r);
+            }
+
+            // Göster
+            sequence.forEach((index, i) => {
+                setTimeout(() => {
+                    tiles[index].classList.add('active');
+                    setTimeout(() => tiles[index].classList.remove('active'), 600);
+                }, i * 800 + 500);
+            });
+
+            setTimeout(() => { isPlaying = false; }, sequence.length * 800 + 500);
+        }
+
+        function handleTileClick(index) {
+            if (isPlaying) return;
+            
+            if (sequence.includes(index)) {
+                if (!playerSequence.includes(index)) {
+                    playerSequence.push(index);
+                    tiles[index].classList.add('correct');
+                    score += 10;
+                    scoreEl.innerText = score;
+                    
+                    if (playerSequence.length === sequence.length) {
+                        level++;
+                        levelEl.innerText = level;
+                        setTimeout(() => {
+                            tiles.forEach(t => t.classList.remove('correct'));
+                            nextLevel();
+                        }, 1000);
+                    }
+                }
+            } else {
+                tiles[index].classList.add('wrong');
+                setTimeout(() => {
+                    alert("Simülasyon Bitti! Skorunuz: " + score);
+                    location.reload();
+                }, 500);
+            }
+        }
+
+        startBtn.addEventListener('click', startGame);
+    </script>
+</body>
+</html>
