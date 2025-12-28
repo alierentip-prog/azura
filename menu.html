@@ -3,23 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Azura Nexus | Elite</title>
+    <title>Azura Nexus | Elite Control</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&family=JetBrains+Mono:wght@800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bordo: #5a0000;      /* Gerçek Derin Bordo */
-            --ceviz: #3d2b1f;      /* Ahşap Ceviz Tonu */
-            --altin: #b8860b;      /* Altın Sarısı Vurgu */
-            --krem-koyu: #f2ead3;  /* Koyu Krem Arka Plan */
+            --bordo: #5a0000;
+            --krem-koyu: #f2ead3;
             --krem-card: #faf7ed;
-            --lacivert: #001f3f;   /* Opsiyonel Lacivert Dokunuşu */
+            --ceviz: #3d2b1f;
+            --altin: #b8860b;
+            --text-size: 16px;
         }
 
         body.dark-mode {
             --krem-koyu: #120a0a;
             --krem-card: #1c1313;
-            --text: #f2ead3;
+            --ceviz: #f2ead3;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -27,175 +27,184 @@
         body { 
             background: var(--krem-koyu); 
             font-family: 'Plus Jakarta Sans', sans-serif; 
+            font-size: var(--text-size);
             color: var(--ceviz); 
-            overflow-x: hidden;
             min-height: 100vh;
+            overflow-x: hidden;
+            transition: font-size 0.2s;
         }
 
         canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
 
-        /* --- ÜST ŞERİT (DERİN BORDO) --- */
+        /* --- ÜST ŞERİT (BORDO & ALTIN) --- */
         .header {
             background: var(--bordo);
-            padding: 12px 20px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            border-bottom: 2px solid var(--altin); /* Altın Sarısı Çizgi */
+            border-bottom: 3px solid var(--altin);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
         }
 
-        .brand { 
-            color: var(--krem-koyu); 
-            font-family: 'JetBrains Mono'; 
-            font-weight: 800; 
-            font-size: 1.4rem; 
-            letter-spacing: -1px; 
-        }
+        .brand { color: #fff; font-family: 'JetBrains Mono'; font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
 
-        .header-tools { display: flex; gap: 8px; align-items: center; }
+        .header-tools { display: flex; gap: 10px; align-items: center; }
         
-        /* Canlı Saat Pill */
         .live-clock {
-            background: rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.3);
             color: var(--altin);
-            padding: 5px 12px;
+            padding: 6px 15px;
             border-radius: 50px;
             font-family: 'JetBrains Mono';
-            font-size: 0.8rem;
-            font-weight: 800;
+            font-size: 0.85rem;
             border: 1px solid var(--altin);
         }
 
-        .action-btn {
-            width: 35px; height: 35px; border-radius: 50%;
-            background: var(--krem-koyu); color: var(--bordo);
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; border: none; font-size: 0.9rem;
-        }
-
         /* --- ANA KONTEYNER --- */
-        .container { position: relative; z-index: 10; padding: 25px 15px; max-width: 500px; margin: 0 auto; }
+        .container { position: relative; z-index: 10; padding: 25px 20px; max-width: 500px; margin: 0 auto; }
 
-        .welcome-msg { margin-bottom: 30px; }
-        .welcome-msg p { font-family: 'JetBrains Mono'; font-size: 0.65rem; color: var(--bordo); letter-spacing: 3px; font-weight: 800; text-transform: uppercase; }
-        .welcome-msg h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: -2px; color: var(--ceviz); line-height: 0.9; margin-top: 5px; }
+        .hero h1 { font-size: 2.2rem; font-weight: 800; color: var(--ceviz); letter-spacing: -2px; line-height: 1; margin-bottom: 25px; }
 
-        /* --- KARTLAR (CEVİZ & ALTIN DOKUNUŞU) --- */
-        .menu-grid { display: flex; flex-direction: column; gap: 12px; }
+        /* --- 5 KATEGORİ SİSTEMİ --- */
+        .menu-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 100px; }
 
         .card {
             background: var(--krem-card);
             padding: 20px;
             border-radius: 25px;
-            border-left: 5px solid var(--bordo); /* Bordo Yan Şerit */
             display: flex;
             align-items: center;
             gap: 15px;
             text-decoration: none;
             color: inherit;
+            border: 1px solid rgba(128,0,0,0.05);
             transition: 0.3s cubic-bezier(0.2, 0, 0.2, 1);
-            box-shadow: 0 10px 20px rgba(61, 43, 31, 0.05);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.03);
         }
 
-        .card:active { transform: scale(0.97); background: #fff; }
+        .card:active { transform: scale(0.96); background: #fff; border-color: var(--altin); }
 
         .card-icon {
-            width: 50px; height: 50px; border-radius: 15px;
-            background: var(--ceviz); color: var(--altin); /* Ceviz Üstü Altın */
+            width: 55px; height: 55px; border-radius: 18px;
+            background: var(--bordo); color: var(--altin);
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.3rem;
+            font-size: 1.4rem; box-shadow: 0 5px 15px rgba(90,0,0,0.2);
         }
 
         .card-info h2 { font-size: 1.2rem; font-weight: 800; color: var(--ceviz); }
-        .card-info p { font-size: 0.75rem; color: var(--ceviz); opacity: 0.6; font-weight: 500; }
+        .card-info p { font-size: 0.8rem; opacity: 0.6; }
 
-        .arrow { margin-left: auto; color: var(--altin); font-size: 1rem; }
+        .chevron { margin-left: auto; color: var(--altin); opacity: 0.4; }
 
-        /* ERİŞİLEBİLİRLİK PANELİ */
-        #access-bar {
+        /* --- ERİŞİLEBİLİRLİK PANELİ (AKTİF) --- */
+        .access-bar {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: var(--bordo); padding: 10px 20px; border-radius: 50px;
-            display: flex; gap: 15px; z-index: 1000; border: 1px solid var(--altin);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            background: var(--bordo);
+            padding: 12px 25px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 1000;
+            border: 1px solid var(--altin);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
-        .access-btn { color: #fff; background: none; border: none; font-size: 1rem; cursor: pointer; }
+
+        .access-btn {
+            background: none; border: none; color: #fff;
+            font-size: 1.1rem; cursor: pointer; transition: 0.2s;
+            display: flex; align-items: center; gap: 5px;
+        }
+
+        .access-btn:active { color: var(--altin); transform: scale(1.2); }
 
     </style>
 </head>
 <body>
 
-    <canvas id="particles"></canvas>
+    <canvas id="dust-particles"></canvas>
 
     <header class="header">
         <div class="brand">AZURA</div>
         <div class="header-tools">
             <div class="live-clock" id="clock">00:00:00</div>
-            <button class="action-btn" onclick="document.body.classList.toggle('dark-mode')"><i class="fa-solid fa-moon"></i></button>
+            <div style="color: #fff; cursor: pointer;" onclick="document.body.classList.toggle('dark-mode')">
+                <i class="fa-solid fa-circle-half-stroke"></i>
+            </div>
         </div>
     </header>
 
     <div class="container">
-        <div class="welcome-msg">
-            <p>Design & Science Portal</p>
-            <h1>Kontrol<br>Merkezi.</h1>
+        <div class="hero">
+            <h1>Dijital Sektörler.</h1>
         </div>
 
-        <div class="menu-grid">
+        <nav class="menu-list">
             <a href="medical.html" class="card">
                 <div class="card-icon"><i class="fa-solid fa-notes-medical"></i></div>
-                <div class="card-info">
-                    <h2>Tıp & Klinik</h2>
-                    <p>Klinik Arşiv ve Vaka Analizleri</p>
-                </div>
-                <i class="fa-solid fa-chevron-right arrow"></i>
+                <div class="card-info"><h2>Tıp & Klinik</h2><p>Akademik Vaka Analizleri</p></div>
+                <i class="fa-solid fa-chevron-right chevron"></i>
             </a>
 
             <a href="physic.html" class="card">
-                <div class="card-icon" style="background: var(--bordo);"><i class="fa-solid fa-atom"></i></div>
-                <div class="card-info">
-                    <h2>Fizik Sektörü</h2>
-                    <p>Kuantum ve Kozmoloji Sınırları</p>
-                </div>
-                <i class="fa-solid fa-chevron-right arrow"></i>
+                <div class="card-icon"><i class="fa-solid fa-atom"></i></div>
+                <div class="card-info"><h2>Fizik Sektörü</h2><p>Kuantum ve Kozmoloji</p></div>
+                <i class="fa-solid fa-chevron-right chevron"></i>
             </a>
 
             <a href="gastronomy.html" class="card">
-                <div class="card-icon" style="background: #1a3a3a; color: var(--altin);"><i class="fa-solid fa-utensils"></i></div>
-                <div class="card-info">
-                    <h2>Gastronomi</h2>
-                    <p>Mutfak Kültürü ve Moleküler Kimya</p>
-                </div>
-                <i class="fa-solid fa-chevron-right arrow"></i>
+                <div class="card-icon"><i class="fa-solid fa-utensils"></i></div>
+                <div class="card-info"><h2>Gastronomi</h2><p>Mutfak Mirası ve Kimya</p></div>
+                <i class="fa-solid fa-chevron-right chevron"></i>
             </a>
-        </div>
+
+            <a href="games.html" class="card">
+                <div class="card-icon"><i class="fa-solid fa-brain"></i></div>
+                <div class="card-info"><h2>Zihin Laboratuvarı</h2><p>Bilişsel Simülasyonlar</p></div>
+                <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+
+            <a href="settings.html" class="card">
+                <div class="card-icon"><i class="fa-solid fa-sliders"></i></div>
+                <div class="card-info"><h2>Sistem Çekirdeği</h2><p>Ağ ve Güvenlik Ayarları</p></div>
+                <i class="fa-solid fa-chevron-right chevron"></i>
+            </a>
+        </nav>
     </div>
 
-    <div id="access-bar">
-        <button class="access-btn" onclick="changeFont(1)"><i class="fa-solid fa-font"></i>+</button>
-        <button class="access-btn" onclick="changeFont(-1)"><i class="fa-solid fa-font"></i>-</button>
-        <button class="access-btn"><i class="fa-solid fa-eye"></i></button>
+    <div class="access-bar">
+        <button class="access-btn" onclick="adjustFont(1.2)"><i class="fa-solid fa-plus"></i>A</button>
+        <button class="access-btn" onclick="adjustFont(0.8)"><i class="fa-solid fa-minus"></i>A</button>
+        <button class="access-btn" onclick="resetFont()"><i class="fa-solid fa-rotate-left"></i></button>
     </div>
 
     <script>
         // CANLI SAAT
-        function updateTime() {
+        function updateClock() {
             document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR');
         }
-        setInterval(updateTime, 1000); updateTime();
+        setInterval(updateClock, 1000);
+        updateClock();
 
-        // ERİŞİLEBİLİRLİK: FONT BOYUTU
-        let currentSize = 16;
-        function changeFont(delta) {
-            currentSize += delta;
-            document.body.style.fontSize = currentSize + 'px';
+        // ERİŞİLEBİLİRLİK FONKSİYONLARI
+        let fontSize = 16;
+        function adjustFont(scale) {
+            fontSize *= scale;
+            if(fontSize > 30) fontSize = 30;
+            if(fontSize < 12) fontSize = 12;
+            document.documentElement.style.setProperty('--text-size', fontSize + 'px');
+        }
+        function resetFont() {
+            fontSize = 16;
+            document.documentElement.style.setProperty('--text-size', '16px');
         }
 
-        // PARÇACIK MOTORU (Bakır & Altın Tozları)
-        const canvas = document.getElementById('particles');
+        // ALTIN TOZU PARÇACIKLARI
+        const canvas = document.getElementById('dust-particles');
         const ctx = canvas.getContext('2d');
         let dots = [];
 
@@ -209,17 +218,17 @@
             }));
         }
 
-        function render() {
+        function draw() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.fillStyle = '#b8860b'; // Altın Tozu
+            ctx.fillStyle = '#b8860b'; 
             dots.forEach(d => {
                 d.y -= d.v; if(d.y < -5) d.y = canvas.height + 5;
-                ctx.globalAlpha = 0.2; ctx.beginPath();
-                ctx.arc(d.x, d.y, d.r, 0, Math.PI*2); ctx.fill();
+                ctx.globalAlpha = 0.2;
+                ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI*2); ctx.fill();
             });
-            requestAnimationFrame(render);
+            requestAnimationFrame(draw);
         }
-        window.onresize = init; init(); render();
+        window.onresize = init; init(); draw();
     </script>
 </body>
 </html>
