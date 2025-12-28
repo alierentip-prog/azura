@@ -3,156 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Azura | Zorunlu Giriş Protokolü</title>
+    <title>Azura | Intelligent Gateway</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #f8f9fa; --card: #ffffff; --text: #1a1a1a;
             --primary: #5a0000; --accent: #b87333; --border: rgba(0,0,0,0.08);
+            --success: #2e7d32; --error: #c62828;
         }
         [data-theme="dark"] {
             --bg: #0a0a0b; --card: #161618; --text: #e0e0e0;
             --border: rgba(255,255,255,0.08);
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.3s ease; }
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         body { background: var(--bg); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text); overflow: hidden; }
 
-        /* --- ZORUNLU TEST EKRANI (FULL OVERLAY) --- */
+        /* --- GATEKEEPER FULLSCREEN --- */
         #gatekeeper {
             position: fixed; inset: 0; background: var(--bg); z-index: 9999;
             display: flex; align-items: center; justify-content: center; padding: 20px;
         }
-        .test-container {
-            background: var(--card); width: 100%; max-width: 500px; padding: 40px;
-            border-radius: 50px; border: 2px solid var(--primary); text-align: center;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+        .test-hub {
+            background: var(--card); width: 100%; max-width: 550px; padding: 50px;
+            border-radius: 60px; border: 3px solid var(--primary); position: relative;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.3);
         }
-        .q-text { font-size: 1.4rem; font-weight: 800; margin-bottom: 25px; color: var(--primary); }
+        .test-header { margin-bottom: 30px; }
+        .progress-bar { height: 6px; background: var(--border); border-radius: 3px; margin-bottom: 20px; overflow: hidden; }
+        #progress-fill { height: 100%; background: var(--accent); width: 10%; }
+
+        .q-num { font-family: 'JetBrains Mono'; color: var(--accent); font-weight: 800; font-size: 0.9rem; letter-spacing: 2px; }
+        .q-text { font-size: 1.5rem; font-weight: 800; margin: 15px 0 30px; line-height: 1.2; color: var(--primary); }
+
+        .options-grid { display: grid; gap: 12px; }
         .opt-btn {
-            display: block; width: 100%; padding: 18px; margin-bottom: 12px;
-            background: var(--bg); border: 1.5px solid var(--border); border-radius: 20px;
-            font-weight: 600; cursor: pointer; color: var(--text);
+            background: var(--bg); border: 2px solid var(--border); padding: 20px;
+            border-radius: 25px; cursor: pointer; color: var(--text); font-weight: 600;
+            text-align: left; display: flex; align-items: center; gap: 15px; font-size: 1rem;
         }
-        .opt-btn:hover { border-color: var(--accent); background: var(--card); transform: scale(1.02); }
+        .opt-btn:hover { border-color: var(--primary); transform: translateX(10px); background: var(--card); }
+        .opt-btn.correct { background: var(--success); color: #fff; border-color: var(--success); }
+        .opt-btn.wrong { background: var(--error); color: #fff; border-color: var(--error); }
 
-        /* --- ANA MENÜ (BAŞLANGIÇTA GİZLİ) --- */
-        #main-nexus { opacity: 0; visibility: hidden; }
-        .content-ready #main-nexus { opacity: 1; visibility: visible; }
-        .content-ready #gatekeeper { display: none; }
-        .content-ready body { overflow: auto; }
+        /* --- MAIN DASHBOARD (HIDDEN AT START) --- */
+        #main-nexus { opacity: 0; visibility: hidden; transform: translateY(30px); }
+        .access-granted #main-nexus { opacity: 1; visibility: visible; transform: translateY(0); }
+        .access-granted #gatekeeper { opacity: 0; visibility: hidden; pointer-events: none; }
+        .access-granted body { overflow: auto; }
 
-        /* --- PROFESYONEL DASHBOARD --- */
-        .top-bar { padding: 25px; display: flex; justify-content: space-between; align-items: center; }
-        .brand { font-family: 'JetBrains Mono'; font-weight: 800; font-size: 1.6rem; color: var(--primary); }
-        .clock { background: var(--primary); color: #fff; padding: 10px 20px; border-radius: 25px; font-family: 'JetBrains Mono'; font-weight: 800; }
+        /* --- PROFESSIONAL UI COMPONENTS --- */
+        .top-nav { padding: 30px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; background: var(--bg); z-index: 100; }
+        .logo { font-family: 'JetBrains Mono'; font-weight: 800; font-size: 1.8rem; color: var(--primary); letter-spacing: -2px; }
+        .status-pill { background: var(--primary); color: #fff; padding: 10px 20px; border-radius: 30px; font-family: 'JetBrains Mono'; font-weight: 800; font-size: 0.8rem; }
 
-        .container { padding: 0 25px; max-width: 600px; margin: 0 auto; }
-        .quote { background: var(--card); padding: 25px; border-radius: 35px; border-left: 8px solid var(--accent); margin-bottom: 30px; }
-
-        .grid { display: flex; flex-direction: column; gap: 15px; }
-        .card {
-            background: var(--card); padding: 25px; border-radius: 40px;
-            display: flex; align-items: center; gap: 20px; text-decoration: none; color: inherit;
-            border: 1px solid var(--border);
+        .dashboard { max-width: 650px; margin: 0 auto; padding: 20px; }
+        .quote-card { background: var(--card); padding: 30px; border-radius: 40px; border-left: 10px solid var(--accent); margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        
+        .nav-menu { display: grid; gap: 18px; }
+        .nav-item {
+            background: var(--card); padding: 30px; border-radius: 45px;
+            display: flex; align-items: center; gap: 25px; text-decoration: none; color: inherit;
+            border: 1px solid var(--border); box-shadow: 0 15px 35px rgba(0,0,0,0.02);
         }
-        .card:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
-        .icon-box { width: 65px; height: 65px; border-radius: 22px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: #fff; }
+        .nav-item:hover { transform: translateY(-12px); border-color: var(--accent); box-shadow: 0 25px 50px rgba(0,0,0,0.1); }
+        .icon-circle { width: 75px; height: 75px; border-radius: 28px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: #fff; }
+
+        /* --- THEMES --- */
+        .theme-med { background: linear-gradient(135deg, #5a0000, #a50016); }
+        .theme-physic { background: linear-gradient(135deg, #001f3f, #003366); }
+        .theme-math { background: linear-gradient(135deg, #3d2b1f, #b87333); }
+        .theme-lab { background: linear-gradient(135deg, #1a237e, #4a148c); }
     </style>
 </head>
 <body data-theme="light">
 
     <div id="gatekeeper">
-        <div class="test-container" id="test-ui">
-            <div id="progress" style="font-family:'JetBrains Mono'; font-size:0.8rem; margin-bottom:10px; color:var(--accent);">SORU 1/10</div>
-            <div class="q-text" id="question">Zekanın ilk kuralı nedir?</div>
-            <div id="options">
-                <button class="opt-btn" onclick="nextQuestion()">Gözlemlemek</button>
-                <button class="opt-btn" onclick="nextQuestion()">Hafıza</button>
-                <button class="opt-btn" onclick="nextQuestion()">Analiz</button>
+        <div class="test-hub">
+            <div class="test-header">
+                <div class="progress-bar"><div id="progress-fill"></div></div>
+                <span class="q-num" id="q-counter">SORU 01 // 10</span>
+            </div>
+            <div id="q-area">
+                <h2 class="q-text" id="q-text">Yükleniyor...</h2>
+                <div class="options-grid" id="opt-container">
+                    </div>
             </div>
         </div>
     </div>
 
     <div id="main-nexus">
-        <header class="top-bar">
-            <div class="brand">AZURA.v2</div>
-            <div class="clock" id="nexus-time">00:00:00</div>
+        <header class="top-nav">
+            <div class="logo">AZURA_NEXUS</div>
+            <div class="status-pill" id="live-clock">00:00:00</div>
         </header>
 
-        <div class="container">
-            <div class="quote">
-                <p id="daily-quote" style="font-weight: 600; font-style: italic;">"Gerçek bilgi, bilmediğini bilmektir." - Sokrates</p>
+        <div class="dashboard">
+            <div class="quote-card">
+                <p id="quote-display" style="font-weight: 600; font-style: italic; font-size: 1.1rem; opacity: 0.9;">"Hayal gücü, bilgiden daha önemlidir." - Albert Einstein</p>
             </div>
 
-            <nav class="grid">
-                <a href="medical.html" class="card">
-                    <div class="icon-box" style="background: linear-gradient(135deg, #5a0000, #a50016);"><i class="fa-solid fa-heart-pulse"></i></div>
-                    <div><h3>Tıp & Klinik 🫀</h3><p>Akademik Arşiv</p></div>
-                    <i class="fa-solid fa-chevron-right" style="margin-left:auto; opacity:0.3;"></i>
+            <nav class="nav-menu">
+                <a href="medical.html" class="nav-item">
+                    <div class="icon-circle theme-med"><i class="fa-solid fa-staff-snake"></i></div>
+                    <div class="nav-info"><h3>Tıp & Klinik 🫀</h3><p>Akademik Vaka Arşivi</p></div>
+                    <i class="fa-solid fa-chevron-right" style="margin-left:auto; opacity:0.2;"></i>
                 </a>
 
-                <a href="physic.html" class="card">
-                    <div class="icon-box" style="background: linear-gradient(135deg, #001f3f, #003366);"><i class="fa-solid fa-atom"></i></div>
-                    <div><h3>Fizik Sektörü ⚛️</h3><p>Kozmoloji Kapıları</p></div>
-                    <i class="fa-solid fa-chevron-right" style="margin-left:auto; opacity:0.3;"></i>
+                <a href="physic.html" class="nav-item">
+                    <div class="icon-circle theme-physic"><i class="fa-solid fa-atom"></i></div>
+                    <div class="nav-info"><h3>Fizik Sektörü ⚛️</h3><p>Kozmoloji & Kuantum</p></div>
+                    <i class="fa-solid fa-chevron-right" style="margin-left:auto; opacity:0.2;"></i>
                 </a>
 
-                <a href="math.html" class="card">
-                    <div class="icon-box" style="background: linear-gradient(135deg, #3d2b1f, #b87333);"><i class="fa-solid fa-infinity"></i></div>
-                    <div><h3>Matematik 📐</h3><p>Denklemler & Analiz</p></div>
-                    <i class="fa-solid fa-chevron-right" style="margin-left:auto; opacity:0.3;"></i>
+                <a href="math.html" class="nav-item">
+                    <div class="icon-circle theme-math"><i class="fa-solid fa-infinity"></i></div>
+                    <div class="nav-info"><h3>Matematik 📐</h3><p>Karmaşık Denklemler</p></div>
+                    <i class="fa-solid fa-chevron-right" style="margin-left:auto; opacity:0.2;"></i>
                 </a>
 
-                <a href="games.html" class="card">
-                    <div class="icon-box" style="background: linear-gradient(135deg, #1a237e, #4a148c);"><i class="fa-solid fa-brain"></i></div>
-                    <div><h3>Zihin Lab 🧠</h3><p>Simülasyonlar</p></div>
-                    <i class="fa-solid fa-chevron-right" style="margin-left:auto; opacity:0.3;"></i>
+                <a href="games.html" class="nav-item">
+                    <div class="icon-circle theme-lab"><i class="fa-solid fa-brain"></i></div>
+                    <div class="nav-info"><h3>Zihin Lab 🧠</h3><p>Simülasyon & Testler</p></div>
+                    <i class="fa-solid fa-chevron-right" style="margin-left:auto; opacity:0.2;"></i>
                 </a>
             </nav>
         </div>
     </div>
 
     <script>
-        let currentStep = 1;
-        const questions = [
-            "Zekanın ilk kuralı nedir?",
-            "Evrenin dili hangisidir?",
-            "Entropi neyi temsil eder?",
-            "Zaman bir yanılsama mıdır?",
-            "Nöronal ağlar kaotik midir?",
-            "Singularity ne zaman başlar?",
-            "Kuantum dolanıklık mümkün mü?",
-            "Bellek bir kayıt mıdır?",
-            "Bilinç nerede saklanır?",
-            "Azura'ya hazır mısın?"
+        const testData = [
+            { q: "Bir nöronun uyarılması için gereken eşik değerine ne ad verilir?", a: ["Aksiyon Potansiyeli", "Sinaptik Boşluk", "Depolarizasyon", "Miyelin Kılıf"], c: 0 },
+            { q: "Schrödinger'in kedisi hangi kuantum ilkesini temsil eder?", a: ["Dolanıklık", "Süperpozisyon", "Belirsizlik", "Tünelleme"], c: 1 },
+            { q: "Entropi, termodinamiğin hangi yasasıyla açıklanır?", a: ["1. Yasa", "2. Yasa", "3. Yasa", "Sıfırıncı Yasa"], c: 1 },
+            { q: "DNA sarmalında Adenin karşısına hangi baz gelir?", a: ["Guanin", "Sitozin", "Timin", "Urasil"], c: 2 },
+            { q: "Evrenin genişlediğini kanıtlayan gözlem hangisidir?", a: ["Maviye Kayma", "Kızıla Kayma", "Kütleçekimsel Mercek", "Olay Ufku"], c: 1 },
+            { q: "Işık hızına yaklaştıkça zamanın yavaşlamasına ne denir?", a: ["Zaman Daralması", "Kütle Artışı", "Boy Kısalması", "İzafiyet"], c: 0 },
+            { q: "Altın oran (Phi) yaklaşık olarak kaçtır?", a: ["1.414", "3.141", "2.718", "1.618"], c: 3 },
+            { q: "Beynin ana bellek merkezi neresidir?", a: ["Amigdala", "Serebellum", "Hipokampüs", "Talamus"], c: 2 },
+            { q: "Hangi kuvvet atom çekirdeğini bir arada tutar?", a: ["Elektromanyetik", "Zayıf Nükleer", "Güçlü Nükleer", "Kütleçekimi"], c: 2 },
+            { q: "Azura sistemine tam erişim istiyor musun?", a: ["Hayır", "Belki", "Analiz Ediliyor", "EVET"], c: 3 }
         ];
 
-        function nextQuestion() {
-            if (currentStep < 10) {
-                currentStep++;
-                document.getElementById('progress').innerText = `SORU ${currentStep}/10`;
-                document.getElementById('question').innerText = questions[currentStep-1];
+        let currentQ = 0;
+
+        function loadQuestion() {
+            const data = testData[currentQ];
+            document.getElementById('q-counter').innerText = `SORU ${String(currentQ + 1).padStart(2, '0')} // 10`;
+            document.getElementById('q-text').innerText = data.q;
+            document.getElementById('progress-fill').style.width = `${(currentQ + 1) * 10}%`;
+            
+            const container = document.getElementById('opt-container');
+            container.innerHTML = "";
+            
+            data.a.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'opt-btn';
+                btn.innerHTML = `<span style="opacity:0.5; font-family:monospace;">0${idx+1}</span> ${opt}`;
+                btn.onclick = () => checkAnswer(idx);
+                container.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(idx) {
+            const btns = document.querySelectorAll('.opt-btn');
+            if(idx === testData[currentQ].c) {
+                btns[idx].classList.add('correct');
+                setTimeout(() => {
+                    currentQ++;
+                    if(currentQ < testData.length) {
+                        loadQuestion();
+                    } else {
+                        grantAccess();
+                    }
+                }, 600);
             } else {
-                // Test Bitti
-                document.body.classList.add('content-ready');
+                btns[idx].classList.add('wrong');
+                setTimeout(() => btns[idx].classList.remove('wrong'), 500);
             }
+        }
+
+        function grantAccess() {
+            document.body.classList.add('access-granted');
         }
 
         function updateNexus() {
             const now = new Date();
             const hrs = now.getHours();
-            document.getElementById('nexus-time').innerText = now.toLocaleTimeString('tr-TR');
-            
-            // Otomatik Karanlık Mod (19:00 - 07:00)
-            if (hrs >= 19 || hrs <= 7) {
-                document.body.setAttribute('data-theme', 'dark');
-            } else {
-                document.body.setAttribute('data-theme', 'light');
-            }
+            document.getElementById('live-clock').innerText = now.toLocaleTimeString('tr-TR');
+            if (hrs >= 19 || hrs <= 6) document.body.setAttribute('data-theme', 'dark');
+            else document.body.setAttribute('data-theme', 'light');
         }
+
         setInterval(updateNexus, 1000);
         updateNexus();
+        loadQuestion();
     </script>
 </body>
 </html>
