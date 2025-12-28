@@ -2,226 +2,89 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azura | Zihin Laboratuvarı</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Azura | Quantum Breach v1.0</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
-    
     <style>
-        :root { 
-            --bg-base: #f8fafc;
-            --glass: rgba(255, 255, 255, 0.5);
-            --text-dark: #1e293b;
-            --p-indigo: #6366f1;
-            --p-rose: #f43f5e;
-            --p-cyan: #22d3ee;
-            --p-amber: #f59e0b;
-            --p-emerald: #10b981;
-        }
+        :root { --neon: #22d3ee; --danger: #f43f5e; --bg: #020617; }
+        * { margin: 0; padding: 0; box-sizing: border-box; touch-action: none; -webkit-user-select: none; }
+        body { background: var(--bg); font-family: 'Plus Jakarta Sans', sans-serif; overflow: hidden; height: 100vh; color: #fff; }
+
+        /* Render Alanı */
+        #game-canvas { width: 100%; height: 100%; display: block; }
+
+        /* Üst Panel: HUD */
+        .hud-top { position: absolute; top: 0; left: 0; right: 0; padding: 30px; display: flex; justify-content: space-between; pointer-events: none; z-index: 100; }
+        .status-card { background: rgba(255,255,255,0.05); backdrop-filter: blur(15px); padding: 15px 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); border-left: 4px solid var(--neon); }
+        .label { font-size: 10px; letter-spacing: 3px; color: var(--neon); text-transform: uppercase; margin-bottom: 5px; display: block; }
+        .value { font-family: 'JetBrains Mono'; font-size: 1.2rem; font-weight: 800; }
+
+        /* Konsol: Sol Orta */
+        #logs { position: absolute; top: 120px; left: 30px; width: 250px; font-family: 'JetBrains Mono'; font-size: 11px; pointer-events: none; z-index: 90; color: rgba(255,255,255,0.6); }
+
+        /* Joystick Alanı: Sol Alt */
+        .control-zone { position: absolute; bottom: 40px; left: 40px; width: 130px; height: 130px; border: 2px solid rgba(255,255,255,0.05); border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 100; }
+        #stick { width: 50px; height: 50px; background: var(--neon); border-radius: 50%; box-shadow: 0 0 30px var(--neon); opacity: 0.6; }
+
+        /* Başlangıç ve Ölüm Ekranları */
+        #start-screen { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 1000; text-align: center; }
+        .btn-init { background: none; border: 2px solid var(--neon); color: var(--neon); padding: 20px 60px; border-radius: 60px; font-size: 1.5rem; font-weight: 800; cursor: pointer; transition: 0.3s; }
+        .btn-init:hover { background: var(--neon); color: #000; box-shadow: 0 0 40px var(--neon); }
         
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        
-        body { 
-            background: var(--bg-base);
-            color: var(--text-dark); 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            min-height: 100vh; 
-            overflow-x: hidden;
-        }
-
-        /* --- HAREKETLİ RENKLİ SİS KANVASI --- */
-        #smoke-canvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
-            pointer-events: none;
-            filter: blur(50px);
-        }
-
-        .container { max-width: 1300px; margin: 0 auto; padding: 60px 8%; position: relative; z-index: 10; }
-
-        .back-nav { 
-            display: inline-flex; align-items: center; gap: 10px; margin-bottom: 50px; 
-            text-decoration: none; color: var(--p-indigo); font-family: 'JetBrains Mono'; 
-            font-weight: 800; background: #fff; padding: 15px 30px; border-radius: 50px; 
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: 0.3s;
-        }
-        .back-nav:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(99,102,241,0.2); }
-
-        header { text-align: center; margin-bottom: 70px; }
-        .hero-title { font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 800; letter-spacing: -3px; color: #0f172a; margin-bottom: 15px; }
-        .hero-desc { font-size: 1.2rem; color: #64748b; font-weight: 500; }
-
-        /* --- OYUN SEÇİM GRİDİ --- */
-        .game-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); 
-            gap: 30px; 
-        }
-
-        /* Href Link Yapısı */
-        .game-link { text-decoration: none; color: inherit; display: block; height: 100%; }
-
-        .game-card {
-            background: var(--glass);
-            backdrop-filter: blur(20px);
-            padding: 50px 40px;
-            border-radius: 50px;
-            border: 2px solid #fff;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex; flex-direction: column; align-items: center; text-align: center;
-            height: 100%;
-        }
-
-        .game-card:hover {
-            transform: translateY(-15px) scale(1.02);
-            background: #fff;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.08);
-        }
-
-        /* Kategori Renk Vurguları */
-        .minesweeper:hover { border-bottom: 10px solid var(--p-rose); }
-        .maze:hover { border-bottom: 10px solid var(--p-emerald); }
-        .chess:hover { border-bottom: 10px solid var(--p-indigo); }
-        .solitaire:hover { border-bottom: 10px solid var(--p-amber); }
-        .firstperson:hover { border-bottom: 10px solid var(--p-cyan); }
-
-        .game-card i { font-size: 3rem; margin-bottom: 30px; color: #334155; transition: 0.4s; }
-        .game-card:hover i { transform: scale(1.2); }
-        
-        /* İkon Renkleri */
-        .minesweeper:hover i { color: var(--p-rose); }
-        .maze:hover i { color: var(--p-emerald); }
-        .chess:hover i { color: var(--p-indigo); }
-        .solitaire:hover i { color: var(--p-amber); }
-        .firstperson:hover i { color: var(--p-cyan); }
-
-        .game-card h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 15px; letter-spacing: -1px; }
-        .game-card p { font-size: 1.1rem; color: #64748b; line-height: 1.6; }
-
-        @media (max-width: 768px) {
-            .container { padding: 40px 5%; }
-            .game-grid { grid-template-columns: 1fr; }
-            .game-card { padding: 40px 30px; }
-        }
-
-        footer { text-align: center; padding: 100px 0; font-family: 'JetBrains Mono'; opacity: 0.4; letter-spacing: 5px; }
+        #death-flash { position: fixed; inset: 0; background: var(--danger); z-index: 2000; display: none; }
     </style>
 </head>
 <body>
 
-    <canvas id="smoke-canvas"></canvas>
+<div id="death-flash"></div>
 
-    <div class="container">
-        <a href="menu.html" class="back-nav"><i class="fa-solid fa-arrow-left"></i> NEXUS</a>
-        
-        <header>
-            <h1 class="hero-title">Zihin Laboratuvarı</h1>
-            <p class="hero-desc">Bilişsel strateji ve interaktif deneyimler merkezi.</p>
-        </header>
+<div id="start-screen">
+    <h1 style="font-size: 4rem; margin-bottom: 10px; letter-spacing: -4px;">QUANTUM BREACH</h1>
+    <p style="color: #64748b; margin-bottom: 40px; letter-spacing: 5px;">AZURA // NEURAL_SIMULATION_v1.0</p>
+    <button class="btn-init" onclick="initSimulation()">LINK START</button>
+</div>
 
-        <div class="game-grid">
-
-            <a href="minesweeper.html" class="game-link">
-                <div class="game-card minesweeper">
-                    <i class="fa-solid fa-bomb"></i>
-                    <h3>Mayın Tarlası</h3>
-                    <p>Mantıksal çıkarım ve risk yönetimi becerilerinizi test edin.</p>
-                </div>
-            </a>
-
-            <a href="maze.html" class="game-link">
-                <div class="game-card maze">
-                    <i class="fa-solid fa-route"></i>
-                    <h3>Nöral Labirent</h3>
-                    <p>Karmaşık yollarda stratejik yol bulma ve hız simülasyonu.</p>
-                </div>
-            </a>
-
-            <a href="chess.html" class="game-link">
-                <div class="game-card chess">
-                    <i class="fa-solid fa-chess"></i>
-                    <h3>Satranç</h3>
-                    <p>Derin strateji, rasyonel hamleler ve taktiksel üstünlük savaşı.</p>
-                </div>
-            </a>
-
-            <a href="solitaire.html" class="game-link">
-                <div class="game-card solitaire">
-                    <i class="fa-solid fa-clone"></i>
-                    <h3>Solitaire</h3>
-                    <p>Odaklanma ve düzen gerektiren klasik bir zihin egzersizi.</p>
-                </div>
-            </a>
-
-            <a href="3d-explore.html" class="game-link">
-                <div class="game-card firstperson">
-                    <i class="fa-solid fa-cube"></i>
-                    <h3>3D Explore</h3>
-                    <p>Üç boyutlu uzayda birinci şahıs perspektifinden keşif deneyimi.</p>
-                </div>
-            </a>
-
-        </div>
-
-        <footer>AZURA_PROJECT // COGNITIVE_LABS</footer>
+<div class="hud-top">
+    <div class="status-card">
+        <span class="label">Sync Level</span>
+        <span class="value">98.4%</span>
     </div>
+    <div class="status-card">
+        <span class="label">Data Core</span>
+        <span id="ui-dist" class="value">--m</span>
+    </div>
+</div>
 
-    <script>
-        const canvas = document.getElementById('smoke-canvas');
-        const ctx = canvas.getContext('2d');
-        let width, height;
-        let clouds = [];
-        const colors = [
-            'rgba(147, 197, 253, 0.4)', // Açık Mavi
-            'rgba(249, 168, 212, 0.3)', // Soft Pembe
-            'rgba(167, 139, 250, 0.3)', // Mor
-            'rgba(134, 239, 172, 0.3)'  // Su Yeşili
-        ];
+<div id="logs"></div>
 
-        function init() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width;
-            canvas.height = height;
-            clouds = [];
-            for (let i = 0; i < 8; i++) {
-                clouds.push({
-                    x: Math.random() * width,
-                    y: Math.random() * height,
-                    r: Math.random() * 300 + 200,
-                    color: colors[i % colors.length],
-                    vx: Math.random() * 0.6 - 0.3,
-                    vy: Math.random() * 0.6 - 0.3
-                });
-            }
-        }
+<div class="control-zone">
+    <div id="stick"></div>
+</div>
 
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
-            clouds.forEach(c => {
-                c.x += c.vx;
-                c.y += c.vy;
-                if (c.x + c.r < 0) c.x = width + c.r;
-                if (c.x - c.r > width) c.x = -c.r;
-                if (c.y + c.r < 0) c.y = height + c.r;
-                if (c.y - c.r > height) c.y = -c.r;
+<canvas id="game-canvas"></canvas>
 
-                let g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, c.r);
-                g.addColorStop(0, c.color);
-                g.addColorStop(1, 'rgba(255, 255, 255, 0)');
-                ctx.fillStyle = g;
-                ctx.beginPath();
-                ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
-                ctx.fill();
-            });
-            requestAnimationFrame(animate);
-        }
+<script>
+    // BURAYA PART 1, 2, 3 ve 4'ü ARKA ARKAYA YAPIŞTIR!
 
-        window.addEventListener('resize', init);
-        init();
-        animate();
-    </script>
+    // EN SONA DA BU BAŞLATICIYI EKLE:
+    function initSimulation() {
+        document.getElementById('start-screen').style.display = 'none';
+        
+        // Sistemi Başlat
+        AzuraEngine.renderer.init('game-canvas');
+        AzuraEngine.initControls();
+        AzuraEngine.state.isRunning = true;
+        
+        AzuraEngine.log("System Initialized...");
+        AzuraEngine.log("Rendering 20x20 Matrix...");
+        
+        // Motoru Ateşle
+        AzuraEngine.mainLoop();
+    }
+
+    // Ekran değişiminde renderı güncelle
+    window.addEventListener('resize', () => AzuraEngine.renderer.resize());
+</script>
+
 </body>
 </html>
