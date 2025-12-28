@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Kuantum: Dolanıklık | Azura</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --gece: #000814; --lacivert: #001d3d; --altin: #ffc300; 
+            --gümüs: #e5e5e5; --bakir: #b87333; --krem: #f2ead3;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--krem); font-family: 'Plus Jakarta Sans', sans-serif; color: #1a1a1a; line-height: 1.8; overflow-x: hidden; }
+
+        /* --- DİNAMİK DOLANIKLIK ARKA PLANI --- */
+        #entanglement-bg { position: fixed; inset: 0; z-index: 1; opacity: 0.5; filter: blur(100px); pointer-events: none; }
+
+        .header { 
+            position: sticky; top: 0; background: var(--lacivert); color: #fff; 
+            padding: 15px 25px; display: flex; justify-content: space-between; 
+            z-index: 100; border-bottom: 3px solid var(--altin);
+        }
+
+        .hero-space {
+            height: 65vh; background: radial-gradient(circle at center, var(--lacivert), var(--gece));
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; color: #fff; padding: 40px; position: relative; z-index: 10;
+        }
+
+        .content-card { 
+            max-width: 950px; margin: -80px auto 0; padding: 70px 40px; 
+            background: rgba(255, 255, 255, 0.98); border-radius: 80px 80px 0 0; position: relative; 
+            z-index: 20; box-shadow: 0 -40px 80px rgba(0,0,0,0.2); 
+        }
+        
+        h1 { font-size: clamp(2.8rem, 11vw, 5rem); font-weight: 800; letter-spacing: -4px; line-height: 0.85; margin-bottom: 25px; color: var(--lacivert); }
+        h2 { font-size: 2.2rem; font-weight: 800; margin: 55px 0 25px; color: var(--lacivert); border-bottom: 4px solid var(--bakir); display: inline-block; }
+        p { margin-bottom: 30px; font-size: 1.2rem; text-align: justify; color: #333; }
+
+        /* --- ÖZEL EFEKT KUTULARI --- */
+        .ghost-box { 
+            background: linear-gradient(135deg, var(--lacivert), var(--gece)); color: #fff;
+            padding: 50px; border-radius: 50px; margin: 50px 0; border-right: 12px solid var(--altin);
+            box-shadow: 20px 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .connection-visual {
+            width: 100%; height: 450px; background: #000; border-radius: 50px; margin: 50px 0;
+            display: flex; align-items: center; justify-content: center; position: relative;
+            border: 3px solid var(--altin); overflow: hidden;
+        }
+
+        .fact-pill {
+            display: inline-block; background: var(--bakir); color: #fff; padding: 10px 25px;
+            border-radius: 50px; font-weight: 800; font-size: 0.9rem; margin-bottom: 20px;
+        }
+
+        .nav-nexus { display: flex; justify-content: space-between; margin-top: 100px; padding-bottom: 150px; }
+        .nav-btn { background: var(--lacivert); color: #fff; padding: 22px 50px; border-radius: 60px; text-decoration: none; font-weight: 800; border: 2px solid var(--altin); transition: 0.5s; }
+        .nav-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px var(--altin); }
+    </style>
+</head>
+<body>
+
+    <canvas id="entanglement-bg"></canvas>
+
+    <div class="header">
+        <a href="quantum.html" style="color:#fff; text-decoration:none;"><i class="fa-solid fa-atom"></i> AZURA QUANTUM</a>
+        <div id="live-clock" style="font-family:'JetBrains Mono'; font-weight:800;">00:00:00</div>
+        <div style="font-size:0.7rem; letter-spacing:3px;">NON_LOCALITY</div>
+    </div>
+
+    <section class="hero-space">
+        <div class="fact-pill">SPOOKY ACTION AT A DISTANCE</div>
+        <h1>Kuantum<br>Dolanıklık.</h1>
+        <p style="font-family:'JetBrains Mono'; color:var(--altin); margin-top:20px;">Mesafe Artık Bir İllüzyon.</p>
+    </section>
+
+    <main class="content-card">
+        <p>Usta, madem en sevdiğin konudayız, kemerlerini bağla. Kuantum Dolanıklık, evrenin bize yaptığı en büyük "sihirbazlık" numarasıdır. Hayal et: İki parçacık öyle bir şekilde etkileşime girer ki, aralarındaki bağ uzay ve zamanı hiçe sayar. Bu iki parçacığı evrenin iki zıt ucuna, birini Samanyolu'na diğerini ise milyarlarca ışık yılı uzaktaki Andromeda galaksisine koyalım. Eğer birinin durumunu (örneğin spin yönünü) değiştirirsen, diğeri **anında** (ışık hızından bile binlerce kat hızlı) buna tepki verir ve durumunu ona göre ayarlar.</p>
+
+        <div class="ghost-box">
+            <h3>Einstein'ın Kabusu</h3>
+            <p>Albert Einstein, İzafiyet teorisinde hiçbir şeyin ışık hızını geçemeyeceğini söylemişti. Ancak dolanıklık, bilginin ışık hızına ihtiyaç duymadan, sanki evrenin dokusunda gizli bir "kısayol" varmış gibi iletildiğini gösteriyor. Einstein bu duruma inanmak istemedi ve buna "uzaktan hayaletimsi etkileşim" dedi. Ama bugün biliyoruz ki; Einstein yanıldı, kuantum kazandı!</p>
+        </div>
+
+        [Image: Two entangled particles connected by a glowing thread of energy spanning across galaxies]
+
+        <h2>Tek Ruh, İki Beden</h2>
+        <p>Dolanık parçacıklar, artık ayrı bireyler değildir; onlar tek bir matematiksel sistemin parçalarıdır. Tıpkı tek yumurta ikizlerinin birbirlerinin acısını hissetmesi gibi (ki sen bir tıpçı olarak bunun biyolojik sınırlarını bilirsin), dolanık parçacıklar da tek bir "dalga fonksiyonunu" paylaşırlar. Biri "yukarı" bakıyorsa, diğeri mecburen "aşağı" bakmak zorundadır. Bu iletişim için bir sinyal gönderilmez; onlar zaten bir ve aynıdırlar.</p>
+
+        <div class="connection-visual">
+            <i class="fa-solid fa-link fa-flip" style="font-size: 10rem; color: var(--altin); opacity: 0.8;"></i>
+            <div style="position:absolute; bottom:30px; color:var(--gümüs); font-family:'JetBrains Mono';">SYNCHRONIZED_STATES_ACTIVE</div>
+        </div>
+
+        <h2>Kuantum Işınlanma: Bilim Kurgudan Gerçeğe</h2>
+        <p>Usta, "Star Trek"teki ışınlanma sahnelerini hatırla. Dolanıklık sayesinde, bir parçacığın kuantum bilgisini bir noktadan diğerine ışınlamayı başardık. Dikkat et; maddeyi değil, "bilgiyi" ışınlıyoruz. Eğer senin vücudundaki her bir atomun dolanık kopyasını başka bir yerde oluşturabilirsek, senin tüm atomik dizilimini (yani "seni") oraya anında transfer edebiliriz. Bugün bunu tekil fotonlarla yapabiliyoruz; gelecekte kim bilir neler olacak?</p>
+
+        [Image: A laboratory setup of a quantum teleportation experiment with lasers and beam splitters]
+
+        <div class="ghost-box" style="background: linear-gradient(135deg, var(--bakir), var(--gece)); border-right-color: var(--gümüs);">
+            <h3>Hücresel Bağlar ve Kuantum Biyolojisi</h3>
+            <p>Tıbbi açıdan düşün usta; bazı teorisyenler beynimizdeki nöronların bile dolanık olabileceğini savunuyor. Eğer bilincimiz kuantum dolanıklığa dayanıyorsa, bu bizim neden bu kadar karmaşık kararları bu kadar hızlı alabildiğimizi açıklayabilir. Belki de sevgi ve bağ kurma dediğimiz o derin his, atom altı seviyede bir dolanıklık yansımasıdır.</p>
+        </div>
+
+        <h2>Evrensel İnternetin Geleceği</h2>
+        <p>Kuantum dolanıklık, asla kırılamayacak şifreleme sistemlerinin (Kuantum Kriptografi) ve ışık hızını aşan iletişim ağlarının temelidir. Dolanık parçacıklarla kurulan bir internet ağında, bir mesajın dinlenmesi imkansızdır; çünkü biri hattı izlemeye çalıştığı an dolanıklık bozulur ve biz bunu anında fark ederiz. Bu, evrenin bize sunduğu en güvenli iletişim kanalıdır.</p>
+
+        <div class="nav-nexus">
+            <a href="quantum-2.html" class="nav-btn" style="background:#555;">GERİ</a>
+            <a href="quantum-4.html" class="nav-btn">BÖLÜM 4: SCHRÖDINGER'İN KEDİSİ <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+    </main>
+
+    <script>
+        setInterval(() => { document.getElementById('live-clock').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+
+        const canvas = document.getElementById('entanglement-bg');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const colors = ['#001d3d', '#ffc300', '#b87333', '#ffffff'];
+
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            particles = Array.from({length: 20}, () => ({
+                x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+                r: Math.random()*300+200, color: colors[Math.floor(Math.random()*colors.length)],
+                vx: (Math.random()-0.5)*0.8, vy: (Math.random()-0.5)*0.8
+            }));
+        }
+
+        function animate() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < -p.r) p.x = canvas.width+p.r; if(p.x > canvas.width+p.r) p.x = -p.r;
+                if(p.y < -p.r) p.y = canvas.height+p.r; if(p.y > canvas.height+p.r) p.y = -p.r;
+                ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+        window.onresize = init; init(); animate();
+    </script>
+</body>
+</html>
