@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>İzafiyet: Gravitasyonel Dalgalar | Azura</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --bordo: #5a0000; --krem: #f2ead3; --ceviz: #3d2b1f; --altin: #b8860b;
+            --lacivert: #001f3f; --bakir: #b87333;
+        }
+        body { background: var(--krem); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--ceviz); line-height: 1.8; }
+        
+        .header { 
+            position: sticky; top: 0; background: var(--bordo); color: #fff; 
+            padding: 15px 25px; display: flex; justify-content: space-between; 
+            z-index: 100; border-bottom: 3px solid var(--altin);
+        }
+
+        .article-body { max-width: 900px; margin: 40px auto; padding: 0 25px; }
+        
+        h1 { font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 800; letter-spacing: -3px; line-height: 1; color: var(--bordo); margin-bottom: 30px; }
+        h2 { font-size: 1.8rem; font-weight: 800; margin-top: 50px; color: var(--lacivert); border-left: 5px solid var(--altin); padding-left: 15px; }
+        p { margin-bottom: 25px; font-size: 1.1rem; text-align: justify; }
+
+        /* ÖZEL GÖRSEL VE VURGU ALANLARI */
+        .wave-box { 
+            background: #fff; border-radius: 40px; padding: 40px; 
+            margin: 50px 0; border: 2.5px solid var(--bordo); 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.05); text-align: center;
+        }
+
+        .scientific-note { 
+            background: var(--lacivert); color: #fff; padding: 35px; 
+            border-radius: 35px; margin: 40px 0; border-bottom: 8px solid var(--bakir);
+        }
+
+        .collision-info { 
+            background: var(--bakir); color: #fff; padding: 40px; 
+            border-radius: 40px; margin: 50px 0; font-style: italic;
+        }
+
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 80px; padding-bottom: 120px; }
+        .nav-link { background: var(--bordo); color: #fff; padding: 18px 40px; border-radius: 50px; text-decoration: none; font-weight: 800; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <a href="relativity.html" style="color:#fff; text-decoration:none;"><i class="fa-solid fa-chevron-left"></i> SEKTÖR</a>
+        <div style="font-family:'JetBrains Mono'; font-weight:800;" id="live-clock">00:00:00</div>
+        <div style="font-size:0.75rem; opacity:0.8;">BÖLÜM 07 / 08</div>
+    </div>
+
+    <main class="article-body">
+        <p style="font-family:'JetBrains Mono'; color:var(--bordo); font-size:0.8rem; letter-spacing:5px; font-weight:800;">GRAVITATIONAL WAVES</p>
+        <h1>Uzay-Zamanın<br>Çığlığı.</h1>
+
+        <p>Usta, Bölüm 3'te uzay-zamanın bir kumaş gibi büküldüğünü konuşmuştuk. Şimdi hayal et: Bu kumaşın üzerine iki tane devasa, çok yoğun gülle (Karadelikler) koyuyoruz ve onları birbirlerinin etrafında inanılmaz bir hızla döndürüyoruz. Bu dönüş o kadar şiddetlidir ki, uzay-zaman kumaşında tıpkı suya atılan bir taşın yarattığı halkalar gibi dalgalanmalar oluşur. İşte bu dalgalanmalara "Gravitasyonel Dalgalar" diyoruz. Onlar, evrenin en şiddetli olaylarının ışık hızıyla yayılan yankılarıdır.</p>
+
+        
+
+        <h2>Görünmezi Duymak</h2>
+        <p>İnsanlık binlerce yıldır gökyüzünü sadece "görerek" inceledi. Yıldızların ışığını, radyo dalgalarını veya X-ışınlarını kullandık. Ama gravitasyonel dalgalar tamamen farklıdır; onlar bir ışık türü değildir. Onlar bizzat uzayın kendisinin genişleyip daralmasıdır. Bir dalga senin üzerinden geçtiğinde, boyun saniyenin milyarda biri kadar uzar ve sonra kısalır. Einstein bu dalgaların varlığını 1916'da matematiksel olarak kanıtlamıştı ama bunların o kadar zayıf olacağını düşünüyordu ki, insanlığın bunları asla tespit edemeyeceğine inanıyordu.</p>
+
+        <div class="wave-box">
+            <i class="fa-solid fa-water" style="font-size: 3rem; color: var(--bordo); margin-bottom: 20px;"></i>
+            <h3>LIGO: Dünyanın En Hassas Kulağı</h3>
+            <p style="opacity:0.7;">L-şeklindeki 4 kilometrelik devasa tünellerde lazerler kullanarak, bir atom çekirdeğinin binde biri kadar küçük sarsıntıları ölçen teknoloji.</p>
+        </div>
+
+        
+
+        <h2>1.3 Milyar Yıl Önceki Çarpışma</h2>
+        <p>14 Eylül 2015 günü, LIGO dedektörleri evrenin derinliklerinden gelen çok hafif bir "cıvıltı" (chirp) duydular. Bu ses, 1.3 milyar ışık yılı uzakta, birbirine çarpan iki dev karadeliğin son saniyelerindeki çığlığıydı. Çarpışma anında, Güneş'in kütlesinin tam 3 katı kadar madde saf enerjiye dönüştü ve gravitasyonel dalga olarak evrene yayıldı. O kısa anda, bu çarpışmanın gücü, evrendeki tüm yıldızların toplam parlaklığından 50 kat daha fazlaydı.</p>
+
+        <div class="collision-info">
+            "Bu keşifle birlikte evrene yeni bir duyu kazandırdık. Artık sadece bakmıyoruz, aynı zamanda uzay-zamanın kalbinin atışını dinliyoruz."
+        </div>
+
+        <h2>Neden Bu Kadar Önemli?</h2>
+        <p>Peki usta, bu dalgaları duymak neden bu kadar büyük bir olay? Çünkü ışık (fotonlar), büyük patlamadan ancak 380.000 yıl sonra evrende serbestçe dolaşmaya başlayabildi. Yani teleskoplarla evrenin en başına kadar gidemeyiz. Ama gravitasyonel dalgalar, büyük patlamanın ilk saniyesinden itibaren evrende dolaşıyor. Onları inceleyerek zamanın başlangıcına, yani o "ilk ana" kadar gidebiliriz. Bu, tıp fakültesinde bir hastalığın sadece semptomlarına bakmak yerine, genetik kodun bizzat kendisine inmek gibidir.</p>
+
+        
+
+        <div class="scientific-note">
+            <b>Zirve Not:</b> Gravitasyonel dalgalar her şeyin içinden geçer. Işığı engelleyen toz bulutları, galaksiler veya gezegenler onları durduramaz. Onlar evrenin en dürüst elçileridir; kaynağından çıktıkları gibi, hiçbir bozulmaya uğramadan bize ulaşırlar.
+        </div>
+
+        <h2>Evrenin Yeni Senfonisi</h2>
+        <p>Artık karadeliklerin birleşmesini, nötron yıldızlarının çarpışmasını ve evrenin genişlemesini bu dalgalar sayesinde çok daha hassas ölçebiliyoruz. Her çarpışma, uzay-zamanın kumaşında kendine has bir nota bırakıyor. Biz şu an bu muazzam senfoninin ilk notalarını duymaya başladık. Gelecekte, uzaya yerleştirilecek daha büyük dedektörlerle (LISA projesi gibi), evrenin en karanlık sırlarını bu melodilerle çözeceğiz.</p>
+
+        <div class="nav-buttons">
+            <a href="relativity-6.html" class="nav-link" style="background:#888;"><i class="fa-solid fa-chevron-left"></i> ÖNCEKİ</a>
+            <a href="relativity-8.html" class="nav-link">BÖLÜM 8: KUANTUM KESİŞİMİ <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+    </main>
+
+    <script>
+        function updateTime() {
+            document.getElementById('live-clock').innerText = new Date().toLocaleTimeString('tr-TR');
+        }
+        setInterval(updateTime, 1000); updateTime();
+    </script>
+</body>
+</html>
