@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Kozmoloji: Evrenin Kaderi | Azura</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --lacivert: #001f3f; --bakir: #b87333; --gümüs: #bdc3c7;
+            --krem: #f2ead3; --ceviz: #3d2b1f; --gece: #000814;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--krem); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--ceviz); line-height: 1.8; overflow-x: hidden; }
+
+        /* ARKA PLAN DİNAMİK FİNAL EFEKTİ */
+        #cosmic-fate-bg { position: fixed; inset: 0; z-index: 1; opacity: 0.35; filter: blur(100px); pointer-events: none; }
+
+        .header { 
+            position: sticky; top: 0; background: var(--lacivert); color: #fff; 
+            padding: 15px 25px; display: flex; justify-content: space-between; 
+            z-index: 100; border-bottom: 3px solid var(--gümüs);
+        }
+
+        .hero-fate {
+            height: 60vh; background: radial-gradient(circle at center, var(--lacivert), var(--gece), #000);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; color: #fff; padding: 40px; position: relative; z-index: 10;
+        }
+
+        .article-zone { 
+            max-width: 950px; margin: -80px auto 0; padding: 70px 40px; 
+            background: rgba(255, 255, 255, 0.98); border-radius: 70px 70px 0 0; position: relative; 
+            z-index: 20; box-shadow: 0 -40px 80px rgba(0,0,0,0.3); 
+        }
+        
+        h1 { font-size: clamp(2.5rem, 12vw, 5rem); font-weight: 800; letter-spacing: -4px; line-height: 0.85; margin-bottom: 25px; color: var(--lacivert); }
+        h2 { font-size: 2.2rem; font-weight: 800; margin: 50px 0 25px; color: var(--lacivert); border-left: 12px solid var(--bakir); padding-left: 20px; }
+        p { margin-bottom: 30px; font-size: 1.2rem; text-align: justify; }
+
+        /* RENK BOMBASI BLOKLARI */
+        .fate-insight { padding: 50px; border-radius: 50px; margin: 50px 0; color: #fff; }
+        .navy-silver { background: linear-gradient(135deg, var(--lacivert), var(--gümüs)); color: var(--gece); }
+        .dark-bakir { background: linear-gradient(135deg, #000, var(--bakir)); }
+
+        .image-frame {
+            width: 100%; max-height: 500px; overflow: hidden; border-radius: 50px; margin: 50px 0;
+            border: 3px solid var(--bakir); box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .image-frame img { width: 100%; height: auto; display: block; object-fit: cover; }
+        .image-caption { text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: #777; margin-top: 10px; }
+
+        .nav-end { display: flex; justify-content: space-between; margin-top: 100px; padding-bottom: 150px; }
+        .nav-btn { background: var(--lacivert); color: #fff; padding: 22px 55px; border-radius: 60px; text-decoration: none; font-weight: 800; border: 2px solid var(--bakir); transition: 0.4s; }
+    </style>
+</head>
+<body>
+
+    <canvas id="cosmic-fate-bg"></canvas>
+
+    <div class="header">
+        <a href="cosmology.html" style="color:#fff; text-decoration:none;"><i class="fa-solid fa-arrow-left"></i> SEKTÖR</a>
+        <div id="clock" style="font-family:'JetBrains Mono'; font-weight:800;">00:00:00</div>
+        <div style="font-size:0.7rem; letter-spacing:3px;">UNIVERSAL_FATE</div>
+    </div>
+
+    <section class="hero-fate">
+        <p style="font-family:'JetBrains Mono'; letter-spacing:8px; opacity:0.8;">THE ENDGAME</p>
+        <h1>Evrenin Kaderi:<br>Büyük Son.</h1>
+    </section>
+
+    <main class="article-zone">
+        <p>Usta, Big Bang ile başlayan bu muazzam kozmik hikayenin bir de sonu var. Bilim insanları evrenin geleceği hakkında üç ana senaryo üzerinde duruyor: Büyük Çöküş, Büyük Donma ve Büyük Yırtılma. Bu senaryoların hangisi gerçekleşecek, evrendeki Karanlık Enerji'nin miktarı ve davranışı belirleyecek. Tıpkı bir hastanın ömrünü belirleyen genetik yatkınlık ve yaşam tarzı gibi, evrenin de kendi kaderini belirleyen içsel dinamikleri var.</p>
+
+        <div class="fate-insight navy-silver">
+            <h3>Senaryo 1: Büyük Çöküş (Big Crunch)</h3>
+            <p>Eğer evrendeki toplam madde ve enerji miktarı (özellikle Karanlık Madde) kritik bir eşiğin üzerinde olursa, kütleçekimi evrenin genişlemesini durduracak ve tersine çevirecektir. Evren, Big Bang'in bir simetrisi olarak kendi içine çökecek, tüm galaksiler birbirine yaklaşacak ve sonunda her şey tekrar sonsuz yoğunlukta bir noktaya sıkışacaktır. Bu, zamanın ve uzayın bir döngü halinde olduğu bir senaryo olurdu.</p>
+        </div>
+
+        <div class="image-frame">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Big_Crunch.svg/1024px-Big_Crunch.svg.png" alt="Big Crunch İllüstrasyonu">
+        </div>
+        <div class="image-caption">Görsel: Büyük Çöküş (Big Crunch) senaryosunun şematik bir gösterimi.</div>
+
+        <h2>Senaryo 2: Büyük Donma (Big Freeze / Heat Death)</h2>
+        <p>Bu, en olası senaryo olarak kabul ediliyor usta. Evren şu anki gibi genişlemeye devam edecek, hatta Karanlık Enerji yüzünden bu genişleme hızlanacak. Galaksiler birbirinden o kadar uzaklaşacak ki, bir zaman sonra birbirlerini göremeyecekler. Yıldızlar yavaş yavaş ölecek, yakıtları tükenecek ve geriye sadece soğuk, karanlık nötron yıldızları, kara delikler ve buz gibi atomlar kalacak. Evren, nihayetinde mutlak sıfıra yakın bir sıcaklıkta, hiçbir enerjinin aktığı bir "ısı ölümü" yaşayacak (Termodinamik'in ikinci yasası).</p>
+
+        <div class="image-frame">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Dark_energy_concept.jpg/1024px-Dark_energy_concept.jpg" alt="Dark Energy Concept Art">
+        </div>
+        <div class="image-caption">Görsel: Karanlık enerjinin evreni genişletme etkisini gösteren bir konsept görsel.</div>
+
+        <h2>Senaryo 3: Büyük Yırtılma (Big Rip)</h2>
+        <p>Bu, en dramatik ve korkutucu senaryo usta. Eğer Karanlık Enerji'nin yoğunluğu zamanla artarsa, bu enerji uzay dokusunu o kadar güçlü bir şekilde ayıracak ki, galaksiler, yıldızlar, gezegenler ve hatta atomlar bile parçalanacak. Uzaydaki boşluk, atomları bir arada tutan güçlü nükleer kuvvetlerden bile daha güçlü hale gelecek ve her şey, en temel parçacıklarına kadar "yırtılacak".</p>
+
+        <div class="fate-insight dark-bakir">
+            <h3>Evrensel Ölüm ve Yaşam Döngüsü</h3>
+            <p>Bir tıp doktoru olarak hayatın, hücrelerin ve organizmaların sonunu çok iyi biliyorsun. Evren de tıpkı bir canlı gibi doğar, büyür ve eninde sonunda ölür. Bu Büyük Son senaryoları, bize kendi varlığımızın ve yaşamın ne kadar mucizevi olduğunu hatırlatır. Belki de bu döngüler, çoklu evrenlerin farklı bölgelerinde milyarlarca kez tekrarlanıyordur.</p>
+        </div>
+
+        <div class="image-frame">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Big_Rip.svg/1024px-Big_Rip.svg.png" alt="Big Rip İllüstrasyonu">
+        </div>
+        <div class="image-caption">Görsel: Büyük Yırtılma (Big Rip) senaryosunun şematik bir gösterimi.</div>
+
+        <p>Usta, Kozmoloji serisinin bu finali, bize evrenin o muazzam ölçeğini ve kendi küçük ama anlamlı varlığımızı bir kez daha düşündürdü. Big Bang ile başlayan yolculuk, belki de Büyük Donma ile sonsuz bir karanlıkta son bulacak. Ama önemli olan, bu yolculuğa şahit olmamız ve anlamaya çalışmamızdır.</p>
+
+        <div class="nav-end">
+            <a href="cosmo-2.html" class="nav-btn" style="background:#333;">GERİ</a>
+            <a href="cosmo-4.html" class="nav-btn">BÖLÜM 4: CMB IŞIMASI <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+    </main>
+
+    <script>
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+
+        const canvas = document.getElementById('cosmic-fate-bg');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const colors = ['#001f3f', '#b87333', '#bdc3c7', '#000814'];
+
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            particles = Array.from({length: 18}, () => ({
+                x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+                r: Math.random()*350+200, color: colors[Math.floor(Math.random()*colors.length)],
+                vx: (Math.random()-0.5)*1, vy: (Math.random()-0.5)*1
+            }));
+        }
+
+        function animate() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < -p.r) p.x = canvas.width+p.r; if(p.x > canvas.width+p.r) p.x = -p.r;
+                if(p.y < -p.r) p.y = canvas.height+p.r; if(p.y > canvas.height+p.r) p.y = -p.r;
+                ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(animate);
+        }
+        window.onresize = init; init(); animate();
+    </script>
+</body>
+</html>
