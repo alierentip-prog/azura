@@ -9,7 +9,8 @@
     
     <style>
         :root { 
-            --bg-mesh: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 33%, #faf5ff 66%, #fff1f2 100%);
+            /* Temel açık renkli zemin */
+            --bg-base: #f8fafc;
             --glass: rgba(255, 255, 255, 0.4);
             --text-dark: #0f172a;
             --p-blue: #3b82f6; --p-red: #ef4444; --p-green: #10b981; 
@@ -19,20 +20,22 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
         
         body { 
-            background: var(--bg-mesh); 
+            background: var(--bg-base);
             color: var(--text-dark); 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             min-height: 100vh; 
-            background-attachment: fixed;
+            overflow-x: hidden; /* Yatay kaydırmayı engelle */
         }
 
-        /* --- RENKLİ AURORA KÜRELERİ --- */
-        .aurora-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
-        .orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.5; animation: orbit 20s infinite linear; }
-        .orb-1 { top: -10%; left: 10%; width: 400px; height: 400px; background: #93c5fd; }
-        .orb-2 { bottom: 10%; right: 10%; width: 500px; height: 500px; background: #f9a8d4; }
-        .orb-3 { top: 40%; left: 50%; width: 300px; height: 300px; background: #86efac; }
-        @keyframes orbit { from { transform: rotate(0deg) translateX(50px) rotate(0deg); } to { transform: rotate(360deg) translateX(50px) rotate(-360deg); } }
+        /* --- HAREKETLİ DUMAN KANVASI --- */
+        #smoke-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1; /* İçeriğin arkasında */
+            pointer-events: none;
+            filter: blur(50px); /* Duman yumuşaklığı için ekstra blur */
+        }
 
         .main-wrapper { position: relative; z-index: 10; padding: 60px 8%; max-width: 1600px; margin: 0 auto; }
 
@@ -46,7 +49,7 @@
 
         .cat-card {
             background: var(--glass);
-            backdrop-filter: blur(15px);
+            backdrop-filter: blur(25px); /* Dumanın üzerindeki bulanıklık */
             padding: 45px 35px;
             border-radius: 40px;
             border: 1px solid rgba(255, 255, 255, 0.7);
@@ -55,24 +58,19 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.03);
         }
 
-        /* Renkli Gölgeler ve Hover Durumları */
         .cat-card:hover { transform: translateY(-15px) scale(1.03); background: rgba(255, 255, 255, 0.9); }
 
+        /* Renk Blokları */
         .physics { border-bottom: 8px solid var(--p-purple); }
         .physics:hover { box-shadow: 0 25px 50px rgba(139, 92, 246, 0.2); }
-        
         .medical { border-bottom: 8px solid var(--p-red); }
         .medical:hover { box-shadow: 0 25px 50px rgba(239, 68, 68, 0.2); }
-        
         .tech { border-bottom: 8px solid var(--p-green); }
         .tech:hover { box-shadow: 0 25px 50px rgba(16, 185, 129, 0.2); }
-        
         .gastro { border-bottom: 8px solid var(--p-orange); }
         .gastro:hover { box-shadow: 0 25px 50px rgba(245, 158, 11, 0.2); }
-        
         .strategy { border-bottom: 8px solid var(--p-blue); }
         .strategy:hover { box-shadow: 0 25px 50px rgba(37, 99, 235, 0.2); }
-
         .lab { background: linear-gradient(to bottom right, rgba(99, 102, 241, 0.2), var(--glass)); border: 2px solid var(--p-indigo); }
 
         .cat-card i { font-size: 2.8rem; margin-bottom: 25px; transition: 0.4s; }
@@ -98,11 +96,7 @@
 </head>
 <body>
 
-    <div class="aurora-container">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
+    <canvas id="smoke-canvas"></canvas>
 
     <div class="main-wrapper">
         <header>
@@ -162,5 +156,84 @@
 
         <footer>© 2025 AZURA_PROJECT // DISCOVER_THE_FUTURE</footer>
     </div>
+
+    <script>
+        const canvas = document.getElementById('smoke-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+
+        // Duman renk paleti (Pastel tonlar)
+        const colors = [
+            'rgba(147, 197, 253, 0.4)', // Mavi
+            'rgba(249, 168, 212, 0.3)', // Pembe
+            'rgba(134, 239, 172, 0.3)', // Yeşil
+            'rgba(167, 139, 250, 0.3)'  // Mor
+        ];
+
+        function init() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+
+            particles = [];
+            // Dev duman bulutları oluştur
+            for (let i = 0; i < 8; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.radius = Math.random() * 300 + 200; // Çok büyük yarıçap
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.speedX = Math.random() * 0.4 - 0.2; // Yavaş yatay hareket
+                this.speedY = Math.random() * 0.4 - 0.2; // Yavaş dikey hareket
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Ekrandan çıkınca diğer taraftan geri getir (Sonsuz döngü)
+                if (this.x + this.radius < 0) this.x = width + this.radius;
+                if (this.x - this.radius > width) this.x = -this.radius;
+                if (this.y + this.radius < 0) this.y = height + this.radius;
+                if (this.y - this.radius > height) this.y = -this.radius;
+            }
+
+            draw() {
+                ctx.beginPath();
+                // Radyal gradyan ile yumuşak kenarlı duman efekti
+                let gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
+                gradient.addColorStop(0, this.color);
+                gradient.addColorStop(1, 'rgba(255, 255, 255, 0)'); // Kenarlarda şeffaflaş
+                
+                ctx.fillStyle = gradient;
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            // Arka planı temizle ama hafif bir iz bırak (isteğe bağlı, şu an tam temizlik)
+            // ctx.fillStyle = 'rgba(248, 250, 252, 0.1)'; ctx.fillRect(0,0,width,height);
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', init);
+        init();
+        animate();
+    </script>
 </body>
 </html>
