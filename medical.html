@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Azura | Singularity Medical</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&family=JetBrains+Mono:wght@800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --kan-bordo: #5a0000; --sinap-mavi: #001f3f; 
+            --klinik-krem: #f2ead3; --bakir-altin: #b87333; 
+            --plazma-beyaz: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--klinik-krem); font-family: 'Plus Jakarta Sans', sans-serif; color: #1a1a1a; }
+        
+        /* --- HIGH-LEVEL HEADER (KAN & SİNAP) --- */
+        .header { 
+            background: var(--kan-bordo); padding: 18px; display: flex; 
+            justify-content: space-between; align-items: center; color: #fff; 
+            border-bottom: 4px solid var(--bakir-altin); box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+        }
+
+        .container { padding: 40px 25px; max-width: 650px; margin: 0 auto; }
+        .hero-text h1 { font-size: 3rem; font-weight: 800; letter-spacing: -3px; line-height: 0.85; margin-bottom: 40px; color: var(--kan-bordo); }
+
+        /* --- CLİNİCAL GATE CARDS (ÜST MODEL) --- */
+        .medical-gates { display: flex; flex-direction: column; gap: 20px; }
+        .gate-card { 
+            background: rgba(255,255,255,0.9); padding: 30px; border-radius: 50px; 
+            display: flex; align-items: center; gap: 25px; text-decoration: none; color: inherit;
+            border: 2.5px solid rgba(90,0,0,0.1); transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+        }
+        .gate-card:hover { transform: scale(1.02); border-color: var(--bakir-altin); box-shadow: 0 20px 45px rgba(90,0,0,0.15); }
+        
+        .icon-shield { 
+            background: linear-gradient(135deg, var(--kan-bordo), var(--sinap-mavi)); 
+            color: #fff; width: 75px; height: 75px; border-radius: 25px; 
+            display: flex; align-items: center; justify-content: center; font-size: 1.8rem; 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2); border: 2px solid var(--bakir-altin);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="menu.html" style="color:#fff;"><i class="fa-solid fa-house-medical"></i></a>
+        <div style="font-family:'JetBrains Mono'; font-weight:800;" id="timer">00:00:00</div>
+        <div style="font-size:0.75rem; letter-spacing:3px;">MED_SECTOR_V2</div>
+    </header>
+
+    <div class="container">
+        <div class="hero-text">
+            <p style="font-family:'JetBrains Mono'; color:var(--bakir-altin); font-size:0.8rem; letter-spacing:5px; font-weight:800; margin-bottom:10px;">HUMAN ARCHITECTURE</p>
+            <h1>Biyolojik<br>Singularity. 🫀</h1>
+        </div>
+
+        <nav class="medical-gates">
+            <a href="med-1.html" class="gate-card">
+                <div class="icon-shield"><i class="fa-solid fa-brain"></i></div>
+                <div><h3 style="font-size:1.4rem;">Nöronal Kaos</h3><p>Beynin elektriksel senfonisi.</p></div>
+            </a>
+            <a href="med-2.html" class="gate-card">
+                <div class="icon-shield" style="background:var(--bakir-altin);"><i class="fa-solid fa-microscope"></i></div>
+                <div><h3 style="font-size:1.4rem;">Klinik Vaka Arşivi</h3><p>Görünmeyeni teşhis etmek.</p></div>
+            </a>
+            <a href="med-3.html" class="gate-card">
+                <div class="icon-shield" style="background:var(--sinap-mavi);"><i class="fa-solid fa-dna"></i></div>
+                <div><h3 style="font-size:1.4rem;">Genetik Kod</h3><p>Yaşamın dijital alfabesi.</p></div>
+            </a>
+            <a href="med-4.html" class="gate-card">
+                <div class="icon-shield" style="background:var(--kan-bordo);"><i class="fa-solid fa-heart-pulse"></i></div>
+                <div><h3 style="font-size:1.4rem;">Kardiyovasküler Akış</h3><p>Pompanın hidrolik matematiği.</p></div>
+            </a>
+        </nav>
+    </div>
+
+    <script>
+        setInterval(() => { document.getElementById('timer').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+    </script>
+</body>
+</html>
