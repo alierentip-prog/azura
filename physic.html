@@ -5,176 +5,196 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Azura Physics | Sektörler</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bordo: #800000;
-            --krem-koyu: #f5f5dc; 
-            --krem-acik: #fdfaf5;
-            --text: #2c1810;
+            --bordo: #5a0000;      /* Bordo & Ceviz Paleti */
+            --ceviz: #3d2b1f;      
+            --koyu-yesil: #0a2f1f; /* Koyu Yeşil & Altın Paleti */
+            --altin: #b8860b;      
+            --krem-koyu: #f2ead3;  /* Koyu Krem Arka Plan */
+            --krem-card: #faf7ed;
+            --text-size: 16px;
         }
 
         body.dark-mode {
-            --krem-koyu: #1a0f0f;
-            --krem-acik: #251a1a;
-            --text: #f5f5dc;
+            --krem-koyu: #120a0a;
+            --krem-card: #1c1313;
+            --text: #f2ead3;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         
         body { 
             background: var(--krem-koyu); 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            color: var(--text); 
+            font-size: var(--text-size);
+            color: var(--ceviz); 
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* --- ARKA PLAN BALONCUKLARI --- */
         canvas { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
 
-        /* --- ÜST ŞERİT --- */
+        /* --- ÜST ŞERİT (KOYU YEŞİL & ALTIN) --- */
         .header {
-            background: var(--bordo);
+            background: var(--koyu-yesil);
             padding: 15px 25px;
             display: flex;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            border-bottom: 3px solid var(--altin);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
 
-        .back-btn { color: #fff; text-decoration: none; font-size: 1.3rem; margin-right: 20px; transition: 0.3s; }
-        .back-btn:hover { transform: translateX(-5px); }
+        .back-btn { color: var(--altin); text-decoration: none; font-size: 1.4rem; margin-right: 20px; }
+        .sector-id { color: #fff; font-family: 'JetBrains Mono'; font-weight: 800; font-size: 1.1rem; letter-spacing: 2px; }
 
-        .sector-title { color: #fff; font-family: 'JetBrains Mono'; font-weight: 800; font-size: 1.1rem; letter-spacing: 2px; }
-
-        /* --- İÇERİK --- */
-        .container { position: relative; z-index: 10; padding: 30px 20px; max-width: 600px; margin: 0 auto; }
+        /* --- ANA İÇERİK --- */
+        .container { position: relative; z-index: 10; padding: 30px 20px; max-width: 500px; margin: 0 auto; }
 
         .hero { margin-bottom: 40px; }
-        .hero p { font-family: 'JetBrains Mono'; font-size: 0.75rem; color: var(--bordo); letter-spacing: 3px; font-weight: 800; }
-        .hero h1 { font-size: 2.8rem; font-weight: 800; letter-spacing: -3px; line-height: 0.85; margin-top: 5px; }
+        .hero p { font-family: 'JetBrains Mono'; font-size: 0.7rem; color: var(--koyu-yesil); letter-spacing: 4px; font-weight: 800; text-transform: uppercase; }
+        .hero h1 { font-size: 2.8rem; font-weight: 800; letter-spacing: -3px; line-height: 0.85; margin-top: 5px; color: var(--koyu-yesil); }
 
-        /* --- BÖLÜM KAPILARI --- */
-        .sector-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        /* --- FİZİK BÖLÜM KAPILARI --- */
+        .physics-grid { display: flex; flex-direction: column; gap: 15px; }
 
-        .physics-gate {
-            background: var(--krem-acik);
+        .gate {
+            background: var(--krem-card);
             padding: 25px;
-            border-radius: 35px; /* Yumuşak balon köşeler */
+            border-radius: 35px; /* Yumuşak Balon Köşeler */
             border: 2px solid #fff;
             display: flex;
             align-items: center;
             gap: 20px;
             text-decoration: none;
             color: inherit;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 10px 25px rgba(0,0,0,0.02);
         }
 
-        .physics-gate:hover { transform: scale(1.03) translateY(-5px); background: #fff; border-color: var(--bordo); }
-        .physics-gate:active { transform: scale(0.95); }
+        .gate:hover { transform: scale(1.03) translateY(-5px); border-color: var(--altin); }
+        .gate:active { transform: scale(0.95); }
 
         .gate-icon {
-            width: 70px; height: 70px; border-radius: 22px;
-            background: var(--bordo); color: #fff;
+            width: 65px; height: 65px; border-radius: 20px;
+            background: var(--koyu-yesil); color: var(--altin);
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.8rem; box-shadow: 0 10px 20px rgba(128,0,0,0.2);
+            font-size: 1.6rem; box-shadow: 0 10px 20px rgba(10,47,31,0.2);
         }
 
-        .gate-info h2 { font-size: 1.5rem; font-weight: 800; color: var(--text); letter-spacing: -1px; }
-        .gate-info p { font-size: 0.8rem; opacity: 0.6; font-weight: 500; margin-top: 2px; }
+        .gate-info h2 { font-size: 1.4rem; font-weight: 800; color: var(--ceviz); letter-spacing: -1px; }
+        .gate-info p { font-size: 0.8rem; opacity: 0.6; font-weight: 500; }
 
-        .arrow { margin-left: auto; font-size: 1.2rem; color: var(--bordo); opacity: 0.2; }
+        .arrow { margin-left: auto; color: var(--altin); opacity: 0.5; }
+
+        /* ERİŞİLEBİLİRLİK PANELİ */
+        .access-bar {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: var(--koyu-yesil); padding: 12px 25px; border-radius: 50px;
+            display: flex; align-items: center; gap: 20px; z-index: 1000;
+            border: 1px solid var(--altin); box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        .access-btn { background: none; border: none; color: #fff; font-size: 1.1rem; cursor: pointer; }
 
     </style>
 </head>
 <body>
 
-    <canvas id="bg-stars"></canvas>
+    <canvas id="cosmic-dust"></canvas>
 
     <header class="header">
         <a href="menu.html" class="back-btn"><i class="fa-solid fa-arrow-left-long"></i></a>
-        <div class="sector-title">PHYSICS_SYSTEM</div>
+        <div class="sector-id">PHYSICS_SECTOR</div>
     </header>
 
     <div class="container">
         <div class="hero">
-            <p>QUANTUM_LEVEL_01</p>
-            <h1>Evrenin<br>Mimari Sırları.</h1>
+            <p>The Laws of Everything</p>
+            <h1>Evrenin<br>Derinliği. 🌌</h1>
         </div>
 
-        <div class="sector-grid">
-            <a href="relativity.html" class="physics-gate">
-                <div class="gate-icon"><i class="fa-solid fa-hourglass-start"></i></div>
+        <nav class="physics-grid">
+            <a href="relativity.html" class="gate" style="border-left: 5px solid var(--bordo);">
+                <div class="gate-icon" style="background: var(--bordo);"><i class="fa-solid fa-hourglass-start"></i></div>
                 <div class="gate-info">
                     <h2>İzafiyet Teorisi</h2>
-                    <p>Zaman ve Mekan Bükülmesi</p>
+                    <p>Zaman ve Uzay Bükülmesi</p>
                 </div>
                 <i class="fa-solid fa-chevron-right arrow"></i>
             </a>
 
-            <a href="quantum.html" class="physics-gate">
+            <a href="quantum.html" class="gate" style="border-left: 5px solid var(--koyu-yesil);">
                 <div class="gate-icon"><i class="fa-solid fa-atom"></i></div>
                 <div class="gate-info">
                     <h2>Kuantum Mekaniği</h2>
-                    <p>Parçacıkların Gizemli Dünyası</p>
+                    <p>Atom Altı Dünyanın Gizemi</p>
                 </div>
                 <i class="fa-solid fa-chevron-right arrow"></i>
             </a>
 
-            <a href="thermodynamics.html" class="physics-gate">
-                <div class="gate-icon"><i class="fa-solid fa-fire-flame-curved"></i></div>
+            <a href="kozmoloji.html" class="gate" style="border-left: 5px solid var(--altin);">
+                <div class="gate-icon" style="background: var(--ceviz); color: var(--altin);"><i class="fa-solid fa-circle-nodes"></i></div>
                 <div class="gate-info">
-                    <h2>Termodinamik</h2>
-                    <p>Enerji ve Entropi Yasaları</p>
+                    <h2>Kozmoloji</h2>
+                    <p>Büyük Patlama ve Galaksiler</p>
                 </div>
                 <i class="fa-solid fa-chevron-right arrow"></i>
             </a>
 
-            <a href="optics.html" class="physics-gate">
-                <div class="gate-icon"><i class="fa-solid fa-eye"></i></div>
+            <a href="kaos.html" class="gate" style="border-left: 5px solid var(--bordo);">
+                <div class="gate-icon" style="background: var(--ceviz); color: var(--bordo);"><i class="fa-solid fa-wind"></i></div>
                 <div class="gate-info">
-                    <h2>Optik & Işık</h2>
-                    <p>Fotonların Yolculuğu</p>
+                    <h2>Kaos Teorisi</h2>
+                    <p>Karmaşık Sistem Analizi</p>
                 </div>
                 <i class="fa-solid fa-chevron-right arrow"></i>
             </a>
-        </div>
+        </nav>
+    </div>
+
+    <div class="access-bar">
+        <button class="access-btn" onclick="adjustFont(1.2)"><i class="fa-solid fa-plus"></i></button>
+        <button class="access-btn" onclick="adjustFont(0.8)"><i class="fa-solid fa-minus"></i></button>
+        <button class="access-btn" onclick="document.body.classList.toggle('dark-mode')"><i class="fa-solid fa-circle-half-stroke"></i></button>
     </div>
 
     <script>
-        const canvas = document.getElementById('bg-stars');
+        // ERİŞİLEBİLİRLİK FONKSİYONU
+        let fontSize = 16;
+        function adjustFont(scale) {
+            fontSize *= scale;
+            document.documentElement.style.setProperty('--text-size', fontSize + 'px');
+        }
+
+        // KOZMİK TOZ MOTORU (Altın Rengi)
+        const canvas = document.getElementById('cosmic-dust');
         const ctx = canvas.getContext('2d');
-        let particles = [];
+        let dots = [];
 
         function init() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            particles = Array.from({length: 60}, () => ({
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            dots = Array.from({length: 50}, () => ({
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height,
-                r: Math.random() * 2 + 1,
-                op: Math.random() * 0.5
+                r: Math.random() * 2,
+                v: Math.random() * 0.2 + 0.1
             }));
         }
 
-        function draw() {
+        function animate() {
             ctx.clearRect(0,0,canvas.width, canvas.height);
-            ctx.fillStyle = '#800000';
-            particles.forEach(p => {
-                ctx.globalAlpha = p.op;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-                ctx.fill();
+            ctx.fillStyle = '#b8860b'; /* Altın Tozu */
+            dots.forEach(d => {
+                d.y -= d.v; if(d.y < -5) d.y = canvas.height + 5;
+                ctx.globalAlpha = 0.15; ctx.beginPath();
+                ctx.arc(d.x, d.y, d.r, 0, Math.PI*2); ctx.fill();
             });
-            requestAnimationFrame(draw);
+            requestAnimationFrame(animate);
         }
-
-        window.onresize = init;
-        init(); draw();
+        window.onresize = init; init(); animate();
     </script>
 </body>
 </html>
