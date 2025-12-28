@@ -3,240 +3,238 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Azura | Dijital Kontrol Merkezi</title>
+    <title>Azura | Varoluşsal Kontrol Merkezi</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --bg: #f5f1e6; /* Paylaştığın görseldeki krem tonu */
+            /* Azura Professional Palette */
+            --bg: #f5f1e6; /* Kadim Krem */
             --card: #ffffff;
-            --text: #3d2b1f;
-            --primary: #5a0000;
-            --accent: #b87333;
-            --border-radius: 45px;
-            --shadow: 0 10px 30px rgba(0,0,0,0.05);
+            --text: #3d2b1f; /* Derin Ceviz */
+            --bordo: #5a0000; /* Asil Bordo */
+            --altin: #b87333; /* Bakır Tonu */
+            --lacivert: #001f3f;
+            --emerald: #004d40;
+            --radius: 45px; /* Pofuduk Kenar */
+            --shadow: 0 20px 50px rgba(61, 43, 31, 0.12);
         }
 
         [data-theme="dark"] {
-            --bg: #0a0a0b; --card: #161618; --text: #e0e0e0;
+            --bg: #0a0a0b; --card: #161618; --text: #e0e0e0; --border: rgba(255,255,255,0.05);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         
         body { 
             background: var(--bg); 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             color: var(--text); 
-            line-height: 1.4;
-            padding-bottom: 40px;
+            overflow-x: hidden;
+            padding-bottom: 150px;
         }
 
-        /* --- PROFESYONEL HEADER --- */
-        .top-header {
-            background: var(--primary);
-            padding: 15px 20px;
+        /* --- SİSTEM HEADER --- */
+        .top-nav {
+            background: var(--bordo);
+            padding: 20px 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             color: #fff;
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 2000;
+            border-bottom: 3px solid var(--altin);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
-        .logo { font-family: 'JetBrains Mono'; font-weight: 800; font-size: 1.3rem; letter-spacing: 1px; }
-        .header-widgets { display: flex; align-items: center; gap: 15px; }
-        .time-pill { 
-            background: rgba(255,255,255,0.15); 
-            padding: 5px 12px; 
-            border-radius: 20px; 
-            font-family: 'JetBrains Mono'; 
-            font-size: 0.85rem; 
-            font-weight: 800;
-        }
+        .top-nav .brand { font-family: 'JetBrains Mono'; font-weight: 800; font-size: 1.5rem; letter-spacing: 2px; }
+        .top-nav .widgets { display: flex; align-items: center; gap: 15px; }
+        .status-pill { background: rgba(255,255,255,0.15); padding: 7px 15px; border-radius: 20px; font-family: 'JetBrains Mono'; font-size: 0.8rem; font-weight: 800; }
 
-        /* --- HERO SECTION --- */
-        .hero { padding: 40px 25px 20px; }
-        .hero h1 { 
-            font-size: 2.8rem; 
-            font-weight: 800; 
-            line-height: 0.95; 
-            letter-spacing: -2px;
-            margin-bottom: 5px;
-        }
+        /* --- VAROLUŞSAL MANİFESTO --- */
+        .hero { padding: 50px 30px 30px; }
+        .hero h1 { font-size: 3.5rem; font-weight: 800; line-height: 0.85; letter-spacing: -4px; margin-bottom: 20px; }
+        .hero p { font-size: 1.2rem; opacity: 0.6; font-weight: 500; max-width: 90%; line-height: 1.4; }
 
-        /* --- KONTROL KARTLARI (TAM GÖRSEL UYUMU) --- */
-        .menu-container { padding: 0 20px; display: flex; flex-direction: column; gap: 12px; }
+        /* --- KATEGORİ IZGARASI (GÖRSEL SİMÜLASYONU) --- */
+        .grid-container { padding: 0 25px; display: flex; flex-direction: column; gap: 18px; }
         
-        .card {
+        .azura-card {
             background: var(--card);
-            border-radius: var(--border-radius);
-            padding: 22px;
+            border-radius: var(--radius);
+            padding: 28px;
             display: flex;
             align-items: center;
             text-decoration: none;
             color: inherit;
             box-shadow: var(--shadow);
             position: relative;
-            border: 1px solid rgba(0,0,0,0.02);
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.03);
         }
+
+        /* Renkli Yan Şeritler */
+        .azura-card::before {
+            content: ''; position: absolute; left: 0; top: 20%; bottom: 20%; width: 7px; border-radius: 0 15px 15px 0;
+        }
+        .m-med::before { background: var(--bordo); }
+        .m-physic::before { background: var(--emerald); }
+        .m-gastro::before { background: var(--lacivert); }
+        .m-mind::before { background: #4a148c; }
+        .m-math::before { background: var(--altin); }
+
+        .icon-shield {
+            width: 75px; height: 75px; background: var(--text);
+            border-radius: 28px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.8rem; color: var(--altin); margin-right: 22px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .meta-info h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 2px; }
+        .meta-info p { font-size: 0.95rem; opacity: 0.4; font-weight: 600; }
+        .arrow-link { margin-left: auto; color: var(--altin); opacity: 0.5; font-size: 1.4rem; }
+
+        /* --- MATEMATİKSEL DERİNLİK MODÜLÜ --- */
+        .deep-stats { margin-top: 50px; padding: 0 25px; }
+        .stat-panel { 
+            background: var(--card); border-radius: 40px; padding: 35px; margin-bottom: 25px; 
+            box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,0.02);
+        }
+        .stat-panel h4 { font-size: 1.3rem; margin-bottom: 15px; font-weight: 800; color: var(--bordo); }
         
-        /* Sol şerit renkleri (Görseldeki gibi) */
-        .card::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 25%;
-            bottom: 25%;
-            width: 5px;
-            border-radius: 0 10px 10px 0;
-        }
-        .card-med::before { background: var(--primary); }
-        .card-physic::before { background: #004d40; }
-        .card-gastro::before { background: #001f3f; }
-        .card-mind::before { background: #5a0000; }
-        .card-sys::before { background: #3d2b1f; }
-
-        .icon-box {
-            width: 60px;
-            height: 60px;
-            background: #3d2b1f; /* Koyu kahve tonu */
-            border-radius: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            color: var(--accent);
-            margin-right: 18px;
+        .equation-box {
+            background: #000; color: #00ffcc; padding: 25px; border-radius: 25px;
+            font-family: 'JetBrains Mono'; font-size: 0.85rem; overflow-x: auto;
+            border: 1.5px solid var(--altin); box-shadow: inset 0 0 20px rgba(0,255,204,0.1);
+            margin: 15px 0; line-height: 1.7;
         }
 
-        .info h3 { font-size: 1.25rem; font-weight: 800; margin-bottom: 2px; }
-        .info p { font-size: 0.85rem; opacity: 0.5; font-weight: 600; }
-        
-        .chevron { margin-left: auto; color: var(--accent); opacity: 0.6; font-size: 1.2rem; }
+        /* --- DİNAMİK KONTROL PANELİ --- */
+        .nexus-controls {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: var(--bordo); padding: 15px 40px; border-radius: 50px;
+            display: flex; gap: 40px; color: #fff; box-shadow: 0 25px 60px rgba(90,0,0,0.4);
+            z-index: 3000; border: 2px solid var(--altin);
+        }
+        .nexus-controls i { font-size: 1.4rem; cursor: pointer; }
+        .nexus-controls i:active { transform: scale(0.8); }
 
-        /* --- GÜNÜN SÖZÜ & MATEMATİK KÖŞESİ --- */
-        .extra-section { margin-top: 30px; padding: 0 20px; }
-        .pro-box { 
-            background: var(--card); 
-            border-radius: 35px; 
-            padding: 25px; 
-            margin-bottom: 15px;
-            box-shadow: var(--shadow);
-        }
-        .math-equation {
-            font-family: 'JetBrains Mono';
-            background: #000;
-            color: #00ff00;
-            padding: 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-top: 10px;
-            overflow-x: auto;
-        }
-
-        /* --- FLOATING ACTION BUTTONS --- */
-        .fab-container {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--primary);
-            padding: 10px 25px;
-            border-radius: 40px;
-            display: flex;
-            gap: 25px;
-            color: #fff;
-            box-shadow: 0 15px 40px rgba(90,0,0,0.3);
-            z-index: 1000;
-        }
+        /* --- ANIMASYONLAR --- */
+        @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0); } }
+        .hero h1 { animation: float 6s ease-in-out infinite; }
     </style>
 </head>
-<body>
+<body data-theme="light">
 
-    <header class="top-header">
-        <div class="logo">AZURA</div>
-        <div class="header-widgets">
-            <div class="time-pill" id="digital-clock">00:00:00</div>
-            <i class="fa-solid fa-circle-half-stroke" onclick="toggleTheme()"></i>
+    <header class="top-nav">
+        <div class="brand">AZURA</div>
+        <div class="widgets">
+            <div class="status-pill" id="nexus-clock">00:00:00</div>
+            <i class="fa-solid fa-moon" id="theme-toggle" onclick="toggleAzuraTheme()"></i>
         </div>
     </header>
 
     <section class="hero">
+        <p style="font-family:'JetBrains Mono'; color:var(--altin); font-weight:800; font-size:0.8rem; letter-spacing:5px; margin-bottom:10px;">CORE.INTELLIGENCE</p>
         <h1>Dijital<br>Kontrol Merkezi.</h1>
+        <p>Atomdan galaksiye, hücreden bilince uzanan o muazzam yolculukta senin pusulan.</p>
     </section>
 
-    <nav class="menu-container">
-        <a href="medical.html" class="card card-med">
-            <div class="icon-box"><i class="fa-solid fa-notes-medical"></i></div>
-            <div class="info"><h3>Tıp & Klinik</h3><p>Akademik Arşiv</p></div>
-            <i class="fa-solid fa-chevron-right chevron"></i>
+    <nav class="grid-container">
+        <a href="medical.html" class="azura-card m-med">
+            <div class="icon-shield"><i class="fa-solid fa-staff-snake"></i></div>
+            <div class="meta-info"><h3>Tıp & Klinik</h3><p>Akademik Vaka Arşivi</p></div>
+            <i class="fa-solid fa-chevron-right arrow-link"></i>
         </a>
 
-        <a href="physic.html" class="card card-physic">
-            <div class="icon-box"><i class="fa-solid fa-atom"></i></div>
-            <div class="info"><h3>Fizik Sektörü</h3><p>Kozmoloji Kapıları</p></div>
-            <i class="fa-solid fa-chevron-right chevron"></i>
+        <a href="physic.html" class="azura-card m-physic">
+            <div class="icon-shield"><i class="fa-solid fa-atom"></i></div>
+            <div class="meta-info"><h3>Fizik Sektörü</h3><p>Kozmoloji & Kuantum</p></div>
+            <i class="fa-solid fa-chevron-right arrow-link"></i>
         </a>
 
-        <a href="gastronomy.html" class="card card-gastro">
-            <div class="icon-box"><i class="fa-solid fa-utensils"></i></div>
-            <div class="info"><h3>Gastronomi</h3><p>Mutfak Mirası</p></div>
-            <i class="fa-solid fa-chevron-right chevron"></i>
+        <a href="math.html" class="azura-card m-math">
+            <div class="icon-shield"><i class="fa-solid fa-infinity"></i></div>
+            <div class="meta-info"><h3>Matematik</h3><p>Sevenlerine Özel Alan</p></div>
+            <i class="fa-solid fa-chevron-right arrow-link"></i>
         </a>
 
-        <a href="games.html" class="card card-mind">
-            <div class="icon-box"><i class="fa-solid fa-brain"></i></div>
-            <div class="info"><h3>Zihin Lab</h3><p>Simülasyonlar</p></div>
-            <i class="fa-solid fa-chevron-right chevron"></i>
+        <a href="gastronomy.html" class="azura-card m-gastro">
+            <div class="icon-shield"><i class="fa-solid fa-utensils"></i></div>
+            <div class="meta-info"><h3>Gastronomi</h3><p>Kültürel Gastronomi</p></div>
+            <i class="fa-solid fa-chevron-right arrow-link"></i>
         </a>
 
-        <a href="settings.html" class="card card-sys">
-            <div class="icon-box"><i class="fa-solid fa-sliders"></i></div>
-            <div class="info"><h3>Sistem Çekirdeği</h3><p>Ağ Ayarları</p></div>
-            <i class="fa-solid fa-chevron-right chevron"></i>
+        <a href="games.html" class="azura-card m-mind">
+            <div class="icon-shield"><i class="fa-solid fa-brain"></i></div>
+            <div class="meta-info"><h3>Zihin Lab</h3><p>Bilişsel Analizler</p></div>
+            <i class="fa-solid fa-chevron-right arrow-link"></i>
         </a>
     </nav>
 
-    <div class="extra-section">
-        <div class="pro-box">
-            <h4 style="margin-bottom:10px;"><i class="fa-solid fa-quote-left" style="color:var(--accent);"></i> Günün Sözü</h4>
-            <p style="font-style:italic; font-size:0.95rem; opacity:0.8;">"Matematik, evrenin alfabesidir; denklemler ise şiirleri."</p>
+    <div class="deep-stats">
+        <div class="stat-panel">
+            <h4><i class="fa-solid fa-microchip"></i> Kuantum Dalga Analizi</h4>
+            <p style="font-size:0.95rem; opacity:0.7; margin-bottom:15px;">Evrenin temelindeki olasılık dalgalarını tanımlayan o muazzam yapı:</p>
+            <div class="equation-box">
+                iħ ∂/∂t Ψ(x,t) = [ -ħ²/2m ∇² + V(x,t) ] Ψ(x,t)
+            </div>
+            <p style="font-size:0.8rem; opacity:0.5; font-style:italic;">*Bu denklem, bir parçacığın zaman içindeki kuantum durumunu belirler.</p>
         </div>
 
-        <div class="pro-box">
-            <h4 style="margin-bottom:10px;"><i class="fa-solid fa-square-root-variable" style="color:var(--accent);"></i> Matematiksel Fizik</h4>
-            <p style="font-size:0.85rem;">Dirac Denklemi (Relativistik Kuantum):</p>
-            <div class="math-equation">
-                (iγ<sup>μ</sup>∂<sub>μ</sub> - m)ψ = 0
+        <div class="stat-panel">
+            <h4><i class="fa-solid fa-dna"></i> Biyolojik Algoritma</h4>
+            <p style="font-size:0.95rem; opacity:0.7;">Bir tıp öğrencisi olarak, DNA'nın hata yapma olasılığını hiç düşündün mü?</p>
+            <p style="margin-top:10px; font-weight:600; font-size:0.9rem; color:var(--altin);">Mutasyon Olasılığı Formülü:</p>
+            <div class="equation-box" style="color:#ffcc00;">
+                P(m) = 1 - e^(-μL)
             </div>
-            <p style="font-size:0.75rem; margin-top:8px; opacity:0.6;">Bu denklem, elektronun spinini ve antimaddeyi (pozitron) teorik olarak öngörür.</p>
+            <p style="font-size:0.75rem; opacity:0.5;">μ: Mutasyon hızı, L: Genom uzunluğu.</p>
         </div>
-        
-        <div class="pro-box" style="border: 2px dashed var(--accent); background: transparent;">
-            <h4 style="margin-bottom:10px; color:var(--primary);">Zihin Analiz Testi 🧠</h4>
-            <p style="font-size:0.85rem; margin-bottom:15px;">Bugünkü bilişsel frekansını ölçmek ister misin? 10 soruluk analiz.</p>
-            <a href="test.html" style="color:var(--primary); font-weight:800; text-decoration:none;">TESTİ BAŞLAT <i class="fa-solid fa-arrow-right"></i></a>
+
+        <div class="stat-panel" style="border: 2px dashed var(--altin); background: transparent;">
+            <h4><i class="fa-solid fa-compass"></i> Zihin Testi</h4>
+            <p style="font-size:1rem; margin-bottom:20px;">Bugünkü bilişsel frekansını ve zihin haritanı çıkarmak ister misin?</p>
+            <a href="test.html" style="color:var(--bordo); font-weight:800; text-decoration:none; font-size:1.1rem;">DENEYİ BAŞLAT <i class="fa-solid fa-arrow-right"></i></a>
         </div>
     </div>
 
-    <div class="fab-container">
-        <i class="fa-solid fa-plus"></i>
-        <i class="fa-solid fa-minus"></i>
-        <i class="fa-solid fa-rotate-right"></i>
+    <div class="nexus-controls">
+        <i class="fa-solid fa-plus" title="Hacim Artır"></i>
+        <i class="fa-solid fa-minus" title="Hacim Azalt"></i>
+        <i class="fa-solid fa-rotate-right" onclick="location.reload()" title="Sistemi Yenile"></i>
     </div>
 
     <script>
-        function updateClock() {
+        // SMART CLOCK
+        function updateNexusClock() {
             const now = new Date();
-            document.getElementById('digital-clock').innerText = now.toLocaleTimeString('tr-TR');
+            document.getElementById('nexus-clock').innerText = now.toLocaleTimeString('tr-TR');
         }
-        setInterval(updateClock, 1000);
-        updateClock();
+        setInterval(updateNexusClock, 1000);
+        updateNexusClock();
 
-        function toggleTheme() {
+        // THEME ENGINE
+        function toggleAzuraTheme() {
             const body = document.body;
-            const current = body.getAttribute('data-theme');
-            body.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+            const icon = document.getElementById('theme-toggle');
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.setAttribute('data-theme', 'light');
+                icon.className = 'fa-solid fa-moon';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                icon.className = 'fa-solid fa-sun';
+            }
+        }
+
+        // AUTO DARK MODE (19:00 - 07:00)
+        const currentHour = new Date().getHours();
+        if (currentHour >= 19 || currentHour < 7) {
+            document.body.setAttribute('data-theme', 'dark');
+            document.getElementById('theme-toggle').className = 'fa-solid fa-sun';
         }
     </script>
 </body>
