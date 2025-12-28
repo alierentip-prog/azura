@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>İzafiyet: Zamanın Sırrı | Azura</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --bordo: #5a0000; --krem-koyu: #f2ead3; --ceviz: #3d2b1f; --altin: #b8860b; }
+        body { background: var(--krem-koyu); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--ceviz); line-height: 1.8; }
+        
+        /* --- ÜST ŞERİT --- */
+        .sticky-header { 
+            position: sticky; top: 0; background: var(--bordo); color: #fff; 
+            padding: 15px 25px; display: flex; justify-content: space-between; 
+            z-index: 100; border-bottom: 3px solid var(--altin);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .article-container { max-width: 900px; margin: 40px auto; padding: 0 25px; }
+        
+        /* --- TİPOGRAFİ --- */
+        .meta-tag { font-family: 'JetBrains Mono'; color: var(--bordo); font-size: 0.7rem; letter-spacing: 5px; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; }
+        h1 { font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 800; letter-spacing: -3px; line-height: 0.9; margin-bottom: 30px; color: var(--bordo); }
+        h2 { font-size: 1.8rem; font-weight: 800; margin-top: 50px; margin-bottom: 20px; border-bottom: 2px solid var(--bordo); display: inline-block; }
+        p { margin-bottom: 25px; font-size: 1.1rem; text-align: justify; opacity: 0.9; }
+
+        /* --- GÖRSEL VE VURGU KUTULARI --- */
+        .info-card { 
+            background: #faf7ed; border-radius: 40px; padding: 40px; 
+            margin: 50px 0; border: 1.5px solid rgba(90,0,0,0.1); 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.03);
+        }
+        .highlight-bordo { 
+            background: var(--bordo); color: #fff; padding: 35px; 
+            border-radius: 35px; margin: 40px 0; font-style: italic;
+            box-shadow: 0 15px 35px rgba(90,0,0,0.2);
+        }
+        .visual-placeholder {
+            width: 100%; height: 300px; background: #fff; border-radius: 30px;
+            display: flex; align-items: center; justify-content: center;
+            margin: 30px 0; border: 1px dashed var(--bordo); color: var(--bordo);
+        }
+
+        /* --- NAVİGASYON --- */
+        .footer-nav { display: flex; justify-content: space-between; margin-top: 80px; padding-bottom: 120px; }
+        .nav-btn { background: var(--bordo); color: #fff; padding: 18px 40px; border-radius: 50px; text-decoration: none; font-weight: 800; transition: 0.3s; }
+        .nav-btn:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(90,0,0,0.3); }
+
+        /* --- ERİŞİLEBİLİRLİK YÜZEN BUTON --- */
+        .fab { position: fixed; bottom: 30px; right: 30px; background: var(--altin); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.2); cursor: pointer; z-index: 200; }
+    </style>
+</head>
+<body>
+
+    <div class="sticky-header">
+        <a href="relativity.html" style="color:#fff; text-decoration:none;"><i class="fa-solid fa-chevron-left"></i> GERİ</a>
+        <div style="font-family:'JetBrains Mono'; font-weight:800;" id="live-clock">00:00:00</div>
+        <div style="font-size:0.8rem; opacity:0.8;">BÖLÜM 01</div>
+    </div>
+
+    <article class="article-container">
+        <div class="meta-tag">Deep Physics Research</div>
+        <h1>Zamanın Göreliliği: Akışın Kırılması.</h1>
+
+        <p>Evrenin en büyük sırrı, her gün kolumuzdaki saatlerde saklıdır; fakat biz bu sırrı ancak ışık hızının sınırlarına yaklaştığımızda fark edebiliriz. Newton zamanı mutlak, değişmez ve her yerde aynı akan bir nehir gibi tanımlamıştı. Ancak Albert Einstein, 1905 yılında bu nehri kuruttu ve yerine bambaşka bir gerçeklik koydu. Zaman, sanıldığı gibi evrensel bir saat tıkırtısı değildir; aksine gözlemcinin hareketine ve hızına sıkı sıkıya bağlı olan esnek bir dokudur. Bu durum, "Özel İzafiyet Teorisi"nin en temel ve en sarsıcı sonucudur: Zamanın Genleşmesi (Time Dilation).</p>
+
+        <div class="highlight-bordo">
+            "Zaman, sadece bir illüzyon olsa da, çok inatçı bir illüzyondur." - Albert Einstein. Hız arttıkça zamanın yavaşlaması, bir matematiksel hata değil, evrenin dokusundaki temel bir gerçektir.
+        </div>
+
+        <h2>Işık Saati Deneyi: Mantığın Başlangıcı</h2>
+        <p>Zamanın neden yavaşladığını anlamak için, dünyadaki en basit saati hayal edelim. İki paralel aynanın arasında bir ışık fotonunun sürekli yukarı ve aşağı sektiğini düşünün. Her sekme bir saniye olsun. Bu saat durduğu yerde dururken, ışık dik bir yol izler. Ancak bu saati ışık hızına yakın giden bir uzay gemisine koyarsak, dışarıdaki bir gözlemci için ışık artık dik değil, geminin hareketiyle birlikte "V" şeklinde çapraz bir yol izler. Geometri bize söyler ki; çapraz yol, düz yoldan daha uzundur. Işık hızının evrensel bir sabit olduğu ve asla değişmediği gerçeğinden yola çıkarsak, ışığın bu uzun yolu kat etmesi daha fazla zaman alacaktır. İşte gemideki bir saniye, dışarıdaki bir gözlemci için çok daha uzun bir süreye tekabül eder.</p>
+
+        <div class="visual-placeholder">
+            <div style="text-align:center;">
+                <i class="fa-solid fa-lightbulb" style="font-size:3rem; margin-bottom:15px;"></i>
+                <p><b>Görsel Analiz:</b> Hareketli Işık Saati ve Uzayan Yollar Diyagramı</p>
+            </div>
+        </div>
+
+        <h2>GPS ve Teknolojik Kanıtlar</h2>
+        <p>Bu anlattıklarımız sadece bir bilim kurgu fantezisi değildir; bugün cebinizdeki telefonun düzgün çalışması tamamen bu teoriye bağlıdır. GPS uyduları, dünya etrafında saatte yaklaşık 14.000 kilometre hızla dönerler. Bu hız, dünyadaki birine göre zamanın uydularda her gün yaklaşık 7 mikrosaniye daha yavaş akmasına neden olur. Ayrıca uydular dünyadan uzak oldukları için kütleçekimi daha azdır ve bu da zamanı hızlandırır (Genel İzafiyet). Bu iki etkinin toplamında, uyduların saatleri dünyadaki saatlerden her gün 38 mikrosaniye daha hızlı çalışır. Eğer mühendisler Einstein'ın zamanın genleşmesi formüllerini uyduların yazılımına eklemeselerdi, navigasyon sisteminiz her gün 10 kilometre sapma yapardı. Yani izafiyet, sadece laboratuvarlarda değil, bizzat hayatımızın içindedir.</p>
+
+        <div class="info-card">
+            <h3>İkizler Paradoksu: Geleceğe Yolculuk</h3>
+            <p>Eğer bir ikiz kardeşiniz olsaydı ve o ışık hızının %99'uyla giden bir gemiyle 10 yıllık bir yolculuğa çıksaydı, dünyaya döndüğünde inanılmaz bir şeyle karşılaşırdı. Kardeşiniz için sadece 10 yıl geçmişken, dünyada sizin için 70 yıl geçmiş olabilirdi. Kardeşiniz hala gençken, siz yaşlanmış olurdunuz. Bu, teknik olarak geleceğe tek yönlü bir zaman yolculuğudur. Evren, hızlanan her cismi, geleceğe doğru bir süzülmeye zorlar. Bu durum fiziksel olarak mümkündür, sadece bu hızlara ulaşacak devasa bir enerji kaynağımız yoktur.</p>
+        </div>
+
+        <h2>Hızın Sınırları ve Zamanın Durması</h2>
+        <p>Peki ya ışık hızına tam olarak ulaşırsak ne olur? Teorik olarak, bir cisim ışık hızına (c) ulaştığında, onun için zaman tamamen durur. Bir ışık fotonu için, evrenin bir ucundan diğer ucuna gitmek sıfır saniye sürer. Fotonun bakış açısından ne zaman vardır ne de mesafe. Bizim milyarlarca ışık yılı uzakta gördüğümüz bir yıldızdan çıkan ışık, foton için "anında" gözümüze ulaşır. Bizim için milyarlarca yıl süren bu yolculuk, ışık için bir göz kırpması bile değildir. İşte bu, zamanın ne kadar kişisel ve hıza bağlı olduğunun en uç örneğidir.</p>
+
+        <div class="footer-nav">
+            <a href="relativity.html" class="nav-btn" style="background:#888;">GİRİŞE DÖN</a>
+            <a href="relativity-2.html" class="nav-btn">BÖLÜM 2: E=mc² <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+    </article>
+
+    <div class="fab" onclick="alert('Erişilebilirlik: Yazı boyutu ve gece modu ana menüden ayarlanabilir.')">
+        <i class="fa-solid fa-universal-access"></i>
+    </div>
+
+    <script>
+        function updateClock() {
+            document.getElementById('live-clock').innerText = new Date().toLocaleTimeString('tr-TR');
+        }
+        setInterval(updateTime, 1000); updateTime();
+        function updateTime() { updateClock(); }
+    </script>
+</body>
+</html>
