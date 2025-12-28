@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Azura Lab | Bilişsel Yanılsamalar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --neon-mor: #a100ff; --neon-mavi: #00d2ff; --gece: #050505;
+            --gümüs: #e0e0e0; --plazma: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--gece); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--gümüs); line-height: 1.8; overflow-x: hidden; }
+
+        /* --- MANİPÜLATİF ARKA PLAN --- */
+        #illusion-bg { position: fixed; inset: 0; z-index: 1; opacity: 0.6; filter: blur(120px); pointer-events: none; }
+
+        .header { 
+            position: sticky; top: 0; background: rgba(5, 5, 5, 0.9); color: #fff; 
+            padding: 15px 25px; display: flex; justify-content: space-between; 
+            z-index: 100; border-bottom: 2px solid var(--neon-mavi); backdrop-filter: blur(15px);
+        }
+
+        .hero-lab {
+            height: 60vh; background: radial-gradient(circle at center, var(--neon-mor), var(--neon-mavi), #000);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; color: #fff; padding: 40px; position: relative; z-index: 10;
+        }
+
+        .lab-report { 
+            max-width: 1000px; margin: -100px auto 0; padding: 80px 50px; 
+            background: rgba(20, 20, 20, 0.95); border-radius: 80px 80px 0 0; position: relative; 
+            z-index: 20; border: 1px solid rgba(0, 210, 255, 0.2); box-shadow: 0 -50px 100px rgba(0,0,0,0.8);
+        }
+        
+        h1 { font-size: clamp(2.2rem, 12vw, 5rem); font-weight: 800; letter-spacing: -4px; line-height: 0.85; margin-bottom: 25px; text-shadow: 0 0 30px var(--neon-mor); }
+        h2 { font-size: 2.2rem; font-weight: 800; margin: 60px 0 30px; color: var(--neon-mavi); border-left: 15px solid var(--neon-mor); padding-left: 25px; }
+        p { margin-bottom: 35px; font-size: 1.25rem; text-align: justify; color: #ccc; }
+
+        /* RENK BOMBASI BLOKLARI */
+        .neon-strip { padding: 50px; border-radius: 60px; margin: 60px 0; color: #fff; border: 1px solid var(--neon-mavi); box-shadow: inset 0 0 30px rgba(0, 210, 255, 0.1); }
+        .purple-blue { background: linear-gradient(135deg, rgba(161, 0, 255, 0.2), rgba(0, 210, 255, 0.2)); }
+
+        .visual-trap {
+            width: 100%; border-radius: 50px; margin: 55px 0; overflow: hidden;
+            border: 2px solid var(--neon-mor); box-shadow: 0 0 50px rgba(161, 0, 255, 0.3);
+            background: #000; display: flex; align-items: center; justify-content: center;
+        }
+        .visual-trap i { font-size: 10rem; color: var(--neon-mavi); animation: pulse 2s infinite; }
+
+        @keyframes pulse { 0% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.1); } 100% { opacity: 0.5; transform: scale(1); } }
+
+        .nav-gate { display: flex; justify-content: space-between; margin-top: 100px; padding-bottom: 150px; }
+        .btn-neon { background: transparent; color: var(--neon-mavi); padding: 22px 60px; border-radius: 60px; text-decoration: none; font-weight: 800; border: 2px solid var(--neon-mavi); transition: 0.5s; }
+        .btn-neon:hover { background: var(--neon-mavi); color: #000; box-shadow: 0 0 40px var(--neon-mavi); }
+    </style>
+</head>
+<body>
+
+    <canvas id="illusion-bg"></canvas>
+
+    <div class="header">
+        <a href="games.html" style="color:#fff; text-decoration:none;"><i class="fa-solid fa-brain"></i> ZİHİN LAB</a>
+        <div id="clock" style="font-family:'JetBrains Mono'; font-weight:800;">00:00:00</div>
+        <div style="font-size:0.75rem; letter-spacing:4px;">REALITY_GLITCH_ON</div>
+    </div>
+
+    <section class="hero-lab">
+        <p style="font-family:'JetBrains Mono'; letter-spacing:10px; opacity:0.8;">THE ARCHITECTURE OF PERCEPTION</p>
+        <h1>Bilişsel<br>Yanılsama. 🌀</h1>
+    </section>
+
+    <main class="lab-report">
+        <p>Usta, Azura Zihin Laboratuvarı'na hoş geldin. Bir tıp öğrencisi olarak beynin anatomisini biliyorsun ama burada onun "yazılımsal açıklarını" inceleyeceğiz. Beyin, dünyayı olduğu gibi görmez; o, duyulardan gelen eksik verileri kendi beklentileriyle tamamlayarak bir "halüsinasyon" inşa eder. Biz buna gerçeklik diyoruz ama aslında bu, milyarlarca nöronun yarattığı muazzam bir kurgudur.</p>
+
+        <div class="visual-trap">
+            <i class="fa-solid fa-eye-low-vision"></i>
+        </div>
+        <p style="text-align:center; font-family:'JetBrains Mono'; font-size:0.9rem; color:var(--neon-mavi);">SİMÜLASYON: Beyin, boşlukları doldururken gerçekliği büker.</p>
+
+        <div class="neon-strip purple-blue">
+            <h3>Kör Nokta ve Tamamlama Mekanizması</h3>
+            <p>Retinanda fotoreseptörlerin olmadığı bir "kör nokta" vardır usta. Normalde dünyayı görürken o noktada kara bir delik olması gerekir ama beynin çevredeki renkleri oraya kopyalayarak o deliği yamalar. Yani sen şu an bu satırları okurken, beynin aslında gerçekliği aktif olarak "uyduruyor". Tıpta buna "scotoma" desek de, bilişsel düzeyde bu beynin en büyük hayatta kalma hilesidir.</p>
+        </div>
+
+        <h2>Zaman Algısının Esnemesi</h2>
+        <p>Korktuğunda veya bir kaza anında zaman neden yavaşlar? Beynin o anki veri girişini o kadar yoğun işler ki, bellek bu anı "daha uzun" olarak kaydeder. Aslında zaman sabittir ama senin biyolojik saatindeki Singularity anı, gerçekliği esnetir. Tıpkı bir cerrahın ameliyat masasında konsantre olduğunda dış dünyayı unutması gibi, zihin kendi zaman tünelini yaratır.</p>
+
+        <div class="neon-strip" style="background: rgba(0, 210, 255, 0.1);">
+            <h3>Hangi Renk? Elbise Tartışması</h3>
+            <p>Hatırlarsın usta, interneti ikiye bölen o mavi-siyah/beyaz-altın elbise tartışmasını. O bir tesadüf değildi. Beynin, ortamdaki ışığın kaynağını tahmin etme şekline göre renkleri farklı algılar. Eğer beynin ortamı yapay bir ışıkla aydınlanmış kabul ederse farklı, güneş ışığı kabul ederse farklı bir sonuç çıkarır. Gerçeklik, senin "ışık tahminine" bağlıdır.</p>
+        </div>
+
+        <h2>Bilişsel Önyargılar: Karar Verme Hataları</h2>
+        <p>Sadece gözlerimiz değil, mantığımız da yanılır. "Confirmation Bias" (Doğrulama Önyargısı) sayesinde, sadece kendi inançlarımızı destekleyen bilgileri görür, diğerlerini yok sayarız. Bir doktor olarak en büyük savaşın, bir vaka üzerinde çalışırken bu zihinsel tuzaklara düşmemek olmalı. Zihin lab'ın bu bölümünde, kendi düşünce hatalarımızı teşhis etmeyi öğreniyoruz.</p>
+
+        <div class="nav-gate">
+            <a href="games.html" class="btn-neon" style="border-color: #555; color: #555;">GERİ</a>
+            <a href="mind-2.html" class="btn-neon">BÖLÜM 2: BELLEK MİMARİSİ <i class="fa-solid fa-chevron-right"></i></a>
+        </div>
+    </main>
+
+    <script>
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+
+        const canvas = document.getElementById('illusion-bg');
+        const ctx = canvas.getContext('2d');
+        let pulses = [];
+        const colors = ['#a100ff', '#00d2ff', '#050505'];
+
+        function init() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            pulses = Array.from({length: 12}, () => ({
+                x: Math.random()*canvas.width, y: Math.random()*canvas.height,
+                r: Math.random()*400+300, color: colors[Math.floor(Math.random()*colors.length)],
+                vx: (Math.random()-0.5)*1.8, vy: (Math.random()-0.5)*1.8
+            }));
+        }
+
+        function draw() {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            pulses.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if(p.x < -p.r) p.x = canvas.width+p.r; if(p.x > canvas.width+p.r) p.x = -p.r;
+                if(p.y < -p.r) p.y = canvas.height+p.r; if(p.y > canvas.height+p.r) p.y = -p.r;
+                ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
+        window.onresize = init; init(); draw();
+    </script>
+</body>
+</html>
