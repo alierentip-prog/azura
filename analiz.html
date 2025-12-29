@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>İleri Analiz // Derinlik</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&family=JetBrains+Mono:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <style>
+        :root { --bordo: #5a0000; --mavi: #1a4d80; --bg: #f5f1e6; }
+        body { background: var(--bg); font-family: 'Plus Jakarta Sans', sans-serif; padding: 20px; color: #333; }
+        .card { background: white; border-radius: 40px; padding: 40px; max-width: 700px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .header { color: var(--bordo); font-family: 'JetBrains Mono'; border-bottom: 2px solid var(--bg); padding-bottom: 15px; margin-bottom: 20px; }
+        .step { background: #f0f4f8; border-left: 5px solid var(--mavi); padding: 15px; border-radius: 10px; margin-bottom: 20px; }
+        .aha-moment { background: #e8f5e9; border: 2px dashed #2e7d32; padding: 20px; border-radius: 20px; text-align: center; font-weight: 800; color: #1b5e20; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header">İLERİ ANALİZ // LİMİT İSPATI</div>
+        <h3>$\epsilon - \delta$ Dünyasından Önce Sezgi</h3>
+        <p>Soru: $(x,y) \to (0,0)$ iken $f(x,y) = \frac{xy}{x^2+y^2}$ limitini inceleyiniz.</p>
+        
+        <div class="step">
+            <strong>1. Yaklaşım:</strong> $y=0$ boyunca yaklaşalım. <br>
+            $ \lim_{x \to 0} \frac{x(0)}{x^2+0} = 0 $
+        </div>
+
+        <div class="step">
+            <strong>2. Yaklaşım:</strong> $y=mx$ (herhangi bir doğru) boyunca yaklaşalım. <br>
+            $ \lim_{x \to 0} \frac{x(mx)}{x^2+(mx)^2} = \frac{m}{1+m^2} $
+        </div>
+
+        <div class="aha-moment">
+            HAA! Sonuç "m" değerine (yani hangi yoldan geldiğine) bağlı çıktı! <br>
+            Limit her yolda aynı olmalıydı. O halde LİMİT YOKTUR!
+        </div>
+    </div>
+</body>
+</html>
