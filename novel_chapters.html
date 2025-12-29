@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Ali Barlas & Beyza | Bölüm Arşivi</title>
+    <title>Ali Barlas & Beyza | Külliyat</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@800&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">
@@ -25,7 +25,7 @@
             padding-bottom: 100px; overflow-x: hidden;
         }
 
-        /* --- ŞIK HEADER --- */
+        /* --- AZURA HEADER --- */
         .header-nav {
             background: var(--bordo); padding: 25px 30px; display: flex; align-items: center;
             color: #fff; position: sticky; top: 0; z-index: 1000;
@@ -38,9 +38,8 @@
         .intro-hero { padding: 60px 35px; text-align: center; }
         .intro-hero span { font-family: 'JetBrains Mono'; font-weight: 800; color: var(--altin); font-size: 0.7rem; letter-spacing: 6px; display: block; margin-bottom: 15px; }
         .intro-hero h2 { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: var(--bordo); line-height: 0.85; font-style: italic; }
-        .intro-hero p { margin-top: 20px; font-weight: 600; opacity: 0.5; font-size: 0.9rem; letter-spacing: 1px; }
 
-        /* --- BÖLÜM KARTLARI --- */
+        /* --- BÖLÜM KARTLARI (KİLİTSİZ & RENKLİ) --- */
         .chapters-container { padding: 0 25px; display: flex; flex-direction: column; gap: 18px; }
         
         .chapter-card {
@@ -52,11 +51,15 @@
 
         .chapter-card:active { transform: scale(0.92); }
 
-        /* İkonik Renk Şeritleri */
+        /* Renk Şeritleri */
         .chapter-card::before { 
-            content: ''; position: absolute; left: 0; top: 25%; bottom: 25%; width: 10px; 
-            border-radius: 0 20px 20px 0; background: var(--bordo);
+            content: ''; position: absolute; left: 0; top: 20%; bottom: 20%; width: 10px; 
+            border-radius: 0 20px 20px 0; background: var(--bordo); 
         }
+
+        /* Sıralı Renk Varyasyonları */
+        .chapter-card:nth-child(even)::before { background: var(--altin); }
+        .chapter-card:nth-child(3n)::before { background: #004d40; }
 
         .ch-index {
             font-family: 'JetBrains Mono'; font-weight: 800; font-size: 1.6rem;
@@ -64,13 +67,10 @@
         }
 
         .ch-details h4 { font-size: 1.2rem; font-weight: 800; color: var(--text); margin-bottom: 4px; }
-        .ch-details p { font-size: 0.85rem; font-weight: 600; opacity: 0.4; }
+        .ch-details p { font-size: 0.85rem; font-weight: 600; opacity: 0.5; }
 
         .ch-arrow { margin-left: auto; font-size: 1.2rem; color: var(--altin); opacity: 0.4; }
 
-        /* Kilitli/Gizemli Bölüm Stili */
-        .locked { opacity: 0.6; filter: grayscale(0.5); }
-        .locked::before { background: #999; }
     </style>
 </head>
 <body>
@@ -81,9 +81,8 @@
     </header>
 
     <div class="intro-hero">
-        <span>ARŞİV // 01-20</span>
+        <span>KÜLLİYAT // 01-20</span>
         <h2>Ali Barlas<br>& Beyza</h2>
-        <p>Bilinmezliğe Yazılan Bir Çocukluk Serüveni</p>
     </div>
 
     <div class="chapters-container">
@@ -92,24 +91,33 @@
             <span class="ch-index">01</span>
             <div class="ch-details">
                 <h4>Kayısı Kokulu Yükseklik</h4>
-                <p>Hikayenin Başlangıcı</p>
+                <p>Çocukluğun İlk İzleri</p>
+            </div>
+            <i class="fa-solid fa-chevron-right ch-arrow"></i>
+        </a>
+
+        <a href="chapter2.html" class="chapter-card">
+            <span class="ch-index">02</span>
+            <div class="ch-details">
+                <h4>Yıllar ve Yollar</h4>
+                <p>Büyük Karşılaşma Yaklaşırken</p>
             </div>
             <i class="fa-solid fa-chevron-right ch-arrow"></i>
         </a>
 
         <script>
             const container = document.querySelector('.chapters-container');
-            for(let i=2; i<=20; i++) {
+            for(let i=3; i<=20; i++) {
                 const num = i < 10 ? '0'+i : i;
                 container.innerHTML += `
-                    <div class="chapter-card locked">
+                    <a href="chapter${i}.html" class="chapter-card">
                         <span class="ch-index">${num}</span>
                         <div class="ch-details">
                             <h4>Bölüm ${i}</h4>
-                            <p>Henüz Kaleme Alınmadı...</p>
+                            <p>Keşfedilmeyi Bekleyen Bir Anı</p>
                         </div>
-                        <i class="fa-solid fa-lock ch-arrow"></i>
-                    </div>
+                        <i class="fa-solid fa-chevron-right ch-arrow"></i>
+                    </a>
                 `;
             }
         </script>
