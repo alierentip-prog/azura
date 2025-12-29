@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Ali Barlas & Beyza | Külliyat</title>
+    <title>Ali Barlas & Beyza | Bölüm Arşivi</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@800&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">
@@ -11,7 +11,7 @@
     <style>
         :root {
             --bg: #f5f1e6; --card: #ffffff; --text: #2a1b12;
-            --bordo: #5a0000; --altin: #b87333; --radius-pro: 50px;
+            --bordo: #5a0000; --altin: #b87333; --radius-pro: 55px;
         }
 
         [data-theme="dark"] {
@@ -22,42 +22,41 @@
         
         body { 
             background: var(--bg); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text);
-            padding-bottom: 100px; overflow-x: hidden;
+            padding-bottom: 120px; overflow-x: hidden;
         }
 
-        /* --- AZURA HEADER --- */
+        /* --- AZURA ÜST NAVİGASYON --- */
         .header-nav {
             background: var(--bordo); padding: 25px 30px; display: flex; align-items: center;
             color: #fff; position: sticky; top: 0; z-index: 1000;
-            border-bottom: 5px solid var(--altin); box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            border-bottom: 5px solid var(--altin); box-shadow: 0 15px 45px rgba(0,0,0,0.3);
         }
-        .header-nav a { color: #fff; text-decoration: none; font-size: 1.4rem; }
-        .header-nav h1 { font-family: 'JetBrains Mono'; font-size: 1.1rem; letter-spacing: 4px; margin-left: 20px; }
+        .header-nav a { color: #fff; text-decoration: none; font-size: 1.4rem; transition: 0.3s; }
+        .header-nav h1 { font-family: 'JetBrains Mono'; font-size: 1.1rem; letter-spacing: 4px; margin-left: 20px; text-transform: uppercase; }
 
-        /* --- GİRİŞ MANİFESTOSU --- */
+        /* --- ROMAN GİRİŞİ --- */
         .intro-hero { padding: 60px 35px; text-align: center; }
         .intro-hero span { font-family: 'JetBrains Mono'; font-weight: 800; color: var(--altin); font-size: 0.7rem; letter-spacing: 6px; display: block; margin-bottom: 15px; }
         .intro-hero h2 { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: var(--bordo); line-height: 0.85; font-style: italic; }
+        .intro-hero p { margin-top: 20px; font-weight: 600; opacity: 0.5; font-size: 0.9rem; letter-spacing: 1px; }
 
-        /* --- BÖLÜM KARTLARI (KİLİTSİZ & RENKLİ) --- */
-        .chapters-container { padding: 0 25px; display: flex; flex-direction: column; gap: 18px; }
+        /* --- BÖLÜM KARTLARI (POFUDUK VE KİLİTSİZ) --- */
+        .chapters-container { padding: 0 25px; display: flex; flex-direction: column; gap: 20px; }
         
         .chapter-card {
-            background: var(--card); border-radius: var(--radius-pro); padding: 25px 30px;
+            background: var(--card); border-radius: var(--radius-pro); padding: 28px 35px;
             display: flex; align-items: center; text-decoration: none; color: inherit;
-            box-shadow: 0 20px 50px rgba(61, 43, 31, 0.1); position: relative;
+            box-shadow: 0 25px 55px rgba(61, 43, 31, 0.08); position: relative;
             border: 1px solid rgba(0,0,0,0.03); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .chapter-card:active { transform: scale(0.92); }
+        .chapter-card:active { transform: scale(0.94); }
 
-        /* Renk Şeritleri */
+        /* Renk Şeritleri (Azura Paleti) */
         .chapter-card::before { 
-            content: ''; position: absolute; left: 0; top: 20%; bottom: 20%; width: 10px; 
+            content: ''; position: absolute; left: 0; top: 25%; bottom: 25%; width: 10px; 
             border-radius: 0 20px 20px 0; background: var(--bordo); 
         }
-
-        /* Sıralı Renk Varyasyonları */
         .chapter-card:nth-child(even)::before { background: var(--altin); }
         .chapter-card:nth-child(3n)::before { background: #004d40; }
 
@@ -66,10 +65,11 @@
             margin-right: 25px; color: var(--altin); width: 45px; text-align: center;
         }
 
-        .ch-details h4 { font-size: 1.2rem; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+        .ch-details h4 { font-size: 1.25rem; font-weight: 800; color: var(--text); margin-bottom: 4px; letter-spacing: -0.5px; }
         .ch-details p { font-size: 0.85rem; font-weight: 600; opacity: 0.5; }
 
-        .ch-arrow { margin-left: auto; font-size: 1.2rem; color: var(--altin); opacity: 0.4; }
+        .ch-arrow { margin-left: auto; font-size: 1.2rem; color: var(--altin); opacity: 0.4; transition: 0.3s; }
+        .chapter-card:hover .ch-arrow { transform: translateX(5px); opacity: 1; }
 
     </style>
 </head>
@@ -81,8 +81,9 @@
     </header>
 
     <div class="intro-hero">
-        <span>KÜLLİYAT // 01-20</span>
+        <span>BÖLÜM ARŞİVİ // 01-20</span>
         <h2>Ali Barlas<br>& Beyza</h2>
+        <p>Geleceğin Sessiz Hatıraları</p>
     </div>
 
     <div class="chapters-container">
@@ -91,7 +92,7 @@
             <span class="ch-index">01</span>
             <div class="ch-details">
                 <h4>Kayısı Kokulu Yükseklik</h4>
-                <p>Çocukluğun İlk İzleri</p>
+                <p>Maceranın ve Saf Sevgini Başlangıcı</p>
             </div>
             <i class="fa-solid fa-chevron-right ch-arrow"></i>
         </a>
@@ -100,23 +101,32 @@
             <span class="ch-index">02</span>
             <div class="ch-details">
                 <h4>Yıllar ve Yollar</h4>
-                <p>Büyük Karşılaşma Yaklaşırken</p>
+                <p>Gelecekteki Yarım Kalmış Bir Söz</p>
+            </div>
+            <i class="fa-solid fa-chevron-right ch-arrow"></i>
+        </a>
+
+        <a href="chapter3.html" class="chapter-card">
+            <span class="ch-index">03</span>
+            <div class="ch-details">
+                <h4>Emanet ve Fırtına</h4>
+                <p>Bir Bileklik ve Taşınma Gölgesi</p>
             </div>
             <i class="fa-solid fa-chevron-right ch-arrow"></i>
         </a>
 
         <script>
             const container = document.querySelector('.chapters-container');
-            for(let i=3; i<=20; i++) {
+            for(let i=4; i<=20; i++) {
                 const num = i < 10 ? '0'+i : i;
                 container.innerHTML += `
                     <a href="chapter${i}.html" class="chapter-card">
                         <span class="ch-index">${num}</span>
                         <div class="ch-details">
                             <h4>Bölüm ${i}</h4>
-                            <p>Keşfedilmeyi Bekleyen Bir Anı</p>
+                            <p>Keşfedilmeyi Bekleyen Bir Anı...</p>
                         </div>
-                        <i class="fa-solid fa-chevron-right ch-arrow"></i>
+                        <i class="fa-solid fa-feather-pointed ch-arrow"></i>
                     </a>
                 `;
             }
