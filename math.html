@@ -24,7 +24,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: var(--bg-krem); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-gray); line-height: 1.6; }
 
-        /* --- HEADER (Görseldeki Kırmızı Bant) --- */
+        /* --- HEADER (Bordo Bant) --- */
         header {
             background-color: var(--bordo);
             padding: 20px 25px;
@@ -37,36 +37,17 @@
         header a { color: white; text-decoration: none; font-size: 1.2rem; margin-right: 20px; }
         header h1 { color: white; font-family: 'JetBrains Mono'; font-size: 1.1rem; letter-spacing: 3px; }
 
-        /* --- NAVİGASYON MENÜSÜ --- */
-        .nav-menu {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            padding: 20px;
-            flex-wrap: wrap;
-        }
-        .nav-link {
-            background: white;
-            color: var(--mavi);
-            padding: 10px 20px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-weight: 800;
-            font-size: 0.8rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            transition: 0.3s;
-        }
-        .nav-link:hover { background: var(--mavi); color: white; }
-
         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
 
-        /* --- MODÜL KARTLARI (Görseldeki Stil) --- */
+        /* --- MODÜL KARTLARI --- */
         .math-card {
             background: var(--card-white);
             border-radius: 40px;
             padding: 35px;
             margin-bottom: 30px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            border: 1px solid rgba(0,0,0,0.02);
+            position: relative;
         }
 
         .card-header { display: flex; align-items: center; margin-bottom: 20px; }
@@ -75,7 +56,7 @@
 
         .description { font-size: 0.95rem; color: var(--text-gray); margin-bottom: 25px; }
 
-        /* --- FORMÜL KUTUSU (Mavi Çerçeveli) --- */
+        /* --- FORMÜL KUTUSU (Mavi Kenar) --- */
         .formula-box {
             background: white;
             border: 2px solid #e0e6ed;
@@ -85,14 +66,15 @@
             margin-bottom: 25px;
             text-align: center;
             overflow-x: auto;
+            font-size: 1.1rem;
         }
 
-        /* --- LİSTE STİLİ (Mavi Üçgen) --- */
-        ul { list-style: none; }
+        /* --- LİSTE STİLİ (Delta Simgesi) --- */
+        ul { list-style: none; margin-bottom: 25px; }
         li { 
             position: relative;
             padding-left: 30px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             font-size: 0.95rem;
             color: var(--text-gray);
             font-weight: 600;
@@ -106,9 +88,29 @@
             font-size: 1.1rem;
         }
 
-        /* Responsive */
+        /* --- İSPAT BUTONU (HREF) --- */
+        .proof-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f0f4f8;
+            color: var(--mavi);
+            text-decoration: none;
+            padding: 15px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            transition: 0.3s;
+            border: 1px solid rgba(26, 77, 128, 0.1);
+        }
+        .proof-link:hover {
+            background-color: var(--mavi);
+            color: white;
+        }
+        .proof-link i { margin-left: 10px; }
+
         @media (max-width: 600px) {
-            .math-card { padding: 20px; border-radius: 30px; }
+            .math-card { padding: 25px; border-radius: 35px; }
         }
     </style>
 </head>
@@ -119,80 +121,78 @@
         <h1>STACKMINDS // MATH_CORE</h1>
     </header>
 
-    <nav class="nav-menu">
-        <a href="#analiz" class="nav-link">İLERİ ANALİZ</a>
-        <a href="#diferansiyel" class="nav-link">DİFERANSİYEL</a>
-        <a href="#cebir" class="nav-link">SOYUT CEBİR</a>
-        <a href="#topoloji" class="nav-link">TOPOLOJİ</a>
-    </nav>
-
     <div class="container">
 
-        <div id="analiz" class="math-card">
+        <div class="math-card">
             <div class="card-header">
                 <i class="fa-solid fa-infinity"></i>
                 <h2>İLERİ ANALİZ</h2>
             </div>
-            <p class="description">Çok değişkenli fonksiyonların yapısını, limit ve türev süreçlerini inceleyen matematik dalıdır.</p>
+            <p class="description">Çok değişkenli fonksiyonlarda değişim ve limit süreçlerinin ispat odaklı analizidir.</p>
             <div class="formula-box">
-                \[ \oint_C (P \, dx + Q \, dy) = \iint_D \left( \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) dA \]
+                \[ \oint_C \mathbf{F} \cdot d\mathbf{r} = \iint_S (\nabla \times \mathbf{F}) \cdot d\mathbf{S} \]
             </div>
             <ul>
-                <li>Çok değişkenli limit ve süreklilik analizi.</li>
-                <li>Vektör kalkülüsü ve Stokes teoremi.</li>
-                <li>Fourier serileri ve spektral analiz.</li>
+                <li>Stokes ve Gauss Teoremleri</li>
+                <li>$\epsilon-\delta$ süreklilik ispatları</li>
+                <li>Vektör Alanlarında Diferansiyellenebilirlik</li>
             </ul>
+            <a href="analiz.html" class="proof-link">İSPATLAR VE DERİN ANALİZ <i class="fa-solid fa-arrow-right-long"></i></a>
         </div>
 
-        <div id="diferansiyel" class="math-card">
+        <div class="math-card">
             <div class="card-header">
                 <i class="fa-solid fa-wave-square"></i>
                 <h2>DİFERANSİYEL DENKLEMLER</h2>
             </div>
-            <p class="description">Değişimin oranını temsil eden denklemlerdir. Fiziksel ve biyolojik sistemlerin zaman içindeki davranışını modeller.</p>
+            <p class="description">Değişim oranlarının modellenmesi ve varlık-teklik teoremlerinin incelenmesidir.</p>
             <div class="formula-box">
-                \[ a_n(x) \frac{d^n y}{dx^n} + a_{n-1}(x) \frac{d^{n-1} y}{dx^{n-1}} + \dots + a_0(x)y = g(x) \]
+                \[ \frac{d^n y}{dx^n} + a_{n-1}(x) \frac{d^{n-1} y}{dx^{n-1}} + \dots + a_0(x)y = g(x) \]
             </div>
             <ul>
-                <li>Birinci ve yüksek mertebeden lineer denklemler.</li>
-                <li>Laplace Dönüşümü ile frekans uzayında analiz.</li>
-                <li>Otonom sistemler ve faz portreleri.</li>
+                <li>Picard-Lindelöf Varlık Teoremi</li>
+                <li>Laplace Dönüşümü İspatları</li>
+                <li>Homojen Olmayan Sistemlerin Çözüm Uzayları</li>
             </ul>
+            <a href="diferansiyel.html" class="proof-link">ÇÖZÜM YÖNTEMLERİ VE İSPATLAR <i class="fa-solid fa-arrow-right-long"></i></a>
         </div>
 
-        <div id="cebir" class="math-card">
+        <div class="math-card">
             <div class="card-header">
                 <i class="fa-solid fa-shapes"></i>
                 <h2>SOYUT CEBİR</h2>
             </div>
-            <p class="description">Grup, halka ve cisim gibi cebirsel yapıların aksiyomatik özelliklerini inceleyen temel matematik alanıdır.</p>
+            <p class="description">Grup, halka ve cisim yapılarının yapısal isomorfizmaları üzerine kuruludur.</p>
             <div class="formula-box">
-                \[ (G, *) \implies \forall a, b \in G, \quad a * b \in G \]
+                \[ G / N \cong \text{Im}(\phi) \iff \text{Ker}(\phi) = N \]
             </div>
             <ul>
-                <li>Grup teorisi ve Lagrange Teoremi.</li>
-                <li>Halkalar, idealler ve bölümlü yapılar.</li>
-                <li>Galois teorisi ve cisim genişlemeleri.</li>
+                <li>İzomorfizma Teoremlerinin İspatları</li>
+                <li>Sylow Teoremleri ve Grup Sınıflandırma</li>
+                <li>Galois Teorisi ve Çözülebilirlik</li>
             </ul>
+            <a href="cebir.html" class="proof-link">CEBİRSEL YAPILAR VE TEOREMLER <i class="fa-solid fa-arrow-right-long"></i></a>
         </div>
 
-        <div id="topoloji" class="math-card">
+        <div class="math-card">
             <div class="card-header">
                 <i class="fa-solid fa-draw-polygon"></i>
                 <h2>TOPOLOJİ</h2>
             </div>
-            <p class="description">Geometrik nesnelerin bükülme ve esneme altında değişmeyen özelliklerini inceleyen "lastik geometri" alanıdır.</p>
+            <p class="description">Kümeler teorisi temelli uzay tanımları ve homeomorfizma ispatlarını kapsar.</p>
             <div class="formula-box">
-                \[ \tau = \{ \emptyset, X, U_i \subseteq X : \bigcup U_i \in \tau \} \]
+                \[ f: X \to Y \text{ süreklidir} \iff \forall V \in \tau_Y, f^{-1}(V) \in \tau_X \]
             </div>
             <ul>
-                <li>Açık kümeler ve topolojik uzay tanımları.</li>
-                <li>Kompaktlık ve bağlantılılık kavramları.</li>
-                <li>Homeomorfizmalar ve topolojik eşdeğerlik.</li>
+                <li>Hausdorff Uzaylarının Özellikleri</li>
+                <li>Tychonoff Teoremi ve Kompaktlık</li>
+                <li>Bağlantılılık ve Yol Bağlantılılık İspatları</li>
             </ul>
+            <a href="topoloji.html" class="proof-link">TOPOLOJİK UZAYLAR VE İSPATLAR <i class="fa-solid fa-arrow-right-long"></i></a>
         </div>
 
     </div>
 
 </body>
-</html>
+                </html>
+                
