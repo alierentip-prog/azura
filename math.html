@@ -3,102 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>StackMinds | Matematik Külliyatı</title>
+    <title>StackMinds // MATH_CORE</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@500;800&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@800&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
 
     <style>
         :root {
-            --bordo: #5a0000; --altin: #b87333; --krem: #f5f1e6;
-            --text: #2a1b12; --white: #ffffff;
-            --math-blue: #1a4d80; --math-gray: #f0f2f5;
+            --bordo: #5a0000;
+            --mavi: #1a4d80;
+            --bg-krem: #f5f1e6;
+            --card-white: #ffffff;
+            --text-gray: #4a4a4a;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--krem); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text); line-height: 1.6; }
+        body { background-color: var(--bg-krem); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text-gray); line-height: 1.6; }
 
-        /* --- AZURA HEADER --- */
+        /* --- HEADER (Görseldeki Kırmızı Bant) --- */
         header {
-            background: var(--bordo); padding: 25px; display: flex; align-items: center;
-            border-bottom: 5px solid var(--altin); position: sticky; top: 0; z-index: 1000;
+            background-color: var(--bordo);
+            padding: 20px 25px;
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
-        header h1 { font-family: 'JetBrains Mono'; color: #fff; font-size: 1rem; letter-spacing: 3px; }
+        header a { color: white; text-decoration: none; font-size: 1.2rem; margin-right: 20px; }
+        header h1 { color: white; font-family: 'JetBrains Mono'; font-size: 1.1rem; letter-spacing: 3px; }
 
-        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        /* --- NAVİGASYON MENÜSÜ --- */
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+            flex-wrap: wrap;
+        }
+        .nav-link {
+            background: white;
+            color: var(--mavi);
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 0.8rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+        .nav-link:hover { background: var(--mavi); color: white; }
 
-        .hero-title { text-align: center; margin-bottom: 50px; }
-        .hero-title h2 { font-family: 'Playfair Display'; font-size: 3rem; color: var(--bordo); }
-        .hero-title p { font-family: 'JetBrains Mono'; font-size: 0.8rem; color: var(--altin); font-weight: 800; letter-spacing: 5px; }
+        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
 
-        /* --- MODULE STYLES --- */
-        .math-module {
-            background: var(--white); border-radius: 40px; padding: 40px; margin-bottom: 30px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.02);
+        /* --- MODÜL KARTLARI (Görseldeki Stil) --- */
+        .math-card {
+            background: var(--card-white);
+            border-radius: 40px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
         }
 
-        .module-header { display: flex; align-items: center; margin-bottom: 25px; border-bottom: 2px solid rgba(0,0,0,0.05); padding-bottom: 15px; }
-        .module-header i { font-size: 1.5rem; color: var(--altin); margin-right: 15px; }
-        .module-header h3 { font-family: 'JetBrains Mono'; font-size: 1.2rem; text-transform: uppercase; }
+        .card-header { display: flex; align-items: center; margin-bottom: 20px; }
+        .card-header i { color: var(--mavi); font-size: 1.8rem; margin-right: 15px; }
+        .card-header h2 { color: var(--mavi); font-size: 1.4rem; font-weight: 800; letter-spacing: 1px; }
 
-        .math-formula {
-            background: #fafafa; border-radius: 20px; padding: 20px; margin: 20px 0;
-            text-align: center; font-family: 'JetBrains Mono'; color: var(--bordo); overflow-x: auto;
+        .description { font-size: 0.95rem; color: var(--text-gray); margin-bottom: 25px; }
+
+        /* --- FORMÜL KUTUSU (Mavi Çerçeveli) --- */
+        .formula-box {
+            background: white;
+            border: 2px solid #e0e6ed;
+            border-left: 8px solid var(--mavi);
+            border-radius: 25px;
+            padding: 25px;
+            margin-bottom: 25px;
+            text-align: center;
+            overflow-x: auto;
         }
 
-        /* --- ÖZEL İSTEK: GRİ VE MAVİ TONLU BÖLÜM (Diferansiyel Denklemler) --- */
-        .module-diff { background: var(--math-gray); border: 2px solid #d1d9e6; }
-        .module-diff .module-header h3, .module-diff .module-header i { color: var(--math-blue); }
-        .module-diff .math-formula { background: var(--white); color: var(--math-blue); border-left: 5px solid var(--math-blue); }
-        .module-diff p, .module-diff li { color: #34495e; }
+        /* --- LİSTE STİLİ (Mavi Üçgen) --- */
+        ul { list-style: none; }
+        li { 
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+            color: var(--text-gray);
+            font-weight: 600;
+        }
+        li::before {
+            content: "Δ";
+            position: absolute;
+            left: 0;
+            color: var(--mavi);
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
 
-        ul { list-style: none; margin-top: 15px; }
-        li { margin-bottom: 10px; display: flex; align-items: flex-start; }
-        li::before { content: "Σ"; color: var(--altin); font-weight: 800; margin-right: 10px; }
-        .module-diff li::before { content: "Δ"; color: var(--math-blue); }
-
+        /* Responsive */
+        @media (max-width: 600px) {
+            .math-card { padding: 20px; border-radius: 30px; }
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="index.html" style="color: white; text-decoration: none;"><i class="fa-solid fa-chevron-left"></i></a>
-        <h1 style="margin-left: 20px;">STACKMINDS // MATH_CORE</h1>
+        <a href="index.html"><i class="fa-solid fa-chevron-left"></i></a>
+        <h1>STACKMINDS // MATH_CORE</h1>
     </header>
 
-    <div class="container">
-        <div class="hero-title">
-            <p>ADVANCED MATHEMATICS</p>
-            <h2>Evrenin Dili</h2>
-        </div>
+    <nav class="nav-menu">
+        <a href="#analiz" class="nav-link">İLERİ ANALİZ</a>
+        <a href="#diferansiyel" class="nav-link">DİFERANSİYEL</a>
+        <a href="#cebir" class="nav-link">SOYUT CEBİR</a>
+        <a href="#topoloji" class="nav-link">TOPOLOJİ</a>
+    </nav>
 
-        <div class="math-module">
-            <div class="module-header">
+    <div class="container">
+
+        <div id="analiz" class="math-card">
+            <div class="card-header">
                 <i class="fa-solid fa-infinity"></i>
-                <h3>İleri Analiz</h3>
+                <h2>İLERİ ANALİZ</h2>
             </div>
-            <p>Fonksiyonların çok boyutlu uzaydaki limit, türev ve entegrasyon süreçlerini kapsar. Değişimin geometrisidir.</p>
-            <div class="math-formula">
-                $$ \iint_D \left( \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) dA = \oint_C (P dx + Q dy) $$
+            <p class="description">Çok değişkenli fonksiyonların yapısını, limit ve türev süreçlerini inceleyen matematik dalıdır.</p>
+            <div class="formula-box">
+                \[ \oint_C (P \, dx + Q \, dy) = \iint_D \left( \frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y} \right) dA \]
             </div>
             <ul>
                 <li>Çok değişkenli limit ve süreklilik analizi.</li>
-                <li>Vektör alanlarında gradyan, diverjans ve rotasyonel ($\nabla$).</li>
-                <li>Taylor ve Fourier serileriyle fonksiyon yaklaşımı.</li>
+                <li>Vektör kalkülüsü ve Stokes teoremi.</li>
+                <li>Fourier serileri ve spektral analiz.</li>
             </ul>
         </div>
 
-        <div class="math-module module-diff">
-            <div class="module-header">
+        <div id="diferansiyel" class="math-card">
+            <div class="card-header">
                 <i class="fa-solid fa-wave-square"></i>
-                <h3>Diferansiyel Denklemler</h3>
+                <h2>DİFERANSİYEL DENKLEMLER</h2>
             </div>
-            <p>Değişimin oranını temsil eden denklemlerdir. Fiziksel ve biyolojik sistemlerin zaman içindeki davranışını modeller.</p>
-            <div class="math-formula">
-                $$ a_n(x) \frac{d^n y}{dx^n} + a_{n-1}(x) \frac{d^{n-1} y}{dx^{n-1}} + \dots + a_0(x)y = g(x) $$
+            <p class="description">Değişimin oranını temsil eden denklemlerdir. Fiziksel ve biyolojik sistemlerin zaman içindeki davranışını modeller.</p>
+            <div class="formula-box">
+                \[ a_n(x) \frac{d^n y}{dx^n} + a_{n-1}(x) \frac{d^{n-1} y}{dx^{n-1}} + \dots + a_0(x)y = g(x) \]
             </div>
             <ul>
                 <li>Birinci ve yüksek mertebeden lineer denklemler.</li>
@@ -107,33 +160,33 @@
             </ul>
         </div>
 
-        <div class="math-module">
-            <div class="module-header">
-                <i class="fa-solid fa-cube"></i>
-                <h3>Soyut Cebir</h3>
+        <div id="cebir" class="math-card">
+            <div class="card-header">
+                <i class="fa-solid fa-shapes"></i>
+                <h2>SOYUT CEBİR</h2>
             </div>
-            <p>Cebirsel yapıların (gruplar, halkalar ve cisimler) aksiyomatik incelemesidir. Simetrinin matematiğidir.</p>
-            <div class="math-formula">
-                $$ \forall a, b \in G, \quad (a \cdot b) \in G \quad \text{ve} \quad a \cdot a^{-1} = e $$
+            <p class="description">Grup, halka ve cisim gibi cebirsel yapıların aksiyomatik özelliklerini inceleyen temel matematik alanıdır.</p>
+            <div class="formula-box">
+                \[ (G, *) \implies \forall a, b \in G, \quad a * b \in G \]
             </div>
             <ul>
                 <li>Grup teorisi ve Lagrange Teoremi.</li>
-                <li>İdealler, bölümlü halkalar ve halka homomorfizmaları.</li>
-                <li>Galois teorisine giriş ve cisim genişlemeleri.</li>
+                <li>Halkalar, idealler ve bölümlü yapılar.</li>
+                <li>Galois teorisi ve cisim genişlemeleri.</li>
             </ul>
         </div>
 
-        <div class="math-module">
-            <div class="module-header">
+        <div id="topoloji" class="math-card">
+            <div class="card-header">
                 <i class="fa-solid fa-draw-polygon"></i>
-                <h3>Topoloji</h3>
+                <h2>TOPOLOJİ</h2>
             </div>
-            <p>Şekillerin esnetilmesi, bükülmesi ama yırtılmaması durumunda korunan özellikleri inceler. "Lastik geometri" olarak bilinir.</p>
-            <div class="math-formula">
-                $$ \tau = \{ \emptyset, X, U_i \subseteq X : \bigcup U_i \in \tau, \bigcap_{i=1}^n U_i \in \tau \} $$
+            <p class="description">Geometrik nesnelerin bükülme ve esneme altında değişmeyen özelliklerini inceleyen "lastik geometri" alanıdır.</p>
+            <div class="formula-box">
+                \[ \tau = \{ \emptyset, X, U_i \subseteq X : \bigcup U_i \in \tau \} \]
             </div>
             <ul>
-                <li>Metrik uzaylar ve topolojik yapı tanımları.</li>
+                <li>Açık kümeler ve topolojik uzay tanımları.</li>
                 <li>Kompaktlık ve bağlantılılık kavramları.</li>
                 <li>Homeomorfizmalar ve topolojik eşdeğerlik.</li>
             </ul>
@@ -141,11 +194,5 @@
 
     </div>
 
-    <script>
-        // KaTeX auto-render (Opsiyonel: Eğer CDN kullanacaksanız)
-        document.addEventListener("DOMContentLoaded", function() {
-            // LaTeX sembollerini render etmek için KaTeX fonksiyonlarını buraya ekleyebiliriz.
-        });
-    </script>
 </body>
 </html>
