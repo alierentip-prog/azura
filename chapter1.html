@@ -6,114 +6,142 @@
     <title>Bölüm 1 | Ali Barlas & Beyza</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=JetBrains+Mono:wght@800&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@800&family=Playfair+Display:ital,wght@1,900&display=swap" rel="stylesheet">
     
     <style>
         :root {
             --bg: #f5f1e6; --card: #ffffff; --text: #2a1b12;
-            --bordo: #5a0000; --altin: #b87333; --radius: 50px;
+            --bordo: #5a0000; --altin: #b87333; --radius-pro: 45px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text); line-height: 1.8; }
+        body { background: var(--bg); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text); line-height: 1.8; overflow-x: hidden; }
 
         /* --- ÜST NAVİGASYON --- */
-        .story-header {
+        .header {
             background: var(--bordo); padding: 25px; display: flex; align-items: center;
             color: #fff; position: sticky; top: 0; z-index: 1000; border-bottom: 5px solid var(--altin);
         }
-        .story-header a { color: #fff; text-decoration: none; font-size: 1.3rem; }
-        .story-header h1 { font-family: 'JetBrains Mono'; font-size: 1rem; letter-spacing: 3px; margin-left: 20px; }
+        .header a { color: #fff; text-decoration: none; font-size: 1.3rem; }
+        .header h1 { font-family: 'JetBrains Mono'; font-size: 1rem; letter-spacing: 3px; margin-left: 20px; }
 
-        /* --- OKUMA ALANI --- */
-        .reading-container { padding: 40px 25px; max-width: 650px; margin: 0 auto; }
+        /* --- OKUMA KONTEYNERI --- */
+        .story-wrapper { padding: 40px 25px; max-width: 700px; margin: 0 auto; }
         
-        .chapter-meta { text-align: center; margin-bottom: 50px; }
-        .chapter-meta span { font-family: 'JetBrains Mono'; color: var(--altin); font-weight: 800; font-size: 0.7rem; letter-spacing: 5px; }
-        .chapter-meta h2 { font-family: 'Playfair Display', serif; font-size: 2.8rem; color: var(--bordo); line-height: 1.1; margin-top: 10px; }
+        .title-block { text-align: center; margin-bottom: 60px; }
+        .title-block span { font-family: 'JetBrains Mono'; color: var(--altin); font-weight: 800; font-size: 0.7rem; letter-spacing: 6px; }
+        .title-block h2 { font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--bordo); line-height: 1; margin-top: 15px; }
 
-        .story-text { font-size: 1.1rem; font-weight: 400; text-align: justify; color: rgba(42, 27, 18, 0.95); }
-        .story-text p { margin-bottom: 25px; }
+        .story-body { font-size: 1.15rem; color: rgba(42, 27, 18, 0.95); text-align: justify; }
+        .story-body p { margin-bottom: 28px; }
+        
+        .dialogue { font-weight: 700; color: var(--bordo); display: block; margin: 15px 0; padding-left: 15px; border-left: 3px solid var(--altin); }
 
-        /* Vurgulu Alanlar */
-        .dialogue-box {
-            background: rgba(90, 0, 0, 0.03); border-left: 5px solid var(--bordo);
-            padding: 20px; border-radius: 0 20px 20px 0; margin-bottom: 25px;
-            font-style: italic; font-weight: 600;
+        /* ÖZEL KUTULAR (Senin yazdığın o can alıcı kısımlar için) */
+        .scene-box {
+            background: var(--card); border-radius: 35px; padding: 30px;
+            margin: 45px 0; box-shadow: 0 20px 50px rgba(61, 43, 31, 0.08);
+            border: 1px solid rgba(0,0,0,0.03); position: relative;
         }
+        .scene-box::after { content: '◈'; position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); color: var(--altin); font-size: 1.5rem; }
 
-        .highlight-card {
-            background: var(--card); border-radius: 35px; padding: 25px;
-            margin: 35px 0; box-shadow: 0 15px 40px rgba(0,0,0,0.05);
-            border: 1px solid rgba(0,0,0,0.02);
-        }
+        .highlight-text { font-style: italic; color: #5a0000; font-weight: 600; }
 
-        .bottom-nav {
-            display: flex; justify-content: center; padding: 50px 0; border-top: 1px solid rgba(0,0,0,0.05);
-        }
-        .nav-btn {
+        .nav-footer { display: flex; justify-content: center; padding: 60px 0; border-top: 2px dashed rgba(90,0,0,0.1); }
+        .next-btn {
             background: var(--bordo); color: #fff; text-decoration: none;
-            padding: 18px 45px; border-radius: 40px; font-weight: 800;
-            box-shadow: 0 10px 30px rgba(90,0,0,0.2); transition: 0.3s;
+            padding: 20px 50px; border-radius: 50px; font-weight: 800;
+            box-shadow: 0 15px 35px rgba(90,0,0,0.25); transition: 0.4s;
         }
     </style>
 </head>
 <body>
 
-    <header class="story-header">
-        <a href="novel_chapters.html"><i class="fa-solid fa-arrow-left"></i></a>
-        <h1>BÖLÜM 01</h1>
+    <header class="header">
+        <a href="novel_chapters.html"><i class="fa-solid fa-chevron-left"></i></a>
+        <h1>BÖLÜM 01: KAYISI</h1>
     </header>
 
-    <main class="reading-container">
-        <div class="chapter-meta">
+    <main class="story-wrapper">
+        <div class="title-block">
             <span>BİRİNCİ BÖLÜM</span>
             <h2>Kayısı Kokulu<br>Yükseklik</h2>
         </div>
 
-        <article class="story-text">
-            <p><strong>Beyza:</strong> "Bilmem ki yüksek değil mi?"</p>
-            <p><strong>Ali Barlas:</strong> "Hadi sıkıldım çık artık şu ağaca zaten yerler belli beni izlemedin mi sen?"</p>
-            <p><strong>Beyza:</strong> "Korkuyorum..."</p>
-            <p><strong>Ali Barlas:</strong> "Hadi gel kayısılar çok güzel."</p>
+        <article class="story-body">
+            <p><span class="dialogue">Beyza : Bilmem ki yüksek değil mi</span></p>
+            <p><span class="dialogue">Ali Barlas: Hadi sıkıldım çık artık şu ağaca zaten yerler belli beni izlemedin mi sen</span></p>
+            <p><span class="dialogue">Beyza: korkuyorum</span></p>
+            <p><span class="dialogue">Ali Barlas: hadi gel kayısılar çok güzel.</span></p>
 
-            <p>Beyza yavaş yavaş çıkıntılara basarak çıkmaya başladı. Elleri acıyordu ama kayısıdan da yemek istiyordu. Her ayak hareketinde korkuyor elleri kayacak gibi hissediyordu. Sonunda bir şekilde çıkmayı başarıp dala tutunup Ali Barlas'ın yanına geldi. Yere bakmaya korkuyordu çünkü yükseklik korkusu tetikleniyordu. İçten içe Ali Barlas'ı kıskanıyordu. Ama kayısı iştahı ağır bastı ve kayısı yemeye başladılar. Kayısı gerçekten hem güzel hem suluydu. Ali Barlas biraz şapırdatarak yiyordu. Ali Barlas'ın genelde ahlak kuralları yoktu. Beyza ise tam bir hanımefendiydi. Ağaca çıkmasını saymazsak tabii.</p>
+            <p>Beyza yavaş yavaş çıkıntılara basarak çıkmaya başladı. Elleri acıyordu ama kayısıdan da yemek istiyordu. Her ayak hareketinde korkuyor elleri kayacak gibi hissediyordu. Sonunda bir şekilde çıkmayı başarip dala tutunup Ali barlasın yanına geldi. Yere bakmaya korkuyordu çünkü yükseklik korkusu tetikleniyordu. İçten içe Ali barlası kıskanıyordu. Ama kayısı iştahı ağır bastı ve kayısı yemeye başladılar. Kayısı gerçekten hem güzel hem suluydu. Ali Barlas biraz şapırdatarak yiyordu. Ali barlasın genelde ahlak kuralları yoktu. Beyza ise tam bir hanımefendiydi. Ağaca çıkmasıni saymazsak tabi.</p>
 
-            <div class="highlight-card">
-                Beyza hala düşünüyordu. Babası da böyle biraz kaba saba dengesiz tuhaf hatta ve hatta amcası dayıları ve kuzenleri ya da hayatında tanıdığı çoğu erkek... Hepsinin tuhaf bir şekilde birbirine benziyor oluşu bir an Beyza'ya ürperti verdi ve kıkırdadı.
+            <div class="scene-box">
+                <p>Beyza hala düşünüyordu. Babası da böyle biraz kaba saba dengesiz tuhaf hatta ve hatta amcası dayıları ve kuzenleri ya da hayatında tanıdığı çoğu erkek... Hepsinin tuhaf bir şekilde birbirine benziyor oluşu bir an beyzaya ürperti verdi ve kıkırdadı. </p>
             </div>
 
-            <p>Ali Barlas merak edip sordu: "Dilini gıdıklayan bir şey mi var noldu kurtlu kayısı mı yedin yoksa?"</p>
-            <p>Beyza, Ali'ye bakıp kahkaha attı. Erkeklerin böyle saçma soruları çok komikti. Evet durduk yere gülmüş olabilirdi ama bu soru daha komikti. Ali Barlas kayısı yerken şaşkın şaşkın bakmaya devam ediyordu. "Neye gülüyon ya düşersen görürsün."</p>
+            <p><span class="dialogue">Ali Barlas merak edip sordu: Dilini gıdıklayan bir şey mi var noldu kurtlu kayısı mi yedin yoksa</span></p>
 
-            <p>Beyza, Ali Barlas'ın suratını görünce daha da gülmeye başladı; karnı ağrımaya başlamıştı ve nefesi kesiliyordu. Kıpkırmızı olmuştu. Ali Barlas hala ağzında kayısıyı çevirip bakıyordu: "Şu dalda elma olmaya ne dersin?"</p>
-            <p>Beyza artık dayanamıyordu. Güç bela gülmesini tuttu. "Sus tek kelime etme sakın!" Ali Barlas omuz silkti. Zaten o kadar da merak etmemişti. Beyza her şeye çok fazla gülüyordu. Ama onu gülerken görmek ona çok tatlı bir huzur veriyordu. Sarıya çalan hafif kahverengi sarı arası saçlar, yeşil gözler, zarif vücut ve bembeyaz ten... Tatlı bir kızdı Beyza.</p>
+            <p>Beyza Aliye bakıp kahkaha attı. Erkeklerin böyle saçma soruları çok komikti. Evet durduk yere gülmüş olabilirdi ama bu soru daha komikti. Ali Barlas kayısı yerken şaşkın şaşkın bakmaya devam ediyordu. </p>
+            
+            <p><span class="dialogue">Ali Barlas: Neye gülüyon ya düşersen görürsun</span></p>
 
-            <p>Ali Barlas başka dallara bakmaya başladı. Doymamıştı. Beyza: "Ya yeter hadi gidelim." Ali Barlas: "Doymadım!" Beyza: "Hahaha zaten doymaya gelmedik azıcık yiyip gidecektik. Hadi inelim."</p>
+            <p>Beyza Ali Barlas in suratını görünce daha da gülmeye başladı karnı ağrımaya başlamıştı ve nefesi kesiliyordu. Kıpkırmızı olmuştu. Ali Barlas hala ağzında kayısıyı çevirip bakıyordu. </p>
+            
+            <p><span class="dialogue">Ali Barlas: Şu dalda elma olmaya ne dersin </span></p>
+            
+            <p>Beyza artık dayanamıyordu. Güç bela gülmesini tuttu. </p>
+            <p><span class="dialogue">Beyza: sus tek kelime etme sakın </span></p>
 
-            <p>Beyza yavaş yavaş inmeye başladı. İnerken bir kedi gibi dikkatle iniyordu. Terlemeye başlamıştı ama neyse ki sağ salim inmişti. Yukarı baktığında ise sanki dışarıdan biri görse ağacın içinde savaş var zannederdi. "Ya napıyorsun gel buraya!" diye seslendi Beyza.</p>
-            <p>Ali Barlas yukarıdan cevap verdi: "Geliyorum hazırlan!" Beyza'nın yanına 2 tane dal düştü. Beyza gülümsedi. Memnun olmuştu aslında. Ama bu memnuniyeti Ali Barlas'a göstermeye niyeti yoktu. Aslında utanıyordu. Çünkü Ali Barlas kararlı, mantıksız düşünen, zeki ama akılsız, komik ama ciddi tuhaf biriydi. En güzeli de Beyza onun yanında mutlu hissediyordu. Seviyordu onu. Hem de çok.</p>
+            <p>Ali Barlas omuz silkti. Zaten o kadar da merak etmemişti. Beyza her şeye çok fazla güliyordu. Ama onu gülerken görmek ona çok tatlı bir huzur veriyordu. Sarıya çalan hafif kahvenrgi sarı arası saçlar yeşil gözler zarif vücut ve bembeyaz ten. Tatlı bir kızdı Beyza. Ali Barlas başka dallara bakmaya başladı. Doymamıştı. </p>
 
-            <p>Ali Barlas iki dalı da alıp omuzlarına atıp yola koyuldular. "Niye izin verdin o zaman?" dedi Ali aniden. Ali Barlas haklıydı. Neden izin vermişti ki? Madem istemiyordu neden bebeğini vermişti ki Aylin'e? 2 gündür bebek ondaydı. Beyza: "Ayıp olmaz mıydı ki?" Ali Barlas: "Vermek zorunda mısın anlamadım." Beyza düşündü; evet, vermek zorunda değildi. Hayır da diyebilirdi. "Öff neyse sonra alırım boşver. Sen şimdi ne yapacaksın?" Ali Barlas hiç düşünmeden cevap verdi: "Anneme ya da babama yardım ederim."</p>
+            <p><span class="dialogue">Beyza: ya yeter hadi gidelim </span></p>
+            <p><span class="dialogue">Ali Barlas: doymadım </span></p>
+            <p><span class="dialogue">Beyza: hahaha zaten doymaya gelmedik azıcık yiyip gidecektik. Hadi inelim</span></p>
 
-            <p>Ali Barlas Beyza'yı kapı önünde bıraktı. "Sonra görüşürüz. Kendine iyi bak." / "Sen de."</p>
+            <p>Beyza yavaş yavaş inmeye başladı. İnerken bir kedi gibi dikkatle iniyordu. Terlemeye başlamıştı ama neyseki sagsalim inmişti. Yukarı baktığında ise sanki dışarıdan biri görse ağacın içinde savaş var zannederdi. </p>
 
-            <div class="highlight-card">
-                <strong>Ali Barlas'ın Odası:</strong> Odası dağınıktı. Kılıç yatağın yanında duvarla yatak arasında. Araba masa altında. Hayali hep aynıydı; Beyza'yı korumak, düşmana karşı savaşmak ve onun değerli kahramanı olmak... "Ben adam olacağım." dedi kendi kendine.
+            <p><span class="dialogue">Beyza: ya napiyosun gel buraya</span></p>
+            <p><span class="dialogue">Ali Barlas: Geliyorum hazırlan </span></p>
+
+            <p>Beyzanin yanına 2 tane dal düştü. Beyza gülümsedi. Memnun olmuştu aslında. Ama bu memnuniyeti Ali Barlas a göstermeye niyeti yoktu. Aslında utanıyordu. Çünkü Ali Barlas... Ali Barlas kararlı mantıksız düşünen zeki ama akılsız komik ama ciddi tuhaf biriydi. En güzeli de Beyza onun yanında mutlu hissediyordu. Seviyordu onu. Hemde çok. Her zaman okul traşlı gezerdi. Kafası tam bir top gibiydi. Bazen onu yatarken yanında düşünürdü. Oyunlar oynarken konuşurken yatarken ve bir çok şeyi yaparken. Beyza düşüncelere dalmış beklerken Ali Barlas bir anda hadi gitmiyor muyuz deyince irkildi. Görmemişti. Evet gidelim dedi. Ali Barlas iki dalı da alıp ikisini de omuzlarına atıp yola koyulmaya başladılar. </p>
+
+            <div class="scene-box">
+                <p><span class="dialogue">Ali Barlas: Niye izin verdin o zaman</span></p>
+                <p>Ali Barlas haklıydı. Neden izin vermişti ki o zaman. Madem istemiyordu neden bebeğini vermişti ki Aylin e . 2 gündür bebek ondaydı. </p>
+                <p><span class="dialogue">Beyza: Ayıp olmaz mıydı ki</span></p>
+                <p><span class="dialogue">Ali Barlas: Vermek zorunda mısın anlamadım</span></p>
+                <p>Beyza düşündü. Evet. Vermek zorunda değildi. Hayır da diyebilirdi. </p>
+                <p><span class="dialogue">Beyza: Öff neyse sonra alırım boşver. Sen şimdi ne yapacaksın</span></p>
+                <p><span class="dialogue">Ali Barlas: Anneme ya da babama yardım ederim.</span></p>
             </div>
 
-            <div class="highlight-card">
-                <strong>Beyza'nın Odası:</strong> Her şey ne kadar düzenli ve tertemizdi. Yastığına sarılıp gülerek kendi kendine cilvelenmeye başladı. Pijamasını giydi; civcivli sarı pijama. Sonra masasına oturup resim çizmeye başladı.
+            <p>Beyza Ali Barlas ın bu kadar yerinde duramayaşını habire iş peşinde koşmasını görürken Ali'den çok sanki kendisi yoruluyordu. Mis gibi yatak sıcacık oda ve tatlı oda kokuları ve oyuncaklar. Buna karşın Ali Barlas ın sadece bir tahtadan kılıcı ve oyuncak arabası vardı. Onlarla oynadıklarını bile görmemişti. Ali Barlas beyzayi kapı önünde bıraktı. </p>
+
+            <p><span class="dialogue">Ali Barlas: Sonra görüşürüz. Kendine iyi bak</span></p>
+            <p><span class="dialogue">Beyza: Sende</span></p>
+
+            <p>Ali az ilerdeki kendi evine doğru gitmeye başladı. </p>
+
+            <div class="scene-box" style="border-left: 5px solid var(--bordo);">
+                <h4>ALİ BARLAS'IN EVİ</h4>
+                <p>Ali Barlas eve girip annesini öptü. Beyzayla yaptıklarını anlattı. Annesi Selma tam bir ev kadıniydi. Ama oğlunun bir kızla böyle şeyler yaşamasına tanıklık etmek onun için de tatlı bir heyecandı. Anlattıktan sonra benlik bir şey varmı diye sordu. Annesi odanı toparladiktan sonra serbestin beyefendi dedi. Ama kayısılar diye sordu. Annesi ben hallederim tatlım dedi. Peki deyip odasına geçti. </p>
+                <p>Odası dağınıktı. Dağınık seviyordu. Her şeyin yeri zaten belliydi. Kılıç yatağın yanında duvarla yatak arasında. Araba masa altında . Bu onun için yeterliydi. Diğer şeylerin pek de önemi yoktu. Arasa zaten bulurdu. Gözünü kapatıp hayalini kurmaya devam etti. Nerdeyse her gün aynı hikaye. Beyzayi korumak. Bir grup askeri ve kendisi ile düşmana karşı savas. Ve onun yani beyzanın değerli kahramanı olmak... Keskin kılıcının tadına bakacaklardi ve pişman olacakardi. Beyzasını koruyacakti. Sonra da belki Beyza çok mutlu olur ve ona bir öpücük verirdi. Büyüyecekti. Adam olacaktı. Ben hep adam olacağım derdi kendisine. </p>
+                <p><span class="highlight-text">" Ben adam olacağım."</span></p>
+                <p>Annesini üzmemek için bir kac şeyi kaldırmaya karar verdi.</p>
+            </div>
+
+            <div class="scene-box" style="border-left: 5px solid var(--altin);">
+                <h4>BEYZA'NIN EVİ</h4>
+                <p>Beyza annesi Hatice ye her şeyi anlatırdı. Hiç bir şeyi saklamazdı , saklayamazdı. Annesi de anlardı. Beyza bazen merak edip sorardı nasıl anlıyorsun diye. Hatice hanım da anne olunca sende anlarsın derdi. Beyza heyecanlı heyecanlı ve gülerek anlatmaya başladı. Hatice hanım da mutfak işlerini hallederken can kulağıyla ve sırıtarak dinliyordu. Beyza da eline havlu alıp bulaşıkları kurularken hala anlatıyordu. Sonra işi bitince odasına geçti. </p>
+                <p>Canım evim ve odam diye düşündü. Her şey ne kadar düzenli ve tertemizdi. Ohh mis gibi. Koşa koşa yatağına atladı. Yastığına sarılıp gülerek yastığı sanki içine sokarcasına kendi kendine cilvelenmeye başladı. Bugün güldüğü şeyleri düşünüp tekrar gülünce kalkıp çiçeğine su verdi. Pijamasıni giydi. Civcivli sarı pijama. Sonra masasına oturup resim çizmeye başladı. Bakalım kalem neler çizecekti kağıda. </p>
             </div>
         </article>
 
-        <section class="bottom-nav">
-            <a href="chapter2.html" class="nav-btn">BÖLÜM 2'YE GEÇ <i class="fa-solid fa-arrow-right"></i></a>
+        <section class="nav-footer">
+            <a href="chapter2.html" class="next-btn">BÖLÜM 2: TAHTA KILIÇ <i class="fa-solid fa-arrow-right"></i></a>
         </section>
     </main>
 
-    <script>
-        setInterval(() => { /* Gerekirse saat eklenebilir */ }, 1000);
-    </script>
 </body>
 </html>
