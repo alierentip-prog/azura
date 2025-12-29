@@ -10,7 +10,7 @@
     
     <style>
         :root {
-            /* Azura Hi-Fi Palette */
+            /* Azura Hi-Fi Paleti */
             --bg: #f5f1e6; --card: #ffffff; --text: #2a1b12;
             --bordo: #5a0000; --altin: #b87333; --emerald: #004d40;
             --lacivert: #001f3f; --indigo: #311b92; --charcoal: #121212;
@@ -45,24 +45,25 @@
         .layer-manifesto p { font-size: 1.25rem; font-weight: 600; opacity: 0.75; border-left: 6px solid var(--altin); padding-left: 25px; margin-bottom: 20px; }
         .deep-text { font-size: 1rem; opacity: 0.6; padding-left: 31px; text-align: justify; margin-bottom: 30px; }
 
-        /* --- AKILLI KART SİSTEMİ (HI-SATURATION) --- */
+        /* --- AKILLI KART SİSTEMİ (POFUDUK) --- */
         .nexus-viewport { padding: 0 35px; display: flex; flex-direction: column; gap: 25px; }
         
         .prime-card {
             background: var(--card); border-radius: var(--radius-max); padding: 35px;
             display: flex; align-items: center; text-decoration: none; color: inherit;
             box-shadow: var(--shadow-pro); position: relative; overflow: hidden;
-            border: 1px solid rgba(0,0,0,0.04);
+            border: 1px solid rgba(0,0,0,0.04); transition: transform 0.3s ease;
         }
+        .prime-card:active { transform: scale(0.95); }
 
-        /* İkonik Renk Şeritleri */
+        /* İkonik Yan Şeritler */
         .prime-card::before { content: ''; position: absolute; left: 0; top: 20%; bottom: 20%; width: 10px; border-radius: 0 25px 25px 0; }
         .c-med::before { background: var(--bordo); }
         .c-physic::before { background: var(--emerald); }
         .c-math::before { background: var(--altin); }
         .c-gastro::before { background: var(--lacivert); }
         .c-mind::before { background: var(--indigo); }
-        .c-novel::before { background: var(--altin); } /* Hikaye için altın şerit */
+        .c-novel::before { background: var(--altin); }
 
         .icon-vault {
             width: 85px; height: 85px; background: var(--text); border-radius: 32px;
@@ -75,7 +76,7 @@
         .card-body p { font-size: 1.05rem; opacity: 0.5; font-weight: 700; }
         .nav-link { margin-left: auto; color: var(--altin); opacity: 0.4; font-size: 1.6rem; }
 
-        /* --- MATEMATİKSEL ANALİZ PANLLERİ --- */
+        /* --- MATEMATİKSEL ANALİZ MODÜLÜ --- */
         .math-nexus-lab { margin: 60px 35px; background: var(--card); border-radius: 60px; padding: 50px; box-shadow: var(--shadow-pro); }
         .math-nexus-lab h4 { font-size: 1.6rem; font-weight: 800; margin-bottom: 30px; color: var(--bordo); display: flex; align-items: center; gap: 20px; }
         .terminal-box {
@@ -107,10 +108,9 @@
         <h2>Biyolojik<br>Hafıza.</h2>
         <p>Her nefes, milyarlarca atomun bir araya gelip 'seni' oluşturma çabasıdır.</p>
         <div class="deep-text">
-            Usta, bir tıp öğrencisi olarak bilirsin ki; insan vücudu bir makine değil, sürekli kendini yeniden yazan bir algoritmadır. Her gün trilyonlarca hücren ölür ve yerini yenilerine bırakır; yani sen, yedi yıl önceki 'sen' ile aynı atomlara sahip değilsin.
+            İnsan vücudu bir makine değil, sürekli kendini yeniden yazan bir algoritmadır. Trilyonlarca hücrenin sessiz senfonisinde, yaşamın o kutsal "Singularity" anını arıyoruz.
         </div>
     </section>
-
     <nav class="nexus-viewport">
         <a href="medical.html" class="prime-card c-med">
             <div class="icon-vault"><i class="fa-solid fa-staff-snake"></i></div>
@@ -123,11 +123,7 @@
         <span>SEKTÖR // 02</span>
         <h2>Kozmik<br>İskelet.</h2>
         <p>Evren pürüzsüz bir kumaş değil, köpüren bir olasılıklar okyanusudur.</p>
-        <div class="deep-text">
-            Yıldız tozundan yapılmış varlıklar olarak, evrenin o muazzam genişlemesini ve karadeliklerin merkezindeki 'Tekillik' anını anlamaya çalışıyoruz. Bizler, evrenin kendi kendini gözlemleyen gözleriyiz.
-        </div>
     </section>
-
     <nav class="nexus-viewport">
         <a href="physic.html" class="prime-card c-physic">
             <div class="icon-vault"><i class="fa-solid fa-atom"></i></div>
@@ -141,7 +137,6 @@
         <h2>Mutlak<br>Gerçek.</h2>
         <p>Doğa, bizimle denklemlerle konuşur; sayılar asla yalan söylemez.</p>
     </section>
-
     <nav class="nexus-viewport">
         <a href="math.html" class="prime-card c-math">
             <div class="icon-vault"><i class="fa-solid fa-infinity"></i></div>
@@ -151,10 +146,11 @@
     </nav>
 
     <div class="math-nexus-lab">
-        <h4><i class="fa-solid fa-square-root-variable"></i> Relativistik Kuantum Analizi</h4>
+        <h4><i class="fa-solid fa-square-root-variable"></i> Relativistik Kuantum</h4>
         <div class="terminal-box">
-            (iħ ∂/∂t - c α·p - β mc²) ψ(r,t) = 0 <br><br>
-            *Dirac Denklemi: Bu yapı, kuantum mekaniği ile özel göreliliği birleştiren yegane köprüdür.
+            $$(i\hbar \frac{\partial}{\partial t} - c \alpha \cdot p - \beta mc^2) \psi(r,t) = 0$$
+            <br>
+            *Dirac Denklemi: Evrenin en derin simetrisini tanımlayan o muazzam yapı.
         </div>
     </div>
 
@@ -163,7 +159,6 @@
         <h2>Toprağın<br>Mirası.</h2>
         <p>Gastronomi, kimyanın ve tarihin bir tabakta birleşmesidir.</p>
     </section>
-
     <nav class="nexus-viewport">
         <a href="gastronomy.html" class="prime-card c-gastro">
             <div class="icon-vault"><i class="fa-solid fa-utensils"></i></div>
@@ -177,7 +172,6 @@
         <h2>Bilincin<br>Yankısı.</h2>
         <p>Rüyalardan gerçekliğe, nöronların arasındaki o muazzam elektrik fırtınası.</p>
     </section>
-
     <nav class="nexus-viewport">
         <a href="games.html" class="prime-card c-mind">
             <div class="icon-vault"><i class="fa-solid fa-brain"></i></div>
@@ -186,21 +180,20 @@
         </a>
     </nav>
 
-    <section class="layer-manifesto" id="novel-sector">
+    <section class="layer-manifesto">
         <span>SEKTÖR // 06</span>
         <h2>Ruhun<br>Anlatısı.</h2>
         <p>Hikayeler, denklemlere can veren tekil anların toplamıdır.</p>
         <div class="deep-text">
-            Bilim "nasıl" sorusuna cevap verirken; hikayeler "kim" olduğumuzu fısıldar. Ali Barlas ve Beyza’nın dünyasında, tıp kitaplarının soğukluğu yerini güneşin ısıttığı kayısı dallarına bırakır. Nereden gelip nereye gittiğimizin cevabı bazen bir formülde değil, bir veda bakışında saklıdır.
+            Ali Barlas ve Beyza’nın dünyasında, tıp kitaplarının disiplini yerini güneşin ısıttığı kayısı dallarına bırakıyor. Bilinç ve hatıra arasındaki o ince çizgiyi bir çocukluk serüveninde keşfediyoruz.
         </div>
     </section>
-
     <nav class="nexus-viewport">
-        <a href="novel_ali_beyza.html" class="prime-card c-novel">
+        <a href="novel_chapters.html" class="prime-card c-novel">
             <div class="icon-vault"><i class="fa-solid fa-feather-pointed"></i></div>
             <div class="card-body">
                 <h3>Ali Barlas & Beyza</h3>
-                <p>Bölüm 1: Kayısı ve Yükseklik</p>
+                <p>20 Bölümlük Çocukluk Serüveni</p>
             </div>
             <i class="fa-solid fa-chevron-right nav-link"></i>
         </a>
@@ -213,7 +206,9 @@
     </div>
 
     <script>
-        setInterval(() => { document.getElementById('live-clock').innerText = new Date().toLocaleTimeString('tr-TR'); }, 1000);
+        setInterval(() => { 
+            document.getElementById('live-clock').innerText = new Date().toLocaleTimeString('tr-TR'); 
+        }, 1000);
     </script>
 </body>
 </html>
