@@ -18,24 +18,24 @@
         
         body { 
             background: var(--bg); font-family: 'Plus Jakarta Sans', sans-serif; color: var(--text);
-            padding-bottom: 120px;
+            padding-bottom: 120px; overflow-x: hidden;
         }
 
         /* --- ÜST NAVİGASYON --- */
         .header-nav {
-            background: var(--bordo); padding: 25px 30px; display: flex; align-items: center;
+            background: var(--bordo); padding: 25 :root5px 30px; display: flex; align-items: center;
             color: #fff; position: sticky; top: 0; z-index: 1000;
             border-bottom: 5px solid var(--altin); box-shadow: 0 15px 45px rgba(0,0,0,0.3);
         }
         .header-nav a { color: #fff; text-decoration: none; font-size: 1.4rem; }
         .header-nav h1 { font-family: 'JetBrains Mono'; font-size: 1.1rem; letter-spacing: 4px; margin-left: 20px; }
 
-        /* --- BAŞLIK ALANI --- */
+        /* --- GİRİŞ MANİFESTOSU --- */
         .intro-hero { padding: 60px 35px; text-align: center; }
         .intro-hero span { font-family: 'JetBrains Mono'; font-weight: 800; color: var(--altin); font-size: 0.7rem; letter-spacing: 6px; display: block; margin-bottom: 15px; }
         .intro-hero h2 { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: var(--bordo); line-height: 0.85; font-style: italic; }
 
-        /* --- BÖLÜM KARTLARI --- */
+        /* --- BÖLÜM KARTLARI (TAMAMI KİLİTSİZ) --- */
         .chapters-container { padding: 0 25px; display: flex; flex-direction: column; gap: 20px; }
         
         .chapter-card {
@@ -75,7 +75,7 @@
     </header>
 
     <div class="intro-hero">
-        <span>KÜLLİYAT // SEKTÖR 06</span>
+        <span>BÖLÜM LİSTESİ // 01-20</span>
         <h2>Ali Barlas<br>& Beyza</h2>
     </div>
 
@@ -85,7 +85,7 @@
             <span class="ch-index">01</span>
             <div class="ch-details">
                 <h4>Kayısı Kokulu Yükseklik</h4>
-                <p>İlk Tanışma ve Ağaçtaki Diyaloglar</p>
+                <p>Maceranın ve Saf Sevgini Başlangıcı</p>
             </div>
             <i class="fa-solid fa-chevron-right ch-arrow"></i>
         </a>
@@ -103,7 +103,7 @@
             <span class="ch-index">03</span>
             <div class="ch-details">
                 <h4>Emanet ve Fırtına</h4>
-                <p>B Bilekliği ve Taşınma Haberi</p>
+                <p>B Bilekliği ve Taşınma Gölgesi</p>
             </div>
             <i class="fa-solid fa-chevron-right ch-arrow"></i>
         </a>
@@ -112,23 +112,32 @@
             <span class="ch-index">04</span>
             <div class="ch-details">
                 <h4>Mavi Canavarın Gölgesi</h4>
-                <p>Veda Öncesi Son Gece</p>
+                <p>Veda ve Mavi Nakliye Kamyonu</p>
+            </div>
+            <i class="fa-solid fa-chevron-right ch-arrow"></i>
+        </a>
+
+        <a href="chapter5.html" class="chapter-card">
+            <span class="ch-index">05</span>
+            <div class="ch-details">
+                <h4>Mavi Kamyondan Mercedes’e</h4>
+                <p>Yıllar Sonra Gelen Büyük Kavuşma</p>
             </div>
             <i class="fa-solid fa-chevron-right ch-arrow"></i>
         </a>
 
         <script>
             const container = document.querySelector('.chapters-container');
-            for(let i=5; i<=20; i++) {
+            for(let i=6; i<=20; i++) {
                 const num = i < 10 ? '0'+i : i;
                 container.innerHTML += `
                     <a href="chapter${i}.html" class="chapter-card">
                         <span class="ch-index">${num}</span>
                         <div class="ch-details">
                             <h4>Bölüm ${i}</h4>
-                            <p>Henüz Kaleme Alınmadı...</p>
+                            <p>Keşfedilmeyi Bekleyen Bir Anı...</p>
                         </div>
-                        <i class="fa-solid fa-feather-pointed ch-arrow"></i>
+                        <i class="fa-solid fa-feather-pointed ch-arrow" style="opacity: 0.2"></i>
                     </a>
                 `;
             }
